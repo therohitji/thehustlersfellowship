@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hustlers Fellowship: Build-first AI courses</title>
+<meta name="description" content="Practical, build-first AI courses by Rohit Swerashi (Founder, GeniOS). Start with AI Product Management.">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&family=Newsreader:ital,opsz,wght@1,6..72,400..500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --font-ui:'Hanken Grotesk',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    --font-serif:'Newsreader','Iowan Old Style',Georgia,serif;
+    --bg:#ffffff; --bg-soft:#f5f5f7; --bg-rail:#fbfbfd;
+    --ink:#1d1d1f; --ink-soft:#48484a; --ink-mute:#86868b;
+    --line:rgba(0,0,0,0.09); --line-strong:rgba(0,0,0,0.16);
+    --accent:#9e1b32; --accent-deep:#7a1226; --accent-soft:rgba(158,27,50,0.08); --accent-line:rgba(158,27,50,0.22);
+    --accent-grad:linear-gradient(135deg,#bb1f3c 0%,#6f1020 100%); --accent-grad-deep:linear-gradient(135deg,#a51833 0%,#5e0d1b 100%);
+    --good:#0a7d3c; --good-soft:#f0faf3;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--bg);color:var(--ink);font-family:var(--font-ui);font-size:17px;line-height:1.6;letter-spacing:-.003em;position:relative;}
+  body::before{content:"";position:fixed;top:0;left:0;right:0;height:560px;z-index:-1;pointer-events:none;
+    background:radial-gradient(1100px 380px at 50% -130px, rgba(158,27,50,0.08), transparent 72%);}
+
+  .shell{max-width:1000px;margin:0 auto;padding:0 32px;}
+
+  /* ---- top bar ---- */
+  .topbar{display:flex;align-items:center;justify-content:space-between;padding:24px 0 0;}
+  .brand{font-weight:800;font-size:16px;letter-spacing:-.01em;}
+  .brand .dot{color:var(--accent);}
+  .li-link{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--ink-soft);border:1px solid var(--line);padding:7px 13px;border-radius:100px;text-decoration:none;transition:.16s;background:#fff;}
+  .li-link svg{color:var(--accent);flex:none;}
+  .li-link .arr{color:var(--ink-mute);font-weight:500;}
+  .li-link:hover{border-color:var(--accent-line);color:var(--accent);background:var(--accent-soft);}
+  .li-link:hover .arr{color:var(--accent);}
+  .social{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+
+  /* ---- hero ---- */
+  .hero{padding:74px 0 12px;max-width:780px;}
+  .kicker{font-size:12px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);}
+  h1{font-size:56px;font-weight:800;letter-spacing:-.038em;line-height:1.02;margin:16px 0 0;}
+  .hero .sub{font-size:20px;line-height:1.55;color:var(--ink-soft);margin-top:20px;font-weight:400;max-width:680px;}
+  .hero .quote{font-family:var(--font-serif);font-style:italic;font-size:19px;color:var(--ink-soft);border-left:3px solid var(--accent);padding:3px 0 3px 18px;margin-top:26px;}
+  .follow-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px;}
+  .fbtn{display:inline-flex;align-items:center;gap:9px;font-size:14px;font-weight:600;color:var(--ink);border:1px solid var(--line-strong);padding:11px 18px;border-radius:11px;text-decoration:none;transition:.16s;background:#fff;}
+  .fbtn svg{flex:none;}
+  .fbtn:hover{border-color:var(--accent);color:var(--accent);box-shadow:0 6px 18px rgba(126,18,38,.10);transform:translateY(-1px);}
+
+  /* ---- section label ---- */
+  .sec-label{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-mute);margin:60px 0 18px;display:flex;align-items:center;gap:14px;}
+  .sec-label::after{content:"";flex:1;height:1px;background:var(--line);}
+
+  /* ---- courses ---- */
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  .card{border:1px solid var(--line);border-radius:20px;padding:30px 30px 28px;background:var(--bg-rail);transition:border-color .16s,box-shadow .16s,transform .16s;}
+  .card.live{grid-column:1 / -1;background:#fff;cursor:pointer;box-shadow:0 1px 0 rgba(0,0,0,.02);}
+  .card.live:hover{border-color:var(--accent-line);box-shadow:0 18px 46px rgba(126,18,38,.14);transform:translateY(-3px);}
+  .card.soon{opacity:.94;}
+
+  .card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+  .tag{display:inline-flex;align-items:center;gap:6px;font-size:10.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:5px 11px;border-radius:100px;}
+  .tag.now{color:var(--good);background:var(--good-soft);}
+  .tag.soon{color:var(--ink-mute);background:var(--bg-soft);}
+  .tag .pulse{width:6px;height:6px;border-radius:50%;background:var(--good);display:inline-block;}
+  .freenote{font-size:12.5px;color:var(--ink-mute);font-weight:500;}
+
+  .card h2{font-size:27px;font-weight:800;letter-spacing:-.022em;margin:16px 0 4px;line-height:1.1;}
+  .card .lede{font-size:15.5px;font-weight:600;color:var(--accent);margin-bottom:12px;}
+  .card.soon h2{color:var(--ink-soft);}
+  .card.soon .edition{font-size:13px;color:var(--ink-mute);font-weight:600;margin-bottom:10px;}
+  .card p{font-size:15px;line-height:1.62;color:var(--ink-soft);margin-bottom:18px;max-width:66ch;}
+  .wwh{display:flex;flex-direction:column;gap:11px;margin:6px 0 22px;}
+  .wwh .row{display:flex;gap:14px;align-items:baseline;}
+  .wwh .lab{flex:none;width:42px;font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--accent);}
+  .wwh .txt{font-size:15px;line-height:1.5;color:var(--ink-soft);}
+  .meta-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px;}
+  .chip{font-size:11.5px;font-weight:600;color:var(--ink-soft);background:var(--bg-soft);border:1px solid var(--line);padding:5px 12px;border-radius:100px;}
+
+  .btn{display:inline-flex;align-items:center;gap:9px;background:var(--accent-grad);color:#fff;font-weight:700;font-size:15px;padding:13px 24px;border-radius:12px;text-decoration:none;transition:.16s;box-shadow:0 8px 20px rgba(126,18,38,.28);}
+  .btn .arr{transition:transform .16s;}
+  .btn:hover{background:var(--accent-grad-deep);box-shadow:0 14px 30px rgba(126,18,38,.38);transform:translateY(-1px);}
+  .card.live:hover .btn .arr,.btn:hover .arr{transform:translateX(4px);}
+  .btn-row{display:flex;flex-wrap:wrap;align-items:center;gap:12px;}
+  .soon-note{font-size:13px;color:var(--ink-mute);font-weight:600;}
+
+  /* ---- follow + footer ---- */
+  .follow{margin:34px 0 0;text-align:center;font-size:14.5px;color:var(--ink-mute);}
+  .follow a{color:var(--accent);font-weight:600;text-decoration:none;border-bottom:1px solid var(--accent-line);}
+  .follow a:hover{border-bottom-color:var(--accent);}
+  footer{margin:46px 0 48px;padding-top:24px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;font-size:13px;color:var(--ink-mute);}
+  footer b{color:var(--ink-soft);font-weight:600;}
+  footer a{color:var(--ink-soft);text-decoration:none;font-weight:600;border-bottom:1px solid var(--line);}
+  footer a:hover{color:var(--accent);border-bottom-color:var(--accent-line);}
+
+  @media(max-width:760px){
+    .shell{padding:0 20px;}
+    h1{font-size:38px;}
+    .hero{padding:48px 0 6px;}
+    .hero .sub{font-size:18px;}
+    .grid{grid-template-columns:1fr;}
+    .topbar{flex-direction:column;align-items:flex-start;gap:14px;}
+  }
+
+  /* ===== site promo ribbon ===== */
+  .promo-ribbon{position:fixed;top:0;left:0;right:0;height:38px;z-index:1000;display:flex;align-items:center;overflow:hidden;white-space:nowrap;text-decoration:none;background:linear-gradient(90deg,#a51833 0%,#7a1226 100%);box-shadow:0 1px 0 rgba(0,0,0,.10);}
+  .promo-track{display:flex;width:max-content;animation:promo-scroll 40s linear infinite;}
+  .promo-ribbon:hover .promo-track{animation-play-state:paused;}
+  .promo-seq{display:inline-flex;align-items:center;white-space:nowrap;color:#fff;font-family:'Hanken Grotesk',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;font-weight:600;letter-spacing:.005em;}
+  .promo-seq b{font-weight:800;text-transform:uppercase;letter-spacing:.08em;margin-right:8px;color:#ffd9e0;}
+  .promo-sep{opacity:.45;margin:0 16px;}
+  .promo-dot{width:7px;height:7px;border-radius:50%;background:#36d07f;margin:0 11px 0 26px;flex:none;animation:promo-pulse 1.8s ease-out infinite;}
+  @keyframes promo-scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  @keyframes promo-pulse{0%{box-shadow:0 0 0 0 rgba(54,208,127,.55)}70%{box-shadow:0 0 0 7px rgba(54,208,127,0)}100%{box-shadow:0 0 0 0 rgba(54,208,127,0)}}
+  body{padding-top:38px;}
+</style>
+</head>
+<body>
+<a class="promo-ribbon" href="/buildliveproducts" aria-label="Build Live Products 2026 is now live"><div class="promo-track"><span class="promo-seq"><span class="promo-dot"></span><b>New</b> Build Live Products 2026 is now live<span class="promo-sep">·</span>from a raw problem to a live product with real users in 4 weeks<span class="promo-sep">·</span>start free, no signup<span class="promo-sep">·</span>AI Product Management is live too<span class="promo-sep">·</span><span class="promo-dot"></span><b>New</b> Build Live Products 2026 is now live<span class="promo-sep">·</span>from a raw problem to a live product with real users in 4 weeks<span class="promo-sep">·</span>start free, no signup<span class="promo-sep">·</span>AI Product Management is live too<span class="promo-sep">·</span></span><span class="promo-seq" aria-hidden="true"><span class="promo-dot"></span><b>New</b> Build Live Products 2026 is now live<span class="promo-sep">·</span>from a raw problem to a live product with real users in 4 weeks<span class="promo-sep">·</span>start free, no signup<span class="promo-sep">·</span>AI Product Management is live too<span class="promo-sep">·</span><span class="promo-dot"></span><b>New</b> Build Live Products 2026 is now live<span class="promo-sep">·</span>from a raw problem to a live product with real users in 4 weeks<span class="promo-sep">·</span>start free, no signup<span class="promo-sep">·</span>AI Product Management is live too<span class="promo-sep">·</span></span></div></a>
+<div class="shell">
+
+  <div class="topbar">
+    <div class="brand">Hustlers Fellowship<span class="dot">.</span></div>
+    <div class="social">
+      <a class="li-link" href="https://github.com/therohitji/ai-pm-2026" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.37.5 0 5.78 0 12.29c0 5.21 3.44 9.63 8.2 11.19.6.11.82-.25.82-.56 0-.28-.01-1.02-.02-2-3.34.71-4.04-1.58-4.04-1.58-.55-1.37-1.34-1.74-1.34-1.74-1.09-.73.08-.72.08-.72 1.2.08 1.84 1.21 1.84 1.21 1.07 1.8 2.81 1.28 3.5.98.11-.76.42-1.28.76-1.57-2.67-.3-5.47-1.31-5.47-5.84 0-1.29.47-2.34 1.24-3.17-.12-.3-.54-1.52.12-3.16 0 0 1.01-.32 3.3 1.21a11.6 11.6 0 0 1 3-.4c1.02 0 2.05.13 3 .4 2.29-1.53 3.3-1.21 3.3-1.21.66 1.64.24 2.86.12 3.16.77.83 1.24 1.88 1.24 3.17 0 4.54-2.81 5.53-5.49 5.83.43.37.81 1.1.81 2.22 0 1.6-.01 2.89-.01 3.28 0 .31.21.68.83.56A12.02 12.02 0 0 0 24 12.29C24 5.78 18.63.5 12 .5z"/></svg>
+        GitHub <span class="arr">↗</span>
+      </a>
+      <a class="li-link" href="https://www.linkedin.com/in/rohitswerashi/" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.35V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/></svg>
+        Rohit Swerashi <span class="arr">↗</span>
+      </a>
+    </div>
+  </div>
+
+  <header class="hero">
+    <div class="kicker">The Fellowship · by Rohit Swerashi, Founder of GeniOS</div>
+    <h1>The AI career, made practical.</h1>
+    <p class="sub">Build-first field guides, not theory, that turn into a real portfolio and a real job. New courses dropping through 2026.</p>
+    <p class="quote">Reading sharpens you; a shipped artifact gets you hired.</p>
+    <div class="follow-row">
+      <a class="fbtn fbtn-star" href="https://github.com/therohitji/ai-pm-2026" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true"><path d="M12 2l2.95 5.98 6.6.96-4.78 4.66 1.13 6.57L12 17.98l-5.9 3.1 1.13-6.57L2.45 8.94l6.6-.96L12 2z"/></svg>
+        Star on GitHub
+      </a>
+      <a class="fbtn" href="https://www.linkedin.com/in/rohitswerashi/" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.35V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/></svg>
+        Follow on LinkedIn
+      </a>
+    </div>
+  </header>
+
+  <div class="sec-label">Courses</div>
+
+  <div class="grid">
+
+    <div class="card live" onclick="location.href='/buildliveproducts'">
+      <div class="card-head">
+        <span class="tag now"><span class="pulse"></span>Available now</span>
+        <span class="freenote">Opens instantly · no signup</span>
+      </div>
+      <h2>Build Live Products</h2>
+      <div class="lede">Go from a raw problem to a live product with real users, in 4 weeks.</div>
+      <div class="wwh">
+        <div class="row"><span class="lab">What</span><span class="txt">The full 0 to 1 loop, from a raw problem to a live product with real users.</span></div>
+        <div class="row"><span class="lab">Why</span><span class="txt">You finish with something shipped and first real users, not a folder of notes.</span></div>
+        <div class="row"><span class="lab">How</span><span class="txt">Follow GeniOS through every step, then run the same rep on your own product.</span></div>
+      </div>
+      <div class="meta-row">
+        <span class="chip">16 chapters</span>
+        <span class="chip">63 lessons</span>
+        <span class="chip">10 real teardowns</span>
+        <span class="chip">Build with AI</span>
+        <span class="chip">2026 edition</span>
+      </div>
+      <div class="btn-row">
+        <a class="btn" href="/buildliveproducts">Start the course <span class="arr">→</span></a>
+        <a class="fbtn fbtn-star" onclick="event.stopPropagation()" href="https://github.com/therohitji/build-live-products" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M12 2l2.95 5.98 6.6.96-4.78 4.66 1.13 6.57L12 17.98l-5.9 3.1 1.13-6.57L2.45 8.94l6.6-.96L12 2z"/></svg>
+          Star on GitHub
+        </a>
+      </div>
+    </div>
+
+    <div class="card live" onclick="location.href='/aipm'">
+      <div class="card-head">
+        <span class="tag now"><span class="pulse"></span>Available now</span>
+        <span class="freenote">Opens instantly · no signup</span>
+      </div>
+      <h2>AI Product Management</h2>
+      <div class="lede">Become a hire-ready AI PM by building, not memorizing.</div>
+      <div class="wwh">
+        <div class="row"><span class="lab">What</span><span class="txt">The technical spine, the PM craft, and the get-hired playbook for AI roles.</span></div>
+        <div class="row"><span class="lab">Why</span><span class="txt">Interviews reward proof you can ship, so you leave with a portfolio artifact.</span></div>
+        <div class="row"><span class="lab">How</span><span class="txt">Every lesson ends with a rep you attempt yourself, the way a real AI PM works.</span></div>
+      </div>
+      <div class="meta-row">
+        <span class="chip">15 chapters</span>
+        <span class="chip">45 lessons</span>
+        <span class="chip">10 real teardowns</span>
+        <span class="chip">Apply-it-yourself reps</span>
+        <span class="chip">2026 edition</span>
+      </div>
+      <div class="btn-row">
+        <a class="btn" href="/aipm">Start the course <span class="arr">→</span></a>
+        <a class="fbtn fbtn-star" onclick="event.stopPropagation()" href="https://github.com/therohitji/ai-pm-2026" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M12 2l2.95 5.98 6.6.96-4.78 4.66 1.13 6.57L12 17.98l-5.9 3.1 1.13-6.57L2.45 8.94l6.6-.96L12 2z"/></svg>
+          Star on GitHub
+        </a>
+      </div>
+    </div>
+
+    <div class="card soon">
+      <div class="card-head"><span class="tag soon">Coming soon</span></div>
+      <h2>AI Program Manager</h2>
+      <div class="edition">2026</div>
+      <p>Run AI programs end to end: delivery, risk, evals as gates, and cross-team execution when the model keeps changing under you.</p>
+      <span class="soon-note">Dropping soon →</span>
+    </div>
+
+    <div class="card soon">
+      <div class="card-head"><span class="tag soon">Coming soon</span></div>
+      <h2>AI Full-Stack</h2>
+      <div class="edition">2026</div>
+      <p>Build and ship AI products end to end, from model and retrieval to the interface users actually touch.</p>
+      <span class="soon-note">Dropping soon →</span>
+    </div>
+
+  </div>
+
+  <p class="follow">New courses drop here through 2026; <a href="https://www.linkedin.com/in/rohitswerashi/" target="_blank" rel="noopener">follow Rohit on LinkedIn</a> to hear first.</p>
+
+  <footer>
+    <span>© 2026 <b>Hustlers Fellowship</b> · a Rohit Swerashi project</span>
+    <span><a href="https://www.linkedin.com/in/rohitswerashi/" target="_blank" rel="noopener">LinkedIn</a> · Built for builders · GeniOS</span>
+  </footer>
+
+</div>
+</body>
+</html>
