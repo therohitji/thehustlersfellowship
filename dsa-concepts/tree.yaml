@@ -504,10 +504,91 @@ milestones:
                     depends_on: [M4.C1.L-interface.V4.U01]
 
   - id: M5
-    name: The remaining 19 chapters
-    ships: the full 105-lesson course, every chapter matching the bar chapter 06 sets
+    name: Every chapter of the course
+    ships: all 20 chapters and 125 lessons, each matching the bar chapters 00, 01 and 06 set
     note: >
-      Units are deliberately not minted yet. Once chapter 06 is green and the owner has read it,
-      each remaining chapter becomes a category here with one unit per lesson and the same verify
-      shape, python3 verify/check_lesson.py N.M
-    categories: []
+      Units are minted one chapter at a time, as that chapter is written. Each lesson becomes a
+      unit with the same verify shape, python3 verify/check_lesson.py N.M, plus one integration
+      unit per chapter that is bash verify/qa.sh. Status below is refreshed from the build, not
+      maintained by hand.
+    categories:
+      - id: M5.C00
+        name: Ch00 Start Here
+        status: shipped. 3 lessons live, qa green.
+        layers: []
+      - id: M5.C01
+        name: Ch01 What a Data Structure Actually Is
+        status: shipped. 5 lessons live, qa green.
+        layers: []
+      - id: M5.C02
+        name: Ch02 The Cost of Doing Things
+        status: not started, 5 lessons planned.
+        layers: []
+      - id: M5.C03
+        name: Ch03 Arrays: The Row of Boxes
+        status: not started, 6 lessons planned.
+        layers: []
+      - id: M5.C04
+        name: Ch04 Linked Lists: The Chain
+        status: not started, 6 lessons planned.
+        layers: []
+      - id: M5.C05
+        name: Ch05 Stacks and Queues: Who Gets Served First
+        status: not started, 5 lessons planned.
+        layers: []
+      - id: M5.C06
+        name: Ch06 Searching: Finding One Thing
+        status: partial, 2 of 9 lessons live.
+        layers: []
+      - id: M5.C07
+        name: Ch07 Sorting: Putting Things in Order
+        status: not started, 8 lessons planned.
+        layers: []
+      - id: M5.C08
+        name: Ch08 Hashing: Finding Without Looking
+        status: not started, 6 lessons planned.
+        layers: []
+      - id: M5.C09
+        name: Ch09 Trees: Things That Branch
+        status: not started, 6 lessons planned.
+        layers: []
+      - id: M5.C10
+        name: Ch10 Binary Search Trees and Staying Balanced
+        status: not started, 6 lessons planned.
+        layers: []
+      - id: M5.C11
+        name: Ch11 Heaps and Priority Queues: Who Is Most Urgent
+        status: not started, 5 lessons planned.
+        layers: []
+      - id: M5.C12
+        name: Ch12 Graphs: Things Connected to Things
+        status: not started, 6 lessons planned.
+        layers: []
+      - id: M5.C13
+        name: Ch13 Getting Around a Graph: Traversal and Shortest Path
+        status: not started, 7 lessons planned.
+        layers: []
+      - id: M5.C14
+        name: Ch14 Recursion and Divide and Conquer
+        status: not started, 6 lessons planned.
+        layers: []
+      - id: M5.C15
+        name: Ch15 The Three Styles: Greedy, Dynamic Programming, Backtracking
+        status: not started, 7 lessons planned.
+        layers: []
+      - id: M5.C16
+        name: Ch16 Strings and Pattern Matching
+        status: not started, 6 lessons planned.
+        layers: []
+      - id: M5.C17
+        name: Ch17 Modern Structures: Tries, Bloom Filters, LRU, Union-Find, Vector Indexes
+        status: not started, 7 lessons planned.
+        layers: []
+      - id: M5.C18
+        name: Ch18 The Method: Reading a Problem You Have Never Seen
+        status: not started, 5 lessons planned.
+        layers: []
+      - id: M5.C19
+        name: Ch19 The Real-World Lab: 10 Systems Torn Down
+        status: not started, 11 lessons planned.
+        layers: []
