@@ -76,6 +76,17 @@ const ANIM_FIXTURES = {
   'array-scan:badge': { type: 'array-scan', data: [1, 2, 3], steps: [{ look: [0], badge: '12 boxes' }, { found: [2], badge: '12 million boxes' }] },
   'array-scan:bad-state': { type: 'array-scan', data: [1, 2, 3, 4],
     steps: [{ look: [0] }, { bad: [3], dead: [0, 1] }, { bad: [0, 1, 2, 3] }] },
+  grid: { rows: 3, cols: 6, flatRow: true, rowLabels: ['row 0', 'row 1', 'row 2'], colLabels: ['0','1','2','3','4','5'],
+    steps: [{ look: [[1, 3]], badge: 'row 1, column 3' },
+            { row: 1, look: [[1, 3]] },
+            { found: [[1, 3]], seen: [[0, 0]], dead: [[2, 5]], bad: [[2, 0]], badge: '1 times 6 plus 3 is 9' }] },
+  'grid:no-flat': { type: 'grid', rows: 4, cols: 4, data: [[1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,16]],
+    steps: [{ col: 2 }, { found: [[3, 3]] }] },
+  'array-scan:shift-capacity': { type: 'array-scan', data: [1, 2, 3, 4], capacity: 8, big: true,
+    steps: [{ look: [0], capacity: 8 },
+            { shift: { from: 1, by: 1 }, seen: [1, 2, 3], capacity: 8, badge: 'making a gap' },
+            { shift: { from: 1, by: 1 }, found: [1], capacity: 8 },
+            { capacity: 8, found: [0, 1, 2, 3] }] },
   reveal: { viz: { nodes: NODES2, edges: EDGE2 }, steps: [{ show: ['a'], look: ['a'] }, { show: ['a', 'b'], found: ['b'] }] },
 };
 

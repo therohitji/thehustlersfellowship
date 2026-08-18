@@ -133,7 +133,7 @@ attribute, which keeps content files safe and lets one engine serve all 125 less
 **17 diagram types:** `scene` `arch` `component` `flow` `dtree` `seq` `state` `swim` `journey`
 `uflow` `ia` `net` `kgraph` `erd` `wire` `card` `curve`
 
-**7 animation types:** `array-scan` `race` `tree-walk` `graph-walk` `vector` `curve` `reveal`
+**8 animation types:** `array-scan` `race` `grid` `tree-walk` `graph-walk` `vector` `curve` `reveal`
 
 `reveal` is the interesting one: it takes any grid diagram and draws it into existence one node
 at a time. Rule of thumb: if a picture explains a *result*, use `data-viz`. If it explains a
