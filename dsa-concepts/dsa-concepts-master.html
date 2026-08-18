@@ -1,0 +1,2363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DSA Concepts 2026 - Rohit Swerashi</title>
+<meta name="description" content="Data structures and algorithms, made visible. A visual-first course by Rohit Swerashi.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --font-ui:'Hanken Grotesk',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    --font-body:'Hanken Grotesk',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    --font-serif:'Newsreader','Iowan Old Style',Georgia,serif;
+    --font-mono:'JetBrains Mono',ui-monospace,Consolas,monospace;
+
+    --paper:#ffffff;
+    --paper-soft:#f6f9f7;
+    --board:#fbfdfc;
+
+    --green-950:#04211a; --green-900:#062e24; --green-800:#0a4234;
+    --green-700:#0d5a45; --green-600:#12785d; --green-500:#19a077;
+    --green-050:#eaf5f0;
+
+    --gold-500:#f0b429; --gold-600:#c98a06; --gold-050:#fdf5e0;
+
+    --ink:#0f1a16; --ink-soft:#43524c; --ink-mute:#7e8b86;
+    --line:rgba(6,40,32,0.10); --line-strong:rgba(6,40,32,0.20);
+
+    --warn:#b45309; --warn-050:#fff5e9;
+    --bad:#b3261e;  --bad-050:#fdf0ef;
+    --grey:#9aa5a1; --grey-050:#f1f3f2;
+
+    --rail-w:300px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--paper);color:var(--ink);font-family:var(--font-body);font-size:17px;line-height:1.65;}
+
+  /* ============================== RAIL ============================== */
+  .rail{position:fixed;inset:0 auto 0 0;width:var(--rail-w);overflow-y:auto;z-index:40;
+    background:linear-gradient(180deg,var(--green-900) 0%,var(--green-950) 100%);color:#dcece5;
+    border-right:1px solid rgba(0,0,0,.3);}
+  .rail::-webkit-scrollbar{width:8px;} .rail::-webkit-scrollbar-thumb{background:rgba(255,255,255,.14);border-radius:8px;}
+  .rail-brand{padding:26px 22px 18px;border-bottom:1px solid rgba(255,255,255,.09);}
+  .rail-brand .kicker{font-size:10.5px;font-weight:700;letter-spacing:.17em;text-transform:uppercase;color:var(--gold-500);}
+  .rail-brand h1{font-family:var(--font-ui);font-size:24px;font-weight:800;letter-spacing:-.025em;margin:8px 0 5px;color:#fff;line-height:1.1;}
+  .rail-brand .by{font-size:12.5px;color:rgba(220,236,229,.62);font-weight:500;}
+  .rail-progress{padding:15px 22px 17px;font-size:11px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:rgba(220,236,229,.55);border-bottom:1px solid rgba(255,255,255,.09);}
+  .pbar{height:5px;border-radius:99px;background:rgba(255,255,255,.13);margin-top:9px;overflow:hidden;}
+  .pbar i{display:block;height:100%;width:4%;background:linear-gradient(90deg,var(--green-500),var(--gold-500));border-radius:99px;}
+
+  .chap{border-bottom:1px solid rgba(255,255,255,.06);}
+  .chap-head{display:flex;align-items:center;gap:9px;padding:12px 22px;cursor:pointer;font-size:13.5px;font-weight:600;transition:background .14s;}
+  .chap-head:hover{background:rgba(255,255,255,.05);}
+  .chap-head .tw{font-size:8px;color:rgba(220,236,229,.4);transition:transform .18s;flex:none;}
+  .chap.open .chap-head .tw{transform:rotate(90deg);}
+  .chap-head .cnum{font-family:var(--font-mono);font-size:10.5px;color:var(--gold-500);flex:none;}
+  .chap-head .ctitle{flex:1;line-height:1.35;color:#eaf5f0;}
+  .chap-head.locked .ctitle{color:rgba(220,236,229,.42);}
+  .chap-head .lock,.chap-head .done{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 7px;border-radius:99px;flex:none;}
+  .chap-head .lock{color:rgba(220,236,229,.5);background:rgba(255,255,255,.07);}
+  .chap-head .done{color:var(--green-950);background:var(--gold-500);}
+  .lessons{display:none;padding:2px 0 10px;}
+  .chap.open .lessons{display:block;}
+  .les{display:flex;align-items:flex-start;gap:9px;padding:8px 22px 8px 40px;font-size:12.5px;line-height:1.45;cursor:pointer;color:rgba(220,236,229,.78);transition:background .14s,color .14s;border-left:2px solid transparent;}
+  .les:hover{background:rgba(255,255,255,.05);color:#fff;}
+  .les.active{background:rgba(240,180,41,.12);border-left-color:var(--gold-500);color:#fff;font-weight:600;}
+  .les.soon{color:rgba(220,236,229,.38);cursor:default;}
+  .les.soon:hover{background:none;color:rgba(220,236,229,.38);}
+  .les .lnum{font-family:var(--font-mono);font-size:10px;color:rgba(240,180,41,.7);flex:none;padding-top:2px;min-width:26px;}
+  .les .tag{margin-left:auto;font-size:8.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:rgba(220,236,229,.35);flex:none;padding-top:2px;}
+  .les.active .tag{color:var(--gold-500);}
+
+  .scrim{display:none;position:fixed;inset:0;background:rgba(4,33,26,.5);z-index:35;}
+  .scrim.open{display:block;}
+
+  /* ============================== MAIN ============================== */
+  .main{margin-left:var(--rail-w);min-height:100vh;}
+  .topbar{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.92);backdrop-filter:saturate(180%) blur(14px);
+    border-bottom:1px solid var(--line);display:flex;align-items:center;gap:14px;padding:0 40px;height:52px;}
+  .menu-btn{display:none;background:none;border:1px solid var(--line-strong);border-radius:9px;padding:5px 10px;font-size:15px;cursor:pointer;color:var(--ink);}
+  .crumb{font-size:12.5px;color:var(--ink-mute);font-weight:500;letter-spacing:.01em;}
+  .crumb b{color:var(--ink);font-weight:700;}
+
+  .wrap{max-width:760px;margin:0 auto;padding:54px 40px 150px;}
+
+  /* ---------- lesson header ---------- */
+  .les-kicker{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--green-600);}
+  .les-title{font-family:var(--font-ui);font-size:43px;font-weight:800;letter-spacing:-.032em;line-height:1.07;margin:13px 0 0;}
+  .les-meta{display:flex;flex-wrap:wrap;gap:7px;margin-top:17px;}
+  .pill{font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:5px 10px;border-radius:99px;background:var(--green-050);color:var(--green-700);}
+  .pill.gold{background:var(--gold-050);color:var(--gold-600);}
+  .motto{font-family:var(--font-serif);font-style:italic;font-size:21px;line-height:1.5;color:var(--ink-soft);
+    border-left:3px solid var(--gold-500);padding:4px 0 4px 20px;margin:26px 0 0;}
+  .lead{font-size:18.5px;line-height:1.62;color:var(--ink-soft);margin-top:22px;}
+
+  /* ---------- block headers ---------- */
+  .wrap h2{font-family:var(--font-ui);font-size:26px;font-weight:800;letter-spacing:-.022em;line-height:1.2;
+    margin:56px 0 0;display:flex;align-items:center;gap:12px;}
+  .wrap h2 .ix{flex:none;width:30px;height:30px;border-radius:9px;background:var(--green-700);color:#fff;
+    font-size:14px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;letter-spacing:0;}
+  .wrap h2 .ix.gold{background:var(--gold-500);color:var(--green-950);}
+  .wrap .sub{font-size:15px;color:var(--ink-mute);margin:9px 0 0 42px;font-weight:500;}
+  .wrap h3{font-family:var(--font-ui);font-size:19px;font-weight:700;letter-spacing:-.012em;margin:34px 0 0;color:var(--ink);}
+  .wrap p{margin-top:16px;color:var(--ink-soft);}
+  .wrap p strong{color:var(--ink);font-weight:700;}
+  .wrap ul,.wrap ol{margin:16px 0 0 22px;color:var(--ink-soft);}
+  .wrap li{margin-top:8px;}
+  .wrap em.k{font-style:normal;background:var(--green-050);color:var(--green-700);padding:1px 7px;border-radius:6px;
+    font-size:.93em;font-weight:600;}
+  .wrap em.g{font-style:normal;background:var(--gold-050);color:var(--gold-600);padding:1px 7px;border-radius:6px;
+    font-size:.93em;font-weight:600;}
+
+  /* ---------- callouts ---------- */
+  .callout{border:1px solid var(--line);border-left:3px solid var(--green-700);border-radius:12px;
+    padding:20px 22px;margin:26px 0 0;background:var(--paper-soft);}
+  .callout .ch{font-size:10.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--green-700);margin-bottom:9px;}
+  .callout p{margin-top:0;} .callout p + p{margin-top:12px;}
+  .callout.warn{background:var(--warn-050);border-left-color:var(--warn);} .callout.warn .ch{color:var(--warn);}
+  .callout.good{background:var(--green-050);border-left-color:var(--green-600);} .callout.good .ch{color:var(--green-700);}
+  .callout.accent{background:var(--gold-050);border-left-color:var(--gold-500);} .callout.accent .ch{color:var(--gold-600);}
+  .callout.bad{background:var(--bad-050);border-left-color:var(--bad);} .callout.bad .ch{color:var(--bad);}
+
+  /* ---------- tables ---------- */
+  .wrap table{width:100%;border-collapse:collapse;margin:26px 0 0;font-size:14.5px;}
+  .wrap th{text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--ink-mute);padding:0 14px 10px 0;border-bottom:1px solid var(--line-strong);}
+  .wrap td{padding:12px 14px 12px 0;border-bottom:1px solid var(--line);color:var(--ink-soft);vertical-align:top;line-height:1.5;}
+  .wrap td strong{color:var(--ink);}
+  .wrap tr:last-child td{border-bottom:none;}
+  .tbl-wrap{overflow-x:auto;margin:26px 0 0;}
+  .tbl-wrap table{margin:0;min-width:520px;}
+  .tbl-cap{font-size:12.5px;color:var(--ink-mute);margin-top:10px;font-style:italic;}
+
+  /* ---------- flow strip (mono) ---------- */
+  .flow{font-family:var(--font-mono);font-size:12px;background:var(--green-950);color:#cfe3da;border-radius:13px;
+    padding:22px 24px;margin:26px 0 0;line-height:1.85;overflow-x:auto;}
+  .flow .st{color:var(--green-500);font-weight:500;}
+  .flow .nt{color:var(--gold-500);}
+  .flow .ar{color:rgba(207,227,218,.45);}
+
+  /* ---------- quiz ---------- */
+  .quiz{border:1px solid var(--line);border-radius:14px;padding:22px;margin:24px 0 0;background:var(--paper-soft);}
+  .quiz .q{font-weight:700;color:var(--ink);font-size:16px;line-height:1.45;}
+  .opt{border:1px solid var(--line-strong);border-radius:10px;padding:11px 15px;margin-top:10px;cursor:pointer;
+    font-size:14.5px;color:var(--ink-soft);background:#fff;transition:.14s;}
+  .opt:hover{border-color:var(--green-600);color:var(--ink);}
+  .opt.right{border-color:var(--green-600);background:var(--green-050);color:var(--green-700);font-weight:600;}
+  .opt.wrong{border-color:var(--bad);background:var(--bad-050);color:var(--bad);}
+  .qexp{display:none;margin-top:14px;font-size:14px;color:var(--ink-soft);border-top:1px dashed var(--line-strong);padding-top:13px;}
+  .qexp.show{display:block;}
+
+  /* ---------- footer nav ---------- */
+  .footer-nav{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:64px;padding-top:30px;border-top:1px solid var(--line);}
+  .fnav{border:1px solid var(--line);border-radius:13px;padding:16px 18px;cursor:pointer;transition:.15s;background:#fff;}
+  .fnav:hover{border-color:var(--green-600);box-shadow:0 10px 26px rgba(13,90,69,.10);transform:translateY(-2px);}
+  .fnav .d{font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-mute);}
+  .fnav .t{font-size:14.5px;font-weight:600;color:var(--ink);margin-top:6px;line-height:1.35;}
+  .fnav.next{text-align:right;}
+  .fnav.ghost{border:none;background:none;cursor:default;}
+  .fnav.ghost:hover{transform:none;box-shadow:none;}
+
+  /* ---------- soon screen ---------- */
+  .soon-wrap{max-width:760px;margin:0 auto;padding:90px 40px 150px;}
+  .soon-wrap .big{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-600);}
+  .soon-wrap h2{font-family:var(--font-ui);font-size:38px;font-weight:800;letter-spacing:-.03em;margin:12px 0 18px;line-height:1.1;display:block;}
+  .scope{border:1px solid var(--line);border-radius:13px;padding:22px;margin-top:26px;background:var(--paper-soft);}
+  .scope .ch{font-size:10.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--green-700);margin-bottom:11px;}
+  .scope ul{margin:0 0 0 20px;color:var(--ink-soft);font-size:15px;}
+
+  /* ============================== VISUALS ============================== */
+  /* diagram card */
+  .viz{margin:30px 0 0;border:1px solid var(--line);border-radius:16px;background:#fff;overflow:hidden;}
+  .viz-head{padding:15px 20px 0;}
+  .viz-kind{font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-600);}
+  .viz-title{font-family:var(--font-ui);font-size:15.5px;font-weight:700;color:var(--ink);margin-top:5px;line-height:1.35;}
+  .viz-body{padding:16px 20px 4px;overflow-x:auto;}
+  .viz-body svg{display:block;max-width:100%;height:auto;margin:0 auto;}
+  .viz-cap{padding:0 20px 16px;font-size:13px;color:var(--ink-mute);line-height:1.5;}
+  .viz-legend{display:flex;flex-wrap:wrap;gap:8px 16px;padding:0 20px 16px;}
+  .viz-legend span{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:var(--ink-soft);font-weight:500;}
+  .viz-legend i{width:11px;height:11px;border-radius:3px;display:inline-block;flex:none;}
+
+  /* whiteboard */
+  .board{scroll-margin-top:74px;margin:32px 0 0;border:1px solid var(--line-strong);border-radius:18px;background:var(--board);overflow:hidden;
+    box-shadow:0 1px 0 rgba(6,40,32,.03),0 18px 40px -28px rgba(6,40,32,.30);}
+  .board-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;padding:17px 22px 0;}
+  .board-head .bk{font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--green-600);}
+  .board-head .bt{font-family:var(--font-ui);font-size:16.5px;font-weight:700;color:var(--ink);margin-top:5px;line-height:1.3;}
+  .board-canvas{position:relative;padding:20px 22px 8px;overflow-x:auto;}
+  .board-canvas svg{display:block;max-width:100%;height:auto;margin:0 auto;}
+  .board-grid{position:absolute;inset:0;pointer-events:none;opacity:.5;
+    background-image:linear-gradient(rgba(6,40,32,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(6,40,32,.045) 1px,transparent 1px);
+    background-size:26px 26px;}
+  .anim-caption{margin:2px 22px 0;min-height:46px;font-size:15px;line-height:1.5;color:var(--ink);font-weight:500;
+    background:#fff;border:1px solid var(--line);border-left:3px solid var(--gold-500);border-radius:10px;padding:11px 15px;}
+  .anim-caption b{color:var(--green-700);}
+  .anim-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:14px 22px 18px;}
+  .anim-btn{border:1px solid var(--line-strong);background:#fff;border-radius:9px;height:32px;min-width:34px;padding:0 10px;
+    font-size:13px;font-weight:600;color:var(--ink-soft);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;
+    gap:6px;transition:.14s;font-family:var(--font-ui);}
+  .anim-btn:hover{border-color:var(--green-600);color:var(--green-700);}
+  .anim-btn.primary{background:var(--green-700);border-color:var(--green-700);color:#fff;padding:0 15px;}
+  .anim-btn.primary:hover{background:var(--green-600);border-color:var(--green-600);color:#fff;}
+  .anim-btn:disabled{opacity:.38;cursor:default;}
+  .anim-dots{display:flex;gap:5px;margin-left:auto;flex-wrap:wrap;}
+  .anim-dots i{width:7px;height:7px;border-radius:99px;background:var(--line-strong);display:block;cursor:pointer;transition:.14s;}
+  .anim-dots i.on{background:var(--green-600);} .anim-dots i.now{background:var(--gold-500);transform:scale(1.5);}
+  .anim-step{font-family:var(--font-mono);font-size:11px;color:var(--ink-mute);}
+
+  /* ---------- reel: the full width whiteboard lesson ---------- */
+  .reel{scroll-margin-top:74px;position:relative;left:50%;transform:translateX(-50%);
+    width:min(1180px, calc(100vw - var(--rail-w) - 56px));
+    margin:36px 0 0;border:1px solid var(--line-strong);border-radius:22px;background:var(--board);
+    overflow:hidden;box-shadow:0 1px 0 rgba(6,40,32,.03),0 26px 60px -34px rgba(6,40,32,.34);}
+  .reel-head{padding:20px 26px 0;}
+  .reel-head .rk{font-size:9.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--green-600);}
+  .reel-head .rt{font-family:var(--font-ui);font-size:21px;font-weight:800;letter-spacing:-.02em;color:var(--ink);margin-top:6px;line-height:1.2;}
+  .reel-acts{display:flex;gap:7px;flex-wrap:wrap;align-items:center;padding:16px 26px 0;}
+  .reel-part{width:100%;font-size:9.5px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;
+    color:var(--ink-mute);margin:10px 0 -2px;display:flex;align-items:center;gap:10px;}
+  .reel-part:first-child{margin-top:0;}
+  .reel-part::after{content:"";flex:1;height:1px;background:var(--line);}
+  .reel-acts button{border:1px solid var(--line-strong);background:#fff;border-radius:99px;padding:6px 13px;
+    font-family:var(--font-ui);font-size:11.5px;font-weight:600;color:var(--ink-mute);cursor:pointer;transition:.14s;}
+  .reel-acts button:hover{border-color:var(--green-600);color:var(--green-700);}
+  .reel-acts button.done{color:var(--green-700);border-color:var(--green-050);background:var(--green-050);}
+  .reel-acts button.on{background:var(--green-700);border-color:var(--green-700);color:#fff;}
+  .reel-stage{position:relative;padding:22px 26px 6px;min-height:330px;display:flex;align-items:center;justify-content:center;overflow-x:auto;}
+  .reel-stage svg{display:block;max-width:100%;height:auto;}
+  .reel-act-title{padding:16px 26px 0;font-family:var(--font-ui);font-size:15px;font-weight:700;color:var(--green-700);}
+  .reel .anim-caption{margin:10px 26px 0;font-size:16px;min-height:52px;}
+  .reel .anim-bar{padding:16px 26px 22px;}
+  .reel .viz-legend{padding:14px 26px 0;}
+  @media(max-width:1000px){
+    .reel{width:calc(100vw - 26px);border-radius:16px;}
+    .reel-stage{padding:16px 14px 6px;min-height:240px;}
+    .reel-head,.reel-acts,.reel-act-title{padding-left:16px;padding-right:16px;}
+    .reel .anim-caption,.reel .anim-bar{margin-left:16px;margin-right:16px;padding-left:0;padding-right:0;}
+  }
+
+  /* animated svg states */
+  .cell rect{transition:fill .28s,stroke .28s,opacity .28s;}
+  .cell text{transition:fill .28s,opacity .28s;}
+  @keyframes pulseGold{0%{transform:scale(1)}50%{transform:scale(1.055)}100%{transform:scale(1)}}
+  @keyframes popGreen{0%{transform:scale(1)}40%{transform:scale(1.13)}100%{transform:scale(1)}}
+  .cell.look{animation:pulseGold .5s ease-in-out;transform-box:fill-box;transform-origin:center;}
+  .cell.found{animation:popGreen .5s ease-out;transform-box:fill-box;transform-origin:center;}
+  @media(prefers-reduced-motion:reduce){
+    .cell rect,.cell text{transition:none;}
+    .cell.look,.cell.found{animation:none;}
+    html{scroll-behavior:auto;}
+  }
+
+  /* ============================== RESPONSIVE ============================== */
+  @media(max-width:1000px){
+    .rail{transform:translateX(-100%);transition:transform .24s;}
+    .rail.open{transform:translateX(0);}
+    .main{margin-left:0;}
+    .menu-btn{display:inline-flex;}
+    .topbar{padding:0 18px;}
+    .wrap{padding:38px 20px 120px;}
+    .soon-wrap{padding:60px 20px 120px;}
+    .les-title{font-size:32px;}
+    .wrap h2{font-size:22px;}
+    .footer-nav{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+<nav class="rail" id="rail">
+  <div class="rail-brand">
+    <div class="kicker">The Course</div>
+    <h1>DSA Concepts</h1>
+    <div class="by">by Rohit Swerashi · 2026 edition</div>
+  </div>
+  <div class="rail-progress">Your progress
+    <div class="pbar"><i></i></div>
+  </div>
+  <div id="nav"></div>
+</nav>
+<div class="scrim" id="scrim"></div>
+
+<div class="main">
+  <div class="topbar">
+    <button class="menu-btn" id="menuBtn">☰</button>
+    <div class="crumb" id="crumb"></div>
+  </div>
+  <div id="view"></div>
+</div>
+
+<script>
+/* ==================================================================
+   DSA Concepts - runtime
+   Three engines live here:
+     1. the reader  (sidebar, lesson loading, quizzes)
+     2. VIZ         (static diagrams, grid layout, collision free by construction)
+     3. ANIM        (whiteboard animations, step player)
+   Chapter files never contain script. They declare JSON on data-viz / data-anim.
+   ================================================================== */
+
+/* ============================ COURSE MAP ============================ */
+const COURSE = [
+  { n:"00", title:"Start Here", open:true, lessons:[
+      {id:"0.1", t:"What This Course Is, and Who It Is For", state:"live"},
+      {id:"0.2", t:"How To Read It: Watch First, Read Second", state:"live"},
+      {id:"0.3", t:"The Whiteboard: The Whole Course in One Run", state:"live"}
+  ]},
+  { n:"01", title:"What a Data Structure Actually Is", locked:true, lessons:[
+      {id:"1.1", t:"Everything Is Boxes and Labels: How a Computer Holds a Thing", state:"soon"},
+      {id:"1.2", t:"The Two Real Choices: Keep It Together, or Keep It Linked", state:"soon"},
+      {id:"1.3", t:"What an Algorithm Actually Is: A Recipe With a Guarantee", state:"soon"},
+      {id:"1.4", t:"The Trade That Never Goes Away: Time, Space and Order", state:"soon"},
+      {id:"1.5", t:"The Whiteboard: How a Computer Holds a Thing", state:"soon"}
+  ]},
+  { n:"02", title:"The Cost of Doing Things", locked:true, lessons:[
+      {id:"2.1", t:"Counting Steps Without Any Maths", state:"soon"},
+      {id:"2.2", t:"The Seven Shapes of Growth You Will Ever Meet", state:"soon"},
+      {id:"2.3", t:"Best, Average and Worst: Which One Actually Bites You", state:"soon"},
+      {id:"2.4", t:"Space Costs Too, and When To Trade It For Time", state:"soon"},
+      {id:"2.5", t:"The Whiteboard: Watch Cost Grow", state:"soon"}
+  ]},
+  { n:"03", title:"Arrays: The Row of Boxes", locked:true, lessons:[
+      {id:"3.1", t:"The Row of Boxes: Why Position Is Instant", state:"soon"},
+      {id:"3.2", t:"Insert and Delete: The Shuffle Nobody Warns You About", state:"soon"},
+      {id:"3.3", t:"Growing an Array: The Doubling Trick", state:"soon"},
+      {id:"3.4", t:"Grids and 2D Arrays: Maps, Screens and Spreadsheets", state:"soon"},
+      {id:"3.5", t:"Where Arrays Show Up, and the Problems They Create", state:"soon"},
+      {id:"3.6", t:"The Whiteboard: Arrays, Every Operation Animated", state:"soon"}
+  ]},
+  { n:"04", title:"Linked Lists: The Chain", locked:true, lessons:[
+      {id:"4.1", t:"The Chain: Each Box Knows Only the Next One", state:"soon"},
+      {id:"4.2", t:"Insert and Delete: Where the Chain Wins", state:"soon"},
+      {id:"4.3", t:"Singly, Doubly and Circular", state:"soon"},
+      {id:"4.4", t:"The Two-Pointer Trick: Finding the Middle and the Loop", state:"soon"},
+      {id:"4.5", t:"Where Chains Show Up: Undo, Playlists, Browser History", state:"soon"},
+      {id:"4.6", t:"The Whiteboard: The Chain, Rewired Step by Step", state:"soon"}
+  ]},
+  { n:"05", title:"Stacks and Queues: Who Gets Served First", locked:true, lessons:[
+      {id:"5.1", t:"Stack: Last In, First Out, Like a Pile of Plates", state:"soon"},
+      {id:"5.2", t:"Queue: First In, First Out, Like a Ticket Line", state:"soon"},
+      {id:"5.3", t:"Deque, Circular Queue and the Priority Twist", state:"soon"},
+      {id:"5.4", t:"Where Order of Service Decides Everything", state:"soon"},
+      {id:"5.5", t:"The Whiteboard: Plates and Ticket Lines", state:"soon"}
+  ]},
+  { n:"06", title:"Searching: Finding One Thing", lessons:[
+      {id:"6.1", t:"What Searching Really Is, and the One Question That Decides Everything", state:"live"},
+      {id:"6.2", t:"Linear Search: Check Every Box", state:"soon"},
+      {id:"6.3", t:"Binary Search: Halve the Haystack", state:"soon"},
+      {id:"6.4", t:"The Search Family: Jump, Exponential, Interpolation, Ternary", state:"soon"},
+      {id:"6.5", t:"Searching Structured Data: Trees, Tries and Database Indexes", state:"soon"},
+      {id:"6.6", t:"Searching by Meaning: Vector Search, ANN and RAG", state:"soon"},
+      {id:"6.7", t:"How Search Problems Show Up: Reading the Disguise", state:"soon"},
+      {id:"6.8", t:"Choose Your Search: The Decision Flowchart and Six Systems Torn Down", state:"soon"},
+      {id:"6.9", t:"The Whiteboard: All of Searching in One Run", state:"live"}
+  ]},
+  { n:"07", title:"Sorting: Putting Things in Order", locked:true, lessons:[
+      {id:"7.1", t:"Why Sort At All: The Question Searching Asked", state:"soon"},
+      {id:"7.2", t:"The Simple Three: Bubble, Selection, Insertion", state:"soon"},
+      {id:"7.3", t:"Merge Sort: Split, Sort, Stitch", state:"soon"},
+      {id:"7.4", t:"Quick Sort: Pick a Pivot and Partition", state:"soon"},
+      {id:"7.5", t:"Heap Sort, Counting Sort and Radix Sort", state:"soon"},
+      {id:"7.6", t:"Stability, In-Place, and Why Real Systems Use Hybrids", state:"soon"},
+      {id:"7.7", t:"How Sorting Problems Show Up, and Six Systems Torn Down", state:"soon"},
+      {id:"7.8", t:"The Whiteboard: Every Sort, Racing Side by Side", state:"soon"}
+  ]},
+  { n:"08", title:"Hashing: Finding Without Looking", locked:true, lessons:[
+      {id:"8.1", t:"The Instant Answer: Turning a Key Into an Address", state:"soon"},
+      {id:"8.2", t:"Collisions: When Two Keys Want the Same Box", state:"soon"},
+      {id:"8.3", t:"Load Factor and Resizing: Why It Stays Fast", state:"soon"},
+      {id:"8.4", t:"Sets, Maps, Caches and Deduplication", state:"soon"},
+      {id:"8.5", t:"How Hashing Problems Show Up, and Where It Runs in Production", state:"soon"},
+      {id:"8.6", t:"The Whiteboard: Keys Falling Into Buckets", state:"soon"}
+  ]},
+  { n:"09", title:"Trees: Things That Branch", locked:true, lessons:[
+      {id:"9.1", t:"Branching: Parents, Children, and Why Depth Matters", state:"soon"},
+      {id:"9.2", t:"Binary Trees and the Three Walks", state:"soon"},
+      {id:"9.3", t:"Level Order: Reading a Tree Row by Row", state:"soon"},
+      {id:"9.4", t:"Height, Depth and Balance: The Numbers That Decide Speed", state:"soon"},
+      {id:"9.5", t:"Where Trees Show Up: Folders, Web Pages, Org Charts, File Systems", state:"soon"},
+      {id:"9.6", t:"The Whiteboard: Walking a Tree Three Ways", state:"soon"}
+  ]},
+  { n:"10", title:"Binary Search Trees and Staying Balanced", locked:true, lessons:[
+      {id:"10.1", t:"The Binary Search Tree: Order You Can Walk", state:"soon"},
+      {id:"10.2", t:"Insert, Search, Delete, and the Three Delete Cases", state:"soon"},
+      {id:"10.3", t:"When a Search Tree Quietly Becomes a List", state:"soon"},
+      {id:"10.4", t:"Staying Balanced: AVL and Red-Black, Without the Maths", state:"soon"},
+      {id:"10.5", t:"B-Trees: How a Database Index Actually Works", state:"soon"},
+      {id:"10.6", t:"The Whiteboard: A Search Tree Growing and Rebalancing", state:"soon"}
+  ]},
+  { n:"11", title:"Heaps and Priority Queues: Who Is Most Urgent", locked:true, lessons:[
+      {id:"11.1", t:"The Emergency Room: Most Urgent First", state:"soon"},
+      {id:"11.2", t:"The Heap: A Tree Hiding Inside an Array", state:"soon"},
+      {id:"11.3", t:"Push, Pop and Heapify", state:"soon"},
+      {id:"11.4", t:"Top-K, Schedulers, and the Median of a Stream", state:"soon"},
+      {id:"11.5", t:"The Whiteboard: The Heap Bubbling Up and Down", state:"soon"}
+  ]},
+  { n:"12", title:"Graphs: Things Connected to Things", locked:true, lessons:[
+      {id:"12.1", t:"Things Connected to Things", state:"soon"},
+      {id:"12.2", t:"Directed, Weighted, Cyclic: The Four Words That Change Everything", state:"soon"},
+      {id:"12.3", t:"Storing a Graph: Matrix Versus List", state:"soon"},
+      {id:"12.4", t:"Degrees, Paths, Components, and Why They Matter", state:"soon"},
+      {id:"12.5", t:"Where Graphs Show Up: Maps, Social, Payments, Dependencies", state:"soon"},
+      {id:"12.6", t:"The Whiteboard: A Graph, Drawn Into Existence", state:"soon"}
+  ]},
+  { n:"13", title:"Getting Around a Graph: Traversal and Shortest Path", locked:true, lessons:[
+      {id:"13.1", t:"Breadth First: Ripples in a Pond", state:"soon"},
+      {id:"13.2", t:"Depth First: Down the Rabbit Hole", state:"soon"},
+      {id:"13.3", t:"Shortest Path When Every Step Costs the Same", state:"soon"},
+      {id:"13.4", t:"Dijkstra: When Steps Cost Different Amounts", state:"soon"},
+      {id:"13.5", t:"Topological Sort and Cycle Detection", state:"soon"},
+      {id:"13.6", t:"Minimum Spanning Trees, and Six Systems Torn Down", state:"soon"},
+      {id:"13.7", t:"The Whiteboard: BFS, DFS and Dijkstra Side by Side", state:"soon"}
+  ]},
+  { n:"14", title:"Recursion and Divide and Conquer", locked:true, lessons:[
+      {id:"14.1", t:"A Function That Calls Itself, Explained With Mirrors", state:"soon"},
+      {id:"14.2", t:"The Call Stack: Where Recursion Actually Lives", state:"soon"},
+      {id:"14.3", t:"Base Case, Progress, and the Infinite Loop Trap", state:"soon"},
+      {id:"14.4", t:"Divide and Conquer: Break It, Solve It, Join It", state:"soon"},
+      {id:"14.5", t:"Recursion Versus Iteration: When Each Wins", state:"soon"},
+      {id:"14.6", t:"The Whiteboard: The Call Stack, Piling and Unwinding", state:"soon"}
+  ]},
+  { n:"15", title:"The Three Styles: Greedy, Dynamic Programming, Backtracking", locked:true, lessons:[
+      {id:"15.1", t:"The Three Styles, Side by Side", state:"soon"},
+      {id:"15.2", t:"Greedy: Take the Best Bite Now", state:"soon"},
+      {id:"15.3", t:"When Greedy Lies, and How To Catch It", state:"soon"},
+      {id:"15.4", t:"Dynamic Programming: Stop Solving the Same Thing Twice", state:"soon"},
+      {id:"15.5", t:"Memoisation Versus Tabulation", state:"soon"},
+      {id:"15.6", t:"Backtracking: Try, Fail, Undo, Try Again", state:"soon"},
+      {id:"15.7", t:"The Whiteboard: Greedy, DP and Backtracking on One Problem", state:"soon"}
+  ]},
+  { n:"16", title:"Strings and Pattern Matching", locked:true, lessons:[
+      {id:"16.1", t:"A String Is Just an Array With Rules", state:"soon"},
+      {id:"16.2", t:"Naive Matching, and Why It Gets Slow", state:"soon"},
+      {id:"16.3", t:"KMP and Rabin-Karp, Without the Maths", state:"soon"},
+      {id:"16.4", t:"Tries: The Structure Behind Autocomplete", state:"soon"},
+      {id:"16.5", t:"Tokens, Fuzzy Match and Search Relevance", state:"soon"},
+      {id:"16.6", t:"The Whiteboard: Matching a Pattern, Character by Character", state:"soon"}
+  ]},
+  { n:"17", title:"Modern Structures: Tries, Bloom Filters, LRU, Union-Find, Vector Indexes", locked:true, lessons:[
+      {id:"17.1", t:"Tries and Prefix Search in Production", state:"soon"},
+      {id:"17.2", t:"Bloom Filters: Fast Maybe, Certain No", state:"soon"},
+      {id:"17.3", t:"LRU Cache: Remembering What Matters", state:"soon"},
+      {id:"17.4", t:"Union-Find: Are These Two In The Same Group", state:"soon"},
+      {id:"17.5", t:"Segment Trees and Range Queries", state:"soon"},
+      {id:"17.6", t:"Vector Indexes: HNSW, IVF, and the Structures Behind RAG", state:"soon"},
+      {id:"17.7", t:"The Whiteboard: The Structures Behind a RAG Pipeline", state:"soon"}
+  ]},
+  { n:"18", title:"The Method: Reading a Problem You Have Never Seen", locked:true, lessons:[
+      {id:"18.1", t:"Read the Problem Like an Engineer", state:"soon"},
+      {id:"18.2", t:"The Signal Table: Phrase to Structure", state:"soon"},
+      {id:"18.3", t:"Constraints Tell You the Algorithm", state:"soon"},
+      {id:"18.4", t:"Explain Your Approach Out Loud", state:"soon"},
+      {id:"18.5", t:"The Whiteboard: Reading Three Problems Cold", state:"soon"}
+  ]},
+  { n:"19", title:"The Real-World Lab: 10 Systems Torn Down", locked:true, lessons:[
+      {id:"19.1", t:"Google Search: Index, Rank, Return", state:"soon"},
+      {id:"19.2", t:"Google Maps: Routing a Country in Milliseconds", state:"soon"},
+      {id:"19.3", t:"Uber: Matching Riders to Drivers in Real Time", state:"soon"},
+      {id:"19.4", t:"Spotify: Recommendation as a Graph Problem", state:"soon"},
+      {id:"19.5", t:"WhatsApp: Delivering a Message Exactly Once", state:"soon"},
+      {id:"19.6", t:"Instagram: Ranking a Feed Under a Deadline", state:"soon"},
+      {id:"19.7", t:"Git: Version Control Is a Graph", state:"soon"},
+      {id:"19.8", t:"Amazon: Product Search With Filters and Facets", state:"soon"},
+      {id:"19.9", t:"A RAG Chatbot, End to End", state:"soon"},
+      {id:"19.10", t:"Your Turn: Tear Down a Product You Use Daily", state:"soon"},
+      {id:"19.11", t:"The Whiteboard: One Product, Every Structure Inside It", state:"soon"}
+  ]}
+];
+
+/* ============================ LESSON CONTENT ============================ */
+const LESSONS = {
+/* ===== Chapter 00 - Start Here - DSA Concepts (2026) =====
+   Front matter. Free form rather than the ten blocks, but still visual first.
+   See CONSISTENCY.md section 3 for the front matter contract.
+   RULES: no em-dashes; no backticks in content; no dollar-brace; no apostrophes inside
+   a data-viz, data-anim or data-reel payload. */
+
+"0.1": `<div class="wrap">
+  <div class="les-kicker">Chapter 00 · Lesson 0.1</div>
+  <h1 class="les-title">What This Course Is, and Who It Is For</h1>
+  <div class="les-meta">
+    <span class="pill">start here</span><span class="pill">~5 min</span>
+    <span class="pill gold">no code required</span>
+  </div>
+
+  <p class="motto">You have been using data structures your whole life. Nobody told you what they were called.</p>
+
+  <p class="lead">This is a course about data structures and algorithms for people who do not write code, and do not intend to start. It is roughly seventy percent pictures. Every idea arrives first as something you have personally done, then as an animation you can play and pause, and only then as a name.</p>
+
+  <div class="viz" data-viz='{"type":"scene","title":"A normal Tuesday, and the structures hiding in it","width":700,"height":250,"items":[{"icon":"phone","x":90,"y":110,"kind":"gold","label":"finding a contact"},{"icon":"person","x":250,"y":104,"kind":"box","label":"waiting in a queue"},{"icon":"doc","x":400,"y":110,"kind":"box","label":"undoing a mistake"},{"icon":"glass","x":548,"y":110,"kind":"accent","label":"searching your photos"},{"icon":"server","x":668,"y":110,"kind":"muted","label":"asking an AI"}],"caption":"Five ordinary things. Underneath them sit a hash table, a queue, a stack, an index and a vector search. You have been using data structures your whole life. Nobody told you what they were called."}'></div>
+
+  <p>Every one of those five things is a solved problem in computer science, and you solve it daily without thinking. This course does not teach you to do them. It teaches you to <strong>see</strong> them, so that when somebody says "the report page got slow" or "we need a vector database", you already know what shape of problem you are standing in front of.</p>
+
+  <div class="board" data-anim='{"type":"reveal","title":"What this course actually trains","speed":1700,"viz":{"maxChars":16,"gy":48,"nodes":[{"id":"p","label":"A problem you have never seen","col":0,"row":0,"kind":"gold"},{"id":"s","label":"Its shape, in plain language","col":1,"row":0,"kind":"accent"},{"id":"d","label":"The structure that shape wants","col":2,"row":0,"kind":"accent"},{"id":"a","label":"An approach you can explain out loud","col":3,"row":0,"kind":"dark"}],"edges":[{"from":"p","to":"s"},{"from":"s","to":"d","style":"green"},{"from":"d","to":"a","style":"green"}]},"steps":[{"show":["p"],"look":["p"],"say":"Here is the only skill this course is trying to build. It starts with a problem nobody prepared you for."},{"show":["p","s"],"look":["s"],"say":"Step one is not code. It is describing the shape of the problem in ordinary words. <b>Is it ordered? Is it connected? Does something have to go first?</b>"},{"show":["p","s","d"],"found":["d"],"say":"Shapes map to structures. Once you can name the shape, the structure is usually already decided for you."},{"show":["p","s","d","a"],"found":["a"],"say":"And then you can explain your approach to another human. <b>That is the whole course.</b> Not memorising twenty algorithms."}],"caption":"Notice what is missing from this chain: writing code. That step exists in the real world, but it is the last one, and it is not what this course is about."}'></div>
+
+  <h2><span class="ix">1</span> Who this is for, honestly</h2>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>If you are</th><th>What you get out of this</th></tr>
+    <tr><td>A <strong>product manager</strong></td><td>You stop nodding through technical trade-off conversations and start steering them</td></tr>
+    <tr><td>A <strong>founder</strong></td><td>You can tell an expensive architectural decision from a cheap one before it is made</td></tr>
+    <tr><td>A <strong>designer</strong></td><td>You understand why some interactions can be instant and others cannot</td></tr>
+    <tr><td>A <strong>student or career switcher</strong></td><td>You get the intuition first, so that when you do meet code, it has something to attach to</td></tr>
+    <tr><td>An <strong>engineer who learned by doing</strong></td><td>You finally get the names and the map behind things you already use</td></tr>
+  </table>
+  <div class="tbl-cap">One reader is missing from this table: somebody preparing for a coding interview this month. This course will make you better at those, but it will not drill you on them.</div></div>
+
+  <h2><span class="ix">2</span> What this course is not</h2>
+
+  <div class="callout warn">
+    <div class="ch">Three things it deliberately refuses to be</div>
+    <p><strong>Not a coding course.</strong> There is no language to install and no exercise to compile. Code appears occasionally as an illustration, never as the explanation.</p>
+    <p><strong>Not interview drilling.</strong> You will not be asked to reverse a linked list against a timer. You will be asked what a linked list is for, and when reaching for one is a mistake.</p>
+    <p><strong>Not theory for its own sake.</strong> No proofs. Big O appears only after you have already counted the steps yourself and felt the difference.</p>
+  </div>
+
+  <h2><span class="ix">3</span> The map</h2>
+
+  <div class="board" data-anim='{"type":"reveal","title":"The twenty chapters, in six moves","speed":1600,"viz":{"maxChars":18,"gy":46,"nodes":[{"id":"f","label":"Foundations: what a structure is, and what things cost","col":0,"row":0,"kind":"accent"},{"id":"l","label":"The four shapes: rows, chains, stacks, queues","col":1,"row":0,"kind":"accent"},{"id":"s","label":"Finding and ordering: searching, sorting, hashing","col":2,"row":0,"kind":"gold"},{"id":"t","label":"Things that branch and connect: trees, heaps, graphs","col":3,"row":0,"kind":"accent"},{"id":"p","label":"Ways to attack a hard problem","col":4,"row":0,"kind":"accent"},{"id":"r","label":"The real world: text, modern structures, ten teardowns","col":5,"row":0,"kind":"dark"}],"edges":[{"from":"f","to":"l"},{"from":"l","to":"s"},{"from":"s","to":"t"},{"from":"t","to":"p"},{"from":"p","to":"r","style":"green"}]},"steps":[{"show":["f"],"look":["f"],"say":"Chapters 1 and 2. What a data structure actually is, and how to count what anything costs. Everything later is judged in that currency."},{"show":["f","l"],"look":["l"],"say":"Chapters 3 to 5. The four shapes almost everything is built from. Rows, chains, stacks, queues."},{"show":["f","l","s"],"look":["s"],"say":"Chapters 6 to 8. Finding one thing, putting things in order, and finding without looking. <b>This is where most people finally see the point.</b>"},{"show":["f","l","s","t"],"look":["t"],"say":"Chapters 9 to 13. What happens when things branch, and when things connect to each other."},{"show":["f","l","s","t","p"],"look":["p"],"say":"Chapters 14 and 15. Recursion, and the three honest ways to attack a hard problem: commit early, remember everything, or try and undo."},{"show":["f","l","s","t","p","r"],"found":["r"],"say":"Chapters 16 to 19. Text, the structures behind 2026 products, the method for reading a new problem, and ten real systems torn apart."}],"caption":"Six moves, twenty chapters, 125 lessons. Every chapter ends with one whiteboard lesson that replays the whole thing with the words removed."}'></div>
+
+  <h2><span class="ix">4</span> What you walk out with</h2>
+
+  <div class="viz" data-viz='{"type":"card","title":"What you can do at the end","eyebrow":"THE OUTCOME","badge":"no code required","width":440,"rows":[{"k":"Name the shape of a new problem","v":"yes","tone":"good","bar":1},{"k":"Pick a structure and defend the choice","v":"yes","tone":"good","bar":1},{"k":"Read why a system got slow","v":"yes","tone":"good","bar":1},{"k":"Explain RAG, indexes and caches honestly","v":"yes","tone":"good","bar":1},{"k":"Write production code from this alone","v":"no","tone":"bad","bar":0.12}],"caption":"The last row is deliberate. This course makes you fluent, not employed as an engineer. Fluency is the part almost nobody has, and it is the part that makes every technical conversation go differently."}'></div>
+
+  <div class="callout good">
+    <div class="ch">Next</div>
+    <p>One short lesson on how to actually read this thing, because it is built to be watched before it is read, and that is not the habit most people arrive with.</p>
+  </div>
+__NAV__
+</div>`,
+
+"0.2": `<div class="wrap">
+  <div class="les-kicker">Chapter 00 · Lesson 0.2</div>
+  <h1 class="les-title">How To Read It: Watch First, Read Second</h1>
+  <div class="les-meta">
+    <span class="pill">start here</span><span class="pill">~4 min</span>
+    <span class="pill gold">the only instructions you need</span>
+  </div>
+
+  <p class="motto">Play the animation before you read the paragraph. The words are there to explain what you saw, not to prepare you for it.</p>
+
+  <p class="lead">Most courses are text with pictures added. This one is the other way round, and reading it in the usual order will make it feel slower than it is. Two minutes of instructions, then you are done with the meta and into the actual thing.</p>
+
+  <h2><span class="ix">1</span> Every lesson has the same ten blocks</h2>
+
+  <div class="board" data-anim='{"type":"reveal","title":"How one lesson is built","speed":1450,"viz":{"maxChars":17,"gy":42,"gx":54,"nodes":[{"id":"b1","label":"1 · The everyday situation","col":0,"row":0,"kind":"gold"},{"id":"b2","label":"2 · What it actually is","col":0,"row":1,"kind":"box"},{"id":"b3","label":"3 · Watch it work","col":1,"row":1,"kind":"dark"},{"id":"b4","label":"4 · Under the hood","col":2,"row":1,"kind":"box"},{"id":"b5","label":"5 · The types","col":2,"row":0,"kind":"box"},{"id":"b6","label":"6 · What it costs","col":3,"row":0,"kind":"box"},{"id":"b7","label":"7 · Where it lives in real life","col":3,"row":1,"kind":"accent"},{"id":"b8","label":"8 · How problems show up","col":4,"row":1,"kind":"gold"},{"id":"b9","label":"9 · Solve it live","col":4,"row":0,"kind":"accent"},{"id":"b10","label":"10 · Your turn","col":5,"row":0,"kind":"accent"}],"edges":[{"from":"b1","to":"b2"},{"from":"b2","to":"b3","style":"green"},{"from":"b3","to":"b4"},{"from":"b4","to":"b5"},{"from":"b5","to":"b6"},{"from":"b6","to":"b7"},{"from":"b7","to":"b8","style":"gold"},{"from":"b8","to":"b9"},{"from":"b9","to":"b10","style":"green"}]},"steps":[{"show":["b1"],"look":["b1"],"say":"Every lesson opens with something you have done. A drawer, a queue, a dictionary. <b>Not one technical word in this block.</b>"},{"show":["b1","b2"],"look":["b2"],"say":"Then the plain definition, in one sentence, with a picture of its shape."},{"show":["b1","b2","b3"],"found":["b3"],"say":"<b>Block 3 is the lesson.</b> The mechanism, animated, with play, pause and step controls. If you only have five minutes, spend them here."},{"show":["b1","b2","b3","b4"],"look":["b4"],"say":"Then one level lower: what actually passes between the parts."},{"show":["b1","b2","b3","b4","b5"],"look":["b5"],"say":"Then the variants, and the one condition each of them demands from you."},{"show":["b1","b2","b3","b4","b5","b6"],"look":["b6"],"say":"Then the cost, counted in plain English first. Notation shows up in the last sentence, not the first."},{"show":["b1","b2","b3","b4","b5","b6","b7"],"look":["b7"],"say":"Then the real systems that run on it. Named, and only when the mechanism is publicly known."},{"show":["b1","b2","b3","b4","b5","b6","b7","b8"],"found":["b8"],"say":"<b>Block 8 is the payoff.</b> The disguised phrasings real problems arrive in, and the tell in each one. This is where dots connect."},{"show":["b1","b2","b3","b4","b5","b6","b7","b8","b9"],"look":["b9"],"say":"Then one real complaint, taken from somebody talking to a decision."},{"show":["b1","b2","b3","b4","b5","b6","b7","b8","b9","b10"],"found":["b10"],"say":"And a rep you can actually do, with no code and no setup, plus two questions to check yourself."}],"caption":"Ten blocks, the same ten, every single lesson. Consistency is the point: after two lessons you stop reading the structure and start reading the content."}'></div>
+
+  <h2><span class="ix">2</span> Use the controls, do not just press play</h2>
+
+  <div class="viz" data-viz='{"type":"wire","title":"The whiteboard controls, and what each one is for","width":560,"screen":"any animation in this course","blocks":[{"x":0,"y":0,"w":12,"h":5,"label":"the animation itself, one idea per frame","kind":"muted","dashed":true},{"x":0,"y":5,"w":12,"h":2,"label":"the caption line: what just happened, and why","kind":"gold"},{"x":0,"y":7,"w":3,"h":2,"label":"play or pause","kind":"accent"},{"x":3,"y":7,"w":2,"h":2,"label":"step back","kind":"box"},{"x":5,"y":7,"w":2,"h":2,"label":"step forward","kind":"box"},{"x":7,"y":7,"w":2,"h":2,"label":"start over","kind":"box"},{"x":9,"y":7,"w":3,"h":2,"label":"speed: 1x, 2x, 0.5x","kind":"box"}],"caption":"The step buttons matter more than play. Nothing in this course is timed, and the interesting frame is usually the one just before the answer appears."}'></div>
+
+  <div class="callout accent">
+    <div class="ch">The one habit that makes this course work</div>
+    <p>When an animation pauses on an interesting frame, <strong>predict the next step before you press forward.</strong> If you can, you have understood the mechanism and can move on. If you cannot, step back one and read that caption again. That loop is the entire study method, and there is no other one.</p>
+  </div>
+
+  <h2><span class="ix">3</span> Every chapter ends with a whiteboard</h2>
+
+  <p>The last lesson of every chapter is a <em class="k">whiteboard lesson</em>: the whole chapter replayed as one continuous run of animated acts, with almost no prose. It comes in four parts. Part 2 shows each mechanism. <strong>Part 3 runs those same mechanisms inside products you used this week</strong>, which is the part that makes the ideas stick. Part 4 collapses the chapter into a single decision diagram.</p>
+
+  <p>If you ever feel lost mid-chapter, jump to the whiteboard lesson, watch it once, and come back. It is designed to work in either order.</p>
+
+  <h2><span class="ix">4</span> Pace, and what to expect</h2>
+
+  <div class="viz" data-viz='{"type":"journey","title":"How a chapter is meant to feel","stages":[{"stage":"Lesson 1","doing":"Watching a familiar situation","thinking":"I have definitely done this","feeling":4},{"stage":"Middle lessons","doing":"Stepping through mechanisms","thinking":"Wait, that is all it is?","feeling":5},{"stage":"The cost block","doing":"Counting steps","thinking":"That is why our thing got slow","feeling":3},{"stage":"Block 8","doing":"Reading disguised problems","thinking":"I have heard someone say exactly that","feeling":5},{"stage":"The whiteboard","doing":"Watching the chapter replay","thinking":"I could explain this to someone","feeling":5}],"caption":"The dip at the cost block is intentional. That is the moment an abstract idea turns into a bill somebody in your life has already paid."}'></div>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>If you have</th><th>Do this</th></tr>
+    <tr><td><strong>Five minutes</strong></td><td>Open a chapter and watch only its whiteboard lesson</td></tr>
+    <tr><td><strong>Thirty minutes</strong></td><td>One chapter: read block 1, watch block 3 of every lesson, then the whiteboard</td></tr>
+    <tr><td><strong>A serious weekend</strong></td><td>Chapters 1, 2 and 6 in full. Those three carry most of the leverage</td></tr>
+    <tr><td><strong>A month</strong></td><td>One chapter a day, in order, and do the rep in block 10</td></tr>
+  </table>
+  <div class="tbl-cap">Do not read this course cover to cover in one sitting. The ideas need a night to settle, and the whiteboard lessons are built to be rewatched.</div></div>
+
+  <div class="callout good">
+    <div class="ch">Next</div>
+    <p>One whiteboard run of the entire course, so you can see the shape of everything before you start. Ten acts, and almost nothing but pictures.</p>
+  </div>
+__NAV__
+</div>`,
+
+"0.3": `<div class="wrap">
+  <div class="les-kicker">Chapter 00 · Lesson 0.3</div>
+  <h1 class="les-title">The Whiteboard: The Whole Course in One Run</h1>
+  <div class="les-meta">
+    <span class="pill">whiteboard</span><span class="pill">~1 min</span>
+    <span class="pill gold">watch, do not read</span><span class="pill">10 acts</span>
+  </div>
+
+  <p class="motto">See the shape of the whole thing once, and every chapter afterwards has somewhere to land.</p>
+
+  <p class="lead">This is the entire course, before you have done any of it. Ten acts. You are not meant to remember them, and nothing here will be tested. You are meant to walk away with a map, so that when Chapter 9 talks about trees you already know why trees exist and what they are competing with.</p>
+</div>
+
+<div class="reel" data-reel='{"title":"The whole course, before you start it","speed":1500,"caption":"Ten acts, about 1 minutes end to end. Nothing here needs to be memorised. The point is to see the shape of the whole thing once, so that every chapter afterwards has somewhere to land.","acts":[{"part":"Part 1 · The idea","tab":"Boxes and labels","title":"Act 1 · What a data structure actually is","type":"reveal","speed":1650,"viz":{"maxChars":16,"gy":50,"nodes":[{"id":"th","label":"A pile of things","col":1,"row":0,"kind":"muted"},{"id":"dec","label":"One decision: how do I lay them down?","col":1,"row":1,"kind":"gold","shape":"diamond"},{"id":"ds","label":"That decision is the data structure","col":1,"row":2,"kind":"dark"},{"id":"c1","label":"What is cheap now","col":0,"row":3,"kind":"accent"},{"id":"c2","label":"What is expensive forever","col":2,"row":3,"kind":"bad"}],"edges":[{"from":"th","to":"dec"},{"from":"dec","to":"ds","style":"green"},{"from":"ds","to":"c1","label":"you bought this","style":"green"},{"from":"ds","to":"c2","label":"you also bought this"}]},"steps":[{"show":["th"],"look":["th"],"say":"Start with the least technical thing possible. You have some things."},{"show":["th","dec"],"look":["dec"],"say":"There is exactly one question. <b>How do you lay them down?</b> Side by side, in a chain, in a pile, in branches, in a web."},{"show":["th","dec","ds"],"found":["ds"],"say":"That decision <b>is</b> the data structure. It is not a thing you build. It is a choice about arrangement, made once, that everything else inherits."},{"show":["th","dec","ds","c1"],"found":["c1"],"say":"Every arrangement makes some things almost free."},{"show":["th","dec","ds","c1","c2"],"found":["c1"],"look":["c2"],"say":"And every arrangement makes other things permanently expensive. <b>There is no arrangement that is good at everything.</b> That sentence is the whole course."}]},{"part":"Part 2 · The four shapes everything is built from","tab":"The row","title":"Act 2 · A row: instant to read, expensive to rearrange","type":"array-scan","speed":1600,"big":true,"data":["A","B","C","D","E","F"],"pointers":false,"legend":[["the one you want","look"],["must shuffle","seen"],["landed here","found"]],"steps":[{"look":[3],"say":"Six things in a row, side by side. Want the fourth one? <b>Go straight to it.</b> No walking, no counting, no searching."},{"look":[3],"say":"That is the superpower of a row, and it is the reason arrays exist. Position is instant, because position is just arithmetic."},{"seen":[0,1,2,3,4,5],"say":"Now insert something new at the front. Everything already there has to shuffle one place right to make room."},{"found":[0],"seen":[1,2,3,4,5],"say":"<b>That is the bill.</b> Instant reading, expensive rearranging. Chapter 3 is this trade, in detail."}]},{"part":"Part 2 · The four shapes everything is built from","tab":"The chain","title":"Act 3 · A chain: cheap to rearrange, slow to reach","type":"graph-walk","speed":1400,"unit":112,"legend":[["where you are now","look"],["already walked","seen"],["arrived","found"]],"nodes":[{"id":"n1","label":"A","x":0,"y":0},{"id":"n2","label":"B","x":1,"y":0},{"id":"n3","label":"C","x":2,"y":0},{"id":"n4","label":"D","x":3,"y":0},{"id":"n5","label":"E","x":4,"y":0}],"edges":[{"from":"n1","to":"n2"},{"from":"n2","to":"n3"},{"from":"n3","to":"n4"},{"from":"n4","to":"n5"}],"steps":[{"look":["n1"],"say":"A chain does the opposite of a row. Each box knows only <b>the next one</b>, and nothing else."},{"look":["n2"],"seen":["n1"],"edges":["n1-n2"],"say":"So you cannot jump to the fourth one. There is no arithmetic to do. You have to walk."},{"look":["n3"],"seen":["n1","n2"],"edges":["n1-n2","n2-n3"],"say":"Step. This is slower than a row, every single time, and it never gets better."},{"found":["n4"],"seen":["n1","n2","n3"],"edges":["n1-n2","n2-n3","n3-n4"],"say":"Arrived. So why would anyone use this?"},{"found":["n4"],"seen":["n1","n2","n3"],"edges":["n2-n3"],"say":"<b>Because inserting in the middle costs nothing.</b> You change two arrows. Nothing shuffles. Undo history, playlists and browser back all run on this. Chapter 4."}]},{"part":"Part 2 · The four shapes everything is built from","tab":"The tree","title":"Act 4 · A tree: one thing owning many things","type":"tree-walk","speed":1500,"unit":76,"legend":[["where you are","look"],["ruled out","dead"],["arrived","found"]],"nodes":[{"id":"r","label":"/","x":3,"d":0},{"id":"a","label":"a","x":1,"d":1},{"id":"b","label":"b","x":5,"d":1},{"id":"c","label":"c","x":0,"d":2},{"id":"d","label":"d","x":2,"d":2},{"id":"e","label":"e","x":4,"d":2},{"id":"f","label":"f","x":6,"d":2}],"edges":[{"from":"r","to":"a"},{"from":"r","to":"b"},{"from":"a","to":"c"},{"from":"a","to":"d"},{"from":"b","to":"e"},{"from":"b","to":"f"}],"steps":[{"look":["r"],"say":"A tree is what you get when one thing owns several things, and each of those owns several more. Folders. Org charts. A web page."},{"look":["a"],"dead":["b","e","f"],"say":"The useful property: <b>choosing a branch deletes everything on the other side</b>, and you never had to look at it."},{"found":["d"],"dead":["b","e","f","c"],"say":"Two decisions reached one of seven. With a thousand items it would be about ten decisions. Chapters 9 to 11."}]},{"part":"Part 2 · The four shapes everything is built from","tab":"The graph","title":"Act 5 · A graph: things connected to things","type":"graph-walk","speed":1400,"unit":118,"legend":[["visiting now","look"],["already visited","seen"],["reached the target","found"]],"nodes":[{"id":"you","label":"you","x":0,"y":1},{"id":"a","label":"Asha","x":1,"y":0},{"id":"b","label":"Bilal","x":1,"y":2},{"id":"c","label":"Chen","x":2,"y":1},{"id":"d","label":"Dia","x":3,"y":0},{"id":"e","label":"Emre","x":3,"y":2}],"edges":[{"from":"you","to":"a"},{"from":"you","to":"b"},{"from":"a","to":"c"},{"from":"b","to":"c"},{"from":"c","to":"d"},{"from":"c","to":"e"},{"from":"a","to":"d"}],"steps":[{"look":["you"],"say":"A graph has no top and no order. Just things, and connections between them. Friends. Roads. Payments. Web pages."},{"look":["a","b"],"seen":["you"],"edges":["you-a","you-b"],"say":"Ask <b>how do I reach Emre</b> and the honest answer is: spread outwards, one ring at a time. Everyone one hop away, first."},{"look":["c"],"seen":["you","a","b"],"edges":["you-a","you-b","a-c","b-c"],"say":"Then everyone two hops away. Notice Chen was reachable two different ways, and you only visit them once."},{"found":["e"],"seen":["you","a","b","c"],"edges":["you-a","you-b","a-c","b-c","c-e"],"say":"<b>Three hops.</b> That ripple is how maps route you, how a social app finds mutual friends, and how a delivery graph is checked. Chapters 12 and 13."}]},{"part":"Part 3 · The three questions every problem asks","tab":"Where is it?","title":"Act 6 · Question one: where is it?","type":"race","speed":1100,"legend":[["checking now","look"],["ruled out","dead"],["still possible","range"],["found it","found"]],"tracks":[{"label":"Unsorted","data":[58,13,72,29,6,90,34,17,41,25,80,49]},{"label":"Sorted","data":[6,13,17,25,29,34,41,49,58,72,80,90]}],"steps":[{"say":"The first question almost every problem is secretly asking. Both rows hold the same twelve numbers. Find 41.","lanes":[{"look":[0],"count":1},{"look":[5],"range":[0,11],"count":1}]},{"say":"The unsorted row can only open the next box. The sorted row just deleted <b>six boxes with one look</b>, because order lets you rule things out.","lanes":[{"look":[1],"dead":[0],"count":2},{"look":[8],"range":[6,11],"dead":[0,1,2,3,4,5],"count":2}]},{"say":"Three looks against four, and the sorted row is already finished.","lanes":[{"look":[3],"dead":[0,1,2],"count":4},{"found":[6],"range":[6,7],"dead":[0,1,2,3,4,5,8,9,10,11],"count":3}]},{"say":"<b>Nine against three.</b> Same numbers, same machine. The only difference is that somebody paid for order first. Chapter 6 is nothing but this.","lanes":[{"found":[8],"dead":[0,1,2,3,4,5,6,7],"count":9},{"found":[6],"range":[6,7],"dead":[0,1,2,3,4,5,8,9,10,11],"count":3}]}]},{"part":"Part 3 · The three questions every problem asks","tab":"In what order?","title":"Act 7 · Question two: in what order?","type":"array-scan","speed":1300,"big":true,"data":[1,2,3,5,8,9],"pointers":false,"legend":[["locked in place","seen"],["being decided","look"],["still unsorted","idle"]],"steps":[{"look":[0],"say":"Every sorting method in existence, all five of them, has the same shape: a <b>sorted region that grows</b> and an unsorted region that shrinks."},{"seen":[0],"look":[1],"say":"One decision at a time, the boundary moves right. What differs between methods is only how they choose the next thing."},{"seen":[0,1,2],"look":[3],"say":"Sorting is never the goal, by the way. It is an investment, and Act 6 is the return on it."},{"seen":[0,1,2,3,4,5],"say":"<b>Done.</b> Pay once, and every later question about this data becomes cheap. Chapter 7 shows the five ways to grow that boundary and why real systems mix them."}]},{"part":"Part 3 · The three questions every problem asks","tab":"Who is next?","title":"Act 8 · Question three: who goes next?","type":"reveal","speed":1650,"viz":{"maxChars":15,"gy":48,"nodes":[{"id":"q","label":"Several things are waiting. Who is served next?","col":1,"row":0,"kind":"gold","shape":"diamond"},{"id":"s","label":"Stack: the newest one. A pile of plates","col":0,"row":1,"kind":"accent"},{"id":"f","label":"Queue: the oldest one. A ticket line","col":1,"row":1,"kind":"accent"},{"id":"h","label":"Heap: the most urgent one. An emergency room","col":2,"row":1,"kind":"gold"},{"id":"u","label":"Undo, and going back a page","col":0,"row":2,"kind":"muted"},{"id":"p","label":"Print jobs, and messages in order","col":1,"row":2,"kind":"muted"},{"id":"t","label":"Schedulers, and top-K results","col":2,"row":2,"kind":"muted"}],"edges":[{"from":"q","to":"s","label":"newest"},{"from":"q","to":"f","label":"oldest"},{"from":"q","to":"h","label":"most urgent","style":"gold"},{"from":"s","to":"u"},{"from":"f","to":"p"},{"from":"h","to":"t"}]},"steps":[{"show":["q"],"look":["q"],"say":"Most systems are not really about storing things. They are about deciding <b>who gets served next</b>, and that rule is the structure."},{"show":["q","s"],"found":["s"],"say":"Serve the newest first and you have a stack. A pile of plates: the last one you put down is the first one you pick up."},{"show":["q","s","u"],"found":["s"],"seen":["u"],"say":"Which is exactly why undo works, and why the back button goes where it goes."},{"show":["q","s","u","f"],"found":["f"],"seen":["u"],"say":"Serve the oldest first and you have a queue. A ticket line, and the fairest rule there is."},{"show":["q","s","u","f","p"],"found":["f"],"seen":["u","p"],"say":"Print jobs, message delivery, anything where arrival order is the promise."},{"show":["q","s","u","f","p","h"],"found":["h"],"seen":["u","p"],"say":"Serve the <b>most urgent</b> first and you have a heap. An emergency room does not care who arrived first."},{"show":["q","s","u","f","p","h","t"],"found":["h"],"seen":["u","p","t"],"say":"Schedulers, and every top-K list you have ever scrolled. Chapters 5 and 11."}]},{"part":"Part 3 · The three questions every problem asks","tab":"What does it cost?","title":"Act 9 · The currency everything is priced in","type":"curve","speed":1900,"width":640,"height":300,"n":40,"xlabel":"how much data you have","ylabel":"how much work it takes","series":[{"label":"check everything","fn":"n","color":"bad"},{"label":"halve it each time","fn":"logn","color":"green"},{"label":"go straight there","fn":"1","color":"gold"}],"steps":[{"pct":8,"show":[0,1],"badge":"12 items","say":"Here is the only maths in this course, and it is counting. At twelve items, every method looks fine. <b>This is what testing looks like.</b>"},{"pct":34,"show":[0,1],"badge":"1,000 items","say":"A thousand. Checking everything costs a thousand steps. Halving costs ten. Still nobody notices, because a thousand steps is fast."},{"pct":100,"show":[0,1],"badge":"1,000,000 items","say":"A million. <b>The red line left the chart. The green line barely moved.</b> This is every story you have ever heard about something being fine in testing and dying in production."},{"pct":100,"show":[0,1,2],"badge":"1,000,000 items","say":"And the gold line never lifted off the floor. Chapter 2 teaches you to read this chart, and then you will see it everywhere."}]},{"part":"Part 4 · The map","tab":"The map","title":"Act 10 · The whole course, in six moves","type":"reveal","speed":1600,"viz":{"maxChars":17,"gy":46,"nodes":[{"id":"f","label":"Foundations: what a structure is, what things cost","col":0,"row":0,"kind":"accent"},{"id":"l","label":"The four shapes: rows, chains, stacks, queues","col":1,"row":0,"kind":"accent"},{"id":"s","label":"Finding and ordering: searching, sorting, hashing","col":2,"row":0,"kind":"gold"},{"id":"t","label":"Branching and connecting: trees, heaps, graphs","col":3,"row":0,"kind":"accent"},{"id":"p","label":"Ways to attack a hard problem","col":4,"row":0,"kind":"accent"},{"id":"r","label":"The real world: text, modern structures, teardowns","col":5,"row":0,"kind":"dark"}],"edges":[{"from":"f","to":"l"},{"from":"l","to":"s"},{"from":"s","to":"t"},{"from":"t","to":"p"},{"from":"p","to":"r","style":"green"}]},"steps":[{"show":["f"],"look":["f"],"say":"Chapters 1 and 2. Act 1 and Act 9, in full."},{"show":["f","l"],"look":["l"],"say":"Chapters 3 to 5. Acts 2, 3 and 8, in full."},{"show":["f","l","s"],"look":["s"],"say":"Chapters 6 to 8. Acts 6 and 7, in full. <b>This is where most readers finally see the point.</b>"},{"show":["f","l","s","t"],"look":["t"],"say":"Chapters 9 to 13. Acts 4 and 5, in full."},{"show":["f","l","s","t","p"],"look":["p"],"say":"Chapters 14 and 15. Recursion, and the three honest ways to attack something hard: commit early, remember everything, or try and undo."},{"show":["f","l","s","t","p","r"],"found":["r"],"say":"Chapters 16 to 19. Text, the structures behind 2026 products, the method for reading a new problem, and ten real systems torn apart."},{"show":["f","l","s","t","p","r"],"say":"<b>Every act you just watched becomes a chapter.</b> Nothing in this course is harder than what you understood in the last few minutes. It only gets more detailed."}]}]}'></div>
+
+<div class="wrap" style="padding-top:34px;">
+  <h2><span class="ix gold">✓</span> What You Just Watched</h2>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>Act</th><th>The idea</th><th>Where it becomes a chapter</th></tr>
+    <tr><td>1</td><td>A data structure is a decision about arrangement, and every arrangement has a bill</td><td>Chapters 1 and 2</td></tr>
+    <tr><td>2, 3</td><td>Rows are instant to read and expensive to rearrange. Chains are the exact opposite</td><td>Chapters 3 and 4</td></tr>
+    <tr><td>4, 5</td><td>Trees delete whole branches with one decision. Graphs have no order at all, only connections</td><td>Chapters 9 to 13</td></tr>
+    <tr><td>6</td><td>Finding one thing is cheap only if somebody paid for order first</td><td>Chapter 6</td></tr>
+    <tr><td>7</td><td>Sorting is not a goal, it is an investment with a return</td><td>Chapter 7</td></tr>
+    <tr><td>8</td><td>Most systems are really deciding who goes next, and that rule is the structure</td><td>Chapters 5 and 11</td></tr>
+    <tr><td>9</td><td>Everything is priced in the same currency: how work grows as data grows</td><td>Chapter 2</td></tr>
+  </table>
+  <div class="tbl-cap">If exactly one act stayed with you, make it Act 9. Every argument in the remaining nineteen chapters is settled with that chart.</div></div>
+
+  <div class="callout accent">
+    <div class="ch">The line to carry into Chapter 1</div>
+    <p>There is <strong>no arrangement that is good at everything.</strong> Every structure in this course is fast at something because it agreed to be slow at something else. Once you expect that, choosing between them stops being guesswork.</p>
+  </div>
+
+  <div class="quiz" data-correct="2">
+    <div class="q">Act 1 ended on a claim: there is no arrangement that is good at everything. What does that actually mean for you?</div>
+    <div class="opt" data-i="0">Some structures are simply better designed than others</div>
+    <div class="opt" data-i="1">You should learn the one structure that professionals use most</div>
+    <div class="opt" data-i="2">Whenever a structure is fast at something, it agreed to be slow at something else, so the right question is which trade you want</div>
+    <div class="qexp">A row bought instant reading and paid for it with expensive rearranging. A chain bought cheap rearranging and paid for it with slow reaching. Every chapter after this is a version of that same sentence, which is why choosing stops being guesswork once you expect the trade.</div>
+  </div>
+
+  <div class="quiz" data-correct="1">
+    <div class="q">A page loads instantly with 1,000 rows and takes twenty seconds with 1,000,000. Which line from Act 9 is it sitting on?</div>
+    <div class="opt" data-i="0">The gold line, because it goes straight there</div>
+    <div class="opt" data-i="1">The red line, because the work grows in step with the data</div>
+    <div class="opt" data-i="2">The green line, because halving still costs something</div>
+    <div class="qexp">A thousand times the data producing roughly a thousand times the wait is the fingerprint of the red line. The green line would have gone from about ten steps to about twenty, which nobody would ever notice. You will meet this exact shape again in Chapter 2 and then keep seeing it everywhere.</div>
+  </div>
+
+  <div class="callout good">
+    <div class="ch">You are done with the front matter</div>
+    <p>That is the whole of Chapter 00. Next: what a data structure actually is, slowly, with the boxes and labels drawn out properly.</p>
+  </div>
+__NAV__
+</div>`,
+
+/* ===== Chapter 06 - Searching: Finding One Thing - DSA Concepts (2026) =====
+   Visual-first lessons. Ten blocks each. Every diagram and animation is declarative JSON
+   on data-viz / data-anim, never script. Ends with __NAV__.
+   RULES: no em-dashes; no backticks in content; no dollar-brace; no apostrophes inside
+   a data-viz or data-anim payload, because the payload is wrapped in single quotes. */
+
+"6.1": `<div class="wrap">
+  <div class="les-kicker">Chapter 6 · Lesson 6.1</div>
+  <h1 class="les-title">What Searching Really Is, and the One Question That Decides Everything</h1>
+  <div class="les-meta">
+    <span class="pill">foundational</span><span class="pill">~11 min</span>
+    <span class="pill gold">no code needed</span><span class="pill">7 visuals</span>
+  </div>
+
+  <p class="motto">Searching is not a skill you learn. It is a bill you pay for the order you did not keep.</p>
+
+  <p class="lead">Every search you have ever done, in a drawer or in a database, is the same three things: a pile of stuff, one question, and a rule for where to look next. This lesson gives you the one question that decides which rule you are allowed to use. Get that question right and the rest of the chapter is just detail.</p>
+
+  <h2><span class="ix">1</span> The Everyday Situation</h2>
+  <div class="sub">Two drawers, one missing charger.</div>
+  <p>You need your phone charger. In one room there is a drawer where everything was thrown in as it arrived. In the next room there is a cupboard where somebody labelled every shelf. Same charger, same house. In the first room you will lift every object. In the second you walk to the shelf marked <em class="k">cables</em> and stop.</p>
+
+  <div class="viz" data-viz='{
+    "type":"scene","title":"Two drawers, one question","width":640,"height":210,
+    "items":[
+      {"icon":"person","x":320,"y":46,"kind":"gold","label":"you, looking for one thing"},
+      {"icon":"pile","x":110,"y":146,"kind":"muted","label":"the messy drawer"},
+      {"icon":"shelf","x":528,"y":142,"kind":"accent","label":"the labelled cupboard"}
+    ],
+    "arrows":[
+      {"x1":268,"y1":74,"x2":158,"y2":128,"style":"gold","label":"lift everything"},
+      {"x1":372,"y1":74,"x2":474,"y2":126,"style":"green","label":"walk to one shelf"}
+    ],
+    "caption":"Nothing about the charger changed. The only difference is whether somebody kept the room in order, and that difference is the entire chapter."
+  }'></div>
+
+  <p>Notice what actually made the second room fast. It was not a cleverer person. It was <strong>work done earlier</strong>, by whoever labelled the shelves. Searching is always this trade: order you paid for once, against effort you spend every single time you look.</p>
+
+  <h2><span class="ix">2</span> What It Actually Is</h2>
+  <div class="sub">A definition you can hold in one hand.</div>
+  <p>A search takes a collection of things and one question, and returns either a position or an honest <em class="k">not here</em>. That is the whole contract. Everything else is the method you choose in the middle.</p>
+
+  <div class="viz" data-viz='{
+    "type":"arch","title":"The shape of every search, without exception","maxChars":17,
+    "nodes":[
+      {"id":"c","label":"A collection of things","col":0,"row":0,"kind":"muted"},
+      {"id":"q","label":"One question: where is 41","col":0,"row":1,"kind":"gold"},
+      {"id":"m","label":"A search method","col":1,"row":0,"kind":"dark"},
+      {"id":"a","label":"A position, or an honest not found","col":2,"row":0,"kind":"accent"}
+    ],
+    "edges":[
+      {"from":"c","to":"m","label":"what you have"},
+      {"from":"q","to":"m","label":"what you want"},
+      {"from":"m","to":"a","style":"green","label":"the answer"}
+    ],
+    "caption":"The two inputs are fixed. The only thing you get to choose is the box in the middle, and the shape of your collection decides which boxes are even legal."
+  }'></div>
+
+  <div class="callout accent">
+    <div class="ch">The one question</div>
+    <p><strong>Is the collection already in order, and can I jump straight to any position in it?</strong> Two yeses buy you the fast methods. One no takes them away. Ask this before you think about any algorithm name, ever.</p>
+  </div>
+
+  <h2><span class="ix">3</span> Watch It Work</h2>
+  <div class="sub">The same target, hunted two ways, side by side.</div>
+  <p>Below, both rows hold the same twelve numbers. The top row is the messy drawer, so it must be checked one box at a time. The bottom row was sorted first, so it can throw away half the shelf with every look. Press play and watch the counters, not the boxes.</p>
+
+  <div class="board" data-anim='{
+    "type":"race","title":"Messy drawer versus labelled shelf: find 41","speed":1250,
+    "legend":[["checking now","look"],["ruled out","dead"],["found it","found"],["still possible","range"]],
+    "tracks":[
+      {"label":"Messy drawer","data":[31,7,55,19,63,12,41,24,88,5,70,36]},
+      {"label":"Labelled shelf","data":[5,7,12,19,24,31,36,41,55,63,70,88]}
+    ],
+    "steps":[
+      {"say":"Both start now. The drawer opens at the far left. The shelf opens in the <b>middle</b>, because the middle is the only place worth looking when things are in order.",
+       "lanes":[{"look":[0],"count":1},{"look":[5],"range":[0,11],"count":1}]},
+      {"say":"Drawer: 7 is not 41, move along. Shelf: the middle held 31, and 41 is bigger, so the entire left half is gone. <b>Six boxes eliminated by one look.</b>",
+       "lanes":[{"look":[1],"dead":[0],"count":2},{"look":[8],"range":[6,11],"count":2}]},
+      {"say":"Drawer: 55, no. Shelf: the middle of what is left held 55, and 41 is smaller, so the right end is gone too. Three boxes remain.",
+       "lanes":[{"look":[2],"dead":[0,1],"count":3},{"look":[6],"range":[6,7],"count":3}]},
+      {"say":"Drawer: 19, no. Shelf: <b>found 41 in four looks.</b> It is already finished while the drawer is still on its fourth box.",
+       "lanes":[{"look":[3],"dead":[0,1,2],"count":4},{"found":[7],"range":[6,7],"count":4}]},
+      {"say":"The shelf is done and resting. The drawer keeps going, because it has no reason to stop and no way to skip.",
+       "lanes":[{"look":[4],"dead":[0,1,2,3],"count":5},{"found":[7],"range":[6,7],"count":4}]},
+      {"say":"Drawer: 12, no. Still no shortcut available, because nothing about the drawer tells it where 41 might be.",
+       "lanes":[{"look":[5],"dead":[0,1,2,3,4],"count":6},{"found":[7],"range":[6,7],"count":4}]},
+      {"say":"Drawer: <b>found 41 on the seventh look.</b> Seven against four on twelve items. Now imagine twelve million items, and the gap stops being cute.",
+       "lanes":[{"found":[6],"dead":[0,1,2,3,4,5],"count":7},{"found":[7],"range":[6,7],"count":4}]}
+    ],
+    "caption":"Twelve items is a small enough sample that the drawer still looks fine. That is exactly the trap. The gap between these two rows does not add up as data grows, it multiplies."
+  }'></div>
+
+  <div class="callout">
+    <div class="ch">What actually happened</div>
+    <p>The bottom row never got cleverer. It got <strong>permission</strong>. Because the shelf was in order, a single comparison was allowed to rule out everything on one side of it. The top row could never rule out anything, so every look bought it exactly one box.</p>
+  </div>
+
+  <h2><span class="ix">4</span> Under The Hood</h2>
+  <div class="sub">What passes between you and the collection when you press Ctrl and F.</div>
+  <p>When you hit Ctrl and F on a web page, you are not doing something different from the drawer. You are handing the question to somebody faster than you, who still has to look.</p>
+
+  <div class="viz" data-viz='{
+    "type":"seq","title":"Ctrl and F, message by message",
+    "actors":[
+      {"label":"You","kind":"gold"},
+      {"label":"The browser","kind":"accent"},
+      {"label":"The page text","kind":"muted"}
+    ],
+    "messages":[
+      {"from":0,"to":1,"label":"find the word refund","style":"gold"},
+      {"from":1,"to":2,"label":"walk the text from the top"},
+      {"from":2,"to":1,"label":"match at character 4,182","style":"green"},
+      {"from":1,"to":0,"label":"scroll there, highlight it","style":"green"},
+      {"from":0,"to":1,"label":"next one","style":"gold"},
+      {"from":1,"to":2,"label":"keep walking from 4,182"},
+      {"from":2,"to":1,"label":"no more matches"},
+      {"from":1,"to":0,"label":"1 of 1","style":"green"}
+    ],
+    "caption":"Step 2 is a plain linear scan. The browser feels instant only because a page is small and the machine is fast, not because it found a shortcut."
+  }'></div>
+
+  <h2><span class="ix">5</span> The Types</h2>
+  <div class="sub">Every search method you will meet, and the one condition each of them demands.</div>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>Method</th><th>What it needs from you first</th><th>Looks needed for a million items</th></tr>
+    <tr><td><strong>Linear scan</strong></td><td>Nothing at all</td><td>up to 1,000,000</td></tr>
+    <tr><td><strong>Binary search</strong></td><td>Sorted, and instant jump to any position</td><td>20</td></tr>
+    <tr><td><strong>Tree search</strong></td><td>Order kept as a shape, maintained on every write</td><td>about 20</td></tr>
+    <tr><td><strong>Hash lookup</strong></td><td>Spare memory, and exact keys only</td><td>1</td></tr>
+    <tr><td><strong>Vector search</strong></td><td>Meaning turned into coordinates, and a tolerance for approximate answers</td><td>a few dozen</td></tr>
+  </table>
+  <div class="tbl-cap">Read the middle column, not the right one. The right column is the reward; the middle column is the price, and you always pay it before you collect.</div></div>
+
+  <div class="viz" data-viz='{
+    "type":"dtree","title":"Which methods are you even allowed to use","maxChars":19,"gx":50,
+    "nodes":[
+      {"id":"q1","label":"Is the collection in a known order?","col":1,"row":0,"kind":"gold","shape":"diamond"},
+      {"id":"lin","label":"Linear scan. It is your only honest option","col":0,"row":1,"kind":"muted"},
+      {"id":"q2","label":"Can you jump straight to any position?","col":2,"row":1,"kind":"gold","shape":"diamond"},
+      {"id":"walk","label":"Walk the structure: tree or chain","col":1,"row":2,"kind":"accent"},
+      {"id":"bin","label":"Binary search, or an index built on it","col":3,"row":2,"kind":"accent"}
+    ],
+    "edges":[
+      {"from":"q1","to":"lin","label":"no"},
+      {"from":"q1","to":"q2","label":"yes","style":"green"},
+      {"from":"q2","to":"walk","label":"no"},
+      {"from":"q2","to":"bin","label":"yes","style":"green"}
+    ],
+    "caption":"Two questions, four outcomes. You are not picking a favourite algorithm here, you are finding out which ones the data has already ruled out for you."
+  }'></div>
+
+  <h2><span class="ix">6</span> What It Costs, In Plain English</h2>
+  <div class="sub">Forget the notation for sixty seconds and just count.</div>
+  <p>Put a hundred items in front of a linear scan and it may look a hundred times. Double the data to two hundred and it looks two hundred times. The work grows exactly as fast as the pile does. Now do the same to binary search: a hundred items costs about seven looks, two hundred costs eight. <strong>Doubling the data adds one single look.</strong> That is not a small improvement, it is a different category of thing.</p>
+
+  <div class="viz" data-viz='{
+    "type":"curve","title":"How the work grows as the pile grows","width":540,"height":250,
+    "xlabel":"how many things you are searching","ylabel":"how many looks it takes",
+    "series":[
+      {"label":"linear scan","fn":"n","color":"bad"},
+      {"label":"binary search","fn":"logn","color":"green"},
+      {"label":"hash lookup","fn":"1","color":"gold"}
+    ],
+    "caption":"The red line is what happens when nobody kept order. The green line is what one sorted collection buys you. The gold line is what spare memory buys you, and it is almost flat."
+  }'></div>
+
+  <div class="viz" data-viz='{
+    "type":"card","title":"Looks needed to find one item","eyebrow":"THE NUMBERS","badge":"1 million rows","width":400,
+    "rows":[
+      {"k":"Linear scan, worst case","v":"1,000,000","tone":"bad","bar":1},
+      {"k":"Linear scan, average","v":"500,000","tone":"bad","bar":0.5},
+      {"k":"Binary search","v":"20","tone":"good","bar":0.02},
+      {"k":"Hash lookup","v":"1","tone":"good","bar":0.01}
+    ],
+    "footer":"Same million rows. The only variable is how much order was kept beforehand."
+  }'></div>
+
+  <h2><span class="ix">7</span> Where It Lives In Real Life</h2>
+  <div class="sub">Four systems you touched this week, and the search sitting inside each one.</div>
+
+  <div class="viz" data-viz='{
+    "type":"kgraph","title":"Search is not one feature, it is a layer under everything","unit":132,
+    "nodes":[
+      {"id":"s","label":"Searching","x":2,"y":1,"kind":"dark"},
+      {"id":"ctrl","label":"Ctrl and F","x":0,"y":0,"kind":"box"},
+      {"id":"db","label":"Database index","x":0,"y":2,"kind":"box"},
+      {"id":"map","label":"Maps routing","x":4,"y":0,"kind":"box"},
+      {"id":"rag","label":"AI chatbot memory","x":4,"y":2,"kind":"gold"},
+      {"id":"auto","label":"Autocomplete","x":2,"y":3,"kind":"box"}
+    ],
+    "edges":[
+      {"from":"s","to":"ctrl","label":"linear"},
+      {"from":"s","to":"db","label":"tree"},
+      {"from":"s","to":"map","label":"graph"},
+      {"from":"s","to":"rag","label":"vector","style":"gold"},
+      {"from":"s","to":"auto","label":"prefix"}
+    ],
+    "caption":"Five products, five different search methods, one identical question underneath. When you meet a new product, the useful instinct is to ask which of these five edges it is standing on."
+  }'></div>
+
+  <p>The one worth sitting with is the last one. When you ask an AI assistant a question about your own documents, it cannot read all of them for every question, that would be a linear scan across gigabytes. So it does what the labelled cupboard did: it pays a cost <em class="k">once</em>, turning every document into coordinates, so that later it can jump near the answer instead of walking to it. Lesson 6.6 is entirely about that move.</p>
+
+  <h2><span class="ix">8</span> How Problems Show Up</h2>
+  <div class="sub">The phrasings that are secretly search problems, and the tell in each one.</div>
+  <p>Real problems never say the word <em class="k">searching</em>. They describe a symptom. Here is how to hear it.</p>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>What somebody actually says</th><th>The tell</th><th>What it is really asking</th></tr>
+    <tr><td>"The report page takes eleven seconds to load"</td><td>Time grows with data size</td><td>A linear scan where an index belonged</td></tr>
+    <tr><td>"Find whether this email already exists"</td><td>Yes or no, exact key</td><td>A hash lookup, not a scan</td></tr>
+    <tr><td>"Show me everything between two dates"</td><td>A range, not one item</td><td>A sorted structure, then two boundary searches</td></tr>
+    <tr><td>"Suggest as the user types"</td><td>Prefix, and it must feel instant</td><td>A trie or prefix index</td></tr>
+    <tr><td>"Find the answer in our documents"</td><td>Meaning, not exact words</td><td>Vector search over embeddings</td></tr>
+    <tr><td>"It was fast in testing and slow in production"</td><td>Cost scaled with real data</td><td>The method never changed, the pile did</td></tr>
+  </table>
+  <div class="tbl-cap">Middle column is the skill. Once you can name the tell, the right structure is usually only one step away.</div></div>
+
+  <h2><span class="ix">9</span> Solve It Live</h2>
+  <div class="sub">A real complaint, taken from words to a decision.</div>
+  <div class="callout">
+    <div class="ch">The problem, as it arrives</div>
+    <p>"Our support tool has 400,000 saved tickets. Agents type a ticket number and wait about four seconds every time. It was instant last year. Nothing in the code changed."</p>
+  </div>
+
+  <div class="viz" data-viz='{
+    "type":"swim","title":"From complaint to decision, without guessing",
+    "lanes":[{"label":"The agent"},{"label":"You"},{"label":"The system"}],
+    "steps":[
+      {"id":"a1","lane":0,"col":0,"label":"Types a ticket number","kind":"gold"},
+      {"id":"b1","lane":1,"col":1,"label":"Ask: exact key or fuzzy?","kind":"box"},
+      {"id":"b2","lane":1,"col":2,"label":"Exact. So a scan is never needed","kind":"accent"},
+      {"id":"c1","lane":2,"col":1,"label":"Walks all 400,000 rows","kind":"bad"},
+      {"id":"c2","lane":2,"col":3,"label":"Jumps to the row directly","kind":"accent"}
+    ],
+    "edges":[
+      {"from":"a1","to":"b1"},
+      {"from":"b1","to":"b2","style":"green"},
+      {"from":"b2","to":"c2","style":"green","label":"add an index"}
+    ],
+    "caption":"Nothing in the code changed, and that was the clue. The code was always a linear scan. Last year the pile was small enough to hide it."
+  }'></div>
+
+  <p><strong>The answer.</strong> The lookup is by an exact, unique key, so this was never a search problem at all, it was a missing index. Add one on the ticket number and each lookup becomes a handful of jumps instead of 400,000 comparisons. The four seconds becomes a few milliseconds, and it stays that way at four million tickets.</p>
+
+  <div class="callout good">
+    <div class="ch">Why this reasoning wins</div>
+    <p>It never guessed at an algorithm. It asked one question, <em class="k">exact key or not</em>, and that single answer eliminated every method except two. Speed came from removing options, not from adding cleverness.</p>
+  </div>
+
+  <h2><span class="ix">10</span> Your Turn</h2>
+  <div class="callout accent">
+    <div class="ch">Your rep, no code</div>
+    <p>Open your phone and pick three things you searched this week: a contact, a message inside a chat, and a place on a map. For each one write two lines. First, <strong>what order already existed</strong> before you searched. Second, <strong>who paid for that order, and when</strong>. If you cannot name who paid, you have found the linear scan.</p>
+  </div>
+
+  <h2><span class="ix gold">✓</span> Check Yourself</h2>
+
+  <div class="quiz" data-correct="1">
+    <div class="q">A list of 1,000 names is unsorted. You will search it exactly once, for one name. What should you do?</div>
+    <div class="opt" data-i="0">Sort it first, then binary search it</div>
+    <div class="opt" data-i="1">Just scan it once, straight through</div>
+    <div class="opt" data-i="2">Build a hash table, then look it up</div>
+    <div class="qexp">Sorting costs far more than the single scan you were going to do anyway. Order only pays off when you will search many times. One search, no order, means scan and move on.</div>
+  </div>
+
+  <div class="quiz" data-correct="2">
+    <div class="q">A page loads in 0.2 seconds with 1,000 rows and 20 seconds with 100,000 rows. What does that shape tell you?</div>
+    <div class="opt" data-i="0">The server is under-powered</div>
+    <div class="opt" data-i="1">The network got slower</div>
+    <div class="opt" data-i="2">The work grows in step with the data, so something is scanning everything</div>
+    <div class="qexp">100 times the data produced roughly 100 times the wait. That straight-line relationship is the fingerprint of a linear scan. Hardware and network problems do not scale so neatly with row count.</div>
+  </div>
+
+  <div class="callout good">
+    <div class="ch">Next</div>
+    <p>You now have the one question. Next we go inside the honest, patient method that needs no order at all, and find out exactly where it stops being acceptable.</p>
+  </div>
+__NAV__
+</div>`,
+
+"6.9": `<div class="wrap">
+  <div class="les-kicker">Chapter 6 · Lesson 6.9</div>
+  <h1 class="les-title">The Whiteboard: All of Searching in One Run</h1>
+  <div class="les-meta">
+    <span class="pill">whiteboard</span><span class="pill">~2 min</span>
+    <span class="pill gold">watch, do not read</span><span class="pill">14 acts</span>
+  </div>
+
+  <p class="motto">If you can watch it happen once, you never have to memorise it.</p>
+
+  <p class="lead">This is the whole chapter with the prose taken out. Fourteen acts on one board, in four parts. Part 2 shows you the six methods. <strong>Part 3 runs those exact same six inside things you used this week</strong>, which is where the ideas stop being school and start being useful. Press play and leave it alone, or step through at your own pace.</p>
+</div>
+
+<div class="reel" data-reel='{"title":"All of searching, in one continuous run","speed":1500,"caption":"Fourteen acts, about 2 minutes end to end. Press play once and let it run, or click any act to jump straight there. Part 3 is the point: it is the same six methods you just watched, running inside things you used this week.","acts":[{"part":"Part 1 · The idea","tab":"The one question","title":"Act 1 · Before any algorithm, one question","type":"reveal","speed":1600,"viz":{"maxChars":16,"gy":52,"nodes":[{"id":"thing","label":"You need to find one thing","col":1,"row":0,"kind":"dark"},{"id":"q","label":"Is the collection kept in order?","col":1,"row":1,"kind":"gold","shape":"diamond"},{"id":"slow","label":"Check every box","col":0,"row":2,"kind":"muted"},{"id":"fast","label":"Throw half away, every look","col":2,"row":2,"kind":"accent"}],"edges":[{"from":"thing","to":"q"},{"from":"q","to":"slow","label":"no"},{"from":"q","to":"fast","label":"yes","style":"green"}]},"steps":[{"show":["thing"],"look":["thing"],"say":"Every search in this chapter starts here. A pile of things, and one thing you want out of it."},{"show":["thing","q"],"look":["q"],"say":"Before you name a single algorithm, answer this. <b>Is the collection kept in order?</b>"},{"show":["thing","q","slow"],"look":["slow"],"say":"No order means no shortcut exists. You are allowed to check every box, and nothing else."},{"show":["thing","q","slow","fast"],"found":["fast"],"say":"Order means one look can rule out half the pile. That single permission is the whole difference. Watch it happen."}]},{"part":"Part 2 · The six methods","tab":"Check every box","title":"Act 2 · Linear search, the honest method","type":"array-scan","speed":850,"big":true,"data":[58,13,72,29,6,90,34,17,41,25,80,49],"target":41,"countLabel":" looks","legend":[["checking now","look"],["ruled out","dead"],["found it","found"]],"steps":[{"look":[0],"dead":[],"count":1,"ptr":{"i":0},"say":"Start at the left. Is 58 our 41? No. And nothing about 58 hints where 41 might be, so there is nowhere clever to go."},{"look":[1],"dead":[0],"count":2,"ptr":{"i":1},"say":"13. No. Move one box right. That is the entire algorithm, and that honesty is its only feature."},{"look":[2],"dead":[0,1],"count":3,"ptr":{"i":2},"say":"72. No. Next box."},{"look":[3],"dead":[0,1,2],"count":4,"ptr":{"i":3},"say":"29. No. Next box."},{"look":[4],"dead":[0,1,2,3],"count":5,"ptr":{"i":4},"say":"Halfway, still nothing. Look at the faded boxes on the left: each one cost a full look and bought nothing."},{"look":[5],"dead":[0,1,2,3,4],"count":6,"ptr":{"i":5},"say":"90. No. Next box."},{"look":[6],"dead":[0,1,2,3,4,5],"count":7,"ptr":{"i":6},"say":"34. No. Next box."},{"look":[7],"dead":[0,1,2,3,4,5,6],"count":8,"ptr":{"i":7},"say":"17. No. Next box."},{"found":[8],"dead":[0,1,2,3,4,5,6,7],"count":9,"ptr":{"i":8},"say":"<b>Found it, on the ninth look.</b> Nine boxes opened to find one. Had 41 been last, it would have been twelve."}]},{"part":"Part 2 · The six methods","tab":"Halve the haystack","title":"Act 3 · Binary search, the same numbers, sorted first","type":"array-scan","speed":1700,"big":true,"data":[6,13,17,25,29,34,41,49,58,72,80,90],"target":41,"countLabel":" looks","legend":[["checking now","look"],["still possible","range"],["ruled out","dead"],["found it","found"]],"steps":[{"range":[0,11],"look":[5],"ptr":{"lo":0,"mid":5,"hi":11},"count":1,"say":"Same twelve numbers, now in order. Never start at the edge. Go straight to the <b>middle</b>."},{"range":[6,11],"look":[8],"dead":[0,1,2,3,4,5],"ptr":{"lo":6,"mid":8,"hi":11},"count":2,"say":"The middle held 34. Our 41 is bigger, so everything left of it is impossible. <b>Six boxes gone in one look.</b>"},{"range":[6,7],"look":[6],"dead":[0,1,2,3,4,5,8,9,10,11],"ptr":{"lo":6,"mid":6,"hi":7},"count":3,"say":"58 was too big, so the right end goes too. Two boxes left, and the middle of two is the first one."},{"range":[6,7],"found":[6],"dead":[0,1,2,3,4,5,8,9,10,11],"ptr":{"lo":6,"mid":6,"hi":7},"count":3,"say":"<b>Found, in three looks instead of nine.</b> Not because it was faster. Because being sorted let it discard, and discarding is what speed actually is."}]},{"part":"Part 2 · The six methods","tab":"The race","title":"Act 4 · Both methods, same numbers, same moment","type":"race","speed":1050,"legend":[["checking now","look"],["ruled out","dead"],["still possible","range"],["found it","found"]],"tracks":[{"label":"Unsorted","data":[58,13,72,29,6,90,34,17,41,25,80,49]},{"label":"Sorted","data":[6,13,17,25,29,34,41,49,58,72,80,90]}],"steps":[{"say":"Both start now. Left to right for the unsorted row. Straight to the middle for the sorted one.","lanes":[{"look":[0],"dead":[],"count":1},{"look":[5],"range":[0,11],"count":1}]},{"say":"One look in, and the sorted row has already deleted six boxes. The unsorted row has deleted one.","lanes":[{"look":[1],"dead":[0],"count":2},{"look":[8],"range":[6,11],"dead":[0,1,2,3,4,5],"count":2}]},{"say":"Two boxes left below. Nine still open above.","lanes":[{"look":[2],"dead":[0,1],"count":3},{"look":[6],"range":[6,7],"dead":[0,1,2,3,4,5,8,9,10,11],"count":3}]},{"say":"<b>The sorted row is finished.</b> Three looks. The unsorted row is on its fourth box out of twelve.","lanes":[{"look":[3],"dead":[0,1,2],"count":4},{"found":[6],"range":[6,7],"dead":[0,1,2,3,4,5,8,9,10,11],"count":3}]},{"say":"It keeps going, because it has no reason to stop.","lanes":[{"look":[4],"dead":[0,1,2,3],"count":5},{"found":[6],"range":[6,7],"dead":[0,1,2,3,4,5,8,9,10,11],"count":3}]},{"say":"Still going.","lanes":[{"look":[5],"dead":[0,1,2,3,4],"count":6},{"found":[6],"range":[6,7],"dead":[0,1,2,3,4,5,8,9,10,11],"count":3}]},{"say":"Still going. Every box costs the same and buys the same: one box.","lanes":[{"look":[6],"dead":[0,1,2,3,4,5],"count":7},{"found":[6],"range":[6,7],"dead":[0,1,2,3,4,5,8,9,10,11],"count":3}]},{"say":"Almost.","lanes":[{"look":[7],"dead":[0,1,2,3,4,5,6],"count":8},{"found":[6],"range":[6,7],"dead":[0,1,2,3,4,5,8,9,10,11],"count":3}]},{"say":"<b>Nine against three.</b> On twelve items that is a shrug. Act 8 shows what the same gap does on a million.","lanes":[{"found":[8],"dead":[0,1,2,3,4,5,6,7],"count":9},{"found":[6],"range":[6,7],"dead":[0,1,2,3,4,5,8,9,10,11],"count":3}]}]},{"part":"Part 2 · The six methods","tab":"Jump search","title":"Act 5 · Jump search, when jumping is expensive","type":"array-scan","speed":1500,"big":true,"data":[4,9,13,18,25,31,38,44,52,57,63,70,77,82,88,95],"target":57,"countLabel":" looks","legend":[["checking now","look"],["ruled out","dead"],["the block that must hold it","range"],["found it","found"]],"steps":[{"look":[3],"ptr":{"i":3},"count":1,"say":"Binary search jumps anywhere it likes. Some collections make a long jump costly, so instead you hop in fixed blocks of four. Land on 18."},{"look":[7],"dead":[0,1,2,3],"ptr":{"i":7},"count":2,"say":"18 is below 57, so the whole first block is gone. Hop another four. 44, still below."},{"look":[11],"dead":[0,1,2,3,4,5,6,7],"ptr":{"i":11},"count":3,"say":"70. <b>Overshot.</b> That is the useful signal: 57 has to be inside the block we just flew over."},{"range":[8,11],"look":[8],"dead":[0,1,2,3,4,5,6,7],"ptr":{"i":8},"count":4,"say":"So walk back into that block, one box at a time. 52, no."},{"range":[8,11],"found":[9],"dead":[0,1,2,3,4,5,6,7],"ptr":{"i":9},"count":5,"say":"<b>57, in five looks.</b> Worse than binary, far better than linear. It exists because on some structures a big jump costs more than a small step."}]},{"part":"Part 2 · The six methods","tab":"Search a shape","title":"Act 6 · The same halving, kept as a permanent shape","type":"tree-walk","speed":1600,"unit":78,"legend":[["checking now","look"],["ruled out branch","dead"],["found it","found"]],"nodes":[{"id":"50","label":"50","x":3,"d":0},{"id":"25","label":"25","x":1,"d":1},{"id":"75","label":"75","x":5,"d":1},{"id":"12","label":"12","x":0,"d":2},{"id":"37","label":"37","x":2,"d":2},{"id":"62","label":"62","x":4,"d":2},{"id":"88","label":"88","x":6,"d":2}],"edges":[{"from":"50","to":"25"},{"from":"50","to":"75"},{"from":"25","to":"12"},{"from":"25","to":"37"},{"from":"75","to":"62"},{"from":"75","to":"88"}],"steps":[{"look":["50"],"say":"Sorting once is fine. Re-sorting after every single change is not. So keep the order as a <b>shape</b> instead. Looking for 37. Start at the top."},{"look":["25"],"dead":["75","62","88"],"say":"37 is smaller than 50, so go left. The entire right branch is now impossible, and you never touched it."},{"found":["37"],"dead":["75","62","88","12"],"say":"37 is bigger than 25, go right. <b>Found, in three looks.</b> Same halving as Act 3, except this one survives inserts and deletes."}]},{"part":"Part 2 · The six methods","tab":"Search by meaning","title":"Act 7 · When the words do not match but the meaning does","type":"vector","speed":1800,"width":620,"height":340,"unit":1,"query":{"x":300,"y":168,"label":"how do I stop being charged"},"legend":[["close in meaning","seen"],["sent to the model","found"],["too far","idle"]],"points":[{"x":238,"y":92,"label":"cancel my subscription"},{"x":392,"y":214,"label":"end my membership"},{"x":186,"y":232,"label":"refund policy"},{"x":78,"y":52,"label":"reset password"},{"x":104,"y":300,"label":"change my email"},{"x":516,"y":62,"label":"shipping times"},{"x":548,"y":292,"label":"gift cards"},{"x":492,"y":168,"label":"download invoice"}],"steps":[{"radius":0,"say":"Every method so far needed an <b>exact</b> match. This one does not. Each sentence becomes a point, placed by meaning rather than spelling."},{"radius":72,"seen":[0],"say":"Your question becomes a point too. Grow a circle around it. <b>cancel my subscription</b> shares not one word with your question, and it is the nearest thing on the board."},{"radius":118,"seen":[0,1,2],"say":"Widen slightly. Three neighbours. Reset password and shipping times are ordinary English too, and they stay far away, because distance here is meaning."},{"radius":118,"found":[0,1,2],"say":"<b>Those three get read. The other five are never opened.</b> That is retrieval: not reading everything, just standing in the right neighbourhood."},{"radius":118,"found":[0,1,2],"say":"And it is <b>approximate on purpose.</b> Checking every point exactly would be Act 2 over millions of points. The index trades a sliver of accuracy for the halving from Act 3."}]},{"part":"Part 2 · The six methods","tab":"What 12 items hid","title":"Act 8 · Why twelve items lied to you","type":"curve","speed":1900,"width":640,"height":300,"n":40,"xlabel":"how many things you are searching","ylabel":"looks it takes","series":[{"label":"linear scan","fn":"n","color":"bad"},{"label":"binary search","fn":"logn","color":"green"},{"label":"hash lookup","fn":"1","color":"gold"}],"steps":[{"pct":8,"show":[0,1],"badge":"12 items","say":"Here is why every act so far was slightly dishonest. At twelve items the two lines almost touch. <b>This is exactly what testing looks like.</b>"},{"pct":34,"show":[0,1],"badge":"1,000 items","say":"A thousand rows. Linear is at a thousand looks. Binary is at ten. The page still feels fine, so nobody investigates."},{"pct":100,"show":[0,1],"badge":"1,000,000 items","say":"A million rows. Linear: a million looks. Binary: twenty. <b>The red line left the chart, the green line barely moved.</b>"},{"pct":100,"show":[0,1,2],"badge":"1,000,000 items","say":"And the hash lookup never lifted off the floor. One look, at twelve items and at twelve million. Act 14 shows what it costs you to have that."}]},{"part":"Part 3 · The same six, in things you used today","tab":"git bisect","title":"Act 9 · Binary search you have already used: finding the commit that broke it","type":"array-scan","speed":1500,"big":true,"data":["c1","c2","c3","c4","c5","c6","c7","c8","c9","c10","c11","c12"],"labels":["ok","","","","","","","","","","","broken"],"countLabel":" builds tested","legend":[["testing this build","look"],["ruled out","dead"],["still suspect","range"],["the first broken one","found"]],"steps":[{"range":[0,11],"look":[5],"ptr":{"lo":0,"mid":5,"hi":11},"count":1,"say":"Twelve commits. The oldest works, the newest is broken, and somewhere between them somebody broke it. Testing all twelve is Act 2. Instead, test the <b>middle</b> one."},{"range":[6,11],"look":[8],"dead":[0,1,2,3,4,5],"ptr":{"lo":6,"mid":8,"hi":11},"count":2,"say":"Commit 6 builds fine. So the break is not before it, and six commits are eliminated without ever being tested."},{"range":[6,7],"look":[6],"dead":[0,1,2,3,4,5,8,9,10,11],"ptr":{"lo":6,"mid":6,"hi":7},"count":3,"say":"Commit 9 is broken. So the culprit is at or before it. Two suspects left."},{"range":[6,7],"found":[7],"dead":[0,1,2,3,4,5,8,9,10,11],"ptr":{"lo":7,"mid":7,"hi":7},"count":4,"say":"<b>Four builds tested instead of twelve.</b> This is literally what git bisect does, and it is Act 3 wearing different clothes. Same rule: the list is ordered, so one test kills half."}]},{"part":"Part 3 · The same six, in things you used today","tab":"The database index","title":"Act 10 · The support tool that got slow without anybody changing the code","type":"reveal","speed":1700,"viz":{"maxChars":17,"gy":48,"nodes":[{"id":"ag","label":"Agent types ticket 88214","col":0,"row":0,"kind":"gold"},{"id":"scan","label":"Open all 400,000 rows, one by one","col":2,"row":0,"kind":"bad"},{"id":"slow","label":"4 seconds, and rising every month","col":4,"row":0,"kind":"bad"},{"id":"idx","label":"Index: 3 jumps to the right page","col":2,"row":1,"kind":"accent"},{"id":"fast","label":"9 milliseconds, and it stays there","col":4,"row":1,"kind":"accent"}],"edges":[{"from":"ag","to":"scan"},{"from":"scan","to":"slow"},{"from":"ag","to":"idx","label":"same request","style":"green"},{"from":"idx","to":"fast","style":"green"}]},"steps":[{"show":["ag"],"look":["ag"],"say":"A real complaint. Same request every time, and it used to be instant. Nothing in the code changed, which is the clue, not the mystery."},{"show":["ag","scan"],"look":["scan"],"say":"The database was doing Act 2 the whole time. It opens every row until it finds the ticket."},{"show":["ag","scan","slow"],"look":["slow"],"say":"Last year that was 40,000 rows and nobody noticed. Now it is 400,000, and Act 8 just told you what that curve does next."},{"show":["ag","scan","slow","idx"],"found":["idx"],"say":"An index is Act 6, kept on disk. A shape that stays sorted as rows are added, so the database walks three levels instead of scanning."},{"show":["ag","scan","slow","idx","fast"],"found":["idx","fast"],"say":"<b>Four seconds becomes nine milliseconds, and stays there at four million tickets.</b> Nobody wrote a faster algorithm. Somebody finally paid for order."}]},{"part":"Part 3 · The same six, in things you used today","tab":"Autocomplete","title":"Act 11 · The suggestions that appear before you finish typing","type":"tree-walk","speed":1500,"unit":78,"legend":[["you just typed this","look"],["no longer possible","dead"],["a suggestion","found"]],"nodes":[{"id":"root","label":"·","x":3,"d":0},{"id":"c","label":"c","x":2,"d":1},{"id":"b","label":"b","x":5,"d":1},{"id":"a","label":"a","x":1,"d":2},{"id":"o","label":"o","x":3,"d":2},{"id":"u","label":"u","x":5,"d":2},{"id":"r","label":"r","x":0,"d":3},{"id":"t","label":"t","x":2,"d":3},{"id":"d","label":"d","x":4,"d":3},{"id":"card","label":"d","x":0,"d":4},{"id":"care","label":"e","x":1,"d":4}],"edges":[{"from":"root","to":"c"},{"from":"root","to":"b"},{"from":"c","to":"a"},{"from":"c","to":"o"},{"from":"b","to":"u"},{"from":"a","to":"r"},{"from":"a","to":"t"},{"from":"o","to":"d"},{"from":"r","to":"card"},{"from":"r","to":"care"}],"steps":[{"look":["root"],"say":"Autocomplete does not search a list of words. Every word hangs off one tree, <b>one letter per level</b>. This is Act 6 again, with letters instead of numbers."},{"look":["c"],"dead":["b","u"],"say":"You type c. One branch survives. Every word starting with any other letter is gone, and none of them were ever compared."},{"look":["a"],"dead":["b","u","o","d"],"say":"You type a. Gone again. Two keystrokes have already deleted most of the dictionary."},{"look":["r"],"dead":["b","u","o","d","t"],"say":"You type r. Everything still hanging below this point is now, by definition, a valid suggestion."},{"found":["r","card","care"],"dead":["b","u","o","d","t"],"say":"<b>car, card, care.</b> The list did not need searching, because the shape of the tree already was the answer."}]},{"part":"Part 3 · The same six, in things you used today","tab":"A RAG chatbot","title":"Act 12 · What actually happens when you ask an AI about your own documents","type":"reveal","speed":1800,"viz":{"maxChars":15,"gy":46,"nodes":[{"id":"q","label":"Your question","col":0,"row":1,"kind":"gold"},{"id":"emb","label":"Turn it into a point","col":1,"row":1,"kind":"accent"},{"id":"docs","label":"Your documents, already turned into points","col":2,"row":0,"kind":"muted","shape":"cyl"},{"id":"idx","label":"Vector index: find the nearest neighbourhood","col":2,"row":1,"kind":"dark"},{"id":"top","label":"The 3 closest chunks","col":3,"row":1,"kind":"accent"},{"id":"llm","label":"The model reads only those 3","col":4,"row":1,"kind":"accent"},{"id":"ans","label":"An answer, with its source","col":5,"row":1,"kind":"gold"}],"edges":[{"from":"q","to":"emb"},{"from":"emb","to":"idx"},{"from":"docs","to":"idx","label":"paid for once","style":"green"},{"from":"idx","to":"top","style":"green"},{"from":"top","to":"llm","style":"green"},{"from":"llm","to":"ans","style":"gold"}]},"steps":[{"show":["q"],"look":["q"],"say":"You ask an assistant something about your own files. It cannot read all of them for every question, that would be Act 2 across gigabytes."},{"show":["q","emb"],"look":["emb"],"say":"So your question becomes a point, exactly like Act 7."},{"show":["q","emb","docs"],"look":["docs"],"say":"Your documents were turned into points earlier, once, in advance. <b>This is the labelled cupboard, and somebody paid for it before you asked.</b>"},{"show":["q","emb","docs","idx"],"look":["idx"],"say":"The vector index is the halving from Act 3, done in many dimensions. It does not compare against every chunk, it walks toward the right neighbourhood."},{"show":["q","emb","docs","idx","top"],"found":["top"],"say":"Three chunks come back. Not because they contain your words, but because they sit near your meaning."},{"show":["q","emb","docs","idx","top","llm"],"found":["top","llm"],"say":"The model reads those three and nothing else. This is why the answer is fast, and why it can cite a source."},{"show":["q","emb","docs","idx","top","llm","ans"],"found":["ans"],"say":"<b>Every box in this row is one of the acts you already watched.</b> Nothing in a RAG system is new. It is search, with the cupboard labelled by meaning."}]},{"part":"Part 3 · The same six, in things you used today","tab":"When you pick wrong","title":"Act 13 · The same clever method, on the wrong data","type":"array-scan","speed":1600,"big":true,"data":[58,13,72,29,6,90,34,17,41,25,80,49],"target":41,"countLabel":" looks","legend":[["checking now","look"],["ruled out","dead"],["still possible","range"],["it was here all along","found"]],"steps":[{"range":[0,11],"look":[5],"ptr":{"lo":0,"mid":5,"hi":11},"count":1,"say":"Binary search, run on the <b>unsorted</b> row. It has no way to know. Middle box holds 90."},{"range":[0,4],"look":[2],"dead":[5,6,7,8,9,10,11],"ptr":{"lo":0,"mid":2,"hi":4},"count":2,"say":"90 is bigger than 41, so it throws away the entire right half. <b>It just deleted the answer</b>, and it feels perfectly confident."},{"range":[0,1],"look":[0],"dead":[2,3,4,5,6,7,8,9,10,11],"ptr":{"lo":0,"mid":0,"hi":1},"count":3,"say":"72 is bigger too. Throw away more. One box left."},{"range":[0,0],"dead":[1,2,3,4,5,6,7,8,9,10,11],"look":[0],"ptr":{"lo":0,"mid":0,"hi":0},"count":3,"say":"58 is bigger. Nothing remains. It reports <b>not found</b>, in three confident looks."},{"found":[8],"dead":[0,1,2,3,4,5,6,7,9,10,11],"count":3,"say":"<b>And 41 was sitting at box 8 the whole time.</b> This is the real danger. A fast wrong answer does not look like a bug, it looks like a working feature. That is why the question in Act 1 comes before the algorithm."}]},{"part":"Part 4 · The map","tab":"The whole map","title":"Act 14 · The entire chapter, on one page","type":"reveal","speed":1700,"viz":{"maxChars":15,"gy":50,"nodes":[{"id":"start","label":"Find one thing","col":2,"row":0,"kind":"dark"},{"id":"q1","label":"Matching exact values, or meaning?","col":2,"row":1,"kind":"gold","shape":"diamond"},{"id":"hash","label":"Hash lookup. One step","col":0,"row":2,"kind":"accent"},{"id":"q2","label":"Is it kept in order?","col":2,"row":2,"kind":"gold","shape":"diamond"},{"id":"vec","label":"Vector search over meaning","col":5,"row":2,"kind":"gold"},{"id":"lin","label":"Linear scan","col":1,"row":3,"kind":"muted"},{"id":"q3","label":"Can you jump to any position?","col":3,"row":3,"kind":"gold","shape":"diamond"},{"id":"walk","label":"Walk a tree or a chain","col":2,"row":4,"kind":"accent"},{"id":"bin","label":"Binary search or an index","col":4,"row":4,"kind":"accent"}],"edges":[{"from":"start","to":"q1"},{"from":"q1","to":"hash","label":"exact, spare memory","style":"green"},{"from":"q1","to":"q2","label":"exact"},{"from":"q1","to":"vec","label":"meaning","style":"gold"},{"from":"q2","to":"lin","label":"no"},{"from":"q2","to":"q3","label":"yes","style":"green"},{"from":"q3","to":"walk","label":"no"},{"from":"q3","to":"bin","label":"yes","style":"green"}]},"steps":[{"show":["start"],"look":["start"],"say":"Fourteen acts collapse into three questions. Here they are."},{"show":["start","q1"],"look":["q1"],"say":"<b>Question one.</b> Are you matching exact values, or meaning?"},{"show":["start","q1","vec"],"found":["vec"],"say":"Meaning goes right and leaves this whole family behind. Vector search, Acts 7 and 12."},{"show":["start","q1","vec","hash"],"found":["hash"],"say":"Exact, you can spend memory, and you only ever ask <b>where is this precise key</b>? Then skip ordering entirely. Hash lookup, one step, forever, as Act 8 showed."},{"show":["start","q1","vec","hash","q2"],"look":["q2"],"say":"<b>Question two.</b> Everything else lands here. Is the collection kept in order?"},{"show":["start","q1","vec","hash","q2","lin"],"found":["lin"],"say":"No. Then linear scan, Act 2. Not a failure, the only legal move. Act 13 is what happens when you ignore this answer."},{"show":["start","q1","vec","hash","q2","lin","q3"],"look":["q3"],"say":"<b>Question three.</b> Order exists. Can you jump straight to any position, or must you travel?"},{"show":["start","q1","vec","hash","q2","lin","q3","walk"],"found":["walk"],"say":"Must travel. Keep the order as a shape and walk it. Acts 6 and 11, and every database index in Act 10."},{"show":["start","q1","vec","hash","q2","lin","q3","walk","bin"],"found":["bin"],"say":"Can jump. Binary search, Acts 3 and 9. Every git bisect you have ever run is this box."},{"show":["start","q1","vec","hash","q2","lin","q3","walk","bin"],"say":"<b>Three questions. Five destinations.</b> You did not memorise five algorithms. You learned which two facts about your data pick one for you."}]}]}'></div>
+
+<div class="wrap" style="padding-top:34px;">
+  <h2><span class="ix gold">✓</span> What You Just Watched</h2>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>The method</th><th>What it needed first</th><th>Looks, for 12 items</th><th>Where you have already used it</th></tr>
+    <tr><td><strong>Linear scan</strong></td><td>Nothing at all</td><td>9</td><td>Ctrl and F, and every table without an index</td></tr>
+    <tr><td><strong>Binary search</strong></td><td>Sorted, and instant jumps</td><td>3</td><td>git bisect, and a dictionary</td></tr>
+    <tr><td><strong>Jump search</strong></td><td>Sorted, but jumps are costly</td><td>5</td><td>Reading a shelf by its section labels</td></tr>
+    <tr><td><strong>Tree search</strong></td><td>Order kept as a shape, maintained on every write</td><td>3</td><td>Database indexes, folder trees</td></tr>
+    <tr><td><strong>Trie or prefix search</strong></td><td>Words stored one letter per level</td><td>as many letters as you type</td><td>Autocomplete, search suggestions</td></tr>
+    <tr><td><strong>Vector search</strong></td><td>Meaning turned into coordinates, paid for in advance</td><td>a neighbourhood, not a row</td><td>Any AI assistant answering from your documents</td></tr>
+    <tr><td><strong>Hash lookup</strong></td><td>Spare memory, exact keys only</td><td>1</td><td>Checking whether an email is already registered</td></tr>
+  </table>
+  <div class="tbl-cap">Read the second column down the page. Every number in the third column was bought by something in the second one. Nothing here is free, and the last column is where you have been paying without noticing.</div></div>
+
+  <div class="callout accent">
+    <div class="ch">The line to carry out of this chapter</div>
+    <p>You never choose a search algorithm. You choose <strong>how much order you are willing to maintain</strong>, and the algorithm is whatever that choice leaves standing.</p>
+  </div>
+
+  <div class="callout warn">
+    <div class="ch">And the line from Act 13</div>
+    <p>A fast wrong answer does not look like a bug, it looks like a working feature. Binary search on unsorted data returns <em class="k">not found</em> in three confident looks while the answer sits untouched. This is why the question comes before the algorithm, every single time.</p>
+  </div>
+
+  <div class="quiz" data-correct="1">
+    <div class="q">In Act 4, the sorted row finished in three looks and the unsorted row took nine. What actually caused the gap?</div>
+    <div class="opt" data-i="0">The sorted row compared numbers faster</div>
+    <div class="opt" data-i="1">Each look in the sorted row could delete many boxes at once</div>
+    <div class="opt" data-i="2">The sorted row started closer to the answer by luck</div>
+    <div class="qexp">Both rows did identical work per comparison. The difference is what a comparison bought: one box for the unsorted row, half the remaining pile for the sorted one. Speed here is the right to discard.</div>
+  </div>
+
+  <div class="quiz" data-correct="2">
+    <div class="q">In Act 10, the support tool got slow although nobody changed the code. Why is that detail the clue rather than the mystery?</div>
+    <div class="opt" data-i="0">It proves the servers were downgraded</div>
+    <div class="opt" data-i="1">It means a new feature must have introduced a bug</div>
+    <div class="opt" data-i="2">The code was always scanning every row, and only the number of rows changed</div>
+    <div class="qexp">Unchanged code with growing data is the signature of the red line in Act 8. The scan was there on day one; it just was not expensive yet. Nobody wrote a faster algorithm to fix it, they finally paid for order.</div>
+  </div>
+
+  <div class="quiz" data-correct="0">
+    <div class="q">In Act 12, why does a RAG system turn your documents into points before you ever ask a question?</div>
+    <div class="opt" data-i="0">Because that is the order being paid for in advance, so the question only has to visit a neighbourhood</div>
+    <div class="opt" data-i="1">Because models cannot read plain text directly</div>
+    <div class="opt" data-i="2">Because it compresses the documents to save storage</div>
+    <div class="qexp">It is the labelled cupboard from Lesson 6.1. Embedding every document up front is the cost paid once, so that every later question skips the linear scan across gigabytes and lands near the answer instead.</div>
+  </div>
+
+  <div class="callout good">
+    <div class="ch">Chapter 6 complete</div>
+    <p>Search is the price you pay for order you did not keep. You have the three questions that pick the method for you, you have watched all seven methods run, and you have seen each of them inside a product you use. Next chapter: the thing that buys the order in the first place.</p>
+  </div>
+__NAV__
+</div>`
+};
+
+const SCOPE = {};
+
+/* ============================ SHARED SVG HELPERS ============================ */
+const CLR = {
+  ink:'#0f1a16', soft:'#43524c', mute:'#7e8b86',
+  line:'#c9d6d0', lineS:'#9fb3ab',
+  g700:'#0d5a45', g600:'#12785d', g500:'#19a077', g050:'#eaf5f0', g950:'#04211a',
+  gold:'#f0b429', gold6:'#c98a06', gold0:'#fdf5e0',
+  warn:'#b45309', warn0:'#fff5e9', bad:'#b3261e', bad0:'#fdf0ef',
+  grey:'#9aa5a1', grey0:'#f1f3f2', white:'#ffffff'
+};
+const KIND = {
+  box:    {fill:CLR.white,  stroke:CLR.lineS, text:CLR.ink},
+  accent: {fill:CLR.g050,   stroke:CLR.g600,  text:CLR.g700},
+  dark:   {fill:CLR.g700,   stroke:CLR.g700,  text:CLR.white},
+  gold:   {fill:CLR.gold0,  stroke:CLR.gold,  text:CLR.gold6},
+  warn:   {fill:CLR.warn0,  stroke:CLR.warn,  text:CLR.warn},
+  bad:    {fill:CLR.bad0,   stroke:CLR.bad,   text:CLR.bad},
+  muted:  {fill:CLR.grey0,  stroke:CLR.grey,  text:CLR.mute}
+};
+const FONT = "Hanken Grotesk, -apple-system, sans-serif";
+const MONO = "JetBrains Mono, ui-monospace, monospace";
+
+function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+/* deterministic text metrics. Hanken Grotesk averages ~0.53em per character. */
+function charW(fs){ return fs * 0.545; }
+function measure(text, maxChars, fs){
+  fs = fs || 12.5; maxChars = maxChars || 22;
+  const words = String(text == null ? '' : text).split(/\s+/).filter(Boolean);
+  const lines = []; let cur = '';
+  for (const w of words){
+    if (!cur) cur = w;
+    else if ((cur + ' ' + w).length <= maxChars) cur += ' ' + w;
+    else { lines.push(cur); cur = w; }
+  }
+  if (cur) lines.push(cur);
+  if (!lines.length) lines.push('');
+  const longest = lines.reduce((a,b)=> a.length > b.length ? a : b, '');
+  return { lines: lines, w: Math.ceil(longest.length * charW(fs)), h: lines.length * Math.round(fs * 1.32) };
+}
+function tspans(lines, cx, cy, fs, fill, weight){
+  const lh = Math.round(fs * 1.32);
+  const top = cy - ((lines.length - 1) * lh) / 2;
+  return lines.map(function(l,i){
+    return '<text x="' + cx + '" y="' + (top + i*lh) + '" text-anchor="middle" dominant-baseline="central" ' +
+      'font-family="' + FONT + '" font-size="' + fs + '" font-weight="' + (weight||600) + '" fill="' + fill + '">' + esc(l) + '</text>';
+  }).join('');
+}
+function labelAt(x, y, txt, fs, fill, anchor, weight){
+  return '<text x="' + x + '" y="' + y + '" text-anchor="' + (anchor||'middle') + '" dominant-baseline="central" ' +
+    'font-family="' + FONT + '" font-size="' + (fs||10.5) + '" font-weight="' + (weight||600) + '" fill="' + (fill||CLR.mute) + '">' + esc(txt) + '</text>';
+}
+function chip(x, y, txt, fs, fill, weight){
+  fs = fs || 10.5;
+  const w = String(txt).length * charW(fs) + 12, h = Math.round(fs * 1.7);
+  return '<rect x="' + (x - w/2) + '" y="' + (y - h/2) + '" width="' + w + '" height="' + h + '" rx="5" fill="#ffffff" opacity="0.95"/>' +
+    labelAt(x, y, txt, fs, fill || CLR.mute, 'middle', weight || 600);
+}
+function defsArrows(){
+  return '<defs>' +
+    '<marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">' +
+      '<path d="M0,0 L10,5 L0,10 z" fill="' + CLR.lineS + '"/></marker>' +
+    '<marker id="ahg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">' +
+      '<path d="M0,0 L10,5 L0,10 z" fill="' + CLR.g600 + '"/></marker>' +
+    '<marker id="ahy" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">' +
+      '<path d="M0,0 L10,5 L0,10 z" fill="' + CLR.gold6 + '"/></marker>' +
+  '</defs>';
+}
+function svgOpen(w,h){ return '<svg viewBox="0 0 ' + w + ' ' + h + '" width="' + w + '" role="img">' + defsArrows(); }
+
+/* shape drawing, every shape is centred on its own box */
+function shape(n){
+  const k = KIND[n.kind] || KIND.box;
+  const x = n.x, y = n.y, w = n.w, h = n.h;
+  const st = 'fill="' + k.fill + '" stroke="' + k.stroke + '" stroke-width="1.4"';
+  if (n.shape === 'diamond'){
+    const cx = x + w/2, cy = y + h/2;
+    return '<path d="M' + cx + ',' + y + ' L' + (x+w) + ',' + cy + ' L' + cx + ',' + (y+h) + ' L' + x + ',' + cy + ' Z" ' + st + '/>';
+  }
+  if (n.shape === 'pill')  return '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" rx="' + (h/2) + '" ' + st + '/>';
+  if (n.shape === 'cyl'){
+    const ry = 7;
+    return '<path d="M' + x + ',' + (y+ry) + ' a' + (w/2) + ',' + ry + ' 0 0 1 ' + w + ',0 v' + (h-2*ry) +
+      ' a' + (w/2) + ',' + ry + ' 0 0 1 ' + (-w) + ',0 Z" ' + st + '/>' +
+      '<path d="M' + x + ',' + (y+ry) + ' a' + (w/2) + ',' + ry + ' 0 0 0 ' + w + ',0" fill="none" stroke="' + k.stroke + '" stroke-width="1.2"/>';
+  }
+  return '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" rx="9" ' + st + '/>';
+}
+function nodeSvg(n){
+  const k = KIND[n.kind] || KIND.box;
+  return '<g>' + shape(n) + tspans(n.lines, n.x + n.w/2, n.y + n.h/2, n.fs || 12.5, k.text, 600) + '</g>';
+}
+
+/* orthogonal router. Edges only ever travel in the gutters between rows and columns. */
+function route(a, b, gy){
+  const ax = a.x + a.w/2, bx = b.x + b.w/2;
+  if (b.y >= a.y + a.h) {                                   /* downward */
+    if (Math.abs(ax - bx) < 2) return 'M' + ax + ',' + (a.y + a.h) + ' L' + bx + ',' + b.y;
+    const my = a.y + a.h + (gy/2);
+    return 'M' + ax + ',' + (a.y+a.h) + ' L' + ax + ',' + my + ' L' + bx + ',' + my + ' L' + bx + ',' + b.y;
+  }
+  if (b.x >= a.x + a.w) {                                   /* rightward */
+    const ay = a.y + a.h/2, by = b.y + b.h/2;
+    if (Math.abs(ay - by) < 2) return 'M' + (a.x+a.w) + ',' + ay + ' L' + b.x + ',' + by;
+    const mx = a.x + a.w + (gy/2);
+    return 'M' + (a.x+a.w) + ',' + ay + ' L' + mx + ',' + ay + ' L' + mx + ',' + by + ' L' + b.x + ',' + by;
+  }
+  if (b.x + b.w <= a.x) {                                   /* leftward */
+    const ay = a.y + a.h/2, by = b.y + b.h/2;
+    const mx = a.x - (gy/2);
+    return 'M' + a.x + ',' + ay + ' L' + mx + ',' + ay + ' L' + mx + ',' + by + ' L' + (b.x+b.w) + ',' + by;
+  }
+  const my2 = b.y + b.h + (gy/2);                           /* upward */
+  return 'M' + ax + ',' + a.y + ' L' + ax + ',' + (my2) + ' L' + bx + ',' + my2 + ' L' + bx + ',' + (b.y+b.h);
+}
+
+/* ============================ LAYOUT ENGINES ============================ */
+const GAP = { gx:56, gy:46, padX:15, padY:12, minW:104, minH:44 };
+
+/* layered: nodes carry col and row on an integer grid. No two nodes may share a cell,
+   so overlap is impossible by construction. Column widths and row heights are the max
+   of their members, and every node is centred in its cell. */
+function layoutLayered(nodes, opt){
+  opt = opt || {};
+  const gx = opt.gx || GAP.gx, gy = opt.gy || GAP.gy;
+  const seen = {};
+  nodes.forEach(function(n){
+    const key = n.col + ':' + n.row;
+    if (seen[key]) throw new Error('grid collision at col ' + n.col + ' row ' + n.row);
+    seen[key] = 1;
+    const m = measure(n.label, n.maxChars || opt.maxChars || 20, n.fs || 12.5);
+    n.lines = m.lines;
+    n.w = Math.max(opt.minW || GAP.minW, m.w + GAP.padX*2);
+    n.h = Math.max(GAP.minH, m.h + GAP.padY*2);
+    if (n.shape === 'diamond'){ n.w = Math.round(n.w * 1.42); n.h = Math.round(n.h * 1.55); }
+  });
+  const cols = {}, rows = {};
+  nodes.forEach(function(n){
+    cols[n.col] = Math.max(cols[n.col] || 0, n.w);
+    rows[n.row] = Math.max(rows[n.row] || 0, n.h);
+  });
+  const colKeys = Object.keys(cols).map(Number).sort(function(a,b){return a-b;});
+  const rowKeys = Object.keys(rows).map(Number).sort(function(a,b){return a-b;});
+  const colX = {}, rowY = {};
+  let x = 0; colKeys.forEach(function(c){ colX[c] = x; x += cols[c] + gx; });
+  let y = 0; rowKeys.forEach(function(r){ rowY[r] = y; y += rows[r] + gy; });
+  nodes.forEach(function(n){
+    n.x = colX[n.col] + (cols[n.col] - n.w)/2;
+    n.y = rowY[n.row] + (rows[n.row] - n.h)/2;
+  });
+  return { w: Math.max(0, x - gx), h: Math.max(0, y - gy), gy: gy };
+}
+
+/* browser-side safety net. Never fires when the grid contract is respected. */
+function assertNoOverlap(nodes, where){
+  for (let i=0;i<nodes.length;i++) for (let j=i+1;j<nodes.length;j++){
+    const a = nodes[i], b = nodes[j];
+    if (a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h){
+      console.warn('[viz] overlap in ' + where + ':', a.label, '<->', b.label);
+      return false;
+    }
+  }
+  return true;
+}
+
+/* ============================ VIZ RENDERERS ============================ */
+const PAD = 14;
+
+function frame(inner, w, h){
+  return svgOpen(w + PAD*2, h + PAD*2) + '<g transform="translate(' + PAD + ',' + PAD + ')">' + inner + '</g></svg>';
+}
+/* like frame, but the canvas grows to swallow anything that spilled outside the authored box */
+function frameFit(inner, boxes, w, h){
+  let minX = 0, minY = 0, maxX = w, maxY = h;
+  boxes.forEach(function(b){
+    minX = Math.min(minX, b.x); minY = Math.min(minY, b.y);
+    maxX = Math.max(maxX, b.x + b.w); maxY = Math.max(maxY, b.y + b.h);
+  });
+  return svgOpen(maxX - minX + PAD*2, maxY - minY + PAD*2) +
+    '<g transform="translate(' + (PAD - minX) + ',' + (PAD - minY) + ')">' + inner + '</g></svg>';
+}
+function pathMid(d){
+  const pts = (d.match(/[ML]([\d.-]+),([\d.-]+)/g) || []).map(function(t){
+    const p = t.slice(1).split(','); return [parseFloat(p[0]), parseFloat(p[1])];
+  });
+  if (pts.length < 2) return null;
+  let total = 0; const seg = [];
+  for (let i = 1; i < pts.length; i++){
+    const l = Math.hypot(pts[i][0] - pts[i-1][0], pts[i][1] - pts[i-1][1]);
+    seg.push(l); total += l;
+  }
+  let want = total / 2;
+  for (let i = 0; i < seg.length; i++){
+    if (want <= seg[i] || i === seg.length - 1){
+      const t = seg[i] ? want / seg[i] : 0;
+      return [pts[i][0] + (pts[i+1][0] - pts[i][0]) * t, pts[i][1] + (pts[i+1][1] - pts[i][1]) * t];
+    }
+    want -= seg[i];
+  }
+  return null;
+}
+function edgeSvg(d, label, style, gy, sink){
+  const gold = style === 'gold', green = style === 'green', dash = style === 'dashed';
+  const col = gold ? CLR.gold6 : green ? CLR.g600 : CLR.lineS;
+  const mk  = gold ? 'ahy' : green ? 'ahg' : 'ah';
+  let out = '<path d="' + d + '" fill="none" stroke="' + col + '" stroke-width="1.5" ' +
+    (dash ? 'stroke-dasharray="5 4" ' : '') + 'marker-end="url(#' + mk + ')"/>';
+  if (label){
+    const p = pathMid(d);
+    if (p){
+      if (sink) sink.push([p[0], p[1], label, col]);
+      else out += chip(p[0], p[1], label, 10, col, 600);
+    }
+  }
+  return out;
+}
+
+/* ---- layered family: flowchart, decision tree, state, user flow, architecture, component, IA ---- */
+function renderLayered(spec, preset){
+  const nodes = (spec.nodes || []).map(function(n){
+    return Object.assign({}, n, { shape: n.shape || preset.shape || 'box', kind: n.kind || preset.kind || 'box' });
+  });
+  const edges = spec.edges || [];
+  const widest = edges.reduce(function(m, e){
+    return Math.max(m, e.label ? String(e.label).length * charW(10) + 22 : 0);
+  }, 0);
+  const gx = Math.max(spec.gx || preset.gx || GAP.gx, widest);
+  const box = layoutLayered(nodes, { gx: gx, gy: spec.gy || preset.gy, maxChars: spec.maxChars });
+  assertNoOverlap(nodes, spec.title || preset.name);
+  const by = {}; nodes.forEach(function(n){ by[n.id] = n; });
+  const addr = !!preset.addressable;
+  const elabels = [];
+  let out = '';
+  edges.forEach(function(e){
+    const a = by[e.from], b = by[e.to];
+    if (!a || !b) return;
+    const sink = [];
+    const path = edgeSvg(route(a, b, box.gy), e.label, e.style, box.gy, sink);
+    sink.forEach(function(l){ elabels.push([l[0], l[1], l[2], l[3], e.from + '-' + e.to]); });
+    out += addr ? '<g class="ge" data-e="' + e.from + '-' + e.to + '" opacity="1">' + path + '</g>' : path;
+  });
+  nodes.forEach(function(n){
+    out += addr ? '<g class="cell" data-i="' + n.id + '" opacity="1">' + nodeSvg(n) + '</g>' : nodeSvg(n);
+  });
+  elabels.forEach(function(l){
+    const c = chip(l[0], l[1], l[2], 10, l[3], 600);
+    out += addr ? '<g class="ge" data-e="' + l[4] + '" opacity="1">' + c + '</g>' : c;
+  });
+  (spec.groups || []).forEach(function(g){
+    const mem = g.nodes.map(function(id){ return by[id]; }).filter(Boolean);
+    if (!mem.length) return;
+    const x1 = Math.min.apply(null, mem.map(function(n){return n.x;})) - 14;
+    const y1 = Math.min.apply(null, mem.map(function(n){return n.y;})) - 26;
+    const x2 = Math.max.apply(null, mem.map(function(n){return n.x + n.w;})) + 14;
+    const y2 = Math.max.apply(null, mem.map(function(n){return n.y + n.h;})) + 14;
+    out = '<g><rect x="' + x1 + '" y="' + y1 + '" width="' + (x2-x1) + '" height="' + (y2-y1) + '" rx="13" fill="none" ' +
+          'stroke="' + CLR.line + '" stroke-width="1.2" stroke-dasharray="6 5"/>' +
+          labelAt(x1 + 12, y1 + 12, g.label, 10, CLR.mute, 'start', 700) + '</g>' + out;
+  });
+  return frame(out, box.w, box.h);
+}
+
+/* ---- sequence diagram ---- */
+function renderSeq(spec){
+  const actors = spec.actors || [];
+  const msgs = spec.messages || [];
+  const colW = 168, headH = 46, top = headH + 26, stepH = 46;
+  const w = Math.max(colW * actors.length, 420);
+  const h = top + msgs.length * stepH + 20;
+  const cx = actors.map(function(_, i){ return i * colW + colW/2; });
+  let out = '';
+  actors.forEach(function(a, i){
+    const m = measure(a.label || a, 18, 12);
+    const bw = Math.max(120, m.w + 26), bx = cx[i] - bw/2;
+    const k = KIND[(a.kind) || 'accent'];
+    out += '<rect x="' + bx + '" y="0" width="' + bw + '" height="' + headH + '" rx="10" fill="' + k.fill + '" stroke="' + k.stroke + '" stroke-width="1.4"/>' +
+           tspans(m.lines, cx[i], headH/2, 12, k.text, 700) +
+           '<line x1="' + cx[i] + '" y1="' + headH + '" x2="' + cx[i] + '" y2="' + (h - 12) + '" stroke="' + CLR.line + '" stroke-width="1.2" stroke-dasharray="4 5"/>';
+  });
+  msgs.forEach(function(mg, i){
+    const y = top + i * stepH;
+    const a = cx[mg.from], b = cx[mg.to];
+    const col = mg.style === 'gold' ? CLR.gold6 : mg.style === 'green' ? CLR.g600 : CLR.lineS;
+    const mk  = mg.style === 'gold' ? 'ahy' : mg.style === 'green' ? 'ahg' : 'ah';
+    if (a === b){
+      out += '<path d="M' + a + ',' + y + ' h34 v22 h-34" fill="none" stroke="' + col + '" stroke-width="1.5" marker-end="url(#' + mk + ')"/>' +
+             labelAt(a + 44, y + 11, mg.label, 10.5, CLR.soft, 'start', 600);
+    } else {
+      out += '<line x1="' + a + '" y1="' + y + '" x2="' + b + '" y2="' + y + '" stroke="' + col + '" stroke-width="1.5" ' +
+             (mg.style === 'dashed' ? 'stroke-dasharray="5 4" ' : '') + 'marker-end="url(#' + mk + ')"/>';
+      const mx = (a + b)/2, lw = String(mg.label || '').length * charW(10.5) + 12;
+      out += '<rect x="' + (mx - lw/2) + '" y="' + (y - 19) + '" width="' + lw + '" height="17" rx="5" fill="#ffffff"/>' +
+             labelAt(mx, y - 11, mg.label, 10.5, CLR.soft, 'middle', 600);
+    }
+    out += labelAt(-6, y, String(i+1), 9.5, CLR.mute, 'end', 700);
+  });
+  return frame(out, w, h);
+}
+
+/* ---- swimlane ---- */
+function renderSwim(spec){
+  const lanes = spec.lanes || [], steps = spec.steps || [];
+  const laneW = 132, colW = 176, laneH = 78;
+  const ncol = Math.max.apply(null, steps.map(function(s){ return s.col; }).concat([0])) + 1;
+  const w = laneW + ncol * colW, h = lanes.length * laneH;
+  let out = '';
+  lanes.forEach(function(l, i){
+    const y = i * laneH;
+    out += '<rect x="0" y="' + y + '" width="' + w + '" height="' + laneH + '" fill="' + (i % 2 ? CLR.grey0 : '#ffffff') + '"/>' +
+           '<rect x="0" y="' + y + '" width="' + laneW + '" height="' + laneH + '" fill="' + CLR.g050 + '"/>' +
+           '<line x1="0" y1="' + y + '" x2="' + w + '" y2="' + y + '" stroke="' + CLR.line + '" stroke-width="1"/>';
+    const m = measure(l.label || l, 15, 12);
+    out += tspans(m.lines, laneW/2, y + laneH/2, 12, CLR.g700, 700);
+  });
+  out += '<line x1="0" y1="' + h + '" x2="' + w + '" y2="' + h + '" stroke="' + CLR.line + '" stroke-width="1"/>' +
+         '<line x1="' + laneW + '" y1="0" x2="' + laneW + '" y2="' + h + '" stroke="' + CLR.lineS + '" stroke-width="1.2"/>';
+  const pos = {};
+  steps.forEach(function(s){
+    const m = measure(s.label, 18, 11.5);
+    const bw = Math.min(colW - 26, Math.max(112, m.w + 22)), bh = Math.max(38, m.h + 18);
+    const x = laneW + s.col * colW + (colW - bw)/2, y = s.lane * laneH + (laneH - bh)/2;
+    pos[s.id != null ? s.id : (s.lane + '-' + s.col)] = { x:x, y:y, w:bw, h:bh };
+    const k = KIND[s.kind || 'box'];
+    out += '<rect x="' + x + '" y="' + y + '" width="' + bw + '" height="' + bh + '" rx="9" fill="' + k.fill + '" stroke="' + k.stroke + '" stroke-width="1.4"/>' +
+           tspans(m.lines, x + bw/2, y + bh/2, 11.5, k.text, 600);
+  });
+  (spec.edges || []).forEach(function(e){
+    const a = pos[e.from], b = pos[e.to];
+    if (a && b) out = out + edgeSvg(route(a, b, 34), e.label, e.style, 34);
+  });
+  return frame(out, w, h);
+}
+
+/* ---- journey map ---- */
+function renderJourney(spec){
+  const st = spec.stages || [];
+  const colW = 172, rowLabelW = 108, rows = ['Stage','Doing','Thinking'];
+  const rowH = 62, feelH = 92;
+  const w = rowLabelW + st.length * colW, h = rows.length * rowH + feelH + 26;
+  let out = '';
+  rows.forEach(function(r, i){
+    const y = i * rowH;
+    out += '<rect x="0" y="' + y + '" width="' + w + '" height="' + rowH + '" fill="' + (i === 0 ? CLR.g050 : (i % 2 ? '#ffffff' : CLR.grey0)) + '"/>' +
+           '<line x1="0" y1="' + y + '" x2="' + w + '" y2="' + y + '" stroke="' + CLR.line + '"/>' +
+           labelAt(12, y + rowH/2, r, 10, CLR.mute, 'start', 700);
+  });
+  st.forEach(function(s, i){
+    const x = rowLabelW + i * colW;
+    out += '<line x1="' + x + '" y1="0" x2="' + x + '" y2="' + (rows.length*rowH) + '" stroke="' + CLR.line + '"/>';
+    [s.stage, s.doing, s.thinking].forEach(function(txt, r){
+      const m = measure(txt || '', 20, r === 0 ? 12.5 : 11);
+      out += tspans(m.lines, x + colW/2, r*rowH + rowH/2, r === 0 ? 12.5 : 11, r === 0 ? CLR.g700 : CLR.soft, r === 0 ? 700 : 500);
+    });
+  });
+  const fy = rows.length * rowH + 14;
+  out += '<rect x="0" y="' + fy + '" width="' + w + '" height="' + feelH + '" fill="#ffffff"/>' +
+         labelAt(12, fy + feelH/2, 'Feeling', 10, CLR.mute, 'start', 700);
+  const pts = st.map(function(s, i){
+    const v = Math.max(1, Math.min(5, s.feeling || 3));
+    return [rowLabelW + i*colW + colW/2, fy + feelH - ((v-1)/4) * (feelH - 26) - 13];
+  });
+  out += '<polyline points="' + pts.map(function(p){return p[0]+','+p[1];}).join(' ') + '" fill="none" stroke="' + CLR.gold + '" stroke-width="2.4" stroke-linejoin="round"/>';
+  pts.forEach(function(p, i){
+    const v = st[i].feeling || 3;
+    const c = v >= 4 ? CLR.g600 : v <= 2 ? CLR.bad : CLR.gold6;
+    out += '<circle cx="' + p[0] + '" cy="' + p[1] + '" r="6" fill="#ffffff" stroke="' + c + '" stroke-width="2.4"/>';
+  });
+  return frame(out, w, h);
+}
+
+/* ---- network and knowledge graph: authored coordinates on a unit grid ---- */
+function renderNet(spec){
+  const unit = spec.unit || 118;
+  const nodes = (spec.nodes || []).map(function(n){
+    const m = measure(n.label, n.maxChars || 16, 11.5);
+    const r = Math.max(30, m.w/2 + 13);
+    return Object.assign({}, n, { lines:m.lines, cx:n.x*unit, cy:n.y*unit, r:r, kind:n.kind || 'box' });
+  });
+  const minX = Math.min.apply(null, nodes.map(function(n){return n.cx - n.r;}));
+  const minY = Math.min.apply(null, nodes.map(function(n){return n.cy - n.r - 4;}));
+  nodes.forEach(function(n){ n.cx -= minX; n.cy -= minY; });
+  const maxX = Math.max.apply(null, nodes.map(function(n){return n.cx + n.r;}));
+  const maxY = Math.max.apply(null, nodes.map(function(n){return n.cy + n.r;}));
+  const by = {}; nodes.forEach(function(n){ by[n.id] = n; });
+  let out = '';
+  (spec.edges || []).forEach(function(e){
+    const a = by[e.from], b = by[e.to];
+    if (!a || !b) return;
+    const dx = b.cx-a.cx, dy = b.cy-a.cy, d = Math.sqrt(dx*dx+dy*dy) || 1;
+    const x1 = a.cx + dx/d*a.r, y1 = a.cy + dy/d*a.r, x2 = b.cx - dx/d*(b.r+7), y2 = b.cy - dy/d*(b.r+7);
+    const col = e.style === 'gold' ? CLR.gold6 : e.style === 'green' ? CLR.g600 : CLR.lineS;
+    const mk  = e.style === 'gold' ? 'ahy' : e.style === 'green' ? 'ahg' : 'ah';
+    out += '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '" stroke="' + col + '" stroke-width="1.5" ' +
+           (e.dashed ? 'stroke-dasharray="5 4" ' : '') + (e.arrow === false ? '' : 'marker-end="url(#' + mk + ')"');
+    out += '/>';
+    if (e.label){
+      const mx = (x1+x2)/2, my = (y1+y2)/2, lw = String(e.label).length * charW(10) + 10;
+      out += '<rect x="' + (mx-lw/2) + '" y="' + (my-9) + '" width="' + lw + '" height="18" rx="5" fill="#ffffff" opacity="0.95"/>' +
+             labelAt(mx, my, e.label, 10, col, 'middle', 600);
+    }
+  });
+  nodes.forEach(function(n){
+    const k = KIND[n.kind];
+    out += '<circle cx="' + n.cx + '" cy="' + n.cy + '" r="' + n.r + '" fill="' + k.fill + '" stroke="' + k.stroke + '" stroke-width="1.6"/>' +
+           tspans(n.lines, n.cx, n.cy, 11.5, k.text, 600);
+  });
+  return frame(out, maxX, maxY);
+}
+
+/* ---- entity relationship diagram ---- */
+function renderErd(spec){
+  const ents = spec.entities || [];
+  const colW = 236, rowGap = 40, headH = 38, fieldH = 25;
+  const placed = ents.map(function(e){
+    const h = headH + (e.fields || []).length * fieldH;
+    return Object.assign({}, e, { w:200, h:h });
+  });
+  const cols = {}, rows = {};
+  placed.forEach(function(e){ cols[e.col] = 1; rows[e.row] = Math.max(rows[e.row]||0, e.h); });
+  const rowKeys = Object.keys(rows).map(Number).sort(function(a,b){return a-b;});
+  const rowY = {}; let y = 0;
+  rowKeys.forEach(function(r){ rowY[r] = y; y += rows[r] + rowGap; });
+  placed.forEach(function(e){ e.x = e.col * colW; e.y = rowY[e.row]; });
+  const w = Math.max.apply(null, placed.map(function(e){return e.x + e.w;}));
+  const h = Math.max(0, y - rowGap);
+  const by = {}; placed.forEach(function(e){ by[e.name] = e; });
+  let out = '';
+  (spec.rels || []).forEach(function(r){
+    const a = by[r.from], b = by[r.to];
+    if (a && b) out += edgeSvg(route(a, b, rowGap), r.label, 'green', rowGap);
+  });
+  placed.forEach(function(e){
+    out += '<rect x="' + e.x + '" y="' + e.y + '" width="' + e.w + '" height="' + e.h + '" rx="10" fill="#ffffff" stroke="' + CLR.lineS + '" stroke-width="1.4"/>' +
+           '<path d="M' + e.x + ',' + (e.y+10) + ' a10,10 0 0 1 10,-10 h180 a10,10 0 0 1 10,10 v' + (headH-10) + ' h-200 Z" fill="' + CLR.g700 + '"/>' +
+           labelAt(e.x + e.w/2, e.y + headH/2, e.name, 12.5, '#ffffff', 'middle', 700);
+    (e.fields || []).forEach(function(f, i){
+      const fy = e.y + headH + i*fieldH;
+      out += '<line x1="' + e.x + '" y1="' + fy + '" x2="' + (e.x+e.w) + '" y2="' + fy + '" stroke="' + CLR.line + '"/>' +
+             labelAt(e.x + 12, fy + fieldH/2, f.name, 11, f.key ? CLR.gold6 : CLR.soft, 'start', f.key ? 700 : 500) +
+             labelAt(e.x + e.w - 12, fy + fieldH/2, f.type || '', 10, CLR.mute, 'end', 500);
+    });
+  });
+  return frame(out, w, h);
+}
+
+/* ---- screen wireframe ---- */
+function renderWire(spec){
+  const w = spec.width || 520, colU = w/12;
+  const blocks = spec.blocks || [];
+  const h = Math.max.apply(null, blocks.map(function(b){ return (b.y + b.h) * 26; })) + 62;
+  let out = '<rect x="0" y="0" width="' + w + '" height="' + h + '" rx="14" fill="#ffffff" stroke="' + CLR.lineS + '" stroke-width="1.6"/>' +
+            '<rect x="0" y="0" width="' + w + '" height="34" rx="14" fill="' + CLR.grey0 + '"/>' +
+            '<rect x="0" y="24" width="' + w + '" height="10" fill="' + CLR.grey0 + '"/>' +
+            '<line x1="0" y1="34" x2="' + w + '" y2="34" stroke="' + CLR.line + '"/>';
+  ['#e06c5f','#e8bb50','#6fbf73'].forEach(function(c, i){ out += '<circle cx="' + (18 + i*15) + '" cy="17" r="4.6" fill="' + c + '"/>'; });
+  if (spec.screen) out += labelAt(w/2, 17, spec.screen, 10.5, CLR.mute, 'middle', 600);
+  blocks.forEach(function(b){
+    const x = b.x * colU + 14, y = b.y * 26 + 48, bw = b.w * colU - 12, bh = b.h * 26 - 10;
+    const k = KIND[b.kind || 'muted'];
+    out += '<rect x="' + x + '" y="' + y + '" width="' + bw + '" height="' + bh + '" rx="8" fill="' + k.fill + '" stroke="' + k.stroke + '" stroke-width="1.3" ' +
+           (b.dashed ? 'stroke-dasharray="5 4"' : '') + '/>';
+    if (b.label){
+      const m = measure(b.label, Math.max(8, Math.floor(bw / charW(11.5))), 11.5);
+      out += tspans(m.lines, x + bw/2, y + bh/2, 11.5, k.text, 600);
+    }
+  });
+  return frame(out, w, h);
+}
+
+/* ---- intelligence card mockup ---- */
+function renderCard(spec){
+  const w = spec.width || 380, rows = spec.rows || [];
+  const h = 74 + rows.length * 40 + (spec.footer ? 40 : 12);
+  let out = '<rect x="0" y="0" width="' + w + '" height="' + h + '" rx="16" fill="#ffffff" stroke="' + CLR.lineS + '" stroke-width="1.5"/>' +
+            '<path d="M0,16 a16,16 0 0 1 16,-16 h' + (w-32) + ' a16,16 0 0 1 16,16 v46 h' + (-w) + ' Z" fill="' + CLR.g700 + '"/>' +
+            labelAt(20, 24, (spec.eyebrow || 'INSIGHT'), 9.5, CLR.gold, 'start', 700) +
+            labelAt(20, 44, spec.title || '', 14.5, '#ffffff', 'start', 700);
+  if (spec.badge){
+    const bw = String(spec.badge).length * charW(10) + 18;
+    out += '<rect x="' + (w - bw - 18) + '" y="24" width="' + bw + '" height="22" rx="11" fill="' + CLR.gold + '"/>' +
+           labelAt(w - bw/2 - 18, 35, spec.badge, 10, CLR.g950, 'middle', 700);
+  }
+  rows.forEach(function(r, i){
+    const y = 74 + i*40;
+    out += '<line x1="16" y1="' + y + '" x2="' + (w-16) + '" y2="' + y + '" stroke="' + CLR.line + '"/>' +
+           labelAt(20, y + 20, r.k, 11, CLR.mute, 'start', 600) +
+           labelAt(w - 20, y + 20, r.v, 12.5, r.tone === 'good' ? CLR.g600 : r.tone === 'bad' ? CLR.bad : CLR.ink, 'end', 700);
+    if (r.bar != null){
+      const bw = (w - 40) * Math.max(0, Math.min(1, r.bar));
+      out += '<rect x="20" y="' + (y + 30) + '" width="' + (w-40) + '" height="4" rx="2" fill="' + CLR.grey0 + '"/>' +
+             '<rect x="20" y="' + (y + 30) + '" width="' + bw + '" height="4" rx="2" fill="' + (r.tone === 'bad' ? CLR.bad : CLR.g500) + '"/>';
+    }
+  });
+  if (spec.footer) out += labelAt(20, h - 20, spec.footer, 11, CLR.mute, 'start', 500);
+  return frame(out, w, h);
+}
+
+/* ---- growth curves ---- */
+function renderCurve(spec){
+  const w = spec.width || 520, h = spec.height || 250, ml = 46, mb = 34, mt = 14, mr = 96;
+  const px = w - ml - mr, py = h - mt - mb;
+  const N = spec.n || 32;
+  const FN = {
+    '1':      function(){ return 1; },
+    'logn':   function(n){ return Math.log2(n + 1); },
+    'n':      function(n){ return n; },
+    'nlogn':  function(n){ return n * Math.log2(n + 1); },
+    'n2':     function(n){ return n*n; },
+    '2n':     function(n){ return Math.pow(2, Math.min(n, 12)); }
+  };
+  const series = (spec.series || []).map(function(s){
+    const f = FN[s.fn] || FN.n;
+    const pts = []; for (let i = 1; i <= N; i++) pts.push([i, f(i)]);
+    return { label:s.label, color:s.color === 'gold' ? CLR.gold : s.color === 'bad' ? CLR.bad : s.color === 'green' ? CLR.g600 : CLR.grey, pts:pts };
+  });
+  const maxY = spec.maxY || Math.max.apply(null, series.map(function(s){ return s.pts[s.pts.length-1][1]; }));
+  let out = '<line x1="' + ml + '" y1="' + mt + '" x2="' + ml + '" y2="' + (mt+py) + '" stroke="' + CLR.lineS + '" stroke-width="1.2"/>' +
+            '<line x1="' + ml + '" y1="' + (mt+py) + '" x2="' + (ml+px) + '" y2="' + (mt+py) + '" stroke="' + CLR.lineS + '" stroke-width="1.2"/>' +
+            labelAt(ml + px/2, mt + py + 22, spec.xlabel || 'how much data', 11, CLR.mute, 'middle', 600) +
+            '<g transform="translate(14,' + (mt + py/2) + ') rotate(-90)">' + labelAt(0, 0, spec.ylabel || 'steps of work', 11, CLR.mute, 'middle', 600) + '</g>';
+  series.forEach(function(s){
+    const d = s.pts.map(function(p, i){
+      const x = ml + (p[0]/N) * px, y = mt + py - Math.min(1, p[1]/maxY) * py;
+      return (i ? 'L' : 'M') + x.toFixed(1) + ',' + y.toFixed(1);
+    }).join(' ');
+    out += '<path d="' + d + '" fill="none" stroke="' + s.color + '" stroke-width="2.4" stroke-linecap="round"/>';
+    const last = s.pts[s.pts.length-1];
+    const ly = mt + py - Math.min(1, last[1]/maxY) * py;
+    out += labelAt(ml + px + 9, Math.max(mt + 6, ly), s.label, 11, s.color, 'start', 700);
+  });
+  return frame(out, w, h);
+}
+
+/* ---- real-life scene: a tiny illustration primitive set ---- */
+/* --- collision helpers, so a hand placed scene can heal itself --- */
+function rectsHit(a, b){
+  return a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h;
+}
+function segHitsRect(x1, y1, x2, y2, r){
+  if (Math.max(x1,x2) < r.x || Math.min(x1,x2) > r.x + r.w) return false;
+  if (Math.max(y1,y2) < r.y || Math.min(y1,y2) > r.y + r.h) return false;
+  const steps = 24;
+  for (let i = 0; i <= steps; i++){
+    const t = i/steps, px = x1 + (x2-x1)*t, py = y1 + (y2-y1)*t;
+    if (px >= r.x && px <= r.x + r.w && py >= r.y && py <= r.y + r.h) return true;
+  }
+  return false;
+}
+function iconBox(it){
+  const s = it.scale || 1.3;
+  const W = { person:44, doc:40, server:52, phone:38, glass:52, shelf:88, pile:70 }[it.icon] || 110;
+  const H = { person:60, doc:60, server:56, phone:60, glass:48, shelf:60, pile:44 }[it.icon] || 46;
+  return { x: it.x - (W*s)/2, y: it.y - (H*s)/2, w: W*s, h: H*s };
+}
+function sceneIcon(it){
+  const x = it.x, y = it.y, k = KIND[it.kind || 'box'], s = it.scale || 1.3;
+  const cap = '';
+  if (it.icon === 'person'){
+    return '<g><circle cx="' + x + '" cy="' + (y-14*s) + '" r="' + (10*s) + '" fill="' + k.fill + '" stroke="' + k.stroke + '" stroke-width="1.6"/>' +
+      '<path d="M' + (x-15*s) + ',' + (y+18*s) + ' a' + (15*s) + ',' + (17*s) + ' 0 0 1 ' + (30*s) + ',0 Z" fill="' + k.fill + '" stroke="' + k.stroke + '" stroke-width="1.6"/></g>' + cap;
+  }
+  if (it.icon === 'doc'){
+    return '<g><path d="M' + (x-13*s) + ',' + (y-20*s) + ' h' + (18*s) + ' l' + (8*s) + ',' + (8*s) + ' v' + (32*s) + ' h' + (-26*s) + ' Z" fill="' + k.fill + '" stroke="' + k.stroke + '" stroke-width="1.5"/>' +
+      '<path d="M' + (x-7*s) + ',' + (y-4*s) + ' h' + (14*s) + ' M' + (x-7*s) + ',' + (y+4*s) + ' h' + (14*s) + '" stroke="' + k.stroke + '" stroke-width="1.2"/></g>' + cap;
+  }
+  if (it.icon === 'server'){
+    return '<g>' + [0,1,2].map(function(i){
+      return '<rect x="' + (x-19*s) + '" y="' + (y-22*s + i*15*s) + '" width="' + (38*s) + '" height="' + (12*s) + '" rx="3" fill="' + k.fill + '" stroke="' + k.stroke + '" stroke-width="1.4"/>' +
+             '<circle cx="' + (x-12*s) + '" cy="' + (y-16*s + i*15*s) + '" r="2" fill="' + CLR.g500 + '"/>';
+    }).join('') + '</g>' + cap;
+  }
+  if (it.icon === 'phone'){
+    return '<g><rect x="' + (x-14*s) + '" y="' + (y-26*s) + '" width="' + (28*s) + '" height="' + (50*s) + '" rx="6" fill="' + k.fill + '" stroke="' + k.stroke + '" stroke-width="1.6"/>' +
+      '<rect x="' + (x-9*s) + '" y="' + (y-19*s) + '" width="' + (18*s) + '" height="' + (30*s) + '" rx="2" fill="' + CLR.grey0 + '"/></g>' + cap;
+  }
+  if (it.icon === 'glass'){
+    return '<g><circle cx="' + x + '" cy="' + (y-6*s) + '" r="' + (14*s) + '" fill="none" stroke="' + k.stroke + '" stroke-width="2.4"/>' +
+      '<line x1="' + (x+10*s) + '" y1="' + (y+4*s) + '" x2="' + (x+22*s) + '" y2="' + (y+16*s) + '" stroke="' + k.stroke + '" stroke-width="2.8" stroke-linecap="round"/></g>' + cap;
+  }
+  if (it.icon === 'shelf'){
+    return '<g>' + [0,1].map(function(r){ return [0,1,2,3].map(function(c){
+      return '<rect x="' + (x-34*s + c*18*s) + '" y="' + (y-22*s + r*22*s) + '" width="' + (13*s) + '" height="' + (18*s) + '" rx="2" fill="' + k.fill + '" stroke="' + k.stroke + '" stroke-width="1.2"/>';
+    }).join(''); }).join('') +
+      '<line x1="' + (x-38*s) + '" y1="' + (y-2*s) + '" x2="' + (x+38*s) + '" y2="' + (y-2*s) + '" stroke="' + CLR.lineS + '" stroke-width="2"/>' +
+      '<line x1="' + (x-38*s) + '" y1="' + (y+22*s) + '" x2="' + (x+38*s) + '" y2="' + (y+22*s) + '" stroke="' + CLR.lineS + '" stroke-width="2"/></g>' + cap;
+  }
+  if (it.icon === 'pile'){
+    return '<g>' + [0,1,2,3,4,5].map(function(i){
+      const ox = ((i*37) % 44) - 22, oy = ((i*53) % 26) - 13;
+      return '<rect x="' + (x+ox*s) + '" y="' + (y+oy*s) + '" width="' + (15*s) + '" height="' + (12*s) + '" rx="2" fill="' + k.fill + '" stroke="' + k.stroke + '" stroke-width="1.2" transform="rotate(' + ((i*29)%40 - 20) + ' ' + (x+ox*s) + ' ' + (y+oy*s) + ')"/>';
+    }).join('') + '</g>' + cap;
+  }
+  const m = measure(it.label || '', 16, 11.5);
+  const bw = Math.max(96, m.w + 24), bh = Math.max(38, m.h + 18);
+  return '<g><rect x="' + (x-bw/2) + '" y="' + (y-bh/2) + '" width="' + bw + '" height="' + bh + '" rx="9" fill="' + k.fill + '" stroke="' + k.stroke + '" stroke-width="1.4"/>' +
+    tspans(m.lines, x, y, 11.5, k.text, 600) + '</g>';
+}
+function renderScene(spec){
+  const items = spec.items || [];
+  const w = spec.width || 560, h = spec.height || 220;
+  const arrows = spec.arrows || [];
+  let lines = '', labels = '';
+  arrows.forEach(function(a){
+    const col = a.style === 'gold' ? CLR.gold6 : a.style === 'green' ? CLR.g600 : CLR.lineS;
+    const mk  = a.style === 'gold' ? 'ahy' : a.style === 'green' ? 'ahg' : 'ah';
+    lines += '<line x1="' + a.x1 + '" y1="' + a.y1 + '" x2="' + a.x2 + '" y2="' + a.y2 + '" stroke="' + col + '" stroke-width="1.8" ' +
+             (a.dashed ? 'stroke-dasharray="5 4" ' : '') + 'marker-end="url(#' + mk + ')"/>';
+    if (a.label){
+      const dx = a.x2-a.x1, dy = a.y2-a.y1, L = Math.hypot(dx,dy) || 1;
+      const off = a.off == null ? 20 : a.off;
+      labels += chip((a.x1+a.x2)/2 - (dy/L)*off, (a.y1+a.y2)/2 + (dx/L)*off, a.label, 10.5, col, 700);
+    }
+  });
+  /* draw order matters: connective lines first, then the objects, then every label on top,
+     so a caption can never end up underneath the line it is describing */
+  const body = items.map(sceneIcon).join('');
+
+  /* every caption is placed against everything already on the board: the icons, the arrow
+     chips, the arrow lines themselves, and the captions placed before it. The first
+     candidate slot that collides with nothing wins, so a scene cannot render on top of itself. */
+  const taken = items.map(iconBox);
+  arrows.forEach(function(a){
+    if (!a.label) return;
+    const dx = a.x2-a.x1, dy = a.y2-a.y1, L = Math.hypot(dx,dy) || 1;
+    const off = a.off == null ? 20 : a.off;
+    const cw = String(a.label).length * charW(10.5) + 12;
+    taken.push({ x:(a.x1+a.x2)/2 - (dy/L)*off - cw/2, y:(a.y1+a.y2)/2 + (dx/L)*off - 9, w:cw, h:18 });
+  });
+  let caps = '';
+  items.forEach(function(it){
+    if (!it.label) return;
+    const sc = it.scale || 1.3, ib = iconBox(it);
+    const cw = String(it.label).length * charW(11) + 14, chh = 20;
+    const slots = [ ib.y + ib.h + 16, ib.y - 16 - chh, ib.y + ib.h + 40, ib.y - 40 - chh ];
+    let cy = slots[0];
+    for (const cand of slots){
+      const r = { x: it.x - cw/2, y: cand, w: cw, h: chh };
+      const hitsBox = taken.some(function(t){ return rectsHit(r, t); });
+      const hitsLine = arrows.some(function(a){ return segHitsRect(a.x1, a.y1, a.x2, a.y2, r); });
+      if (!hitsBox && !hitsLine){ cy = cand; break; }
+    }
+    taken.push({ x: it.x - cw/2, y: cy, w: cw, h: chh });
+    caps += chip(it.x, cy + chh/2, it.label, 11, CLR.soft, 600);
+  });
+  arrows.forEach(function(a){
+    taken.push({ x:Math.min(a.x1,a.x2), y:Math.min(a.y1,a.y2), w:Math.abs(a.x2-a.x1), h:Math.abs(a.y2-a.y1) });
+  });
+  return frameFit(lines + body + caps + labels, taken, w, h);
+}
+
+/* ============================ VIZ REGISTRY ============================ */
+const VIZ = {};
+VIZ['flow']      = function(s){ return renderLayered(s, {name:'flowchart',  shape:'box',  kind:'box'}); };
+VIZ['dtree']     = function(s){ return renderLayered(s, {name:'decision tree', shape:'box', kind:'box'}); };
+VIZ['state']     = function(s){ return renderLayered(s, {name:'state diagram', shape:'pill', kind:'accent'}); };
+VIZ['uflow']     = function(s){ return renderLayered(s, {name:'user flow', shape:'box', kind:'box'}); };
+VIZ['ia']        = function(s){ return renderLayered(s, {name:'information architecture', shape:'box', kind:'muted'}); };
+VIZ['arch']      = function(s){ return renderLayered(s, {name:'architecture', shape:'box', kind:'box'}); };
+VIZ['component'] = function(s){ return renderLayered(s, {name:'component diagram', shape:'box', kind:'muted'}); };
+VIZ['seq']       = renderSeq;
+VIZ['swim']      = renderSwim;
+VIZ['journey']   = renderJourney;
+VIZ['net']       = renderNet;
+VIZ['kgraph']    = renderNet;
+VIZ['erd']       = renderErd;
+VIZ['wire']      = renderWire;
+VIZ['card']      = renderCard;
+VIZ['curve']     = renderCurve;
+VIZ['scene']     = renderScene;
+
+const VIZ_KIND = {
+  flow:'Flowchart', dtree:'Decision tree', state:'State diagram', uflow:'User flow',
+  ia:'Information architecture', arch:'Architecture diagram', component:'Component diagram',
+  seq:'Sequence diagram', swim:'Swimlane diagram', journey:'Journey map', net:'Network diagram',
+  kgraph:'Knowledge graph', erd:'Entity relationship diagram', wire:'Screen wireframe',
+  card:'Intelligence card', curve:'Growth chart', scene:'Real life'
+};
+
+function mountViz(root){
+  (root || document).querySelectorAll('.viz[data-viz]').forEach(function(el){
+    if (el.dataset.mounted) return;
+    let spec;
+    try { spec = JSON.parse(el.getAttribute('data-viz')); }
+    catch (err) { el.innerHTML = '<div class="viz-cap">diagram payload is not valid JSON</div>'; return; }
+    const fn = VIZ[spec.type];
+    if (!fn){ el.innerHTML = '<div class="viz-cap">unknown diagram type: ' + esc(spec.type) + '</div>'; return; }
+    let body = '';
+    try { body = fn(spec); }
+    catch (err) { body = '<div class="viz-cap">layout error: ' + esc(err.message) + '</div>'; }
+    const legend = (spec.legend || []).map(function(l){
+      return '<span><i style="background:' + ((KIND[l[1]] || KIND.box).fill) + ';border:1.4px solid ' + ((KIND[l[1]] || KIND.box).stroke) + '"></i>' + esc(l[0]) + '</span>';
+    }).join('');
+    el.innerHTML =
+      '<div class="viz-head"><div class="viz-kind">' + esc(VIZ_KIND[spec.type] || spec.type) + '</div>' +
+      (spec.title ? '<div class="viz-title">' + esc(spec.title) + '</div>' : '') + '</div>' +
+      '<div class="viz-body">' + body + '</div>' +
+      (legend ? '<div class="viz-legend">' + legend + '</div>' : '') +
+      (spec.caption ? '<div class="viz-cap">' + esc(spec.caption) + '</div>' : '');
+    el.dataset.mounted = '1';
+  });
+}
+
+/* ============================ ANIMATION ENGINE ============================ */
+/* A renderer builds the SVG once, then paints each frame by mutating attributes.
+   Rebuilding innerHTML per frame would kill the CSS transitions, so we never do that. */
+
+const ST = {
+  idle:  {fill:'#ffffff', stroke:CLR.lineS, text:CLR.soft,  op:1},
+  range: {fill:CLR.grey0, stroke:CLR.lineS, text:CLR.soft,  op:1},
+  look:  {fill:CLR.gold0, stroke:CLR.gold,  text:CLR.gold6, op:1},
+  dead:  {fill:'#ffffff', stroke:CLR.line,  text:CLR.mute,  op:.34},
+  found: {fill:CLR.g050,  stroke:CLR.g600,  text:CLR.g700,  op:1},
+  seen:  {fill:CLR.g050,  stroke:CLR.g500,  text:CLR.g700,  op:1}
+};
+function stateOf(step, i){
+  if ((step.found || []).indexOf(i) > -1) return 'found';
+  if ((step.look  || []).indexOf(i) > -1) return 'look';
+  if ((step.seen  || []).indexOf(i) > -1) return 'seen';
+  if ((step.dead  || []).indexOf(i) > -1) return 'dead';
+  if (step.range && (i < step.range[0] || i > step.range[1])) return 'dead';
+  if (step.range) return 'range';
+  return 'idle';
+}
+function paintCell(g, st){
+  const s = ST[st] || ST.idle;
+  const r = g.querySelector('rect');
+  if (r){ r.setAttribute('fill', s.fill); r.setAttribute('stroke', s.stroke); }
+  g.setAttribute('opacity', s.op);
+  g.querySelectorAll('text').forEach(function(t){ t.setAttribute('fill', s.text); });
+  g.classList.remove('look','found');
+  if (st === 'look' || st === 'found'){ void g.offsetWidth; g.classList.add(st); }
+}
+
+const ANIM = {};
+
+/* ---- array-scan: the workhorse for every linear and halving search ---- */
+ANIM['array-scan'] = function(spec){
+  const data = spec.data || [];
+  const K = spec.big ? 1.4 : 1;
+  const fs = Math.round(14 * K), cellH = Math.round(52 * K), gap = Math.round(9 * K);
+  const maxLen = Math.max.apply(null, data.map(function(d){ return String(d).length; }).concat([2]));
+  const cellW = Math.max(Math.round(46 * K), Math.ceil(maxLen * charW(fs)) + Math.round(22 * K));
+  const idxH = Math.round(20 * K), ptrH = spec.pointers === false ? 0 : Math.round(42 * K);
+  const w = data.length * cellW + (data.length - 1) * gap;
+  const top = 26, h = top + cellH + idxH + ptrH + 8;
+  let s = '';
+  if (spec.target != null){
+    s += labelAt(0, 10, 'looking for ' + spec.target, 12, CLR.g700, 'start', 700);
+  }
+  data.forEach(function(d, i){
+    const x = i * (cellW + gap);
+    s += '<g class="cell" data-i="' + i + '" opacity="1">' +
+         '<rect x="' + x + '" y="' + top + '" width="' + cellW + '" height="' + cellH + '" rx="9" fill="#ffffff" stroke="' + CLR.lineS + '" stroke-width="1.5"/>' +
+         '<text x="' + (x + cellW/2) + '" y="' + (top + cellH/2) + '" text-anchor="middle" dominant-baseline="central" font-family="' + MONO + '" font-size="' + fs + '" font-weight="500" fill="' + CLR.soft + '">' + esc(d) + '</text></g>' +
+         labelAt(x + cellW/2, top + cellH + 12, (spec.labels && spec.labels[i] != null) ? spec.labels[i] : i, 9.5, CLR.mute, 'middle', 600);
+  });
+  if (ptrH){
+    ['lo','mid','hi','i'].forEach(function(p){
+      const col = p === 'mid' ? CLR.gold6 : p === 'i' ? CLR.gold6 : CLR.g700;
+      s += '<g class="ptr" data-p="' + p + '" opacity="0" style="transition:opacity .2s,transform .3s">' +
+           '<path d="M0,' + (top + cellH + idxH + 6) + ' l-5,9 h10 Z" fill="' + col + '"/>' +
+           labelAt(0, top + cellH + idxH + 25, p, 10, col, 'middle', 700) + '</g>';
+    });
+  }
+  s += '<g class="counter">' + labelAt(w, 10, '', 12, CLR.gold6, 'end', 700) + '</g>';
+  return {
+    svg: frame(s, w, h),
+    apply: function(root, step){
+      root.querySelectorAll('.cell').forEach(function(g){ paintCell(g, stateOf(step, +g.dataset.i)); });
+      /* two pointers on the same box would print on top of each other, so they fan out */
+      const at = {};
+      ['lo','mid','hi','i'].forEach(function(p){
+        const v = step.ptr ? step.ptr[p] : null;
+        if (v == null || v < 0 || v >= data.length) return;
+        (at[v] = at[v] || []).push(p);
+      });
+      const nudge = {};
+      Object.keys(at).forEach(function(v){
+        const grp = at[v];
+        grp.forEach(function(p, k){ nudge[p] = (k - (grp.length - 1)/2) * Math.round(30 * K); });
+      });
+      root.querySelectorAll('.ptr').forEach(function(g){
+        const p = g.dataset.p, v = step.ptr ? step.ptr[p] : null;
+        if (v == null || v < 0 || v >= data.length){ g.setAttribute('opacity', '0'); return; }
+        g.setAttribute('opacity', '1');
+        g.setAttribute('transform', 'translate(' + (v * (cellW + gap) + cellW/2 + (nudge[p] || 0)) + ',0)');
+      });
+      const c = root.querySelector('.counter text');
+      if (c) c.textContent = step.count != null ? (step.count + (spec.countLabel || ' checks')) : '';
+    }
+  };
+};
+
+/* ---- race: several methods on the same data, live step counters ---- */
+ANIM['race'] = function(spec){
+  const tracks = spec.tracks || [];
+  const n = (tracks[0] && tracks[0].data ? tracks[0].data.length : 0);
+  const fs = 12.5, cellH = 36, gap = 6, laneGap = 30, labelW = 128;
+  const cellW = 40, w = labelW + n * cellW + (n - 1) * gap + 96;
+  const h = tracks.length * (cellH + laneGap);
+  let s = '';
+  tracks.forEach(function(t, ti){
+    const y = ti * (cellH + laneGap);
+    s += labelAt(0, y + cellH/2, t.label, 12, CLR.g700, 'start', 700);
+    (t.data || []).forEach(function(d, i){
+      const x = labelW + i * (cellW + gap);
+      s += '<g class="cell" data-t="' + ti + '" data-i="' + i + '" opacity="1">' +
+           '<rect x="' + x + '" y="' + y + '" width="' + cellW + '" height="' + cellH + '" rx="7" fill="#ffffff" stroke="' + CLR.lineS + '" stroke-width="1.4"/>' +
+           '<text x="' + (x + cellW/2) + '" y="' + (y + cellH/2) + '" text-anchor="middle" dominant-baseline="central" font-family="' + MONO + '" font-size="' + fs + '" fill="' + CLR.soft + '">' + esc(d) + '</text></g>';
+    });
+    s += '<g class="tcount" data-t="' + ti + '">' + labelAt(w, y + cellH/2, '', 12, CLR.gold6, 'end', 700) + '</g>';
+  });
+  return {
+    svg: frame(s, w, h),
+    apply: function(root, step){
+      const lanes = step.lanes || [];
+      root.querySelectorAll('.cell').forEach(function(g){
+        const t = +g.dataset.t, i = +g.dataset.i;
+        paintCell(g, lanes[t] ? stateOf(lanes[t], i) : 'idle');
+      });
+      root.querySelectorAll('.tcount text').forEach(function(t, ti){
+        t.textContent = lanes[ti] && lanes[ti].count != null ? lanes[ti].count + ' checks' : '';
+      });
+    }
+  };
+};
+
+/* ---- tree-walk: binary tree / trie / BST search ---- */
+ANIM['tree-walk'] = function(spec){
+  const nodes = spec.nodes || [];
+  const r = 24, levelH = 82, unit = spec.unit || 62;
+  const xs = nodes.map(function(n){ return n.x * unit; });
+  const w = Math.max.apply(null, xs) + r*2, h = Math.max.apply(null, nodes.map(function(n){ return n.d; })) * levelH + r*2 + 8;
+  const pos = {}; nodes.forEach(function(n){ pos[n.id] = { cx:n.x*unit + r, cy:n.d*levelH + r + 4 }; });
+  let s = '';
+  (spec.edges || []).forEach(function(e){
+    const a = pos[e.from], b = pos[e.to];
+    if (!a || !b) return;
+    s += '<line x1="' + a.cx + '" y1="' + (a.cy + r) + '" x2="' + b.cx + '" y2="' + (b.cy - r) + '" stroke="' + CLR.line + '" stroke-width="1.6"/>';
+  });
+  nodes.forEach(function(n){
+    const p = pos[n.id];
+    s += '<g class="cell" data-i="' + n.id + '" opacity="1">' +
+         '<rect x="' + (p.cx - r) + '" y="' + (p.cy - r) + '" width="' + (r*2) + '" height="' + (r*2) + '" rx="' + r + '" fill="#ffffff" stroke="' + CLR.lineS + '" stroke-width="1.6"/>' +
+         '<text x="' + p.cx + '" y="' + p.cy + '" text-anchor="middle" dominant-baseline="central" font-family="' + MONO + '" font-size="13" fill="' + CLR.soft + '">' + esc(n.label) + '</text></g>';
+  });
+  return {
+    svg: frame(s, w, h),
+    apply: function(root, step){
+      root.querySelectorAll('.cell').forEach(function(g){
+        const id = g.dataset.i;
+        let st = 'idle';
+        if ((step.found || []).indexOf(id) > -1) st = 'found';
+        else if ((step.look || []).indexOf(id) > -1) st = 'look';
+        else if ((step.seen || []).indexOf(id) > -1) st = 'seen';
+        else if ((step.dead || []).indexOf(id) > -1) st = 'dead';
+        paintCell(g, st);
+      });
+    }
+  };
+};
+
+/* ---- graph-walk ---- */
+ANIM['graph-walk'] = function(spec){
+  const nodes = spec.nodes || [], unit = spec.unit || 108, r = 26;
+  const pos = {}; nodes.forEach(function(n){ pos[n.id] = { cx:n.x*unit + r, cy:n.y*unit + r }; });
+  const w = Math.max.apply(null, nodes.map(function(n){ return pos[n.id].cx + r; }));
+  const h = Math.max.apply(null, nodes.map(function(n){ return pos[n.id].cy + r; }));
+  let s = '';
+  (spec.edges || []).forEach(function(e){
+    const a = pos[e.from], b = pos[e.to];
+    if (!a || !b) return;
+    const dx = b.cx-a.cx, dy = b.cy-a.cy, d = Math.sqrt(dx*dx+dy*dy) || 1;
+    s += '<line class="ge" data-e="' + e.from + '-' + e.to + '" x1="' + (a.cx + dx/d*r) + '" y1="' + (a.cy + dy/d*r) +
+         '" x2="' + (b.cx - dx/d*r) + '" y2="' + (b.cy - dy/d*r) + '" stroke="' + CLR.line + '" stroke-width="1.8" style="transition:stroke .3s"/>';
+    if (e.w != null) s += labelAt((a.cx+b.cx)/2, (a.cy+b.cy)/2 - 9, e.w, 10.5, CLR.mute, 'middle', 700);
+  });
+  nodes.forEach(function(n){
+    const p = pos[n.id];
+    s += '<g class="cell" data-i="' + n.id + '" opacity="1">' +
+         '<rect x="' + (p.cx-r) + '" y="' + (p.cy-r) + '" width="' + (r*2) + '" height="' + (r*2) + '" rx="' + r + '" fill="#ffffff" stroke="' + CLR.lineS + '" stroke-width="1.6"/>' +
+         '<text x="' + p.cx + '" y="' + p.cy + '" text-anchor="middle" dominant-baseline="central" font-family="' + FONT + '" font-size="12.5" font-weight="600" fill="' + CLR.soft + '">' + esc(n.label) + '</text></g>';
+  });
+  return {
+    svg: frame(s, w, h),
+    apply: function(root, step){
+      root.querySelectorAll('.cell').forEach(function(g){
+        const id = g.dataset.i;
+        let st = 'idle';
+        if ((step.found || []).indexOf(id) > -1) st = 'found';
+        else if ((step.look || []).indexOf(id) > -1) st = 'look';
+        else if ((step.seen || []).indexOf(id) > -1) st = 'seen';
+        paintCell(g, st);
+      });
+      root.querySelectorAll('.ge').forEach(function(l){
+        l.setAttribute('stroke', (step.edges || []).indexOf(l.dataset.e) > -1 ? CLR.g600 : CLR.line);
+      });
+    }
+  };
+};
+
+/* ---- vector: semantic space, query point, expanding neighbourhood ---- */
+ANIM['vector'] = function(spec){
+  const pts = spec.points || [], w = spec.width || 520, h = spec.height || 300, unit = spec.unit || 1;
+  const q = spec.query;
+
+  /* labels place themselves: try above, below, right, then left, and take the first slot that
+     collides with nothing already on the board. A dense cluster is the whole point of this
+     picture, so the captions have to get out of each others way on their own. */
+  const taken = pts.map(function(p){ return { x:p.x*unit - 9, y:p.y*unit - 9, w:18, h:18 }; });
+  if (q) taken.push({ x:q.x*unit - 12, y:q.y*unit - 12, w:24, h:24 });
+  function slot(cx, cy, txt, fs){
+    const lw = String(txt).length * charW(fs) + 12, lh = Math.round(fs * 1.7);
+    const cands = [[cx, cy - 19], [cx, cy + 21], [cx + lw/2 + 15, cy], [cx - lw/2 - 15, cy],
+                   [cx, cy - 36], [cx, cy + 38]];
+    for (const c of cands){
+      const r = { x:c[0] - lw/2, y:c[1] - lh/2, w:lw, h:lh };
+      if (r.x < -PAD || r.x + r.w > w + PAD) continue;
+      if (!taken.some(function(t){ return rectsHit(r, t); })){ taken.push(r); return c; }
+    }
+    taken.push({ x:cx - lw/2, y:cy - 19 - lh/2, w:lw, h:lh });
+    return [cx, cy - 19];
+  }
+
+  let s = '<rect x="0" y="0" width="' + w + '" height="' + h + '" rx="12" fill="' + CLR.grey0 + '" opacity=".45"/>';
+  s += '<circle class="halo" cx="0" cy="0" r="0" fill="' + CLR.gold + '" opacity="0.14" style="transition:r .5s,cx .3s,cy .3s"/>';
+
+  /* the query owns the best slot, then the points closest to it, then the rest */
+  let qlab = '';
+  if (q){
+    const c = slot(q.x*unit, q.y*unit, q.label || 'your question', 11.5);
+    qlab = '<g class="qpt"><path d="M' + q.x*unit + ',' + (q.y*unit - 10) + ' l10,10 l-10,10 l-10,-10 Z" fill="' + CLR.g700 + '"/>' +
+      chip(c[0], c[1], q.label || 'your question', 11.5, CLR.g700, 700) + '</g>';
+  }
+  const order = pts.map(function(p, i){ return i; }).sort(function(a, b){
+    if (!q) return a - b;
+    const da = Math.hypot(pts[a].x - q.x, pts[a].y - q.y), db = Math.hypot(pts[b].x - q.x, pts[b].y - q.y);
+    return da - db;
+  });
+  const cells = [];
+  order.forEach(function(i){
+    const p = pts[i];
+    const c = slot(p.x*unit, p.y*unit, p.label, 10.5);
+    cells[i] = '<g class="cell" data-i="' + i + '" opacity="1">' +
+      '<rect x="' + (p.x*unit - 7) + '" y="' + (p.y*unit - 7) + '" width="14" height="14" rx="7" fill="#ffffff" stroke="' + CLR.lineS + '" stroke-width="1.6"/>' +
+      chip(c[0], c[1], p.label, 10.5, CLR.soft, 600) + '</g>';
+  });
+  s += cells.join('') + qlab;
+
+  return {
+    svg: frame(s, w, h),
+    apply: function(root, step){
+      root.querySelectorAll('.cell').forEach(function(g){ paintCell(g, stateOf(step, +g.dataset.i)); });
+      const halo = root.querySelector('.halo');
+      if (halo && q){
+        halo.setAttribute('cx', q.x*unit); halo.setAttribute('cy', q.y*unit);
+        halo.setAttribute('r', step.radius != null ? step.radius*unit : 0);
+      }
+    }
+  };
+};
+
+
+/* ---- curve: the cost lines drawing themselves, so scale is felt not claimed ---- */
+ANIM['curve'] = function(spec){
+  const w = spec.width || 620, h = spec.height || 300, ml = 58, mb = 40, mt = 18, mr = 120;
+  const px = w - ml - mr, py = h - mt - mb, N = spec.n || 40;
+  const FN = {
+    '1':     function(){ return 1; },
+    'logn':  function(n){ return Math.log2(n + 1); },
+    'n':     function(n){ return n; },
+    'nlogn': function(n){ return n * Math.log2(n + 1); },
+    'n2':    function(n){ return n * n; }
+  };
+  const series = (spec.series || []).map(function(sr){
+    const f = FN[sr.fn] || FN.n, pts = [];
+    for (let i = 1; i <= N; i++) pts.push([i, f(i)]);
+    return { label:sr.label, pts:pts,
+      color: sr.color === 'gold' ? CLR.gold6 : sr.color === 'bad' ? CLR.bad : sr.color === 'green' ? CLR.g600 : CLR.grey };
+  });
+  const maxY = Math.max.apply(null, series.map(function(sr){ return sr.pts[sr.pts.length-1][1]; })) || 1;
+  let s = '<line x1="' + ml + '" y1="' + mt + '" x2="' + ml + '" y2="' + (mt+py) + '" stroke="' + CLR.lineS + '" stroke-width="1.3"/>' +
+          '<line x1="' + ml + '" y1="' + (mt+py) + '" x2="' + (ml+px) + '" y2="' + (mt+py) + '" stroke="' + CLR.lineS + '" stroke-width="1.3"/>' +
+          labelAt(ml + px/2, mt + py + 26, spec.xlabel || 'how much data', 11.5, CLR.mute, 'middle', 600) +
+          '<g transform="translate(18,' + (mt + py/2) + ') rotate(-90)">' + labelAt(0, 0, spec.ylabel || 'looks it takes', 11.5, CLR.mute, 'middle', 600) + '</g>';
+  series.forEach(function(sr, i){
+    const d = sr.pts.map(function(p, k){
+      const x = ml + (p[0]/N) * px, y = mt + py - Math.min(1, p[1]/maxY) * py;
+      return (k ? 'L' : 'M') + x.toFixed(1) + ',' + y.toFixed(1);
+    }).join(' ');
+    const last = sr.pts[sr.pts.length-1];
+    const ly = Math.max(mt + 8, mt + py - Math.min(1, last[1]/maxY) * py);
+    s += '<g class="cline" data-s="' + i + '" opacity="0" style="transition:opacity .3s">' +
+      '<path d="' + d + '" fill="none" stroke="' + sr.color + '" stroke-width="2.6" stroke-linecap="round" ' +
+      'pathLength="100" stroke-dasharray="100" stroke-dashoffset="100" style="transition:stroke-dashoffset .55s ease-out"/>' +
+      labelAt(ml + px + 10, ly, sr.label, 11.5, sr.color, 'start', 700) + '</g>';
+  });
+  s += '<g class="cbadge" opacity="0" style="transition:opacity .3s">' +
+       '<rect x="' + (ml + 12) + '" y="' + (mt + 10) + '" width="150" height="26" rx="8" fill="#ffffff" stroke="' + CLR.lineS + '"/>' +
+       '<text x="' + (ml + 87) + '" y="' + (mt + 23) + '" text-anchor="middle" dominant-baseline="central" font-family="' + FONT + '" font-size="12" font-weight="700" fill="' + CLR.g700 + '"></text></g>';
+  return {
+    svg: frame(s, w, h),
+    apply: function(root, step){
+      const show = step.show || series.map(function(_, i){ return i; });
+      root.querySelectorAll('.cline').forEach(function(g){
+        const i = +g.dataset.s, on = show.indexOf(i) > -1;
+        g.setAttribute('opacity', on ? '1' : '0');
+        const p = g.querySelector('path');
+        if (p) p.setAttribute('stroke-dashoffset', on ? String(100 - (step.pct == null ? 100 : step.pct)) : '100');
+      });
+      const b = root.querySelector('.cbadge');
+      if (b){
+        b.setAttribute('opacity', step.badge ? '1' : '0');
+        const t = b.querySelector('text'); if (t) t.textContent = step.badge || '';
+      }
+    }
+  };
+};
+
+/* ---- reveal: a flowchart, architecture or decision tree that draws itself ---- */
+ANIM['reveal'] = function(spec){
+  const vs = Object.assign({}, spec.viz || {});
+  const preset = { name: 'reveal', shape: vs.shape || 'box', kind: vs.kind || 'box', addressable: true };
+  return {
+    svg: renderLayered(vs, preset),
+    apply: function(root, step){
+      const show = step.show || [];
+      root.querySelectorAll('.cell').forEach(function(g){
+        const id = g.dataset.i;
+        if (show.indexOf(id) < 0){ g.setAttribute('opacity', '0'); return; }
+        let st = 'idle';
+        if ((step.found || []).indexOf(id) > -1) st = 'found';
+        else if ((step.look || []).indexOf(id) > -1) st = 'look';
+        else if ((step.seen || []).indexOf(id) > -1) st = 'seen';
+        else if ((step.dead || []).indexOf(id) > -1) st = 'dead';
+        paintCell(g, st);
+      });
+      root.querySelectorAll('.ge').forEach(function(g){
+        const ends = String(g.dataset.e).split('-');
+        const live = step.edges ? step.edges.indexOf(g.dataset.e) > -1
+                                : (show.indexOf(ends[0]) > -1 && show.indexOf(ends[1]) > -1);
+        g.setAttribute('opacity', live ? '1' : '0');
+      });
+    }
+  };
+};
+
+/* ---- player ---- */
+const BOARDS = [];
+const REDUCED = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+function animPaint(b){
+  const step = b.spec.steps[b.i] || {};
+  b.impl.apply(b.canvas, step);
+  b.cap.innerHTML = step.say ? step.say : '';
+  b.dots.querySelectorAll('i').forEach(function(d, k){
+    d.className = k < b.i ? 'on' : (k === b.i ? 'now' : '');
+  });
+  b.stepEl.textContent = (b.i + 1) + ' / ' + b.spec.steps.length;
+  b.prevBtn.disabled = b.i === 0;
+  b.nextBtn.disabled = b.i === b.spec.steps.length - 1;
+}
+function animGoto(b, i){
+  b.i = Math.max(0, Math.min(b.spec.steps.length - 1, i));
+  animPaint(b);
+}
+function animStep(b, d){ animPause(b); animGoto(b, b.i + d); }
+function animReset(b){ animPause(b); animGoto(b, 0); }
+function animPause(b){
+  if (b.timer){ clearInterval(b.timer); b.timer = null; }
+  b.playing = false;
+  b.playBtn.textContent = '▶  Play';
+}
+function animPlay(b){
+  if (b.playing){ animPause(b); return; }
+  if (b.i >= b.spec.steps.length - 1) b.i = -1;
+  b.playing = true;
+  b.playBtn.textContent = '❚❚  Pause';
+  const tick = function(){
+    if (b.i >= b.spec.steps.length - 1){ animPause(b); return; }
+    animGoto(b, b.i + 1);
+    if (b.i >= b.spec.steps.length - 1) animPause(b);
+  };
+  tick();
+  b.timer = setInterval(tick, Math.max(220, (b.spec.speed || 1150) / b.rate));
+}
+function animRate(b, r){
+  b.rate = r;
+  b.rateBtn.textContent = r + 'x';
+  if (b.playing){ animPause(b); animPlay(b); }
+}
+
+function mountAnims(root){
+  BOARDS.splice(0).forEach(function(b){ if (b.timer) clearInterval(b.timer); });
+  (root || document).querySelectorAll('.board[data-anim]').forEach(function(el){
+    let spec;
+    try { spec = JSON.parse(el.getAttribute('data-anim')); }
+    catch (err){ el.innerHTML = '<div class="viz-cap">animation payload is not valid JSON</div>'; return; }
+    const make = ANIM[spec.type];
+    if (!make){ el.innerHTML = '<div class="viz-cap">unknown animation type: ' + esc(spec.type) + '</div>'; return; }
+    if (!spec.steps || !spec.steps.length){ el.innerHTML = '<div class="viz-cap">animation has no steps</div>'; return; }
+    const impl = make(spec);
+    const legend = (spec.legend || []).map(function(l){
+      const s = ST[l[1]] || ST.idle;
+      return '<span><i style="background:' + s.fill + ';border:1.4px solid ' + s.stroke + ';opacity:' + s.op + '"></i>' + esc(l[0]) + '</span>';
+    }).join('');
+    el.innerHTML =
+      '<div class="board-head"><div><div class="bk">Whiteboard</div>' +
+        (spec.title ? '<div class="bt">' + esc(spec.title) + '</div>' : '') + '</div></div>' +
+      '<div class="board-canvas"><div class="board-grid"></div>' + impl.svg + '</div>' +
+      '<div class="anim-caption"></div>' +
+      (legend ? '<div class="viz-legend" style="padding:12px 22px 0">' + legend + '</div>' : '') +
+      '<div class="anim-bar">' +
+        '<button class="anim-btn primary js-play">▶  Play</button>' +
+        '<button class="anim-btn js-prev" title="one step back">◀</button>' +
+        '<button class="anim-btn js-next" title="one step forward">▶</button>' +
+        '<button class="anim-btn js-reset" title="start over">↺</button>' +
+        '<button class="anim-btn js-rate" title="speed">1x</button>' +
+        '<span class="anim-step"></span>' +
+        '<span class="anim-dots">' + spec.steps.map(function(){ return '<i></i>'; }).join('') + '</span>' +
+      '</div>' +
+      (spec.caption ? '<div class="viz-cap" style="padding:4px 22px 18px">' + esc(spec.caption) + '</div>' : '');
+
+    const b = {
+      el:el, spec:spec, impl:impl, i:0, rate:1, playing:false, timer:null,
+      canvas:el.querySelector('.board-canvas'),
+      cap:el.querySelector('.anim-caption'),
+      dots:el.querySelector('.anim-dots'),
+      stepEl:el.querySelector('.anim-step'),
+      playBtn:el.querySelector('.js-play'),
+      prevBtn:el.querySelector('.js-prev'),
+      nextBtn:el.querySelector('.js-next'),
+      rateBtn:el.querySelector('.js-rate')
+    };
+    b.playBtn.onclick = function(){ animPlay(b); };
+    b.prevBtn.onclick = function(){ animStep(b, -1); };
+    b.nextBtn.onclick = function(){ animStep(b, 1); };
+    el.querySelector('.js-reset').onclick = function(){ animReset(b); };
+    b.rateBtn.onclick = function(){ animRate(b, b.rate === 1 ? 2 : b.rate === 2 ? 0.5 : 1); };
+    b.dots.querySelectorAll('i').forEach(function(d, k){ d.onclick = function(){ animPause(b); animGoto(b, k); }; });
+    animPaint(b);
+    BOARDS.push(b);
+
+    if (!REDUCED && 'IntersectionObserver' in window){
+      const io = new IntersectionObserver(function(entries){
+        entries.forEach(function(en){
+          if (en.isIntersecting && !b.playing && b.i === 0 && !b.autoDone){ b.autoDone = true; animPlay(b); }
+          else if (!en.isIntersecting && b.playing) animPause(b);
+        });
+      }, { threshold: 0.45 });
+      io.observe(el);
+    }
+  });
+}
+
+
+/* ============================ REEL: the chapter whiteboard ============================ */
+/* A reel is a sequence of acts. Each act is a full animation spec, so every renderer above
+   works inside it unchanged. Play runs an act to its end and then walks straight into the
+   next one, which is what makes it feel like one continuous explanation rather than a
+   folder of separate widgets. */
+const REELS = [];
+
+function reelPaint(r){
+  const act = r.spec.acts[r.act];
+  const step = act.steps[r.i] || {};
+  r.impl.apply(r.stage, step);
+  r.cap.innerHTML = step.say || '';
+  r.stepEl.textContent = 'act ' + (r.act + 1) + ' of ' + r.spec.acts.length + '  ·  step ' + (r.i + 1) + ' / ' + act.steps.length;
+  r.dots.querySelectorAll('i').forEach(function(d, k){ d.className = k < r.i ? 'on' : (k === r.i ? 'now' : ''); });
+  r.tabs.forEach(function(t, k){ t.className = k === r.act ? 'on' : (k < r.act ? 'done' : ''); });
+  r.prevBtn.disabled = (r.act === 0 && r.i === 0);
+  r.nextBtn.disabled = (r.act === r.spec.acts.length - 1 && r.i === act.steps.length - 1);
+}
+function reelLoadAct(r, k, atEnd){
+  r.act = Math.max(0, Math.min(r.spec.acts.length - 1, k));
+  const act = r.spec.acts[r.act];
+  r.impl = ANIM[act.type](act);
+  r.stage.innerHTML = '<div class="board-grid"></div>' + r.impl.svg;
+  r.title.textContent = act.title || '';
+  r.dots.innerHTML = act.steps.map(function(){ return '<i></i>'; }).join('');
+  r.dots.querySelectorAll('i').forEach(function(d, j){ d.onclick = function(){ reelPause(r); r.i = j; reelPaint(r); }; });
+  const lg = (act.legend || r.spec.legend || []);
+  r.legend.innerHTML = lg.map(function(l){
+    const st = ST[l[1]] || ST.idle;
+    return '<span><i style="background:' + st.fill + ';border:1.4px solid ' + st.stroke + ';opacity:' + st.op + '"></i>' + esc(l[0]) + '</span>';
+  }).join('');
+  r.i = atEnd ? act.steps.length - 1 : 0;
+  reelPaint(r);
+}
+function reelPause(r){
+  if (r.timer){ clearInterval(r.timer); r.timer = null; }
+  r.playing = false;
+  r.playBtn.textContent = '▶  Play the whole thing';
+}
+function reelStep(r, d){
+  reelPause(r);
+  const act = r.spec.acts[r.act];
+  if (d > 0){
+    if (r.i < act.steps.length - 1){ r.i++; reelPaint(r); }
+    else if (r.act < r.spec.acts.length - 1) reelLoadAct(r, r.act + 1, false);
+  } else {
+    if (r.i > 0){ r.i--; reelPaint(r); }
+    else if (r.act > 0) reelLoadAct(r, r.act - 1, true);
+  }
+}
+function reelPlay(r){
+  if (r.playing){ reelPause(r); return; }
+  r.playing = true;
+  r.playBtn.textContent = '❚❚  Pause';
+  const tick = function(){
+    const act = r.spec.acts[r.act];
+    if (r.i < act.steps.length - 1){ r.i++; reelPaint(r); return; }
+    if (r.act < r.spec.acts.length - 1){ reelLoadAct(r, r.act + 1, false); return; }
+    reelPause(r);
+  };
+  const last = r.spec.acts[r.spec.acts.length - 1];
+  if (r.act === r.spec.acts.length - 1 && r.i >= last.steps.length - 1) reelLoadAct(r, 0, false);
+  r.timer = setInterval(tick, Math.max(240, (r.spec.speed || 1500) / r.rate));
+}
+
+function mountReels(root){
+  REELS.splice(0).forEach(function(r){ if (r.timer) clearInterval(r.timer); });
+  (root || document).querySelectorAll('.reel[data-reel]').forEach(function(el){
+    let spec;
+    try { spec = JSON.parse(el.getAttribute('data-reel')); }
+    catch (err){ el.innerHTML = '<div class="viz-cap">reel payload is not valid JSON</div>'; return; }
+    const acts = (spec.acts || []).filter(function(a){ return ANIM[a.type] && a.steps && a.steps.length; });
+    if (!acts.length){ el.innerHTML = '<div class="viz-cap">reel has no playable acts</div>'; return; }
+    spec.acts = acts;
+    el.innerHTML =
+      '<div class="reel-head"><div class="rk">Whiteboard · the whole chapter</div>' +
+        (spec.title ? '<div class="rt">' + esc(spec.title) + '</div>' : '') + '</div>' +
+      '<div class="reel-acts">' + acts.map(function(a, k){
+        const head = (a.part && (k === 0 || acts[k-1].part !== a.part))
+          ? '<div class="reel-part">' + esc(a.part) + '</div>' : '';
+        return head + '<button data-k="' + k + '">' + (k + 1) + '. ' + esc(a.tab || a.title || ('Act ' + (k+1))) + '</button>';
+      }).join('') + '</div>' +
+      '<div class="reel-act-title"></div>' +
+      '<div class="reel-stage"></div>' +
+      '<div class="anim-caption"></div>' +
+      '<div class="viz-legend"></div>' +
+      '<div class="anim-bar">' +
+        '<button class="anim-btn primary js-play">▶  Play the whole thing</button>' +
+        '<button class="anim-btn js-prev" title="one step back">◀</button>' +
+        '<button class="anim-btn js-next" title="one step forward">▶</button>' +
+        '<button class="anim-btn js-reset" title="start over">↺</button>' +
+        '<button class="anim-btn js-rate" title="speed">1x</button>' +
+        '<span class="anim-step"></span>' +
+        '<span class="anim-dots"></span>' +
+      '</div>' +
+      (spec.caption ? '<div class="viz-cap" style="padding:2px 26px 20px">' + esc(spec.caption) + '</div>' : '');
+
+    const r = {
+      el:el, spec:spec, act:0, i:0, rate:1, playing:false, timer:null,
+      stage:el.querySelector('.reel-stage'),
+      title:el.querySelector('.reel-act-title'),
+      cap:el.querySelector('.anim-caption'),
+      legend:el.querySelector('.viz-legend'),
+      dots:el.querySelector('.anim-dots'),
+      stepEl:el.querySelector('.anim-step'),
+      playBtn:el.querySelector('.js-play'),
+      prevBtn:el.querySelector('.js-prev'),
+      nextBtn:el.querySelector('.js-next'),
+      rateBtn:el.querySelector('.js-rate'),
+      tabs:[].slice.call(el.querySelectorAll('.reel-acts button'))
+    };
+    r.playBtn.onclick = function(){ reelPlay(r); };
+    r.prevBtn.onclick = function(){ reelStep(r, -1); };
+    r.nextBtn.onclick = function(){ reelStep(r, 1); };
+    el.querySelector('.js-reset').onclick = function(){ reelPause(r); reelLoadAct(r, 0, false); };
+    r.rateBtn.onclick = function(){
+      r.rate = r.rate === 1 ? 2 : r.rate === 2 ? 0.5 : 1;
+      r.rateBtn.textContent = r.rate + 'x';
+      if (r.playing){ reelPause(r); reelPlay(r); }
+    };
+    r.tabs.forEach(function(t, k){ t.onclick = function(){ reelPause(r); reelLoadAct(r, k, false); }; });
+    reelLoadAct(r, 0, false);
+    REELS.push(r);
+  });
+}
+
+/* ============================ READER ============================ */
+const navEl = document.getElementById('nav');
+const ORDER = []; COURSE.forEach(function(c){ c.lessons.forEach(function(l){ ORDER.push([l.id, l.t, l.state]); }); });
+let active = "0.1";
+
+function nav(prev, next){
+  const p = prev ? '<div class="fnav" data-go="' + prev[0] + '"><div class="d">Previous</div><div class="t">← ' + prev[0] + ' · ' + esc(prev[1]) + '</div></div>' : '<div class="fnav ghost"></div>';
+  const n = next ? '<div class="fnav next" data-go="' + next[0] + '"><div class="d">Next</div><div class="t">' + next[0] + ' · ' + esc(next[1]) + ' →</div></div>' : '<div class="fnav ghost"></div>';
+  return '<div class="footer-nav">' + p + n + '</div>';
+}
+function navFor(id){
+  const i = ORDER.findIndex(function(x){ return x[0] === id; });
+  const prev = i > 0 ? ORDER[i-1] : null, next = i < ORDER.length - 1 ? ORDER[i+1] : null;
+  return nav(prev ? [prev[0], prev[1]] : null, next ? [next[0], next[1]] : null);
+}
+function buildNav(){
+  navEl.innerHTML = '';
+  COURSE.forEach(function(c, ci){
+    const chap = document.createElement('div');
+    chap.className = 'chap' + (c.open ? ' open' : '');
+    let badge = c.done ? '<span class="done">done</span>' : (c.locked ? '<span class="lock">soon</span>' : '');
+    chap.innerHTML =
+      '<div class="chap-head ' + (c.locked ? 'locked' : '') + '" data-ci="' + ci + '">' +
+        '<span class="tw">▶</span><span class="cnum">' + c.n + '</span>' +
+        '<span class="ctitle">' + esc(c.title) + '</span>' + badge + '</div>' +
+      '<div class="lessons">' + c.lessons.map(function(l){
+        return '<div class="les ' + l.state + (l.id === active ? ' active' : '') + '" data-id="' + l.id + '">' +
+          '<span class="lnum">' + l.id + '</span><span>' + esc(l.t) + '</span>' +
+          '<span class="tag">' + l.state + '</span></div>';
+      }).join('') + '</div>';
+    navEl.appendChild(chap);
+  });
+  document.querySelectorAll('.chap-head').forEach(function(h){ h.onclick = function(){ h.parentElement.classList.toggle('open'); }; });
+  document.querySelectorAll('.les').forEach(function(l){
+    l.onclick = function(){ load(l.dataset.id); if (window.innerWidth <= 1000) closeRail(); };
+  });
+}
+function bindQuiz(){
+  document.querySelectorAll('.quiz').forEach(function(q){
+    const correct = +q.dataset.correct;
+    q.querySelectorAll('.opt').forEach(function(o){
+      o.onclick = function(){
+        if (q.dataset.done) return;
+        q.dataset.done = 1;
+        const i = +o.dataset.i;
+        if (i === correct) o.classList.add('right');
+        else { o.classList.add('wrong'); const r = q.querySelector('[data-i="' + correct + '"]'); if (r) r.classList.add('right'); }
+        const e = q.querySelector('.qexp'); if (e) e.classList.add('show');
+      };
+    });
+  });
+}
+function load(id){
+  active = id;
+  const view = document.getElementById('view');
+  let chapTitle = '', num = '', t = '';
+  COURSE.forEach(function(c){ c.lessons.forEach(function(l){ if (l.id === id){ chapTitle = c.title; num = c.n; t = l.t; } }); });
+  document.getElementById('crumb').innerHTML = (num === '00') ? '<b>' + esc(chapTitle) + '</b>' : 'Chapter ' + num + ' · <b>' + esc(chapTitle) + '</b>';
+  if (LESSONS[id]){
+    view.innerHTML = LESSONS[id].replace('__NAV__', navFor(id));
+    bindQuiz(); mountViz(view); mountAnims(view); mountReels(view);
+  } else {
+    const sc = SCOPE[id] || ['This lesson ships in the next drop.'];
+    view.innerHTML = '<div class="soon-wrap">' +
+      '<div class="big">Lesson ' + id + ' · ships next</div>' +
+      '<h2>' + esc(t) + '</h2>' +
+      '<p style="color:var(--ink-soft);font-size:19px;">This lesson is not written yet, and it will not ship as filler. Here is exactly what it covers when it drops.</p>' +
+      '<div class="scope"><div class="ch">Planned scope</div><ul>' + sc.map(function(s){ return '<li>' + esc(s) + '</li>'; }).join('') + '</ul></div></div>';
+  }
+  view.querySelectorAll('[data-go]').forEach(function(el){ el.onclick = function(){ load(el.dataset.go); }; });
+  document.querySelectorAll('.les').forEach(function(l){ l.classList.toggle('active', l.dataset.id === id); });
+  window.scrollTo({ top: 0, behavior: 'instant' });
+}
+const rail = document.getElementById('rail'), scrim = document.getElementById('scrim');
+function closeRail(){ rail.classList.remove('open'); scrim.classList.remove('open'); }
+document.getElementById('menuBtn').onclick = function(){ rail.classList.add('open'); scrim.classList.add('open'); };
+scrim.onclick = closeRail;
+
+buildNav();
+load("0.1");
+</script>
+</body>
+</html>

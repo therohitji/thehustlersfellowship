@@ -1,0 +1,513 @@
+# DSA Concepts (2026) - build tree  [rev 2]
+# Root for every path below: dsa-concepts/
+# Nothing outside dsa-concepts/ is touched by any unit in this tree.
+
+vision: >
+  A non-technical reader opens one self-contained HTML file and ends up able to look at any
+  problem, recognise its shape, and name the structure and approach it wants. The course is
+  roughly seventy percent visual: every idea arrives as a real-life scene, then a whiteboard
+  animation the reader can play and step through, then an architecture or flow diagram of how
+  it actually works, then the real systems that run on it, and then the disguised forms the
+  problem takes in the wild along with a worked solution. No diagram is ever cluttered,
+  overlapped or cramped, because every diagram is laid out on a grid by a deterministic engine
+  and checked for collisions at build time. No code is required to finish the course.
+
+principles:
+  - Seventy percent visual is a measured rule, not a vibe. check_lesson.py enforces it.
+  - Nothing overlaps. check_layout.py recomputes every box and asserts zero intersections.
+  - Animations live on a whiteboard surface. One idea per frame, generous whitespace.
+  - Every chapter must contain the full required diagram inventory across its lessons.
+  - Every lesson answers six questions in order: what, how, how many types, what it costs,
+    where it really lives, and how its problems show up disguised.
+  - Plain language before notation. Big O only after the reader has felt the cost.
+  - Chapter files stay declarative. Diagrams and animations are JSON, never inline script.
+  - No em-dashes, no invented facts, no filler lesson.
+  - ai-pm-2026 and build-live-products-2026 are read-only references.
+
+palette:
+  surface: white content page, dark royal green rail
+  green: ["#04211a", "#062e24", "#0a4234", "#0d5a45", "#12785d", "#19a077", "#eef7f3"]
+  gold:  ["#f0b429", "#cf9109", "#fdf6e3"]
+  ink:   ["#0f1a16", "#43524c", "#7e8b86"]
+  state: {idle: grey, checking: gold, ruled_out: faded grey, found: green, trap: amber, wrong: red}
+
+lesson_blocks:
+  - 1.  The Everyday Situation        # scene visual, zero jargon
+  - 2.  What It Actually Is           # plain definition + one still diagram
+  - 3.  Watch It Work                 # whiteboard animation, steppable. The heart.
+  - 4.  Under The Hood                # sequence or state diagram of the real mechanism
+  - 5.  The Types                     # comparison table + decision tree + small figures
+  - 6.  What It Costs In Plain English # curve, felt first, notation second
+  - 7.  Where It Lives In Real Life   # architecture / network diagram of real systems
+  - 8.  How Problems Show Up          # disguised phrasings -> signal -> structure. The dots.
+  - 9.  Solve It Live                 # one real problem worked end to end, swimlane of thinking
+  - 10. Your Turn                     # non-code rep + Check Yourself quizzes
+  # every lesson ends with the literal token __NAV__
+
+required_diagram_inventory:      # every CHAPTER must contain at least one of each
+  - architecture
+  - flowchart
+  - sequence
+  - state
+  - erd
+  - decision-tree
+  - table
+  - user-flow
+  - journey-map
+  - swimlane
+  - component
+  - network
+  - information-architecture
+  - knowledge-graph
+  - wireframe
+  - intelligence-card
+  - whiteboard-animation
+
+curriculum:
+  chapters:
+    - ["00", "Start Here", 2]
+    - ["01", "What a Data Structure Actually Is", 4]
+    - ["02", "The Cost of Doing Things", 4]
+    - ["03", "Arrays: The Row of Boxes", 5]
+    - ["04", "Linked Lists: The Chain", 5]
+    - ["05", "Stacks and Queues: Who Gets Served First", 4]
+    - ["06", "Searching: Finding One Thing", 8]     # reference chapter, built first
+    - ["07", "Sorting: Putting Things in Order", 7]
+    - ["08", "Hashing: Finding Without Looking", 5]
+    - ["09", "Trees: Things That Branch", 5]
+    - ["10", "Binary Search Trees and Staying Balanced", 5]
+    - ["11", "Heaps and Priority Queues: Who Is Most Urgent", 4]
+    - ["12", "Graphs: Things Connected to Things", 5]
+    - ["13", "Getting Around a Graph: Traversal and Shortest Path", 6]
+    - ["14", "Recursion and Divide and Conquer", 5]
+    - ["15", "The Three Styles: Greedy, Dynamic Programming, Backtracking", 6]
+    - ["16", "Strings and Pattern Matching", 5]
+    - ["17", "Modern Structures: Tries, Bloom Filters, LRU, Union-Find, Vector Indexes", 6]
+    - ["18", "The Method: Reading a Problem You Have Never Seen", 4]
+    - ["19", "The Real-World Lab: 10 Systems Torn Down", 10]
+  totals: {chapters: 20, lessons: 105}
+
+chapter_06_plan:
+  through_line: >
+    Search is the price you pay for order you did not keep. Every search method is one trade:
+    how much structure you maintain up front, against how fast you find later. Decide the
+    structure first and the algorithm picks itself.
+  lessons:
+    - ["6.1", "What Searching Really Is, and the One Question That Decides Everything"]
+    - ["6.2", "Linear Search: Check Every Box"]
+    - ["6.3", "Binary Search: Halve the Haystack"]
+    - ["6.4", "The Search Family: Jump, Exponential, Interpolation, Ternary"]
+    - ["6.5", "Searching Structured Data: Trees, Tries and Database Indexes"]
+    - ["6.6", "Searching by Meaning: Vector Search, ANN and RAG"]
+    - ["6.7", "How Search Problems Show Up: Reading the Disguise"]
+    - ["6.8", "Choose Your Search: The Decision Flowchart and 6 Systems Torn Down"]
+
+milestones:
+
+  - id: M1
+    name: Course skeleton
+    ships: python3 build.py turns sources into dsa-concepts-master.html, which opens and navigates
+    categories:
+      - id: M1.C1
+        name: Contracts
+        layers:
+          - layer: contract
+            levels:
+              - level: 0
+                units:
+                  - id: M1.C1.L-contract.V0.U01
+                    what: course_map.json, 20 chapters, 105 lesson ids and titles, one through_line each
+                    artifact: course_map.json
+                    verify: python3 -c "import json;d=json.load(open('course_map.json'));assert len(d['chapters'])==20;assert sum(len(c['lessons']) for c in d['chapters'])==105;assert all(c['through_line'] for c in d['chapters']);print('ok')"
+                    depends_on: []
+                  - id: M1.C1.L-contract.V0.U02
+                    what: CONSISTENCY.md, the single authoring bible. Replaces the three separate docs
+                      originally planned here (VISUAL_SPEC, CONCEPTS, BUILD_GUIDE), because splitting
+                      them across three files is how they drift out of agreement.
+                    artifact: CONSISTENCY.md
+                    verify: python3 -c "s=open('CONSISTENCY.md').read(); assert s.count(chr(10)+'## ')>=14; assert chr(8212) not in s; print('ok')"
+                    depends_on: [M1.C1.L-contract.V0.U01]
+                    note: retires M1.C1.L-contract.V0.U03 and M1.C1.L-contract.V0.U04, ids not reused
+      - id: M1.C2
+        name: Builder
+        layers:
+          - layer: logic
+            levels:
+              - level: 0
+                units:
+                  - id: M1.C2.L-logic.V0.U01
+                    what: build.py stitches map plus chapters into the master and derives live or soon
+                    artifact: build.py
+                    verify: python3 build.py && test -s dsa-concepts-master.html
+                    depends_on: [M1.C1.L-contract.V0.U01]
+              - level: 1
+                units:
+                  - id: M1.C2.L-logic.V1.U01
+                    what: build.py parses every data-viz payload, fails loudly on bad JSON or unknown type
+                    artifact: build.py
+                    verify: python3 build.py 2>&1 | grep -q 'viz blocks ok'
+                    depends_on: [M1.C2.L-logic.V0.U01, M2.C1.L-contract.V0.U01]
+      - id: M1.C3
+        name: Shell and reader
+        layers:
+          - layer: interface
+            levels:
+              - level: 0
+                units:
+                  - id: M1.C3.L-interface.V0.U01
+                    what: design tokens, dark royal green rail on a white content page, gold second accent
+                    artifact: shell.html
+                    verify: python3 -c "s=open('shell.html').read();[__import__('sys').exit('missing '+t) for t in ['--green-900','--gold-500','--paper:#ffffff'] if t not in s];print('ok')"
+                    depends_on: []
+                  - id: M1.C3.L-interface.V0.U02
+                    what: rail plus reading column layout, mobile drawer, progress bar
+                    artifact: shell.html
+                    verify: grep -q 'id="rail"' shell.html && grep -q 'id="view"' shell.html
+                    depends_on: [M1.C3.L-interface.V0.U01]
+                  - id: M1.C3.L-interface.V0.U03
+                    what: reader engine, buildNav, load, __NAV__ replacement, quiz binding
+                    artifact: shell.html
+                    verify: python3 -c "s=open('shell.html').read();[__import__('sys').exit('missing '+f) for f in ['function load(','__NAV__','function bindQuiz'] if f not in s];print('ok')"
+                    depends_on: [M1.C3.L-interface.V0.U02]
+              - level: 1
+                units:
+                  - id: M1.C3.L-interface.V1.U01
+                    what: lesson component CSS, ten block headers, callouts, tables, quiz, whiteboard surface
+                    artifact: shell.html
+                    verify: python3 -c "s=open('shell.html').read();[__import__('sys').exit('missing '+c) for c in ['.les-title','.motto','.callout','.quiz','.board','.viz'] if c not in s];print('ok')"
+                    depends_on: [M1.C3.L-interface.V0.U03]
+      - id: M1.C4
+        name: Verification harness
+        layers:
+          - layer: integration
+            levels:
+              - level: 0
+                units:
+                  - id: M1.C4.L-integration.V0.U01
+                    what: check_js.sh, node --check on the master script plus backtick parity
+                    artifact: verify/check_js.sh
+                    verify: bash verify/check_js.sh
+                    depends_on: [M1.C2.L-logic.V0.U01]
+                  - id: M1.C4.L-integration.V0.U02
+                    what: check_viz.py, every data-viz is valid JSON of a registered type with required fields
+                    artifact: verify/check_viz.py
+                    verify: python3 verify/check_viz.py
+                    depends_on: [M1.C2.L-logic.V0.U01, M1.C1.L-contract.V0.U02]
+                  - id: M1.C4.L-integration.V0.U03
+                    what: check_layout.py, recomputes every diagram box and asserts zero overlaps and no overflow
+                    artifact: verify/check_layout.py
+                    verify: python3 verify/check_layout.py
+                    depends_on: [M1.C4.L-integration.V0.U02, M2.C2.L-integration.V0.U01]
+                  - id: M1.C4.L-integration.V0.U04
+                    what: check_lesson.py, ten blocks present, visual budget met, __NAV__ present
+                    artifact: verify/check_lesson.py
+                    verify: python3 verify/check_lesson.py
+                    depends_on: [M1.C2.L-logic.V0.U01]
+                  - id: M1.C4.L-integration.V0.U05
+                    what: check_chapter.py, the required diagram inventory is fully covered by each live chapter
+                    artifact: verify/check_chapter.py
+                    verify: python3 verify/check_chapter.py
+                    depends_on: [M1.C4.L-integration.V0.U02]
+                  - id: M1.C4.L-integration.V0.U06
+                    what: check_style.py, no em-dash, no stray backtick, no dollar-brace interpolation
+                    artifact: verify/check_style.py
+                    verify: python3 verify/check_style.py
+                    depends_on: [M1.C2.L-logic.V0.U01]
+                  - id: M1.C4.L-integration.V0.U07
+                    what: qa.sh runs the whole harness in order, non-zero on first failure, no skips
+                    artifact: verify/qa.sh
+                    verify: bash verify/qa.sh
+                    depends_on:
+                      - M1.C4.L-integration.V0.U01
+                      - M1.C4.L-integration.V0.U02
+                      - M1.C4.L-integration.V0.U03
+                      - M1.C4.L-integration.V0.U04
+                      - M1.C4.L-integration.V0.U05
+                      - M1.C4.L-integration.V0.U06
+
+  - id: M2
+    name: Diagram engine
+    ships: a lesson declares any of twelve diagram types as JSON and gets a clean, collision-free SVG
+    categories:
+      - id: M2.C1
+        name: Layout core
+        layers:
+          - layer: contract
+            levels:
+              - level: 0
+                units:
+                  - id: M2.C1.L-contract.V0.U01
+                    what: VIZ registry and the shared payload shape, type plus title plus caption plus body
+                    artifact: shell.html
+                    verify: grep -q 'const VIZ = {' shell.html
+                    depends_on: [M1.C3.L-interface.V0.U01]
+          - layer: logic
+            levels:
+              - level: 0
+                units:
+                  - id: M2.C1.L-logic.V0.U01
+                    what: text metrics and auto-sized node boxes, deterministic width from character count
+                    artifact: shell.html
+                    verify: grep -q 'function measure(' shell.html
+                    depends_on: [M2.C1.L-contract.V0.U01]
+                  - id: M2.C1.L-logic.V0.U02
+                    what: grid placement, fixed gutters, row and column channels reserved for edges
+                    artifact: shell.html
+                    verify: grep -q 'function place(' shell.html
+                    depends_on: [M2.C1.L-logic.V0.U01]
+              - level: 1
+                units:
+                  - id: M2.C1.L-logic.V1.U01
+                    what: orthogonal edge router that runs in the reserved channels and never crosses a box
+                    artifact: shell.html
+                    verify: grep -q 'function route(' shell.html
+                    depends_on: [M2.C1.L-logic.V0.U02]
+                  - id: M2.C1.L-logic.V1.U02
+                    what: collision assert in the browser too, dev flag logs any overlapping pair
+                    artifact: shell.html
+                    verify: grep -q 'function assertNoOverlap(' shell.html
+                    depends_on: [M2.C1.L-logic.V0.U02]
+      - id: M2.C2
+        name: Renderers
+        layers:
+          - layer: interface
+            levels:
+              - level: 0
+                units:
+                  - id: M2.C2.L-interface.V0.U01
+                    what: flowchart and decision-tree renderer, layered layout with diamond decisions
+                    artifact: shell.html
+                    verify: python3 -c "s=open('shell.html').read();[__import__('sys').exit('missing '+k) for k in [\"VIZ['flow']\",\"VIZ['dtree']\"] if k not in s];print('ok')"
+                    depends_on: [M2.C1.L-logic.V1.U01]
+                  - id: M2.C2.L-interface.V0.U02
+                    what: architecture and component renderer, grouped boxes with typed connectors
+                    artifact: shell.html
+                    verify: python3 -c "s=open('shell.html').read();[__import__('sys').exit('missing '+k) for k in [\"VIZ['arch']\",\"VIZ['component']\"] if k not in s];print('ok')"
+                    depends_on: [M2.C1.L-logic.V1.U01]
+                  - id: M2.C2.L-interface.V0.U03
+                    what: sequence and swimlane renderer, lifelines, lanes, ordered messages
+                    artifact: shell.html
+                    verify: python3 -c "s=open('shell.html').read();[__import__('sys').exit('missing '+k) for k in [\"VIZ['seq']\",\"VIZ['swim']\"] if k not in s];print('ok')"
+                    depends_on: [M2.C1.L-logic.V1.U01]
+                  - id: M2.C2.L-interface.V0.U04
+                    what: state diagram and ERD renderer, transitions and crow-foot relationships
+                    artifact: shell.html
+                    verify: python3 -c "s=open('shell.html').read();[__import__('sys').exit('missing '+k) for k in [\"VIZ['state']\",\"VIZ['erd']\"] if k not in s];print('ok')"
+                    depends_on: [M2.C1.L-logic.V1.U01]
+                  - id: M2.C2.L-interface.V0.U05
+                    what: network, knowledge-graph and information-architecture renderer
+                    artifact: shell.html
+                    verify: python3 -c "s=open('shell.html').read();[__import__('sys').exit('missing '+k) for k in [\"VIZ['net']\",\"VIZ['kgraph']\",\"VIZ['ia']\"] if k not in s];print('ok')"
+                    depends_on: [M2.C1.L-logic.V1.U01]
+                  - id: M2.C2.L-interface.V0.U06
+                    what: journey map and user-flow renderer, stages by rows with an emotion line
+                    artifact: shell.html
+                    verify: python3 -c "s=open('shell.html').read();[__import__('sys').exit('missing '+k) for k in [\"VIZ['journey']\",\"VIZ['uflow']\"] if k not in s];print('ok')"
+                    depends_on: [M2.C1.L-logic.V1.U01]
+                  - id: M2.C2.L-interface.V0.U07
+                    what: wireframe and intelligence-card mockup renderer
+                    artifact: shell.html
+                    verify: python3 -c "s=open('shell.html').read();[__import__('sys').exit('missing '+k) for k in [\"VIZ['wire']\",\"VIZ['card']\"] if k not in s];print('ok')"
+                    depends_on: [M2.C1.L-logic.V1.U01]
+                  - id: M2.C2.L-interface.V0.U08
+                    what: curve renderer for cost comparisons, and scene renderer for real-life illustrations
+                    artifact: shell.html
+                    verify: python3 -c "s=open('shell.html').read();[__import__('sys').exit('missing '+k) for k in [\"VIZ['curve']\",\"VIZ['scene']\"] if k not in s];print('ok')"
+                    depends_on: [M2.C1.L-logic.V1.U01]
+          - layer: integration
+            levels:
+              - level: 0
+                units:
+                  - id: M2.C2.L-integration.V0.U01
+                    what: mount pass, every div.viz in a loaded lesson renders through its registered type
+                    artifact: shell.html
+                    verify: grep -q 'function mountViz' shell.html
+                    depends_on:
+                      - M2.C2.L-interface.V0.U01
+                      - M2.C2.L-interface.V0.U02
+                      - M2.C2.L-interface.V0.U03
+                      - M2.C2.L-interface.V0.U04
+                      - M2.C2.L-interface.V0.U05
+                      - M2.C2.L-interface.V0.U06
+                      - M2.C2.L-interface.V0.U07
+                      - M2.C2.L-interface.V0.U08
+
+  - id: M3
+    name: Whiteboard animation engine
+    ships: a lesson declares an animation and the reader can play, pause, step and scrub it on a whiteboard
+    categories:
+      - id: M3.C1
+        name: Whiteboard and player
+        layers:
+          - layer: interface
+            levels:
+              - level: 0
+                units:
+                  - id: M3.C1.L-interface.V0.U01
+                    what: whiteboard surface, paper tint, faint grid, generous padding, one idea per frame
+                    artifact: shell.html
+                    verify: grep -q '.board{' shell.html && grep -q 'board-grid' shell.html
+                    depends_on: [M1.C3.L-interface.V1.U01]
+                  - id: M3.C1.L-interface.V0.U02
+                    what: transport chrome, play pause step-back step-forward reset speed dots caption
+                    artifact: shell.html
+                    verify: python3 -c "s=open('shell.html').read();[__import__('sys').exit('missing '+c) for c in ['.anim-bar','.anim-caption','.anim-dots'] if c not in s];print('ok')"
+                    depends_on: [M3.C1.L-interface.V0.U01]
+          - layer: logic
+            levels:
+              - level: 0
+                units:
+                  - id: M3.C1.L-logic.V0.U01
+                    what: player state machine, one timer per board, play pause reset step goto, no leaks
+                    artifact: shell.html
+                    verify: python3 -c "s=open('shell.html').read();[__import__('sys').exit('missing '+f) for f in ['function animPlay','function animStep','function animGoto','function animReset'] if f not in s];print('ok')"
+                    depends_on: [M3.C1.L-interface.V0.U02]
+              - level: 1
+                units:
+                  - id: M3.C1.L-logic.V1.U01
+                    what: reduced-motion path snaps between frames, and observer autoplays only in view
+                    artifact: shell.html
+                    verify: grep -q 'prefers-reduced-motion' shell.html && grep -q 'IntersectionObserver' shell.html
+                    depends_on: [M3.C1.L-logic.V0.U01]
+      - id: M3.C2
+        name: Animation renderers
+        layers:
+          - layer: interface
+            levels:
+              - level: 0
+                units:
+                  - id: M3.C2.L-interface.V0.U01
+                    what: array-scan, boxes with idle checking ruled-out found states plus lo mid hi pointers
+                    artifact: shell.html
+                    verify: grep -q "ANIM\['array-scan'\]" shell.html
+                    depends_on: [M3.C1.L-logic.V0.U01]
+                  - id: M3.C2.L-interface.V0.U02
+                    what: race renderer, two or more algorithms on the same data with live step counters
+                    artifact: shell.html
+                    verify: grep -q "ANIM\['race'\]" shell.html
+                    depends_on: [M3.C2.L-interface.V0.U01]
+                  - id: M3.C2.L-interface.V0.U03
+                    what: tree-walk and graph-walk animation renderers
+                    artifact: shell.html
+                    verify: python3 -c "s=open('shell.html').read();[__import__('sys').exit('missing '+k) for k in [\"ANIM['tree-walk']\",\"ANIM['graph-walk']\"] if k not in s];print('ok')"
+                    depends_on: [M3.C1.L-logic.V0.U01]
+                  - id: M3.C2.L-interface.V0.U04
+                    what: vector-space animation renderer for semantic search and approximate neighbours
+                    artifact: shell.html
+                    verify: grep -q "ANIM\['vector'\]" shell.html
+                    depends_on: [M3.C1.L-logic.V0.U01]
+          - layer: integration
+            levels:
+              - level: 0
+                units:
+                  - id: M3.C2.L-integration.V0.U01
+                    what: mount pass binds every div.anim to its renderer and player on lesson load
+                    artifact: shell.html
+                    verify: grep -q 'function mountAnims' shell.html
+                    depends_on:
+                      - M3.C2.L-interface.V0.U01
+                      - M3.C2.L-interface.V0.U02
+                      - M3.C2.L-interface.V0.U03
+                      - M3.C2.L-interface.V0.U04
+                  - id: M3.C2.L-integration.V0.U02
+                    what: RETIRED. The frame-advance assert it described now lives inside check_layout.mjs,
+                      which walks every animation step against a fake DOM with no browser at all. Splitting
+                      it into a second Playwright-dependent script would have made qa.sh non-portable.
+                      Id retired, never reused.
+                    artifact: verify/check_layout.mjs
+                    verify: node verify/check_layout.mjs
+                    depends_on: [M3.C2.L-integration.V0.U01]
+                  - id: M3.C2.L-integration.V0.U03
+                    what: screenshots.mjs, captures every diagram in the built master for human review.
+                      Deliberately outside qa.sh because it needs Playwright and its job is catching ugly,
+                      which no exit code decides.
+                    artifact: verify/screenshots.mjs
+                    verify: node verify/screenshots.mjs 0.2 /tmp/dsa-shots
+                    depends_on: [M3.C2.L-integration.V0.U01]
+
+  - id: M4
+    name: Searching, the reference chapter
+    ships: chapter 06 reads end to end with working animations and the full diagram inventory
+    categories:
+      - id: M4.C1
+        name: Chapter 06 content
+        layers:
+          - layer: contract
+            levels:
+              - level: 0
+                units:
+                  - id: M4.C1.L-contract.V0.U01
+                    what: chapters/_TEMPLATE.js, the literal ten-block skeleton every future lesson copies
+                    artifact: chapters/_TEMPLATE.js
+                    verify: python3 verify/check_lesson.py --template
+                    depends_on: [M2.C2.L-integration.V0.U01, M3.C2.L-integration.V0.U01]
+          - layer: interface
+            levels:
+              - level: 0
+                units:
+                  - id: M4.C1.L-interface.V0.U01
+                    what: lesson 6.1 What searching really is, and the one question that decides everything
+                    artifact: chapters/ch06.js
+                    verify: python3 verify/check_lesson.py 6.1
+                    depends_on: [M4.C1.L-contract.V0.U01]
+              - level: 1
+                units:
+                  - id: M4.C1.L-interface.V1.U01
+                    what: lesson 6.2 Linear search, check every box
+                    artifact: chapters/ch06.js
+                    verify: python3 verify/check_lesson.py 6.2
+                    depends_on: [M4.C1.L-interface.V0.U01]
+                  - id: M4.C1.L-interface.V1.U02
+                    what: lesson 6.3 Binary search, halve the haystack
+                    artifact: chapters/ch06.js
+                    verify: python3 verify/check_lesson.py 6.3
+                    depends_on: [M4.C1.L-interface.V0.U01]
+              - level: 2
+                units:
+                  - id: M4.C1.L-interface.V2.U01
+                    what: lesson 6.4 The search family, jump exponential interpolation ternary
+                    artifact: chapters/ch06.js
+                    verify: python3 verify/check_lesson.py 6.4
+                    depends_on: [M4.C1.L-interface.V1.U02]
+                  - id: M4.C1.L-interface.V2.U02
+                    what: lesson 6.5 Searching structured data, trees tries and database indexes
+                    artifact: chapters/ch06.js
+                    verify: python3 verify/check_lesson.py 6.5
+                    depends_on: [M4.C1.L-interface.V1.U02]
+              - level: 3
+                units:
+                  - id: M4.C1.L-interface.V3.U01
+                    what: lesson 6.6 Searching by meaning, vector search ANN and RAG, and how to choose
+                    artifact: chapters/ch06.js
+                    verify: python3 verify/check_lesson.py 6.6
+                    depends_on: [M4.C1.L-interface.V2.U02]
+                  - id: M4.C1.L-interface.V3.U02
+                    what: lesson 6.7 How search problems show up, reading the disguise
+                    artifact: chapters/ch06.js
+                    verify: python3 verify/check_lesson.py 6.7
+                    depends_on: [M4.C1.L-interface.V3.U01]
+              - level: 4
+                units:
+                  - id: M4.C1.L-interface.V4.U01
+                    what: lesson 6.8 Choose your search, the decision flowchart and six systems torn down
+                    artifact: chapters/ch06.js
+                    verify: python3 verify/check_lesson.py 6.8
+                    depends_on: [M4.C1.L-interface.V3.U02]
+          - layer: integration
+            levels:
+              - level: 0
+                units:
+                  - id: M4.C1.L-integration.V0.U01
+                    what: chapter 06 green, eight lessons live, full inventory covered, harness clean
+                    artifact: dsa-concepts-master.html
+                    verify: bash verify/qa.sh
+                    depends_on: [M4.C1.L-interface.V4.U01]
+
+  - id: M5
+    name: The remaining 19 chapters
+    ships: the full 105-lesson course, every chapter matching the bar chapter 06 sets
+    note: >
+      Units are deliberately not minted yet. Once chapter 06 is green and the owner has read it,
+      each remaining chapter becomes a category here with one unit per lesson and the same verify
+      shape, python3 verify/check_lesson.py N.M
+    categories: []
