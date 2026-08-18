@@ -19,7 +19,7 @@ No code is required to finish it.
 |---|---|
 | Chapters | 20 (00 to 19) |
 | Lessons | 125 |
-| Written so far | Chapters 00 and 01 complete, Chapter 06 partial (6.1 and 6.9) |
+| Written so far | Chapters 00, 01 and 02 complete, Chapter 06 partial (6.1 and 6.9) |
 | Concepts covered | 184, listed in [CONCEPTS.md](CONCEPTS.md) |
 | Output | one self-contained HTML file, no runtime dependencies |
 
@@ -70,6 +70,7 @@ dsa-concepts/
 ├── chapters/
 │   ├── ch00.js                # Start Here (front matter)
 │   ├── ch01.js                # What a Data Structure Actually Is
+│   ├── ch02.js                # The Cost of Doing Things
 │   └── ch06.js                # Searching (the reference chapter)
 ├── verify/                    # the QA harness, exit codes only
 │   ├── qa.sh                  # runs everything in order, stops at the first failure

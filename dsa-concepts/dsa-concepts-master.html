@@ -49,7 +49,7 @@
   .rail-brand .by{font-size:12.5px;color:rgba(220,236,229,.62);font-weight:500;}
   .rail-progress{padding:15px 22px 17px;font-size:11px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:rgba(220,236,229,.55);border-bottom:1px solid rgba(255,255,255,.09);}
   .pbar{height:5px;border-radius:99px;background:rgba(255,255,255,.13);margin-top:9px;overflow:hidden;}
-  .pbar i{display:block;height:100%;width:8%;background:linear-gradient(90deg,var(--green-500),var(--gold-500));border-radius:99px;}
+  .pbar i{display:block;height:100%;width:12%;background:linear-gradient(90deg,var(--green-500),var(--gold-500));border-radius:99px;}
 
   .chap{border-bottom:1px solid rgba(255,255,255,.06);}
   .chap-head{display:flex;align-items:center;gap:9px;padding:12px 22px;cursor:pointer;font-size:13.5px;font-weight:600;transition:background .14s;}
@@ -315,12 +315,12 @@ const COURSE = [
       {id:"1.4", t:"The Trade That Never Goes Away: Time, Space and Order", state:"live"},
       {id:"1.5", t:"The Whiteboard: How a Computer Holds a Thing", state:"live"}
   ]},
-  { n:"02", title:"The Cost of Doing Things", locked:true, lessons:[
-      {id:"2.1", t:"Counting Steps Without Any Maths", state:"soon"},
-      {id:"2.2", t:"The Seven Shapes of Growth You Will Ever Meet", state:"soon"},
-      {id:"2.3", t:"Best, Average and Worst: Which One Actually Bites You", state:"soon"},
-      {id:"2.4", t:"Space Costs Too, and When To Trade It For Time", state:"soon"},
-      {id:"2.5", t:"The Whiteboard: Watch Cost Grow", state:"soon"}
+  { n:"02", title:"The Cost of Doing Things", lessons:[
+      {id:"2.1", t:"Counting Steps Without Any Maths", state:"live"},
+      {id:"2.2", t:"The Seven Shapes of Growth You Will Ever Meet", state:"live"},
+      {id:"2.3", t:"Best, Average and Worst: Which One Actually Bites You", state:"live"},
+      {id:"2.4", t:"Space Costs Too, and When To Trade It For Time", state:"live"},
+      {id:"2.5", t:"The Whiteboard: Watch Cost Grow", state:"live"}
   ]},
   { n:"03", title:"Arrays: The Row of Boxes", locked:true, lessons:[
       {id:"3.1", t:"The Row of Boxes: Why Position Is Instant", state:"soon"},
@@ -1251,6 +1251,666 @@ __NAV__
   <div class="callout good">
     <div class="ch">Chapter 1 complete</div>
     <p>A data structure is a decision about how you lay things down, and every later cost follows from that one decision. Next chapter: how to count what any of it costs, without any maths, so that you can read the invoice before you sign it.</p>
+  </div>
+__NAV__
+</div>`,
+
+/* ===== Chapter 02 - The Cost of Doing Things - DSA Concepts (2026) =====
+   Through line: speed is not a feeling, it is a count. Learn to count steps and you can
+   predict any system before you build it.
+   Ten blocks per concept lesson, then the whiteboard. See CONSISTENCY.md.
+   RULES: no em-dashes; no backticks in content; no dollar-brace; no apostrophes inside
+   a data-viz, data-anim or data-reel payload. */
+
+"2.1": `<div class="wrap">
+  <div class="les-kicker">Chapter 2 · Lesson 2.1</div>
+  <h1 class="les-title">Counting Steps Without Any Maths</h1>
+  <div class="les-meta">
+    <span class="pill">foundational</span><span class="pill">~12 min</span>
+    <span class="pill gold">no code needed</span><span class="pill">11 visuals</span>
+  </div>
+
+  <p class="motto">Nobody has ever measured how fast a system is. They measured one afternoon, on the data it happened to have that day.</p>
+
+  <p class="lead">By the end of this lesson you can walk up to any system, ask two questions in plain English, and put a number on what it will cost at a hundred times its current size, without seeing a single line of it. Chapter 1 named three currencies. This lesson hands you the meter for the first one. Speed is not a feeling, it is a count, and once you can count steps you can predict a system before you build it.</p>
+
+  <h2><span class="ix">1</span> The Everyday Situation</h2>
+  <div class="sub">Two queues, and the confident wrong choice.</div>
+  <p>You are at the supermarket. The left queue has four people in it, the right has nine. You take the left one, because four is fewer than nine, and for a little while you feel clever. Then the man at the front starts unloading a trolley the size of a small car. Behind him, a woman with a full week of shopping. Meanwhile the nine people on the right, each holding a sandwich and a bottle of water, are already gone.</p>
+
+  <div class="viz" data-viz='{"type":"scene","title":"Two queues, and the number that decides it is invisible","width":720,"height":260,"items":[{"icon":"person","x":112,"y":118,"kind":"gold","label":"the queue you joined: 4 people"},{"icon":"pile","x":256,"y":128,"kind":"bad","label":"120 items on the belt"},{"icon":"person","x":470,"y":118,"kind":"muted","label":"the queue you avoided: 9 people"},{"icon":"pile","x":614,"y":128,"kind":"accent","label":"45 items on the belt"}],"arrows":[{"x1":150,"y1":124,"x2":206,"y2":128,"style":"gold","label":"what you counted"},{"x1":508,"y1":124,"x2":564,"y2":128,"style":"green","label":"what the till charges for"}],"caption":"Four is fewer than nine and you were still wrong. Nine baskets of five is 45 scans, four trolleys of thirty is 120, and the queue that looked shorter held nearly three times the work."}'></div>
+
+  <p>Count what the till actually does. It does not do anything per person. It beeps once per item. Nine people with five items each is 45 beeps. Four people with thirty items each is 120. <strong>Your instinct was not slightly off, it was backwards</strong>, and it was backwards for exactly one reason: you counted the people, because the people are the part you can see.</p>
+
+  <h2><span class="ix">2</span> What It Actually Is</h2>
+  <div class="sub">Two questions, and the order matters.</div>
+  <p>Counting steps means finding the one thing a system does over and over, then working out what makes it do that thing more often. That is the whole definition, and it comes down to two questions you will use for the rest of the course.</p>
+
+  <div class="viz" data-viz='{"type":"flow","title":"The two questions, and the order they go in","maxChars":16,"nodes":[{"id":"r","label":"Name the thing that happens over and over","col":0,"row":1,"kind":"gold"},{"id":"d","label":"Double that thing. Does the job get twice as big?","col":1,"row":1,"kind":"gold","shape":"diamond"},{"id":"w","label":"You named the wrong thing. Go one level in","col":1,"row":0,"kind":"muted"},{"id":"c","label":"That is the driver. Count the repeats","col":2,"row":1,"kind":"accent"},{"id":"t","label":"Count again at double the size","col":3,"row":1,"kind":"accent"},{"id":"f","label":"Two counts. That is a forecast","col":3,"row":0,"kind":"accent"}],"edges":[{"from":"r","to":"d"},{"from":"d","to":"w","label":"no"},{"from":"w","to":"r","label":"try again"},{"from":"d","to":"c","label":"yes","style":"green"},{"from":"c","to":"t"},{"from":"t","to":"f","label":"now you can predict","style":"green"}],"caption":"One count is a measurement of an afternoon. The forecast only appears at the second reading, which is why Question 2 exists and why it is the one everybody skips."}'></div>
+
+  <p><strong>Question 1: what does this repeat, and what makes it repeat more?</strong> Read the second half again. Not how big is the data. What makes it repeat more. At the till the answer is items, and the queue was full of people. Those are two different numbers and they come apart constantly.</p>
+
+  <p><strong>Question 2: when that doubles, what happens to the count?</strong> Question 1 finds the meter. Question 2 reads it twice. One reading tells you nothing, because a single count is a story about one shop on one afternoon. Two readings at two sizes tell you what happens at every size you have not tried.</p>
+
+  <h2><span class="ix">3</span> Watch It Work</h2>
+  <div class="sub">Three lanes, one till, and a prediction you make out loud.</div>
+  <p>One beep is one check. That is the unit for this entire chapter and it is not a unit of time. Nobody on this board is holding a stopwatch. The frame speed is mine, the counts belong to the till, so watch the three numbers on the right and ignore how quickly the picture moves.</p>
+
+  <div class="board" data-anim='{"type":"race","title":"One till, three amounts of shopping","speed":1500,"countLabel":" checks","legend":[["being scanned now","look"],["already scanned","seen"],["finished","found"]],"tracks":[{"label":"Trolley, 12 items","data":["1","2","3","4","5","6","7","8","9","10","11","12"]},{"label":"Basket, 6 items","data":["1","2","3","4","5","6"]},{"label":"Loyalty card","data":["card"]}],"steps":[{"badge":"12 items","lanes":[{"count":0},{"count":0},{"count":0}],"say":"One beep is one check, and a check is not a moment of time. Nothing here is being timed, and nothing goes faster because somebody bought a better machine. <b>Watch the three numbers on the right.</b>"},{"badge":"12 items","lanes":[{"look":[2],"seen":[0,1],"count":3},{"look":[2],"seen":[0,1],"count":3},{"found":[0],"count":1}],"say":"The card was scanned once and has already finished. It would have finished just as early behind the trolley, because nothing about the shopping ever entered its number."},{"badge":"12 items","lanes":[{"look":[5],"seen":[0,1,2,3,4],"count":6},{"found":[5],"seen":[0,1,2,3,4],"count":6},{"found":[0],"count":1}],"say":"Six items, six checks. Write that down, then notice what it is worth on its own. It is one shop on one afternoon, and <b>it predicts no other shop at any other size.</b>"},{"badge":"12 items","lanes":[{"found":[11],"seen":[0,1,2,3,4,5,6,7,8,9,10],"count":12},{"found":[5],"seen":[0,1,2,3,4],"count":6},{"found":[0],"count":1}],"say":"The shopping doubled and the count doubled with it. <b>That is a second reading at a second size</b>, and two readings is the whole difference between a measurement and a forecast."},{"badge":"say it before you press","lanes":[{"found":[11],"seen":[0,1,2,3,4,5,6,7,8,9,10],"count":12},{"found":[5],"seen":[0,1,2,3,4],"count":6},{"found":[0],"count":1}],"say":"Do not press yet. Say both numbers out loud for a twenty four item shop, the belt and the card. Then press forward. <b>Twenty four and one.</b>"},{"badge":"a hundred times bigger","lanes":[{"found":[11],"seen":[0,1,2,3,4,5,6,7,8,9,10],"count":12},{"found":[5],"seen":[0,1,2,3,4],"count":6},{"found":[0],"count":1}],"say":"Now double twelve seven times: 24, 48, 96, 192, 384, 768, 1,536. Seven doublings carried you past a hundred times the shopping. <b>One shop a hundred times bigger is about 1,200 checks on the belt, and still exactly one on the card.</b> You just priced a shop you have never seen."},{"badge":"a scanner twice as fast","lanes":[{"found":[11],"seen":[0,1,2,3,4,5,6,7,8,9,10],"count":12},{"found":[5],"seen":[0,1,2,3,4],"count":6},{"found":[0],"count":1}],"say":"Hand the till a scanner twice as quick. Every count on this board is unchanged, because <b>a faster machine changes what one check costs and never how many there are.</b> The wait halves once. Next year the shop is bigger. A faster machine is a coupon, and coupons expire."}],"caption":"Three lanes and only one of them cares how much shopping there is. Keep the pair of numbers from frame 4 in your head, because every forecast in this chapter is built out of a pair of counts at two sizes."}'></div>
+
+  <h2><span class="ix">4</span> Under The Hood</h2>
+  <div class="sub">Why you are allowed to count beeps at all.</div>
+  <p>One beep is not really one thing. Pull it apart and a single scan is a small conversation: read the barcode, ask the price list what that code costs, take the answer back, add it to the running total. Four messages, not one.</p>
+
+  <div class="viz" data-viz='{"type":"seq","title":"What one beep is actually made of","actors":[{"label":"The scanner","kind":"gold"},{"label":"The price list","kind":"accent"},{"label":"The running total","kind":"muted"}],"messages":[{"from":0,"to":1,"label":"what is this barcode","style":"gold"},{"from":1,"to":0,"label":"the price","style":"green"},{"from":0,"to":2,"label":"add it on"},{"from":2,"to":0,"label":"total updated","style":"green"}],"caption":"Four messages, and the same four for item one and for item twelve. A fixed amount of work inside a step multiplies the total and never bends the shape, which is exactly why counting beeps is allowed."}'></div>
+
+  <p>So why were you allowed to count beeps? Because that four is the same four every single time. Twelve items is 48 messages. Twenty four items is 96. The four multiplied the number and did nothing to the shape. <strong>You may pick any repeated unit you like, as long as the inside of that unit does not change when the data grows.</strong></p>
+
+  <h2><span class="ix">5</span> The Types</h2>
+  <div class="sub">What people count, and what actually charges.</div>
+  <p>Question 1 has a small number of common answers, and nearly every mistake is the same mistake: counting the thing that is easiest to see.</p>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>What repeats</th><th>What people count</th><th>What actually drives it</th></tr>
+    <tr><td>Scanning shopping</td><td>people in the queue</td><td>items on the belt</td></tr>
+    <tr><td>Drawing a list on a screen</td><td>rows in the database</td><td>rows actually shown, plus one lookup each if the screen asks per row</td></tr>
+    <tr><td>Comparing things with each other</td><td>how many things there are</td><td>how many pairs there are, and pairs grow far faster than things</td></tr>
+    <tr><td>Loading a web page</td><td>kilobytes</td><td>how many separate requests it makes</td></tr>
+    <tr><td>Recalculating a spreadsheet</td><td>cells in the file</td><td>only the cells that depend on the one you changed</td></tr>
+    <tr><td>Reading a conversation back</td><td>the length of the newest message</td><td>the whole conversation, because it is read from the start every turn</td></tr>
+  </table>
+  <div class="tbl-cap">Rows three and six are where this chapter keeps its worst surprises. Everything else here grows in step with the pile. Those two grow faster than it, and nobody notices while the pile is small.</div></div>
+
+  <div class="viz" data-viz='{"type":"dtree","title":"Where the real driver usually hides","maxChars":17,"nodes":[{"id":"q","label":"What is the repeated thing attached to?","col":2,"row":0,"kind":"gold","shape":"diamond"},{"id":"i","label":"One repeat per item","col":0,"row":1,"kind":"accent"},{"id":"p","label":"One repeat per pair of items","col":1,"row":2,"kind":"bad"},{"id":"r","label":"One repeat per row shown","col":3,"row":1,"kind":"accent"},{"id":"d","label":"One repeat per thing that depends on it","col":4,"row":2,"kind":"accent"}],"edges":[{"from":"q","to":"i","label":"items"},{"from":"q","to":"p","label":"pairs"},{"from":"q","to":"r","label":"rows on screen","style":"green"},{"from":"q","to":"d","label":"dependents","style":"green"}],"caption":"Per item and per row grow in step with the pile. Per pair does not, and it is the one that ends careers, because pairs grow far faster than things do."}'></div>
+
+  <h2><span class="ix">6</span> What It Costs, In Plain English</h2>
+  <div class="sub">Two jobs at one till, priced at four sizes.</div>
+  <p>Six items on the belt: six checks. Twelve: twelve. Twenty four: twenty four. The card, at every one of those sizes: one.</p>
+
+  <div class="viz" data-viz='{"type":"card","title":"One trip to the till, priced four times","eyebrow":"THE COUNTS","badge":"checks, not seconds","width":470,"rows":[{"k":"6 items on the belt","v":"6 checks","bar":0.005},{"k":"12 items on the belt","v":"12 checks","bar":0.01},{"k":"24 items on the belt","v":"24 checks","bar":0.02},{"k":"1,200 items on the belt","v":"1,200 checks","tone":"bad","bar":1},{"k":"The loyalty card, at every size above","v":"1 check","tone":"good"}],"caption":"The top four rows are one shape and the bottom row is another. Nothing in the bottom row moved, and that is not because the card was written cleverly. It is because nothing about the shopping ever entered its count."}'></div>
+
+  <p>Now the conversion that turns counting into forecasting. Take twelve and double it seven times: 24, 48, 96, 192, 384, 768, 1,536. <strong>Seven doublings carries anything past a hundred times its size.</strong> That runs the other way too, and the other way is the useful one: anybody who can double a number seven times can price a system at a hundred times its current size without seeing one line of it.</p>
+
+  <p>So you have two shapes. <em class="k">Flat</em>, where the size of the pile never enters the number. And <em class="k">one for one</em>, where doubling the pile doubles the count. There are five more, and every one of them gets its proper name in the next lesson, after you have read it off a chart yourself.</p>
+
+  <h2><span class="ix">7</span> Where It Lives In Real Life</h2>
+  <div class="sub">The queue mistake, in five places that are not a supermarket.</div>
+  <p>A web page feels slow and everybody looks at the size of the images, when the driver is often how many separate requests it makes. A screen listing customers asks the database for the latest order belonging to each one, a single question per row, and the database team measures each question and correctly reports that it is fast. It is fast. There are three thousand of them.</p>
+
+  <div class="viz" data-viz='{"type":"kgraph","title":"Five systems, and the number that actually drives each one","unit":152,"nodes":[{"id":"c","label":"What actually drives the count","x":2,"y":1,"kind":"dark"},{"id":"w","label":"A slow page: how many separate requests","x":0,"y":0,"kind":"box"},{"id":"l","label":"A list screen: one lookup per row shown","x":0,"y":2,"kind":"box"},{"id":"a","label":"A long chat: every word against every word","x":4,"y":0,"kind":"gold"},{"id":"f","label":"Find on page: how long the page is","x":4,"y":2,"kind":"box"},{"id":"s","label":"A spreadsheet: only the cells that depend on the change","x":2,"y":3,"kind":"box"}],"edges":[{"from":"c","to":"w","label":"requests"},{"from":"c","to":"l","label":"rows on screen"},{"from":"c","to":"a","label":"pairs","style":"gold"},{"from":"c","to":"f","label":"characters"},{"from":"c","to":"s","label":"dependents"}],"caption":"Not one of these is driven by the number a person would name first. The bottom left node is the supermarket queue with a database behind it, and it is the problem worked through two blocks below."}'></div>
+
+  <p>The gold node is the one to watch. An assistant reading a long conversation compares every word with every other word, so doubling the conversation more than doubles the work. <strong>That is a pairs problem wearing a chat window</strong>, and it is the shape the next lesson spends the most time on.</p>
+
+  <h2><span class="ix">8</span> How Problems Show Up</h2>
+  <div class="sub">Six sentences, none of which mention counting.</div>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>What somebody actually says</th><th>The tell</th><th>What it is really asking</th></tr>
+    <tr><td>"It was instant on my machine"</td><td>One measurement, at one size, on the smallest pile that exists</td><td>A count with no second count beside it. A fact about that laptop, and a forecast of nothing</td></tr>
+    <tr><td>"It gets slower every time we sign a big client"</td><td>Cost tracking somebody else data rather than your code</td><td>The count is driven by client size, and nobody asked Question 1 before it shipped</td></tr>
+    <tr><td>"Can we just move it to a bigger machine?"</td><td>An offer to buy a smaller number instead of a different shape</td><td>A coupon. It changes what one step costs, leaves the count untouched, and expires when the data grows</td></tr>
+    <tr><td>"The queries are all fast but the page is slow"</td><td>One step measured carefully, the number of steps never measured at all</td><td>Something quick is being done once per row, and rows keep arriving</td></tr>
+    <tr><td>"It has got gradually worse all year and nobody changed anything"</td><td>A slope with no deployment behind it</td><td>Nothing changed except the size of the pile, which is exactly what the shape promised on day one</td></tr>
+    <tr><td>"We tested it with a thousand rows and it was fine"</td><td>A single size, picked because it was convenient</td><td>One count again. A run at a thousand and a run at two thousand would have been a forecast</td></tr>
+  </table>
+  <div class="tbl-cap">Read the middle column out loud and you will hear yourself in at least two of them. Every one is a number somebody can see, and not one is the number being charged for.</div></div>
+
+  <h2><span class="ix">9</span> Solve It Live</h2>
+  <div class="sub">A complaint that stalls a team for a week.</div>
+  <div class="callout">
+    <div class="ch">The problem, as it arrives</div>
+    <p>"Our admin dashboard used to open instantly. Now people click it and go and make a cup of tea. We have not deployed anything to that page in four months. The database team has measured every query on it and says they are all fine."</p>
+  </div>
+
+  <div class="viz" data-viz='{"type":"swim","title":"The dashboard that got slow while nobody touched it","lanes":[{"label":"The team"},{"label":"You"},{"label":"The page"}],"steps":[{"id":"a1","lane":0,"col":0,"kind":"gold","label":"Slower every month, nothing deployed"},{"id":"b1","lane":1,"col":1,"kind":"box","label":"Ask: one step, or a count of steps?"},{"id":"b2","lane":1,"col":2,"kind":"accent","label":"Queries are quick, so it is the count"},{"id":"b3","lane":1,"col":4,"kind":"accent","label":"One request for all of them, or fifty rows a page"},{"id":"c1","lane":2,"col":1,"kind":"bad","label":"Draws one row per customer"},{"id":"c2","lane":2,"col":2,"kind":"bad","label":"Asks for the latest order, once per row"},{"id":"c3","lane":2,"col":3,"kind":"bad","label":"300 customers became 3,000"}],"edges":[{"from":"a1","to":"b1"},{"from":"b1","to":"b2","style":"green"},{"from":"c1","to":"c2"},{"from":"c2","to":"c3"},{"from":"b2","to":"b3","style":"green","label":"fix the count, not the step"}],"caption":"Every measurement the team took was of a single step, and every single step was genuinely fine. The thing that grew ten times was the number of steps, and nobody was measuring that."}'></div>
+
+  <p><strong>The page was never fast, it was small.</strong> It draws one row per customer and asks the database for the latest order belonging to that customer, one question per row. Four months ago that was three hundred questions. It is now three thousand, because the company sold to more customers. Nothing regressed and there is nothing to roll back. Ask for every latest order in a single request, or cap the rows on screen at fifty, which stops the count from following the customer list forever.</p>
+
+  <div class="callout good">
+    <div class="ch">Why this reasoning wins</div>
+    <p>It asked one question, and the question was not about the database: <strong>is this a complaint about one step, or about how many times a step happens?</strong> Every other explanation on the table, a tired server, a bad query, the network, a heavy browser, is a one step explanation. A one step explanation cannot get ten times worse while nobody deploys anything. Only a count can do that, quietly, by itself, as you succeed.</p>
+  </div>
+
+  <h2><span class="ix">10</span> Your Turn</h2>
+  <div class="callout accent">
+    <div class="ch">Your rep, no code and no algebra</div>
+    <p>Open the photos on your phone. Two columns on a sheet of paper: how many were in the pile, and how many you looked at. <strong>Round one:</strong> take twenty photos and find the one with a particular person in it, tallying every photo your eyes touch. <strong>Round two:</strong> forty photos, same person, same job. Now answer Question 2 yourself. The pile doubled. What did your count do? Then run both rounds again on a different job: find the photo you took most recently. Use the phone rather than a shoebox for this one, because the phone keeps them in date order, and watch a count refuse to move.</p>
+  </div>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>Round</th><th>Photos in the pile</th><th>Photos you looked at</th><th>What Question 2 says</th></tr>
+    <tr><td>Find one person, round 1</td><td>20</td><td>your number</td><td>nothing yet, one count</td></tr>
+    <tr><td>Find one person, round 2</td><td>40</td><td>your number</td><td>doubled? more? less?</td></tr>
+    <tr><td>Find the newest photo, round 1</td><td>20</td><td>1</td><td>nothing yet, one count</td></tr>
+    <tr><td>Find the newest photo, round 2</td><td>40</td><td>1</td><td>it did not move at all</td></tr>
+  </table>
+  <div class="tbl-cap">Fill in the third column by hand. The fourth column is a forecast you wrote yourself, with no formula on the page and no code anywhere near it.</div></div>
+
+  <h2><span class="ix gold">✓</span> Check Yourself</h2>
+
+  <div class="quiz" data-correct="1">
+    <div class="q">Two checkout queues, four people in one and nine in the other. What do you need to know before you can say which holds more work?</div>
+    <div class="opt" data-i="0">How quick each cashier is, because that is what sets the pace</div>
+    <div class="opt" data-i="1">How many items each person is carrying, because the till repeats once per item</div>
+    <div class="opt" data-i="2">Which of the two queues started forming first</div>
+    <div class="qexp">Question 1 is what does this repeat, and what makes it repeat more. The till repeats a scan, and scans follow items. Option zero is real but it is a coupon: it changes what one beep costs and leaves the number of beeps exactly where it was. Nine baskets of five is 45. Four trolleys of thirty is 120.</div>
+  </div>
+
+  <div class="quiz" data-correct="1">
+    <div class="q">A report takes forty checks over a thousand rows. What can you honestly predict about a hundred thousand rows?</div>
+    <div class="opt" data-i="0">About four thousand checks, because the data is a hundred times bigger</div>
+    <div class="opt" data-i="1">Nothing yet. Run it again at two thousand rows and see what the count does</div>
+    <div class="opt" data-i="2">About forty checks, because the count is fixed</div>
+    <div class="qexp">One count at one size is a measurement, not a forecast. Option zero quietly assumes the count grows in step with the data, and option two quietly assumes flat, and both are guesses wearing arithmetic. The second reading is the thing that turns a meter into a prediction, and it costs you exactly one more run.</div>
+  </div>
+
+  <div class="quiz" data-correct="1">
+    <div class="q">A faster scanner halves what every single beep costs. What actually changed?</div>
+    <div class="opt" data-i="0">The number of checks, which is now half what it was</div>
+    <div class="opt" data-i="1">What one check costs. The work is still the same 1,200 checks, and next year the shop is bigger</div>
+    <div class="opt" data-i="2">The growth shape, which is flatter now</div>
+    <div class="qexp">The till still performs 1,200 checks. Each one is simply cheaper, which is a coupon, and coupons expire the moment the data grows. A different growth shape is a different price, and it is the only one of the two that keeps paying afterwards.</div>
+  </div>
+
+  <div class="callout good">
+    <div class="ch">Next</div>
+    <p>You have the meter and you have two of its readings. Next: every shape that meter can possibly return, and there are only seven of them.</p>
+  </div>
+__NAV__
+</div>`,
+
+"2.2": `<div class="wrap">
+  <div class="les-kicker">Chapter 2 · Lesson 2.2</div>
+  <h1 class="les-title">The Seven Shapes of Growth You Will Ever Meet</h1>
+  <div class="les-meta">
+    <span class="pill">foundational</span><span class="pill">~13 min</span>
+    <span class="pill gold">no code needed</span><span class="pill">10 visuals</span>
+  </div>
+
+  <p class="motto">Nobody in this field is juggling a hundred growth shapes. There are seven, and on most days there are five.</p>
+
+  <p class="lead">The last lesson handed you the meter. This one is the second half of the count: not what the number is today, but what the number does when the data doubles. By the end you will be able to hear a job described, at any size, and place it on one of seven lines without watching it run once. Four of those seven you are about to work out yourself at a dinner table.</p>
+
+  <h2><span class="ix">1</span> The Everyday Situation</h2>
+  <div class="sub">Twelve people, four jobs, and one of them turns on you.</div>
+  <p>You are laying a table for twelve. <strong>Fetch the salt</strong> from the kitchen: one trip, and it would still be one trip for twenty four people, because there is one salt. <strong>Find one guest in the box of place cards</strong>: they are alphabetical, so you open the box halfway, then halfway again, and four looks gets you there. With twenty four cards it is five. <strong>Hand out a menu each</strong>: twelve guests, twelve walks round the table. Twenty four guests is twenty four walks.</p>
+
+  <div class="viz" data-viz='{"type":"scene","title":"Four jobs at one table, four different futures","width":780,"height":270,"items":[{"icon":"person","x":100,"y":132,"kind":"gold","label":"you, laying a table for twelve"},{"icon":"shelf","x":300,"y":122,"kind":"accent","label":"the salt: one trip, always"},{"icon":"pile","x":482,"y":130,"kind":"accent","label":"the place cards: four looks"},{"icon":"doc","x":630,"y":120,"kind":"box","label":"a menu each: twelve walks"},{"icon":"glass","x":762,"y":128,"kind":"bad","label":"everybody greets everybody: 66"}],"arrows":[{"x1":146,"y1":132,"x2":252,"y2":124,"style":"green","label":"one trip, whatever the number"},{"x1":668,"y1":126,"x2":726,"y2":128,"style":"gold","label":"twice the guests, four times this"}],"caption":"Four jobs at one table. The first three barely notice that twelve became twenty four. The fourth one more than quadrupled, and nobody made a decision for that to happen."}'></div>
+
+  <p>Then the last job, and this is where the evening turns. <strong>Everybody greets everybody.</strong> With twelve at the table that is 66 greetings. Invite twelve more and it is 276. Read those two numbers again. You doubled the guest list and the greeting did not double, it more than quadrupled. Nobody made a decision, nobody did anything wrong, and the evening got four times longer at the door.</p>
+
+  <h2><span class="ix">2</span> What It Actually Is</h2>
+  <div class="sub">Four jobs, four futures, one question separating them.</div>
+  <p>A growth shape is the answer to one question. Count the repeats at one size. Count them again at double that size. Then <strong>say what happened</strong>, in ordinary words: it stayed put, it went up by one, it doubled, it doubled and a bit, it quadrupled. That answer holds at every size, forever, whether the table seats twelve or twelve million.</p>
+
+  <div class="viz" data-viz='{"type":"arch","title":"How a shape is produced, and when the probe is wrong","maxChars":15,"nodes":[{"id":"a","label":"Count the repeats at twelve","col":0,"row":0,"kind":"accent"},{"id":"b","label":"Count them again at twenty four","col":0,"row":1,"kind":"accent"},{"id":"c","label":"Put the two counts side by side","col":1,"row":0,"kind":"gold"},{"id":"d","label":"Say what happened. That is the shape, at every size, forever","col":2,"row":0,"kind":"dark"},{"id":"e","label":"If the answer is absurdly large, change the probe: add one item instead","col":2,"row":1,"kind":"bad"}],"edges":[{"from":"a","to":"c"},{"from":"b","to":"c"},{"from":"c","to":"d","style":"green"},{"from":"c","to":"e"}],"caption":"Say what happened, do not divide. Two of the seven answer doubling with a number so large it stops carrying information, and for those two the honest probe is what one extra item does."}'></div>
+
+  <p>Notice the instruction is say what happened, not divide one by the other. Dividing works for some of the shapes and quietly lies about others: the sorted box of cards goes from four looks to five, which is not a ratio worth keeping, it is <em class="k">plus one</em>, and plus one is the whole point of that line. Two of the seven do not answer doubling at all, and for those the honest probe is what one extra item does.</p>
+
+  <h2><span class="ix">3</span> Watch It Work</h2>
+  <div class="sub">Six lines, arriving one job at a time, and none of them named yet.</div>
+  <p>Each line appears with the job that produced it. Before you press forward, say out loud what you think the next line will do when the guest list doubles. You have already answered that question four times tonight, at your own table, and got it right every time.</p>
+
+  <div class="board" data-anim='{"type":"curve","title":"Six jobs, one dinner party, six futures","width":680,"height":430,"n":24,"logScale":true,"speed":2000,"xlabel":"guests at the table","ylabel":"work it takes","series":[{"fn":"1","label":"no change","label2":"O(1), constant","color":"green"},{"fn":"logn","label":"one more look","label2":"O(log n), logarithmic","color":"green"},{"fn":"n","label":"twice the work","label2":"O(n), linear"},{"fn":"nlogn","label":"twice, plus a bit","label2":"O(n log n), linearithmic"},{"fn":"n2","label":"four times","label2":"O(n squared), quadratic","color":"gold"},{"fn":"2n","label":"doubles per guest","label2":"O(2 to the n), exponential","color":"bad"}],"steps":[{"show":[0],"pct":100,"badge":"the salt","say":"Six lines are coming and none gets a name until the end. This one is the salt. There is one salt, so <b>nothing about the guest list is able to enter this line.</b>"},{"show":[0,1],"pct":100,"badge":"the place cards","say":"Four looks found a card in a box of twelve. Twenty four cards is five looks, because a doubled box costs you opening it halfway one more time. <b>Doubling added one look. Not one times. One.</b>"},{"show":[0,1,2],"pct":100,"badge":"the menus","say":"Twelve guests is twelve walks round the table. Double the guests and the walking doubles with them. This boring line is where most of the work in most products actually lives."},{"show":[0,1,2,3],"pct":100,"badge":"sorting the cards","say":"Putting the cards into order is not one pass. It is one full pass for every doubling of the pile, so it climbs a little faster than the menus and the gap widens slowly forever."},{"show":[0,1,2,3,4],"pct":100,"badge":"the greetings","say":"Twelve more guests arrived and every one greeted everybody already there, so 66 became 276. <b>Now look where this line sits at the left edge: underneath the others, harmless.</b> It never changed shape. It was always this line."},{"show":[0,1,2,3,4,5],"pct":100,"badge":"the probe has changed","say":"Doubling is the wrong question for the last one. Ask instead what <b>one</b> extra guest does. Every possible group at the top table is 4,096 at twelve guests and 8,192 at thirteen. One more guest, twice the work."},{"show":[0,1,2,3,4,5],"pct":100,"badge":"log scale, every step is ten times","say":"The side of this chart is a log scale, so every equal step upwards is <b>ten times</b> the step below it. Drawn on an ordinary scale, five of these six would sit flat on the floor and the sixth would define the ceiling. Nothing has left the picture. The picture was squashed so all six could stay in it."},{"show":[0,1,2,3,4,5],"pct":100,"notation":true,"badge":"the names, last","say":"Now the names, printed on lines you have already read correctly. There is a seventh, worse than every one of these, and it is in the table below rather than on this chart because <b>drawing it would flatten all six of these into the floor.</b>"}],"caption":"Six lines, and you generated four of them at your own table before anybody explained anything. The seventh, every possible seating order, is left off the chart on purpose: its ceiling is so high that plotting it would squash the six shapes you actually meet into the bottom seventh of the picture."}'></div>
+
+  <h2><span class="ix">4</span> Under The Hood</h2>
+  <div class="sub">Why the greetings quadrupled rather than doubled.</div>
+  <p>Not because greeting is expensive. One greeting is one greeting, at every table size, forever. Follow a single arrival instead. A guest walks in and greets everybody already seated, so what that one arrival costs is the length of the table. Then they sit down, and the table is one longer for the next person through the door.</p>
+
+  <div class="viz" data-viz='{"type":"state","title":"Why the greetings quadrupled instead of doubling","maxChars":16,"nodes":[{"id":"a","label":"One more guest arrives","col":0,"row":1,"kind":"gold"},{"id":"b","label":"They greet everybody already seated","col":1,"row":0,"kind":"accent"},{"id":"c","label":"They sit down. The table is one longer","col":2,"row":1,"kind":"accent"},{"id":"d","label":"So the next arrival costs more than this one did","col":1,"row":2,"kind":"bad"}],"edges":[{"from":"a","to":"b","label":"one arrival"},{"from":"b","to":"c","label":"greetings done"},{"from":"c","to":"a","label":"next guest","style":"green"},{"from":"c","to":"d","label":"and"},{"from":"d","to":"a"}],"caption":"Nothing inside the loop got slower. The loop got longer at the same time as it got run more often, and that is the only reason a count quadruples instead of doubling."}'></div>
+
+  <p>The thing being repeated is itself a walk over everything you have, and the thing it walks over is growing while you repeat it. <strong>Two things grew at once, so the count grew twice over.</strong> That hands you a test needing no chart and no numbers: if the repeated thing is itself a pass over the whole collection, you are on the four times line, and nothing you do inside that pass will move you off it.</p>
+
+  <h2><span class="ix">5</span> The Types</h2>
+  <div class="sub">All seven, attached to the job that produced them.</div>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>The job at your table</th><th>What you meet it as</th><th>Double the guests and the count</th><th>Where it comes back</th></tr>
+    <tr><td>Fetch the salt</td><td>reaching a thing you can already name</td><td>is unchanged</td><td>Chapters 3 and 8</td></tr>
+    <tr><td>Find one card in the alphabetised box</td><td>halving a sorted pile</td><td>goes up by exactly one</td><td>Chapters 6 and 10</td></tr>
+    <tr><td>Hand out a menu each</td><td>one touch per item</td><td>doubles</td><td>Chapters 3 and 6</td></tr>
+    <tr><td>Sort the place cards into order</td><td>one full pass per doubling</td><td>doubles, plus a bit</td><td>Chapter 7</td></tr>
+    <tr><td>Everybody greets everybody</td><td>every item against every item</td><td>goes up four times</td><td>Chapters 7 and 12</td></tr>
+    <tr><td>Every possible group at the top table</td><td>every possible subset</td><td>ask instead: one more guest doubles it</td><td>Chapter 15</td></tr>
+    <tr><td>Every possible seating order</td><td>every possible arrangement</td><td>ask instead: one more guest multiplies it</td><td>Chapter 15</td></tr>
+  </table>
+  <div class="tbl-cap">Row five decides most arguments. Four times per doubling is not a disaster, it is the ordinary result of doing something perfectly sensible to every item, for every item. It ships constantly, it reviews cleanly, and it is invisible until the data arrives.</div></div>
+
+  <h2><span class="ix">6</span> What It Costs, In Plain English</h2>
+  <div class="sub">Ten doublings, on your fingers.</div>
+  <p>Start at one and double: 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1,024. <strong>Ten doublings turns one thing into 1,024 things</strong>, and you used no maths to get there. Now put those same ten doublings through the jobs from the table.</p>
+
+  <div class="viz" data-viz='{"type":"card","title":"The same ten doublings, five different bills","eyebrow":"COUNT IT YOURSELF","badge":"1 becomes 1,024","width":490,"rows":[{"k":"Fetch one thing you can already name","v":"1","tone":"good","bar":0},{"k":"Find one card in a sorted box","v":"10","tone":"good","bar":0.17},{"k":"Touch every item once","v":"1,024","bar":0.5},{"k":"One full pass per doubling","v":"10,240","bar":0.67},{"k":"Every item against every item","v":"1,048,576","tone":"bad","bar":1}],"caption":"The bars are on a log scale like the chart above, so each one is the number of zeros rather than the number itself. Rows three and five both cost one at a single item. Ten doublings later one is a thousand and the other is a million, and neither was ever rewritten."}'></div>
+
+  <p>Two of those rows deserve a sentence each. <em class="k">Find one card in a sorted box</em> costs 10, because you counted ten doublings, and each doubling of the pile adds exactly one look for the plain reason that you did exactly one more doubling. <em class="k">One full pass per doubling</em> costs 10,240, which is 1,024 items multiplied by the 10 doublings, and that is the honest mechanism behind sorting: not one pass over everything, but one pass over everything for every doubling of the pile.</p>
+
+  <p>The short version of that arithmetic is the sentence worth carrying: <strong>if the count quadruples every time the data doubles, a hundred times the data is ten thousand times the work.</strong> Same code, same day, four extra zeros.</p>
+
+  <p>You have now read every one of these off a count, so take their written form. A shape gets an <em class="g">O</em>, the letter <em class="g">n</em> standing for how much data you have, and nothing else. And when a job has two shapes inside it, walking a list and then sorting it, you name the job by <strong>the steeper of the two</strong>, because past some size the steeper one is all that is left of the bill. That is what somebody means when they say a thing was quick for the first few hundred and then fell off a cliff.</p>
+
+  <h2><span class="ix">7</span> Where It Lives In Real Life</h2>
+  <div class="sub">Five ordinary ones, and two that mean stop.</div>
+  <p>The unchanged line is reaching a numbered box straight off, which was Lesson 1.1, and it is also a lookup handing you a value by its key. The plus one look line is a database index, and it is what <em class="k">git bisect</em> does when it walks a thousand commits and finds the broken one in about ten checks.</p>
+
+  <div class="viz" data-viz='{"type":"kgraph","title":"Where each of the seven actually turns up","unit":168,"nodes":[{"id":"c","label":"The seven shapes","x":2,"y":2,"kind":"dark"},{"id":"a","label":"Reaching a numbered box, and key lookups","x":0,"y":0,"kind":"accent"},{"id":"b","label":"Binary search, database indexes, git bisect","x":2,"y":0,"kind":"accent"},{"id":"d","label":"A full scan, and searching the text of a page","x":4,"y":0,"kind":"box"},{"id":"e","label":"Every general purpose sort in every language","x":0,"y":2,"kind":"box"},{"id":"f","label":"Checking every item against every item","x":4,"y":2,"kind":"gold"},{"id":"g","label":"Trying every possible subset","x":1,"y":4,"kind":"bad"},{"id":"h","label":"Trying every possible order","x":3,"y":4,"kind":"bad"}],"edges":[{"from":"c","to":"a","label":"no change"},{"from":"c","to":"b","label":"plus one look"},{"from":"c","to":"d","label":"twice"},{"from":"c","to":"e","label":"twice plus a bit"},{"from":"c","to":"f","label":"four times","style":"gold"},{"from":"c","to":"g","label":"one more item doubles it"},{"from":"c","to":"h","label":"one more item multiplies it"}],"caption":"The five across the top are ordinary and you used all of them this week. The two at the bottom are not slower versions of the others. Where they turn up, the answer is never a better machine, it is a different question."}'></div>
+
+  <p>The doubles line is any full scan, including your browser searching the text of a page. The twice plus a bit line is every general purpose sorting routine in every language, and Chapter 7 will show you that nobody has ever got underneath it by comparing. <strong>The four times line is checking every item against every item, which is how almost every accidental slowdown in a real product gets built, quietly, by a reasonable person.</strong></p>
+
+  <h2><span class="ix">8</span> How Problems Show Up</h2>
+  <div class="sub">Six sentences, none of which say the words growth shape.</div>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>What somebody actually says</th><th>The tell</th><th>What it is really asking</th></tr>
+    <tr><td>"It was fine on the test data and it times out on the real thing"</td><td>Fine at small, dead at large, nothing changed between</td><td>The shape was always there and small data hid it</td></tr>
+    <tr><td>"We doubled the users and everything fell over"</td><td>Production ran Question 2 for you, for free</td><td>If the pain more than doubled, something is nested. You are on the four times line</td></tr>
+    <tr><td>"Adding one more filter made the whole thing hang"</td><td>One extra item, not a doubling</td><td>One of the last two shapes, where a single extra item doubles or multiplies the work</td></tr>
+    <tr><td>"Can we just put it on a bigger server?"</td><td>An offer to change the number, not the shape</td><td>A coupon. It moves the whole line down once and never bends it</td></tr>
+    <tr><td>"The report took a minute last year and it takes an hour now"</td><td>Sixty times slower, and you are allowed to ask how much data grew</td><td>If the data grew about eight times, eight times eight is sixty four. The four times line, naming itself</td></tr>
+    <tr><td>"It is quick for the first few hundred and then falls off a cliff"</td><td>One line crossing another</td><td>Two shapes in the same path. The steeper one was underneath until it was not</td></tr>
+  </table>
+  <div class="tbl-cap">Row five is the one to practise. Sixty times slower is not a fact about a server, it is a ratio, and a ratio can be divided by the ratio of the data. Eight times the data and sixty four times the work names its own shape.</div></div>
+
+  <h2><span class="ix">9</span> Solve It Live</h2>
+  <div class="sub">Two counts, one ratio, one shape.</div>
+  <div class="callout">
+    <div class="ch">The problem, as it arrives</div>
+    <p>"Our duplicate checker has not been touched in two years. At 5,000 contacts it finished in about four seconds. We are at 40,000 now and it takes over four minutes. Nobody edited that file. What did we break?"</p>
+  </div>
+
+  <div class="viz" data-viz='{"type":"swim","title":"Nothing was edited and it is sixty four times slower","lanes":[{"label":"The team"},{"label":"You"},{"label":"The count"}],"steps":[{"id":"a1","lane":0,"col":0,"kind":"gold","label":"Nobody touched it and it is 64 times slower"},{"id":"b1","lane":1,"col":1,"kind":"box","label":"What does it repeat?"},{"id":"c1","lane":2,"col":1,"kind":"bad","label":"Every contact against every contact"},{"id":"b2","lane":1,"col":2,"kind":"accent","label":"Data up 8 times, work up 64 times"},{"id":"c2","lane":2,"col":2,"kind":"bad","label":"25 million becomes 1.6 billion"},{"id":"b3","lane":1,"col":3,"kind":"accent","label":"Check each contact once against a lookup"},{"id":"c3","lane":2,"col":3,"kind":"accent","label":"1.6 billion becomes 40,000"}],"edges":[{"from":"a1","to":"b1"},{"from":"b1","to":"c1"},{"from":"b1","to":"b2","style":"green"},{"from":"b2","to":"b3","style":"green","label":"change the shape"},{"from":"b3","to":"c3","style":"green"}],"caption":"The middle lane never opens the file, never looks at a server graph, and never asks what shipped. It asks how much the data grew and how much the work grew, and lets the answer name itself."}'></div>
+
+  <p><strong>Nothing broke, and nothing was ever fast.</strong> The checker compares every contact against every contact, so its count is the number of contacts multiplied by itself: 25 million comparisons at 5,000 contacts, and 1,600,000,000 at 40,000. Eight times the contacts, sixty four times the work, exactly what the four times line promises. What has to change is the shape: keep every contact already seen in a lookup and check each new one once, which turns 1.6 billion comparisons into 40,000.</p>
+
+  <div class="callout good">
+    <div class="ch">Why this reasoning wins</div>
+    <p>It never opened the file. It asked <strong>how much did the data grow, and how much did the work grow</strong>, put the two ratios next to each other, and let the answer name itself. A faster machine buys one coupon here, and then the next eight times arrives and takes it back.</p>
+  </div>
+
+  <h2><span class="ix">10</span> Your Turn</h2>
+  <div class="callout accent">
+    <div class="ch">Your rep, no code</div>
+    <p>Pick three things a product you use every day does. One that feels instant no matter how much you have loaded into it. One that gets visibly slower as you add more. One with a spinner you have learned to expect. For each, write two lines and nothing else. <strong>First:</strong> what does it repeat, and what makes it repeat more. <strong>Second:</strong> if the amount of stuff in it doubled tomorrow, does that count stay put, go up by one, double, double plus a bit, or quadruple. You cannot check your answers and that is not a problem. The point is that you now hold a specific answer instead of a feeling, and a specific answer is something you can be wrong about in public and then correct.</p>
+  </div>
+
+  <h2><span class="ix gold">✓</span> Check Yourself</h2>
+
+  <div class="quiz" data-correct="1">
+    <div class="q">A report over 10,000 rows takes 20 seconds. The table grows to 40,000 rows and the same report now takes about 320 seconds. Which shape is it on?</div>
+    <div class="opt" data-i="0">Linear: the count doubles when the data doubles</div>
+    <div class="opt" data-i="1">Quadratic: the count quadruples when the data doubles</div>
+    <div class="opt" data-i="2">Logarithmic: the count goes up by one when the data doubles</div>
+    <div class="qexp">Four times the data, sixteen times the work. That is two doublings, and each doubling multiplied the count by four. Only one shape does that. Notice what you did not need in order to answer: the code, the language, the server, the query plan. Two counts at two sizes was the whole method.</div>
+  </div>
+
+  <div class="quiz" data-correct="1">
+    <div class="q">A search takes about 20 looks over a million records. The company grows to two million records. How many looks now?</div>
+    <div class="opt" data-i="0">About 40, because the data doubled</div>
+    <div class="opt" data-i="1">About 21, because doubling the pile means you did exactly one more doubling</div>
+    <div class="opt" data-i="2">About 20 million, because every record has to be checked</div>
+    <div class="qexp">Twenty looks means you can start at one and double about twenty times before you pass a million, and doubling twenty times gives 1,048,576. Double the pile and you have done exactly one more doubling, so you count exactly one more. Not one times more. One. That is why this line is nearly flat on the chart and why every index in Chapter 6 is built to put you on it.</div>
+  </div>
+
+  <div class="quiz" data-correct="1">
+    <div class="q">Somebody says their scheduling tool doubles in cost every time they add one more meeting room. Why is doubling the data the wrong question to ask about it?</div>
+    <div class="opt" data-i="0">Because the tool is badly written and should be rewritten</div>
+    <div class="opt" data-i="1">Because it answers a different probe: one extra item already doubles it, so doubling the rooms returns a number too large to carry any information</div>
+    <div class="opt" data-i="2">Because scheduling problems are always slow</div>
+    <div class="qexp">Five of the seven shapes answer to doubling. Two do not. Ten more rooms is not ten times the work, it is about a thousand times, because ten more rooms is ten more doublings. Ask this shape what doubling the rooms does and the answer is not too small, it is so enormous it stops meaning anything, which is exactly why the probe has to change rather than the arithmetic.</div>
+  </div>
+
+  <div class="callout good">
+    <div class="ch">Next</div>
+    <p>You have all seven shapes. Next: why a single shape is still not a prediction, because every count has three different answers depending on which day you ask.</p>
+  </div>
+__NAV__
+</div>`,
+
+"2.3": `<div class="wrap">
+  <div class="les-kicker">Chapter 2 · Lesson 2.3</div>
+  <h1 class="les-title">Best, Average and Worst: Which One Actually Bites You</h1>
+  <div class="les-meta">
+    <span class="pill">foundational</span><span class="pill">~12 min</span>
+    <span class="pill gold">no code needed</span><span class="pill">10 visuals</span>
+  </div>
+
+  <p class="motto">The worst case is not bad luck. It has a cause, and the cause is almost always your own success.</p>
+
+  <p class="lead">You can count steps and you know all seven shapes. This lesson fixes the thing that makes counts wrong in practice: you have been quoting one number where there are always three. By the end you will be able to look at any operation and say what it costs on its luckiest day, on an ordinary one, and on the day that has a cause behind it, and you will know which of the three belongs in a plan.</p>
+
+  <h2><span class="ix">1</span> The Everyday Situation</h2>
+  <div class="sub">Four good mornings and one that gets remembered.</div>
+  <p>You leave home at the same time every morning. Four mornings out of five you get in early enough for a coffee. On the fifth you are standing at the ticket barrier behind twenty people and you walk into the meeting after it has started. <strong>Nobody in that room remembers the four good mornings.</strong></p>
+
+  <div class="viz" data-viz='{"type":"scene","title":"The bad morning has a date on it","width":720,"height":250,"items":[{"icon":"person","x":110,"y":120,"kind":"gold","label":"you, leaving at the time you always leave"},{"icon":"pile","x":380,"y":124,"kind":"muted","label":"twenty people renewing at one window"},{"icon":"doc","x":624,"y":118,"kind":"accent","label":"the calendar, with the first circled"}],"arrows":[{"x1":152,"y1":122,"x2":316,"y2":124,"style":"gold","label":"four mornings in five this is empty"},{"x1":444,"y1":124,"x2":576,"y2":120,"style":"green","label":"on the fifth it is not luck, it is a date"}],"caption":"You do not leave earlier every day. You leave earlier on the first. You have been reasoning about worst cases your whole life, and you have never once called it that."}'></div>
+
+  <p>Now look at a calendar. That bad morning is not scattered about at random. It is the first of the month, when everybody renews a travel pass at one window. It was true last month and it will be true next month. So you already know what to do, and you have known since school: you do not leave earlier every day, you leave earlier on the first. <strong>You have been reasoning about worst cases your whole life and never once called it that.</strong></p>
+
+  <h2><span class="ix">2</span> What It Actually Is</h2>
+  <div class="sub">One method, three honest answers.</div>
+  <p>Take one operation, hold the method fixed, hold the data fixed, and vary only the input somebody hands it. The count changes. That is not a flaw in your counting, it is a property of the operation, and it produces three separate numbers that all deserve to exist.</p>
+
+  <div class="viz" data-viz='{"type":"arch","title":"One method, one list, three different days","maxChars":16,"nodes":[{"id":"m","label":"The same method, the same twelve names","col":0,"row":1,"kind":"dark"},{"id":"b","label":"Luckiest input: the name is in the first box","col":1,"row":0,"kind":"gold"},{"id":"a","label":"Ordinary input: the name is somewhere in the middle","col":1,"row":1,"kind":"accent"},{"id":"w","label":"Cruellest input: the name is last, or not there at all","col":1,"row":2,"kind":"bad"},{"id":"b2","label":"1 check","col":2,"row":0,"kind":"gold"},{"id":"a2","label":"about 6 checks","col":2,"row":1,"kind":"accent"},{"id":"w2","label":"12 checks","col":2,"row":2,"kind":"bad"}],"edges":[{"from":"m","to":"b","label":"you hand it"},{"from":"m","to":"a"},{"from":"m","to":"w"},{"from":"b","to":"b2","style":"green"},{"from":"a","to":"a2"},{"from":"w","to":"w2"}],"caption":"Nothing on the left changed. The method is identical in all three rows and so is the list. The only thing that varied is what somebody typed, and that person does not work for you."}'></div>
+
+  <p>The <em class="k">best case</em> is the kindest possible input. The <em class="k">average case</em> is what most inputs cost. The <em class="k">worst case</em> is the cruellest input the operation permits. All three are true at once, and the trouble starts when somebody quotes one of them and calls it the speed.</p>
+
+  <h2><span class="ix">3</span> Watch It Work</h2>
+  <div class="sub">Three lanes, and one of them never turns green.</div>
+  <p>The same twelve names in each lane, in the same order, checked the same way, one box at a time. Watch the counters, and when two lanes are sitting on the same number, stop and ask whether the picture tells you which one is about to end well. It does not.</p>
+
+  <div class="board" data-anim='{"type":"race","title":"Same method, same list, three different days","speed":1400,"countLabel":" checks","legend":[["checking now","look"],["ruled out","dead"],["found it","found"]],"tracks":[{"label":"The demo","data":["Ada","Ben","Cara","Dev","Eli","Fay","Gus","Hana","Ivo","Jai","Kit","Lena"]},{"label":"A real Tuesday","data":["Ada","Ben","Cara","Dev","Eli","Fay","Gus","Hana","Ivo","Jai","Kit","Lena"]},{"label":"The search that finds nothing","data":["Ada","Ben","Cara","Dev","Eli","Fay","Gus","Hana","Ivo","Jai","Kit","Lena"]}],"steps":[{"badge":"12 names, one method","lanes":[{"look":[0],"count":1},{"look":[0],"count":1},{"look":[0],"count":1}],"say":"Three lanes, the same twelve names in the same order, checked the same way. <b>Nothing about the method differs between them.</b> The only difference is which name somebody typed."},{"lanes":[{"found":[0],"count":1},{"look":[1],"dead":[0],"count":2},{"look":[1],"dead":[0],"count":2}],"say":"Lane A is finished. One check. Somebody typed the name sitting in the first box, which is exactly what happens in a demo, because the person demonstrating types the thing already on the screen."},{"lanes":[{"found":[0],"count":1},{"look":[4],"dead":[0,1,2,3],"count":5},{"look":[4],"dead":[0,1,2,3],"count":5}],"say":"Lanes B and C are on the same number and the picture cannot tell you which will end well. <b>The count so far never predicts the count at the end</b>, because the thing that decides it was chosen before the run started."},{"lanes":[{"found":[0],"count":1},{"found":[6],"dead":[0,1,2,3,4,5],"count":7},{"look":[6],"dead":[0,1,2,3,4,5],"count":7}],"say":"Lane B lands on Gus at the seventh box. That is an ordinary Tuesday: <b>somewhere in the middle, about half the pile.</b>"},{"lanes":[{"found":[0],"count":1},{"found":[6],"dead":[0,1,2,3,4,5],"count":7},{"look":[10],"dead":[0,1,2,3,4,5,6,7,8,9],"count":11}],"say":"Lane C is still going, and it is going to keep going. Watch it, because it is the lane nobody puts in a slide."},{"lanes":[{"found":[0],"count":1},{"found":[6],"dead":[0,1,2,3,4,5],"count":7},{"bad":[0,1,2,3,4,5,6,7,8,9,10,11],"count":12}],"say":"<b>Twelve checks and no green anywhere.</b> Lane C searched for a name that is not in the list. That is not the method failing. Absence is the one answer that can never be found early, so proving it always costs the entire pile."},{"badge":"which number goes in the plan?","lanes":[{"found":[0],"count":1},{"found":[6],"dead":[0,1,2,3,4,5],"count":7},{"bad":[0,1,2,3,4,5,6,7,8,9,10,11],"count":12}],"say":"One, seven, twelve. <b>Three counts from one method.</b> Every one of them is honest, and quoting any single one of them as the speed is how teams end up surprised by their own software."}],"caption":"Lane A is what gets recorded during a demo. Lane B is what most users get. Lane C is what a customer with a typo gets, and it costs the full pile every single time."}'></div>
+
+  <h2><span class="ix">4</span> Under The Hood</h2>
+  <div class="sub">Which reading you are allowed to promise.</div>
+
+  <div class="viz" data-viz='{"type":"state","title":"The three readings, and which one you are allowed to promise","maxChars":15,"nodes":[{"id":"r","label":"One operation","col":0,"row":1,"kind":"dark"},{"id":"b","label":"Best case: the kindest possible input","col":1,"row":0,"kind":"gold"},{"id":"a","label":"Average case: what most inputs cost","col":1,"row":1,"kind":"accent"},{"id":"w","label":"Worst case: the cruellest possible input","col":1,"row":2,"kind":"bad"},{"id":"p","label":"The only one safe to put in a plan","col":2,"row":2,"kind":"bad"},{"id":"d","label":"The one demos accidentally record","col":2,"row":0,"kind":"gold"}],"edges":[{"from":"r","to":"b"},{"from":"r","to":"a"},{"from":"r","to":"w"},{"from":"b","to":"d","label":"and report as the average"},{"from":"w","to":"p","label":"because it has a cause","style":"green"}],"caption":"The best case is not a lie, it is a measurement. It becomes a lie the moment it is reported without the word best in front of it, which is what a demo does by accident, every time."}'></div>
+
+  <p>The best case is not a lie. It is a measurement, and it becomes a lie the moment somebody reports it without the word best in front of it. That is what a demo does by accident every single time, because the person demonstrating types the thing already on the screen, and the thing already on the screen is the kindest input the operation has.</p>
+
+  <h2><span class="ix">5</span> The Types</h2>
+  <div class="sub">Three readings, and a fourth that behaves differently from all of them.</div>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>Reading</th><th>What it answers</th><th>What it is good for</th><th>What it must never be used for</th></tr>
+    <tr><td><strong>Best</strong></td><td>The kindest input</td><td>Knowing whether a shortcut exists at all</td><td>Any promise, any plan, any slide</td></tr>
+    <tr><td><strong>Average</strong></td><td>What most real inputs cost</td><td>Capacity, cost per request, sizing</td><td>Deciding whether the bad day is survivable</td></tr>
+    <tr><td><strong>Worst</strong></td><td>The cruellest input allowed</td><td>Timeouts, guarantees, the plan</td><td>Judging whether the product feels fast day to day</td></tr>
+    <tr><td><strong>Amortised</strong></td><td>What one operation costs on average <em>across a long run</em>, when most are cheap and a rare one is expensive</td><td>Anything that occasionally rebuilds, resizes or flushes</td><td>Any single operation, because one of them really will be the expensive one</td></tr>
+  </table>
+  <div class="tbl-cap">The fourth row is genuinely a different kind of number from the first three. Best, average and worst all describe one operation on different inputs. Amortised describes many operations sharing one bill between them.</div></div>
+
+  <div class="callout accent">
+    <div class="ch">Amortised, in one paragraph</div>
+    <p>A growing row of boxes doubles its size whenever it fills up, and doubling means copying everything across. That copy is expensive and it is real. But look at when it happens: after the copy, the row has exactly as much free space as it just used, so <strong>the next copy is paid for by twice as many cheap appends as the last one was.</strong> Add a thousand items and the copies total 1,023 moves, which alongside the thousand writes themselves is about two moves per append. Cheap on average, forever, and one unlucky append really does pay for all of it.</p>
+  </div>
+
+  <h2><span class="ix">6</span> What It Costs, In Plain English</h2>
+  <div class="sub">The three counts, at twelve names and at a million.</div>
+  <p>At twelve names: best 1, average about 6, worst 12. Grow the list to a million and the same three become 1, about 500,000, and 1,000,000.</p>
+
+  <div class="viz" data-viz='{"type":"card","title":"One method, one list, four readings","eyebrow":"THE THREE COUNTS","badge":"12 names, then a million","width":490,"rows":[{"k":"Best case, 12 names","v":"1 check","tone":"good","bar":0.02},{"k":"Average case, 12 names","v":"about 6 checks","bar":0.06},{"k":"Worst case, 12 names","v":"12 checks","tone":"bad","bar":0.12},{"k":"Best case, a million names","v":"1 check","tone":"good","bar":0.02},{"k":"Average case, a million names","v":"about 500,000","tone":"bad","bar":0.5},{"k":"Worst case, a million names","v":"1,000,000","tone":"bad","bar":1}],"caption":"Compare row one with row four. Every count on this card changed when the list grew from twelve to a million, except that one, and it stayed put only because somebody happened to type the first name. A count that holds only when the input is kind is not a forecast."}'></div>
+
+  <p><strong>Three of those four counts moved and one did not.</strong> That is the tell. Chapter 1 showed you a count that stays at one at any size because reaching a known position is arithmetic, and that is a genuine promise. This one stays at one for a completely different reason: because somebody typed the first name. A count that holds only while the input is kind is not a forecast, it is a coincidence with a stopwatch next to it.</p>
+
+  <h2><span class="ix">7</span> Where It Lives In Real Life</h2>
+  <div class="sub">Five worst cases with causes, not coincidences.</div>
+
+  <div class="viz" data-viz='{"type":"kgraph","title":"Where the worst case has a cause, not a coincidence","unit":162,"nodes":[{"id":"c","label":"The worst case","x":2,"y":1,"kind":"dark"},{"id":"a","label":"Your biggest customer, who is also your best one","x":0,"y":0,"kind":"gold"},{"id":"b","label":"The search that finds nothing","x":0,"y":2,"kind":"box"},{"id":"d","label":"Month end, when everybody runs the report at once","x":4,"y":0,"kind":"box"},{"id":"e","label":"Already sorted data handed to the wrong sort","x":4,"y":2,"kind":"box"},{"id":"f","label":"The one append that triggers a full rebuild","x":2,"y":3,"kind":"accent"}],"edges":[{"from":"c","to":"a","label":"success","style":"gold"},{"from":"c","to":"b","label":"absence"},{"from":"c","to":"d","label":"timing"},{"from":"c","to":"e","label":"input order"},{"from":"c","to":"f","label":"capacity","style":"green"}],"caption":"Not one of these is bad luck and not one is rare. Read the edge labels: success, absence, timing, input order, capacity. Each is a cause you can name in advance, which means each is a cause you can plan around."}'></div>
+
+  <p>Read those edge labels. <strong>Success</strong>: your worst case arrives on your largest customer, which is also your best customer, which is why the bad day and the good news are the same event. <strong>Absence</strong>: proving something is not there costs the whole pile, always, because it is the one answer that can never be found early. <strong>Timing</strong>: month end is a date, not a surprise. <strong>Input order</strong>: some sorting methods have their worst day on data that is already sorted, which is exactly the data a re-run hands them. <strong>Capacity</strong>: one append in a thousand triggers the rebuild, and it will be somebody real.</p>
+
+  <h2><span class="ix">8</span> How Problems Show Up</h2>
+  <div class="sub">Six sentences that are all about which reading somebody quoted.</div>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>What somebody actually says</th><th>The tell</th><th>What it is really asking</th></tr>
+    <tr><td>"It is fast, we measured it"</td><td>One number, no word in front of it</td><td>Which reading is that, and who chose the inputs</td></tr>
+    <tr><td>"It only happens to our biggest account"</td><td>The worst case has a name and pays you</td><td>Not an edge case. The largest driver value you have met so far, and it will grow</td></tr>
+    <tr><td>"It is fine except at month end"</td><td>A worst case with a date on it</td><td>Timing, and it is on the calendar rather than in the code</td></tr>
+    <tr><td>"Searches for things we do not stock are the slow ones"</td><td>Absence costs the whole pile</td><td>The one answer that cannot be found early, so it always pays full price</td></tr>
+    <tr><td>"Usually instant, then one request hangs for a second"</td><td>A rare expensive operation among cheap ones</td><td>Amortised cost. Something is rebuilding, and one caller pays for everybody</td></tr>
+    <tr><td>"The p99 got worse but the average is fine"</td><td>Two readings disagreeing on purpose</td><td>The average is holding while the tail grows, which is the worst case arriving before the average notices</td></tr>
+  </table>
+  <div class="tbl-cap">Row one is the whole lesson compressed. A speed with no adjective in front of it is not a measurement you can act on, and the correct reply is a question rather than a doubt.</div></div>
+
+  <h2><span class="ix">9</span> Solve It Live</h2>
+  <div class="sub">Two honest numbers that cannot both be the speed.</div>
+  <div class="callout">
+    <div class="ch">The problem, as it arrives</div>
+    <p>"Our product search averages 40 milliseconds according to our own logs. Customers keep telling us it takes three seconds. We have checked the logging and it is correct. Both numbers are real and we do not understand how."</p>
+  </div>
+
+  <div class="viz" data-viz='{"type":"swim","title":"Our logs say 40 milliseconds and customers say three seconds","lanes":[{"label":"Support"},{"label":"You"},{"label":"The search"}],"steps":[{"id":"a1","lane":0,"col":0,"kind":"gold","label":"Logs disagree with customers, and both are right"},{"id":"b1","lane":1,"col":1,"kind":"box","label":"Ask: whose inputs produced that average?"},{"id":"c1","lane":2,"col":1,"kind":"bad","label":"Every logged search was typed off the screen"},{"id":"b2","lane":1,"col":2,"kind":"accent","label":"That is the best case, recorded as the average"},{"id":"c2","lane":2,"col":2,"kind":"bad","label":"Real searches land mid catalogue, or nowhere"},{"id":"b3","lane":1,"col":3,"kind":"accent","label":"Log the count, split by found and not found"},{"id":"c3","lane":2,"col":4,"kind":"accent","label":"Index it, so absence stops costing the whole pile"}],"edges":[{"from":"a1","to":"b1"},{"from":"b1","to":"c1"},{"from":"b1","to":"b2","style":"green"},{"from":"b2","to":"b3","style":"green"},{"from":"b3","to":"c3","style":"green","label":"change the shape"}],"caption":"Nobody faked anything and no number in the log was wrong. The measurement was honest and the label on it was not, which is the most common way a team ends up genuinely surprised by its own product."}'></div>
+
+  <p><strong>Both numbers are real and only one of them is an average.</strong> Almost every search in the log was typed by somebody testing, off a product already on their screen, so it matched near the front of a plain one-at-a-time scan. That is the best case, recorded faithfully and then labelled average. Real customers type partial names, misspellings and things not stocked at all, which land mid catalogue or nowhere, and nowhere costs the entire catalogue every time. The immediate fix is to log the <em class="k">count</em> and split it by found and not found. The real fix is an index, so that absence stops costing the whole pile.</p>
+
+  <div class="callout good">
+    <div class="ch">Why this reasoning wins</div>
+    <p>It never doubted the logs, because the logs were correct. It asked one question: <strong>whose inputs produced that average?</strong> That single question separates a measurement from the label on it, and it is the only question on the table that explains how two honest numbers can disagree by a factor of seventy five.</p>
+  </div>
+
+  <h2><span class="ix">10</span> Your Turn</h2>
+  <div class="callout accent">
+    <div class="ch">Your rep, no code</div>
+    <p>Pick one feature you use daily that has a spinner. Write three lines. <strong>Best:</strong> describe the input that makes it fastest, and be specific about what makes that input kind. <strong>Worst:</strong> describe the input that makes it slowest, then write one sentence naming the cause, and it must be a cause, not the word rare. <strong>Which one has a date or a customer name attached to it?</strong> If your worst case has either, it is not an edge case, it is a scheduled event you have not planned for yet.</p>
+  </div>
+
+  <h2><span class="ix gold">✓</span> Check Yourself</h2>
+
+  <div class="quiz" data-correct="2">
+    <div class="q">A team reports that their search averages one check. What is the first thing worth asking?</div>
+    <div class="opt" data-i="0">Whether the measurement tool is accurate</div>
+    <div class="opt" data-i="1">Whether the list is sorted</div>
+    <div class="opt" data-i="2">Who chose the inputs, because an average of one over a long list means every logged search matched the first box</div>
+    <div class="qexp">The number is almost certainly correct and almost certainly the best case. An average of one check across a long list is not possible unless the inputs were kind every single time, which is what happens when the person searching types the thing already on their screen. The measurement is honest and the label on it is not.</div>
+  </div>
+
+  <div class="quiz" data-correct="0">
+    <div class="q">Why does searching for something that is not in the list always cost the full pile?</div>
+    <div class="opt" data-i="0">Because absence is the one answer that cannot be found early, so nothing is allowed to stop the scan</div>
+    <div class="opt" data-i="1">Because missing items make the method slower</div>
+    <div class="opt" data-i="2">Because the list has to be checked twice to be sure</div>
+    <div class="qexp">A successful search may stop at any box, which is why its cost varies. A failed one cannot stop anywhere: to say a name is not present you have to have looked at every box. This is why not found is reliably the slow path in any product without an index, and why customers hit it far more often than staff do.</div>
+  </div>
+
+  <div class="quiz" data-correct="1">
+    <div class="q">Appending to a growing row is described as cheap, yet one append in a thousand copies everything. How can both be true?</div>
+    <div class="opt" data-i="0">The copy is fast enough that it does not matter</div>
+    <div class="opt" data-i="1">Amortised cost: doubling means each copy is paid for by twice as many cheap appends as the last one, so across a long run it works out to about two moves per append</div>
+    <div class="opt" data-i="2">The average case is cheap and the worst case never happens in practice</div>
+    <div class="qexp">Option two is the trap, because the expensive append is guaranteed rather than rare, and somebody real will be the one who triggers it. Amortised is a fourth kind of reading: it prices a long run rather than a single operation, and it is the honest way to describe anything that occasionally rebuilds. It is also why you must never quote it about one request.</div>
+  </div>
+
+  <div class="callout good">
+    <div class="ch">Next</div>
+    <p>You have been reading one meter this whole chapter. There are two, and the second one behaves nothing like the first.</p>
+  </div>
+__NAV__
+</div>`,
+
+"2.4": `<div class="wrap">
+  <div class="les-kicker">Chapter 2 · Lesson 2.4</div>
+  <h1 class="les-title">Space Costs Too, and When To Trade It For Time</h1>
+  <div class="les-meta">
+    <span class="pill">foundational</span><span class="pill">~12 min</span>
+    <span class="pill gold">the second meter</span><span class="pill">10 visuals</span>
+  </div>
+
+  <p class="motto">Time slows down. Space slows down too, and then one day it simply refuses.</p>
+
+  <p class="lead">You have been reading one meter for three lessons. There are two, and the second behaves nothing like the first. Point the same two questions at memory and you get the same seven shapes, with one difference that changes how you plan: time degrades and keeps serving you, while space gets quietly dearer and then stops. By the end of this lesson you will be able to price a trade in both currencies at once, and spot the one slowdown that no step counter in this chapter can see.</p>
+
+  <h2><span class="ix">1</span> The Everyday Situation</h2>
+  <div class="sub">Your phone, and the two thresholds nobody separates.</div>
+  <p>At 89 percent full your phone is fine. Around 95 it warns you, and you dismiss it, and it is very slightly slower than it was, because there is less free room to shuffle things around in. Then one day it is full, and the camera does not negotiate. It does not think harder. It refuses.</p>
+
+  <div class="viz" data-viz='{"type":"scene","title":"A slope you ignore, and then a wall","width":700,"height":250,"items":[{"icon":"phone","x":118,"y":118,"kind":"accent","label":"89 percent full: fine"},{"icon":"phone","x":352,"y":118,"kind":"gold","label":"96 percent: it warns you, you ignore it"},{"icon":"phone","x":598,"y":118,"kind":"bad","label":"100 percent: it refuses"}],"arrows":[{"x1":176,"y1":118,"x2":296,"y2":118,"style":"gold","label":"a gentle slope"},{"x1":410,"y1":118,"x2":540,"y2":118,"style":"green","label":"and then no slope at all"}],"caption":"Space has two thresholds, not one. Long before the ceiling it gets gradually more expensive, because there is less room to shuffle things around. At the ceiling it stops negotiating entirely, and no amount of patience produces the photo."}'></div>
+
+  <p>Two different thresholds sit in that story and almost everybody collapses them into one. <strong>There is a slope, and then separately there is a wall.</strong> The slope is what happens when there is still somewhere to put things but the room is getting awkward. The wall is what happens when there is nowhere at all. Time never has the second one.</p>
+
+  <h2><span class="ix">2</span> What It Actually Is</h2>
+  <div class="sub">The same two questions, pointed at memory.</div>
+  <p>Question 1: what does this hold, and what makes it hold more? Question 2: when that doubles, what happens to the number of boxes? Identical method, identical seven shapes. A count that never grows is flat. A copy of everything is one for one. A copy of every pair is the four times line, and it will run you out of memory long before it runs you out of patience.</p>
+
+  <div class="viz" data-viz='{"type":"arch","title":"Two meters, and they fail in different ways","maxChars":15,"nodes":[{"id":"j","label":"One job","col":0,"row":1,"kind":"dark"},{"id":"t","label":"Time: how many steps it takes","col":1,"row":0,"kind":"accent"},{"id":"s","label":"Space: how many boxes it holds","col":1,"row":2,"kind":"gold"},{"id":"t2","label":"Runs out gradually. You wait longer","col":2,"row":0,"kind":"accent"},{"id":"s2","label":"First gets dearer, because the answer moves further away","col":2,"row":2,"kind":"gold"},{"id":"s3","label":"Then stops, because there is nowhere left to put it","col":3,"row":2,"kind":"bad"}],"edges":[{"from":"j","to":"t"},{"from":"j","to":"s"},{"from":"t","to":"t2"},{"from":"s","to":"s2"},{"from":"s2","to":"s3","label":"and eventually"}],"edges_note":"","caption":"Point the same two questions at memory and you get the same seven shapes. The difference is what happens at the end of the line: time keeps charging you and space eventually declines the transaction."}'></div>
+
+  <h2><span class="ix">3</span> Watch It Work</h2>
+  <div class="sub">One extra copy, and the moment it stops helping.</div>
+  <p>Three lanes, one job: find Gus among twelve names. Lane A holds the names and nothing else. Lanes B and C hold the same names plus a second copy arranged as an index, so each of them occupies twice the boxes. <strong>Watch the counters carefully at the end, because the lane with the best count finishes with the worst outcome.</strong></p>
+
+  <div class="board" data-anim='{"type":"race","title":"One extra copy, and what it buys until it does not","speed":1700,"countLabel":" checks","legend":[["checking now","look"],["ruled out","dead"],["found it","found"],["cannot answer at all","bad"]],"tracks":[{"label":"Plain list, 12 boxes","data":["Ada","Ben","Cara","Dev","Eli","Fay","Gus","Hana","Ivo","Jai","Kit","Lena"]},{"label":"List plus index, 24 boxes","data":["Ada","Ben","Cara","Dev","Eli","Fay","Gus","Hana","Ivo","Jai","Kit","Lena"]},{"label":"Same index, no longer in fast memory","data":["Ada","Ben","Cara","Dev","Eli","Fay","Gus","Hana","Ivo","Jai","Kit","Lena"]}],"steps":[{"badge":"12 boxes vs 24 vs 24","lanes":[{"look":[0],"count":1},{"look":[6],"count":1},{"look":[6],"count":1}],"say":"Three lanes, one job: find Gus. Lane A holds the names and nothing else. Lanes B and C hold the same names plus <b>a second copy arranged as an index</b>, so each of them occupies twice the boxes."},{"lanes":[{"look":[3],"dead":[0,1,2],"count":4},{"found":[6],"count":2},{"found":[6],"count":2}],"say":"Lanes B and C are already finished. Two checks: one in the index to learn where Gus lives, one to go there. <b>Lane A is on its fourth box and it will keep going.</b>"},{"lanes":[{"found":[6],"dead":[0,1,2,3,4,5],"count":7},{"found":[6],"count":2},{"found":[6],"count":2}],"say":"Seven against two. That is what the extra copy bought, and at a million names it is five hundred thousand against two. <b>Space spent, time saved, and it is a genuinely good trade.</b>"},{"badge":"the index outgrows fast memory","lanes":[{"found":[6],"dead":[0,1,2,3,4,5],"count":7},{"found":[6],"count":2},{"found":[6],"count":2}],"say":"Now grow the data until the copy no longer fits in fast memory. <b>Look at lane C. The count did not move.</b> It is still two checks, and every counter on this board is telling the truth."},{"badge":"same 2 checks, hundreds of times dearer","lanes":[{"found":[6],"dead":[0,1,2,3,4,5],"count":7},{"found":[6],"count":2},{"found":[6],"count":2}],"say":"And lane C is now slower than lane A. Each of those two checks travels one hop further, to a disk, and that hop costs hundreds of times what a hop inside fast memory costs. <b>The step counter cannot see this, because nothing about the number of steps changed.</b>"},{"badge":"nowhere left to spill","lanes":[{"found":[6],"dead":[0,1,2,3,4,5],"count":7},{"found":[6],"count":2},{"bad":[0,1,2,3,4,5,6,7,8,9,10,11],"count":0}],"say":"Push it once more, to a copy that has nowhere to spill to at all. There is no slope here and no slower answer. <b>The lane simply stops answering.</b> Time degrades. Space eventually refuses."}],"caption":"Three lanes and only one honest step counter between them. Lane C ends the run with the best count on the board and the worst outcome, which is the entire argument for reading a second meter."}'></div>
+
+  <h2><span class="ix">4</span> Under The Hood</h2>
+  <div class="sub">Why the count could not see it.</div>
+
+  <div class="viz" data-viz='{"type":"seq","title":"The same question, answered from two different places","actors":[{"label":"The search","kind":"gold"},{"label":"Fast memory","kind":"accent"},{"label":"The disk","kind":"muted"}],"messages":[{"from":0,"to":1,"label":"where does Gus live","style":"gold"},{"from":1,"to":0,"label":"box 7, straight away","style":"green"},{"from":0,"to":1,"label":"where does Gus live","style":"gold"},{"from":1,"to":2,"label":"the index is not here, fetch it"},{"from":2,"to":1,"label":"here is the page"},{"from":1,"to":0,"label":"box 7, eventually","style":"green"}],"caption":"Identical question, identical answer, identical step count. The only difference is that the second one travels one hop further, and that hop is where the whole cost went. A step counter has no way to see this."}'></div>
+
+  <p>Identical question, identical answer, identical number of steps. The only difference is that the second exchange travels <strong>one hop further</strong>, out to a disk, and that hop costs hundreds of times what a hop inside fast memory costs. Every meter you built in Lessons 2.1 to 2.3 counts steps, and the number of steps did not change. <strong>This is the one slowdown in the chapter that counting genuinely cannot detect</strong>, and knowing that it exists is more useful than any formula for it.</p>
+
+  <h2><span class="ix">5</span> The Types</h2>
+  <div class="sub">Six space trades, and what each of them demands before you are allowed to make it.</div>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>The trade</th><th>What you hold</th><th>What it demands from you first</th></tr>
+    <tr><td><strong>Compute it again</strong></td><td>nothing</td><td>You need the answer once and never again</td></tr>
+    <tr><td><strong>Cache the answer</strong></td><td>one answer per question asked</td><td>The set of questions must not grow with the pile</td></tr>
+    <tr><td><strong>Index the data</strong></td><td>a second, ordered copy</td><td>The copy must fit in fast memory, and keep fitting</td></tr>
+    <tr><td><strong>Precompute everything</strong></td><td>an answer for every question you might be asked</td><td>You must survive a stale answer when the underlying thing moves</td></tr>
+    <tr><td><strong>Keep every pair</strong></td><td>one entry per pair of items</td><td>The pile must stay small forever, and it will not</td></tr>
+    <tr><td><strong>Approximate it</strong></td><td>a compressed sketch</td><td>You must be able to accept a wrong yes occasionally</td></tr>
+  </table>
+  <div class="tbl-cap">Three of these six demand something about a size nobody controls yet: rows two, three and five all depend on how big the pile becomes, which is decided by your customers rather than by you. The other three demand something about correctness, which is decided by you and is therefore the easier half.</div></div>
+
+  <div class="viz" data-viz='{"type":"dtree","title":"Can you spend space here","maxChars":17,"nodes":[{"id":"q1","label":"Will the extra copy fit in fast memory, and keep fitting?","col":1,"row":0,"kind":"gold","shape":"diamond"},{"id":"y","label":"Spend the space. Caches, indexes, extra copies","col":0,"row":1,"kind":"accent"},{"id":"q2","label":"Does it have somewhere to spill to?","col":2,"row":1,"kind":"gold","shape":"diamond"},{"id":"s","label":"It gets dearer, quietly, and no counter shows it","col":1,"row":2,"kind":"bad"},{"id":"n","label":"It stops. Plan for the wall, not the slope","col":3,"row":2,"kind":"bad"}],"edges":[{"from":"q1","to":"y","label":"yes","style":"green"},{"from":"q1","to":"q2","label":"no"},{"from":"q2","to":"s","label":"yes"},{"from":"q2","to":"n","label":"no"}],"caption":"The second question is the one nobody asks, and it is the one that decides whether you get a slope you can measure or a wall you cannot."}'></div>
+
+  <h2><span class="ix">6</span> What It Costs, In Plain English</h2>
+  <div class="sub">Both meters, on one job, at a million names.</div>
+
+  <div class="viz" data-viz='{"type":"card","title":"What one extra copy costs and buys","eyebrow":"BOTH METERS","badge":"a million names","width":490,"rows":[{"k":"Time: plain list, average search","v":"about 500,000 checks","tone":"bad","bar":1},{"k":"Time: list plus index","v":"2 checks","tone":"good","bar":0.01},{"k":"Space: plain list","v":"1 copy of the names","tone":"good","bar":0.5},{"k":"Space: list plus index","v":"2 copies of the names","tone":"bad","bar":1},{"k":"Time: index, once it no longer fits in fast memory","v":"still 2 checks, hundreds of times dearer","tone":"bad","bar":1}],"caption":"The last row is the one no step counter prints. The count is honest, unchanged and completely useless as a prediction, because the thing that changed was where the answer lives rather than how many times you asked."}'></div>
+
+  <p>One extra copy of the names turns half a million looks into two. That is the best trade in this chapter and you should make it most of the time. <strong>And when that copy stops fitting in fast memory, those same two looks cost more than the half million did</strong>, with every counter in your system reporting that nothing has changed. The written form, now that you have counted it: space gets an <em class="g">O</em> exactly like time, so holding a second copy of everything is <em class="g">O(n)</em> extra space, and holding an entry per pair is <em class="g">O(n squared)</em> extra space, which is why that row of the table is a trap rather than an option.</p>
+
+  <h2><span class="ix">7</span> Where It Lives In Real Life</h2>
+  <div class="sub">Five purchases you already depend on.</div>
+
+  <div class="viz" data-viz='{"type":"kgraph","title":"Space bought time here, and you already rely on all of it","unit":162,"nodes":[{"id":"c","label":"Spend space, save time","x":2,"y":1,"kind":"dark"},{"id":"a","label":"A database index","x":0,"y":0,"kind":"accent"},{"id":"b","label":"Any cache, anywhere","x":0,"y":2,"kind":"gold"},{"id":"d","label":"Photo thumbnails on your phone","x":4,"y":0,"kind":"box"},{"id":"e","label":"Offline maps","x":4,"y":2,"kind":"box"},{"id":"f","label":"A vector index for an AI assistant","x":2,"y":3,"kind":"box"}],"edges":[{"from":"c","to":"a","label":"a second copy, ordered"},{"from":"c","to":"b","label":"a copy of the answer","style":"gold"},{"from":"c","to":"d","label":"smaller copies, kept"},{"from":"c","to":"e","label":"the whole map, kept"},{"from":"c","to":"f","label":"every document, as points"}],"caption":"Every one of these is the same purchase: hold more, so you can look less. And every one of them inherits the same two thresholds, which is why a cache that outgrows its memory becomes slower than having no cache at all."}'></div>
+
+  <p>Every one of these is the same purchase: hold more, so you can look less. And there is a third bill that neither meter prints. <strong>A note about where something lives has to be corrected when the thing moves.</strong> That is Chapter 1 currency three, order, arriving on a bill that neither the step counter nor the box counter shows, and every cache that has ever annoyed you by showing something out of date is that note being wrong.</p>
+
+  <h2><span class="ix">8</span> How Problems Show Up</h2>
+  <div class="sub">Six sentences about the second meter.</div>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>What somebody actually says</th><th>The tell</th><th>What it is really asking</th></tr>
+    <tr><td>"We added a cache and it got slower"</td><td>More memory held, worse result</td><td>The copy outgrew fast memory. A smaller cache that fits beats a bigger one that does not</td></tr>
+    <tr><td>"It is fine until about two million rows and then it falls apart"</td><td>A cliff at a specific size, not a slope</td><td>Something stopped fitting. The size is a threshold, not a coincidence</td></tr>
+    <tr><td>"The numbers are right but they are an hour old"</td><td>A correct answer about a past world</td><td>Precomputation. You bought instant answers with freshness</td></tr>
+    <tr><td>"Every metric says nothing changed and users say it is slower"</td><td>Counts flat, experience worse</td><td>Where the answer lives changed, and no step counter can see where</td></tr>
+    <tr><td>"It works on my machine and dies on the server"</td><td>Two machines with different amounts of fast memory</td><td>The trade was priced against one ceiling and deployed under a different one</td></tr>
+    <tr><td>"Can we keep a record of every pair?"</td><td>A space request on the four times line</td><td>Ten thousand items is fifty million pairs. This is the one row of the table that is never an option</td></tr>
+  </table>
+  <div class="tbl-cap">Row four is the reason this lesson exists. Three lessons of counting cannot explain it, and the correct next question is not how many, it is where.</div></div>
+
+  <h2><span class="ix">9</span> Solve It Live</h2>
+  <div class="sub">A fix that made things worse, and nothing to roll back.</div>
+  <div class="callout">
+    <div class="ch">The problem, as it arrives</div>
+    <p>"We added a cache last month to speed up the product page. It did speed it up. Then over about three weeks it got slower and slower, and it is now slower than it was before we added the cache. Every dashboard we have says the number of lookups is unchanged."</p>
+  </div>
+
+  <div class="viz" data-viz='{"type":"swim","title":"We added the cache and it got slower","lanes":[{"label":"The team"},{"label":"You"},{"label":"The system"}],"steps":[{"id":"a1","lane":0,"col":0,"kind":"gold","label":"Cache added, and now it is slower than before"},{"id":"b1","lane":1,"col":1,"kind":"box","label":"Ask: did the count change, or where the answer lives?"},{"id":"c1","lane":2,"col":1,"kind":"bad","label":"Same number of lookups as last week"},{"id":"b2","lane":1,"col":2,"kind":"accent","label":"The count is identical, so it is not a time problem"},{"id":"c2","lane":2,"col":2,"kind":"bad","label":"The cache outgrew fast memory and spilled to disk"},{"id":"b3","lane":1,"col":3,"kind":"accent","label":"Cap it, and evict the least useful entries"},{"id":"c3","lane":2,"col":4,"kind":"accent","label":"A smaller cache that fits beats a bigger one that does not"}],"edges":[{"from":"a1","to":"b1"},{"from":"b1","to":"c1"},{"from":"b1","to":"b2","style":"green"},{"from":"b2","to":"b3","style":"green"},{"from":"b3","to":"c3","style":"green","label":"fit beats size"}],"caption":"Every step counter in the system reported no change, and every one of them was right. The question that cracked it was not how many, it was where, and no meter in the previous three lessons asks where."}'></div>
+
+  <p><strong>The dashboards are correct and the cache is doing exactly what it was told.</strong> It was given no size limit, so it grew for three weeks until the copy no longer fitted in fast memory. Every lookup still costs the same number of steps, and every one of those steps now travels one hop further. The fix is not a bigger machine and it is not removing the cache: <em class="k">cap it</em>, and evict the least useful entries when it is full, so that a smaller cache which fits beats a larger one which does not.</p>
+
+  <div class="callout good">
+    <div class="ch">Why this reasoning wins</div>
+    <p>It believed the dashboards instead of doubting them. Once the count is genuinely unchanged, a time explanation is off the table, and only one question is left: <strong>did where the answer lives change?</strong> That question is not available to anybody who has only ever been taught to count steps, which is precisely why this lesson closes the chapter.</p>
+  </div>
+
+  <h2><span class="ix">10</span> Your Turn</h2>
+  <div class="callout accent">
+    <div class="ch">Your rep, no code</div>
+    <p>Open your phone settings and look at what is using storage. Pick the largest three. For each, write two lines. <strong>First:</strong> what is it holding a copy of, and what is that copy buying you. <strong>Second:</strong> if the thing it copies doubled tomorrow, does the copy stay the same size, double, or worse. Then answer one last question about the whole device: <strong>you already know where its wall is, so what is your plan for it?</strong> Everybody has a plan for slow. Almost nobody has a plan for full.</p>
+  </div>
+
+  <h2><span class="ix gold">✓</span> Check Yourself</h2>
+
+  <div class="quiz" data-correct="2">
+    <div class="q">Every counter says the number of lookups is unchanged, and users say the product is slower. What is the most useful next question?</div>
+    <div class="opt" data-i="0">Are the counters broken</div>
+    <div class="opt" data-i="1">Has the data grown</div>
+    <div class="opt" data-i="2">Has where the answer lives changed, since an identical number of steps can cost hundreds of times more when each step travels further</div>
+    <div class="qexp">Believe the counters. Once the count is genuinely flat, every explanation built on counting is off the table, and the only remaining variable is distance rather than quantity. This is the single slowdown in the entire chapter that the method of Lessons 2.1 to 2.3 cannot detect, which is why knowing it exists matters more than any formula for it.</div>
+  </div>
+
+  <div class="quiz" data-correct="1">
+    <div class="q">A team wants to keep a stored record of every pair of items so comparisons become instant. Ten thousand items. What is the objection?</div>
+    <div class="opt" data-i="0">Pairs are difficult to keep up to date</div>
+    <div class="opt" data-i="1">Space follows the same seven shapes, and every pair is the four times line: ten thousand items is about fifty million pairs, and doubling the items quadruples the storage</div>
+    <div class="opt" data-i="2">It would be faster to compute the comparison each time</div>
+    <div class="qexp">Option zero is true and is not the main objection. Option two may or may not be true. The decisive point is that this is the quadratic shape wearing a storage label: it will exhaust memory long before it exhausts patience, and unlike time, memory does not degrade gracefully at the end. It stops.</div>
+  </div>
+
+  <div class="quiz" data-correct="0">
+    <div class="q">Why is running out of space a different kind of problem from running out of time?</div>
+    <div class="opt" data-i="0">Time degrades and keeps serving you, while space first gets quietly dearer and then refuses entirely</div>
+    <div class="opt" data-i="1">Space problems are always caused by bugs</div>
+    <div class="opt" data-i="2">Time can be bought with a faster machine and space cannot</div>
+    <div class="qexp">Option two is backwards, since more memory is usually easier to buy than more speed. The real asymmetry is in the failure: a slow system is still a working system and you can decide how long to wait, but there is no slow version of nowhere to put it. That is why a plan for full has to exist separately from a plan for slow.</div>
+  </div>
+
+  <div class="callout good">
+    <div class="ch">Chapter 2 complete</div>
+    <p>Speed is not a feeling, it is a count, and you can now do the counting. Two questions find the meter, seven shapes are everything it can read, three readings keep you honest about which day you are describing, and a second meter watches the boxes. Next: the whiteboard, and then Chapter 3, where every structure in the rest of this course gets priced in exactly this currency.</p>
+  </div>
+__NAV__
+</div>`,
+
+"2.5": `<div class="wrap">
+  <div class="les-kicker">Chapter 2 · Lesson 2.5</div>
+  <h1 class="les-title">The Whiteboard: Watch Cost Grow</h1>
+  <div class="les-meta">
+    <span class="pill">whiteboard</span><span class="pill">~2 min</span>
+    <span class="pill gold">watch, do not read</span><span class="pill">14 acts</span>
+  </div>
+
+  <p class="motto">Every slow system was fast once, on less data.</p>
+
+  <p class="lead">The whole chapter with the prose taken out. Fourteen acts in four parts. Part 2 counts every shape by hand before a single one of them is named. <strong>Part 3 runs those same shapes inside your phone storage, git bisect, a column header you click every week, a dashboard that got slow while nobody touched it, and a group chat.</strong> One of those acts shows the wrong choice being made, passing review, and shipping.</p>
+</div>
+
+<div class="reel" data-reel='{"title":"Watch cost grow, in one continuous run","speed":1500,"caption":"Fourteen acts, about 2 minutes end to end. Part 2 counts every shape by hand before any of them is named. Part 3 runs those same shapes inside your phone storage, git bisect, a column header, a dashboard that got slow while nobody touched it, and a group chat.","acts":[{"part":"Part 1 · The idea","tab":"Two queues","title":"Act 1 · The number you can see is almost never the number being charged for","type":"race","speed":1300,"countLabel":" items scanned","legend":[["being served now","look"],["already served","seen"],["queue finished","found"]],"tracks":[{"label":"9 baskets of 5","data":["1","2","3","4","5","6","7","8","9"]},{"label":"4 trolleys of 30","data":["1","2","3","4"]}],"steps":[{"badge":"cells are people, the counter is items","lanes":[{"look":[0],"count":5},{"look":[0],"count":30}],"say":"Two queues at one till. <b>The till never charges per person. It beeps once per item.</b> The boxes here are people, the number on the right is what the till actually does."},{"lanes":[{"look":[4],"seen":[0,1,2,3],"count":25},{"look":[1],"seen":[0],"count":60}],"say":"Five people through on the left for 25 scans. Two trolleys on the right for 60. The queue you would have joined is already twice as expensive and it looked half the size."},{"lanes":[{"found":[8],"seen":[0,1,2,3,4,5,6,7],"count":45},{"look":[2],"seen":[0,1],"count":90}],"say":"<b>The nine person queue is finished. Forty five scans.</b> The four person queue still has a trolley to go."},{"lanes":[{"found":[8],"seen":[0,1,2,3,4,5,6,7],"count":45},{"found":[3],"seen":[0,1,2],"count":120}],"say":"<b>120 against 45.</b> Four is fewer than nine and you were still wrong, because you counted the part you could see."},{"badge":"the question the chapter turns on","lanes":[{"found":[8],"count":45},{"found":[3],"count":120}],"say":"So the useful question is never how big is the pile. It is <b>what does this repeat, and when that doubles, what happens to the count.</b> Everything after this is answers to that."}]},{"part":"Part 2 · The shapes","tab":"One look","title":"Act 2 · The count that never hears about the pile","type":"array-scan","speed":1500,"big":true,"data":[42,17,88,5,63,91,30,74,12,55,29,68],"countLabel":" look","legend":[["reaching it now","look"],["landed on it","found"]],"steps":[{"badge":"12 boxes","look":[6],"ptr":{"i":6},"count":1,"say":"Reach box seven. Not walk to it, <b>reach</b> it. Where it lives is arithmetic, so the pointer lands in one move."},{"badge":"12 boxes","found":[6],"ptr":{"i":6},"count":1,"say":"One look. Now grow the row and watch the number refuse to move."},{"badge":"12,000 boxes","found":[6],"ptr":{"i":6},"count":1,"say":"Twelve thousand boxes. Still one look, because the calculation does not mention how many there are."},{"badge":"12 million boxes","found":[6],"ptr":{"i":6},"count":1,"say":"Twelve million. Still one. <b>Nothing about the pile ever entered this number</b>, which is why this is the only line in the whole chapter that is genuinely free at any size."}]},{"part":"Part 2 · The shapes","tab":"Halve it","title":"Act 3 · Doubling the pile adds one look, not one times","type":"array-scan","speed":1600,"big":true,"data":["Ada","Ben","Cara","Dev","Eli","Fay","Gus","Hana","Ivo","Jai","Kit","Lena"],"countLabel":" looks","legend":[["opening it here","look"],["ruled out","dead"],["still possible","range"],["found it","found"]],"steps":[{"badge":"12 cards, alphabetical","range":[0,11],"look":[5],"ptr":{"lo":0,"mid":5,"hi":11},"count":1,"say":"Twelve place cards in alphabetical order. Looking for Ivo. Open the box halfway."},{"range":[6,11],"look":[8],"dead":[0,1,2,3,4,5],"ptr":{"lo":6,"mid":8,"hi":11},"count":2,"say":"Fay comes before Ivo, <b>so half the box is impossible and you never touch it again.</b> That is the cause. Not cleverness, elimination."},{"range":[6,7],"look":[6],"dead":[0,1,2,3,4,5,9,10,11],"ptr":{"lo":6,"mid":6,"hi":7},"count":3,"say":"Halve what is left. Two cards remain."},{"badge":"4 looks at 12 cards","range":[6,8],"found":[8],"dead":[0,1,2,3,4,5,9,10,11],"ptr":{"lo":8,"mid":8,"hi":8},"count":4,"say":"Found, in four looks."},{"badge":"5 looks at 24 cards","found":[8],"dead":[0,1,2,3,4,5,9,10,11],"count":4,"say":"Now refill the box to twenty four cards and run it again. It takes <b>five</b>. Four and five. <b>Doubling the pile did not double the looks, it added one</b>, because you did exactly one more halving."}]},{"part":"Part 2 · The shapes","tab":"One each","title":"Act 4 · The boring line most products actually live on","type":"race","speed":1300,"countLabel":" walks","legend":[["walking now","look"],["already served","seen"],["done","found"]],"tracks":[{"label":"24 guests","data":["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24"]},{"label":"12 guests","data":["1","2","3","4","5","6","7","8","9","10","11","12"]}],"steps":[{"badge":"one menu each","lanes":[{"look":[3],"seen":[0,1,2],"count":4},{"look":[3],"seen":[0,1,2],"count":4}],"say":"Hand out a menu each. One walk round the table per guest, and nothing else touches it."},{"lanes":[{"look":[11],"seen":[0,1,2,3,4,5,6,7,8,9,10],"count":12},{"found":[11],"seen":[0,1,2,3,4,5,6,7,8,9,10],"count":12}],"say":"Twelve guests, twelve walks. The lower lane is done."},{"lanes":[{"found":[23],"seen":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22],"count":24},{"found":[11],"seen":[0,1,2,3,4,5,6,7,8,9,10],"count":12}],"say":"<b>Twenty four guests, twenty four walks.</b> Doubled, exactly, and you watched it rather than being told it."},{"badge":"most work in most products","lanes":[{"found":[23],"count":24},{"found":[11],"count":12}],"say":"There is nothing wrong with being on this line. <b>Most of the work in most products is here.</b> It is worth naming so that you notice when something is not on it."}]},{"part":"Part 2 · The shapes","tab":"Sort the cards","title":"Act 5 · Sorting is not one pass, it is one pass per doubling","type":"tree-walk","speed":1600,"unit":62,"legend":[["this level, being touched","look"],["already done","seen"],["the whole pile","found"]],"nodes":[{"id":"r","label":"8","x":3.5,"d":0},{"id":"a","label":"4","x":1.5,"d":1},{"id":"b","label":"4","x":5.5,"d":1},{"id":"c","label":"2","x":0.5,"d":2},{"id":"d","label":"2","x":2.5,"d":2},{"id":"e","label":"2","x":4.5,"d":2},{"id":"f","label":"2","x":6.5,"d":2},{"id":"g","label":"1","x":0,"d":3},{"id":"h","label":"1","x":1,"d":3},{"id":"i","label":"1","x":2,"d":3},{"id":"j","label":"1","x":3,"d":3},{"id":"k","label":"1","x":4,"d":3},{"id":"l","label":"1","x":5,"d":3},{"id":"m","label":"1","x":6,"d":3},{"id":"n","label":"1","x":7,"d":3}],"edges":[{"from":"r","to":"a"},{"from":"r","to":"b"},{"from":"a","to":"c"},{"from":"a","to":"d"},{"from":"b","to":"e"},{"from":"b","to":"f"},{"from":"c","to":"g"},{"from":"c","to":"h"},{"from":"d","to":"i"},{"from":"d","to":"j"},{"from":"e","to":"k"},{"from":"e","to":"l"},{"from":"f","to":"m"},{"from":"f","to":"n"}],"steps":[{"look":["r"],"say":"Eight place cards to put in order. Split them in half."},{"look":["a","b"],"seen":["r"],"say":"Split again. And again. <b>Three splits gets eight cards down to singles</b>, because three is how many times you double one to reach eight."},{"look":["c","d","e","f"],"seen":["r","a","b"],"say":"Two splits down."},{"look":["g","h","i","j","k","l","m","n"],"seen":["r","a","b","c","d","e","f"],"say":"Three. Now merge back up, and here is the part worth watching."},{"look":["c","d","e","f"],"seen":["g","h","i","j","k","l","m","n"],"say":"<b>Every level touches all eight cards exactly once.</b> Not some of them. All of them, at every level."},{"look":["a","b"],"seen":["g","h","i","j","k","l","m","n","c","d","e","f"],"say":"So the bill is cards multiplied by levels. Eight cards, three levels, twenty four touches."},{"found":["r"],"seen":["g","h","i","j","k","l","m","n","c","d","e","f","a","b"],"say":"<b>Sixteen cards adds one level, not one pass.</b> Sixteen times four is sixty four, against twenty four. That is 2.7 times for a doubling, which is why this line sits just above the menus and slowly pulls away."}]},{"part":"Part 2 · The shapes","tab":"Everybody greets","title":"Act 6 · Two things grew at once, so the count grew twice over","type":"graph-walk","speed":1500,"unit":112,"legend":[["just arrived","look"],["already seated","seen"],["the full table","found"]],"nodes":[{"id":"g1","label":"1","x":1,"y":0},{"id":"g2","label":"2","x":2,"y":0},{"id":"g3","label":"3","x":2.6,"y":1},{"id":"g4","label":"4","x":2,"y":2},{"id":"g5","label":"5","x":1,"y":2},{"id":"g6","label":"6","x":0.4,"y":1}],"edges":[{"from":"g1","to":"g2"},{"from":"g1","to":"g3"},{"from":"g1","to":"g4"},{"from":"g1","to":"g5"},{"from":"g1","to":"g6"},{"from":"g2","to":"g3"},{"from":"g2","to":"g4"},{"from":"g2","to":"g5"},{"from":"g2","to":"g6"},{"from":"g3","to":"g4"},{"from":"g3","to":"g5"},{"from":"g3","to":"g6"},{"from":"g4","to":"g5"},{"from":"g4","to":"g6"},{"from":"g5","to":"g6"}],"steps":[{"look":["g1"],"edges":[],"say":"One guest arrives. Nobody to greet. <b>Zero.</b>"},{"look":["g2"],"seen":["g1"],"edges":["g1-g2"],"say":"Second guest greets one person. Running total: one."},{"look":["g3"],"seen":["g1","g2"],"edges":["g1-g2","g1-g3","g2-g3"],"say":"Third greets two. Total three. <b>Watch the cost of a single arrival climbing.</b>"},{"look":["g4"],"seen":["g1","g2","g3"],"edges":["g1-g2","g1-g3","g1-g4","g2-g3","g2-g4","g3-g4"],"say":"Fourth greets three. Total six."},{"look":["g5"],"seen":["g1","g2","g3","g4"],"edges":["g1-g2","g1-g3","g1-g4","g1-g5","g2-g3","g2-g4","g2-g5","g3-g4","g3-g5","g4-g5"],"say":"Fifth greets four. Total ten. Nothing inside a greeting got slower."},{"found":["g1","g2","g3","g4","g5","g6"],"edges":["g1-g2","g1-g3","g1-g4","g1-g5","g1-g6","g2-g3","g2-g4","g2-g5","g2-g6","g3-g4","g3-g5","g3-g6","g4-g5","g4-g6","g5-g6"],"say":"Sixth greets five. <b>Fifteen greetings for six guests.</b> The loop got longer at the same time as it got run more often."},{"say":"Twelve guests is 66. Twenty four is 276. <b>Doubling the table more than quadrupled the door.</b> That ratio, about four, is the fingerprint you will meet again in Act 12 and Act 13.","found":["g1","g2","g3","g4","g5","g6"],"edges":["g1-g2","g1-g3","g1-g4","g1-g5","g1-g6","g2-g3","g2-g4","g2-g5","g2-g6","g3-g4","g3-g5","g3-g6","g4-g5","g4-g6","g5-g6"]}]},{"part":"Part 2 · The shapes","tab":"One more room","title":"Act 7 · Adding one item redraws everything already drawn","type":"reveal","speed":1500,"viz":{"maxChars":8,"gy":34,"gx":34,"nodes":[{"id":"s0","label":"none","col":0,"row":0,"kind":"accent"},{"id":"s1","label":"A","col":1,"row":0,"kind":"accent"},{"id":"s2","label":"B","col":2,"row":0,"kind":"accent"},{"id":"s3","label":"C","col":3,"row":0,"kind":"accent"},{"id":"s4","label":"AB","col":0,"row":1,"kind":"accent"},{"id":"s5","label":"AC","col":1,"row":1,"kind":"accent"},{"id":"s6","label":"BC","col":2,"row":1,"kind":"accent"},{"id":"s7","label":"ABC","col":3,"row":1,"kind":"accent"},{"id":"t0","label":"D","col":0,"row":2,"kind":"gold"},{"id":"t1","label":"AD","col":1,"row":2,"kind":"gold"},{"id":"t2","label":"BD","col":2,"row":2,"kind":"gold"},{"id":"t3","label":"CD","col":3,"row":2,"kind":"gold"},{"id":"t4","label":"ABD","col":0,"row":3,"kind":"gold"},{"id":"t5","label":"ACD","col":1,"row":3,"kind":"gold"},{"id":"t6","label":"BCD","col":2,"row":3,"kind":"gold"},{"id":"t7","label":"ABCD","col":3,"row":3,"kind":"gold"}],"edges":[]},"steps":[{"show":["s0","s1","s2","s3"],"look":["s0"],"say":"Three guests, and you are choosing who sits at the top table. Nobody, or any one of them."},{"show":["s0","s1","s2","s3","s4","s5","s6"],"say":"Or any pair."},{"show":["s0","s1","s2","s3","s4","s5","s6","s7"],"found":["s0","s1","s2","s3","s4","s5","s6","s7"],"say":"Or all three. <b>Eight possible groups from three guests.</b>"},{"show":["s0","s1","s2","s3","s4","s5","s6","s7","t0","t1","t2","t3"],"look":["t0","t1","t2","t3"],"say":"Now a fourth guest arrives. Every group that existed still exists, <b>and a copy of every one of them appears with the new guest added.</b>"},{"show":["s0","s1","s2","s3","s4","s5","s6","s7","t0","t1","t2","t3","t4","t5","t6","t7"],"found":["t0","t1","t2","t3","t4","t5","t6","t7"],"say":"<b>Sixteen.</b> One extra guest did not add a bit of work, it copied everything already on the board."},{"show":["s0","s1","s2","s3","s4","s5","s6","s7","t0","t1","t2","t3","t4","t5","t6","t7"],"say":"Which is why asking this shape what <b>doubling</b> does returns a number too large to carry any information. The honest probe here is one more item, and the answer is: twice."}]},{"part":"Part 2 · The shapes","tab":"All six lines","title":"Act 8 · Six jobs, one axis, and only now their names","type":"curve","speed":1900,"width":660,"height":410,"n":24,"logScale":true,"xlabel":"guests at the table","ylabel":"work it takes","series":[{"fn":"1","label":"the salt","label2":"O(1)","color":"green"},{"fn":"logn","label":"the place cards","label2":"O(log n)","color":"green"},{"fn":"n","label":"the menus","label2":"O(n)"},{"fn":"nlogn","label":"sorting the cards","label2":"O(n log n)"},{"fn":"n2","label":"the greetings","label2":"O(n squared)","color":"gold"},{"fn":"2n","label":"the top table","label2":"O(2 to the n)","color":"bad"}],"steps":[{"show":[0,1],"pct":100,"badge":"12 guests","say":"The salt and the place cards, from Acts 2 and 3. Flat, and almost flat."},{"show":[0,1,2],"pct":100,"badge":"12 guests","say":"The menus, from Act 4. Straight."},{"show":[0,1,2,3],"pct":100,"badge":"12 guests","say":"Sorting, from Act 5. Just above the menus, and pulling away slowly."},{"show":[0,1,2,3,4],"pct":100,"badge":"24 guests","say":"The greetings, from Act 6. <b>Look where it sits at the left edge: underneath the menus, harmless.</b>"},{"show":[0,1,2,3,4,5],"pct":100,"badge":"24 guests","say":"The top table, from Act 7. It leaves the others behind entirely."},{"show":[0,1,2,3,4,5],"pct":100,"badge":"log scale, each step is ten times","say":"Every equal step up this axis is ten times the step below. On an ordinary scale five of these six would be flat on the floor."},{"show":[0,1,2,3,4,5],"pct":100,"notation":true,"badge":"the names, last","say":"<b>Now the names, on lines you already read correctly.</b> You did not learn six definitions. You produced six answers to one question and somebody else had already named them."}]},{"part":"Part 3 · The same shapes, in things you used today","tab":"Your phone","title":"Act 9 · Act 2 has a price, and your pocket has been paying it","type":"reveal","speed":1600,"viz":{"maxChars":16,"gy":44,"nodes":[{"id":"p","label":"Your phone storage","col":1,"row":0,"kind":"dark"},{"id":"t","label":"A small copy of every photo, so the gallery opens in one look","col":0,"row":1,"kind":"accent"},{"id":"m","label":"Maps kept offline, so the route is drawn before the signal arrives","col":1,"row":1,"kind":"accent"},{"id":"v","label":"A video held on to, so it never has to arrive twice","col":2,"row":1,"kind":"accent"},{"id":"f","label":"And then one day it is full","col":1,"row":2,"kind":"bad"}],"edges":[{"from":"p","to":"t"},{"from":"p","to":"m"},{"from":"p","to":"v"},{"from":"t","to":"f"},{"from":"m","to":"f"},{"from":"v","to":"f"}]},"steps":[{"show":["p"],"look":["p"],"say":"<b>Act 2 was free in time and it was never free.</b> Here is where the bill went."},{"show":["p","t"],"found":["t"],"say":"A small copy of every photo you own, so the gallery opens in one look instead of decoding thousands of full images."},{"show":["p","t","m"],"found":["m"],"say":"Maps kept offline, so the route is drawn before the signal arrives."},{"show":["p","t","m","v"],"found":["v"],"say":"A video held on to, so it never has to arrive twice. <b>Every one of these is space spent to buy Act 2.</b>"},{"show":["p","t","m","v","f"],"bad":["f"],"say":"And then one day it is full. <b>Time degrades and keeps serving you. Space gets quietly dearer and then refuses.</b>"}]},{"part":"Part 3 · The same shapes, in things you used today","tab":"git bisect","title":"Act 10 · git bisect is Act 3 with a year of commits instead of place cards","type":"array-scan","speed":1500,"big":true,"data":["c1","c2","c3","c4","c5","c6","c7","c8","c9","c10","c11","c12"],"labels":["ok","","","","","","","","","","","broken"],"countLabel":" builds tested","legend":[["testing this build","look"],["ruled out untested","dead"],["still suspect","range"],["the one that broke it","found"]],"steps":[{"badge":"this is Act 3","range":[0,11],"look":[5],"ptr":{"lo":0,"mid":5,"hi":11},"count":1,"say":"The oldest build works, the newest is broken, and somewhere between them somebody broke it. <b>This is Act 3 with commits instead of place cards.</b>"},{"range":[6,11],"look":[8],"dead":[0,1,2,3,4,5],"ptr":{"lo":6,"mid":8,"hi":11},"count":2,"say":"Test the middle one. It works, so half the history is eliminated <b>without any of it being tested.</b>"},{"range":[6,7],"look":[6],"dead":[0,1,2,3,4,5,9,10,11],"ptr":{"lo":6,"mid":6,"hi":7},"count":3,"say":"Halve again. Two suspects."},{"badge":"4 tests, 12 commits","range":[6,7],"found":[7],"dead":[0,1,2,3,4,5,9,10,11],"ptr":{"lo":7,"mid":7,"hi":7},"count":4,"say":"Four builds tested instead of twelve."},{"badge":"about 10 tests, 1,000 commits","found":[7],"dead":[0,1,2,3,4,5,9,10,11],"count":4,"say":"<b>A thousand commits takes about ten.</b> A box of place cards and a year of version control are the same picture, and neither of them cares that the other exists."}]},{"part":"Part 3 · The same shapes, in things you used today","tab":"Sort by size","title":"Act 11 · Clicking a column header is Act 5, and this is why it stays instant","type":"tree-walk","speed":1500,"unit":62,"legend":[["this level","look"],["already done","seen"],["sorted","found"]],"nodes":[{"id":"r","label":"8","x":3.5,"d":0},{"id":"a","label":"4","x":1.5,"d":1},{"id":"b","label":"4","x":5.5,"d":1},{"id":"c","label":"2","x":0.5,"d":2},{"id":"d","label":"2","x":2.5,"d":2},{"id":"e","label":"2","x":4.5,"d":2},{"id":"f","label":"2","x":6.5,"d":2},{"id":"g","label":"1","x":0,"d":3},{"id":"h","label":"1","x":1,"d":3},{"id":"i","label":"1","x":2,"d":3},{"id":"j","label":"1","x":3,"d":3},{"id":"k","label":"1","x":4,"d":3},{"id":"l","label":"1","x":5,"d":3},{"id":"m","label":"1","x":6,"d":3},{"id":"n","label":"1","x":7,"d":3}],"edges":[{"from":"r","to":"a"},{"from":"r","to":"b"},{"from":"a","to":"c"},{"from":"a","to":"d"},{"from":"b","to":"e"},{"from":"b","to":"f"},{"from":"c","to":"g"},{"from":"c","to":"h"},{"from":"d","to":"i"},{"from":"d","to":"j"},{"from":"e","to":"k"},{"from":"e","to":"l"},{"from":"f","to":"m"},{"from":"f","to":"n"}],"steps":[{"look":["r"],"say":"You click a column header to sort a file list by size. <b>This is Act 5, and you do it several times a week.</b>"},{"look":["a","b"],"seen":["r"],"say":"Split, split, split."},{"look":["g","h","i","j","k","l","m","n"],"seen":["r","a","b","c","d","e","f"],"say":"Fifty rows needs about six levels of splitting. Six passes over fifty rows, and the click finishes before your finger lifts."},{"look":["c","d","e","f"],"seen":["g","h","i","j","k","l","m","n"],"say":"Now half a million rows. Not eighty three thousand times the passes. <b>Nineteen levels instead of six.</b>"},{"found":["r"],"seen":["g","h","i","j","k","l","m","n","c","d","e","f","a","b"],"say":"<b>The pile grew ten thousand times and the number of passes grew by thirteen.</b> That is why a small table sorts instantly and a huge one still sorts, and why nobody has ever had to think about it."}]},{"part":"Part 3 · The same shapes, in things you used today","tab":"The dashboard","title":"Act 12 · The fast wrong answer that passed review","type":"race","speed":1600,"countLabel":" requests","legend":[["working now","look"],["already asked","seen"],["done","found"],["this is the one that grows","bad"]],"tracks":[{"label":"Ask once for all of them","data":["1","2","3","4","5","6","7","8","9","10","11","12"]},{"label":"Ask once per row","data":["1","2","3","4","5","6","7","8","9","10","11","12"]}],"steps":[{"badge":"12 customers on screen","lanes":[{"look":[0],"count":1},{"look":[0],"count":1}],"say":"A dashboard listing customers with the latest order for each. <b>This act is Act 4 and Act 6 arguing with each other.</b> Two ways to build it."},{"lanes":[{"found":[0],"count":1},{"look":[5],"seen":[0,1,2,3,4],"count":6}],"say":"The top lane asked for every latest order in one request and is finished. The bottom lane asks once per row."},{"lanes":[{"found":[0],"count":1},{"found":[11],"seen":[0,1,2,3,4,5,6,7,8,9,10],"count":12}],"say":"Twelve requests against one. <b>And every single one of those twelve is genuinely quick when measured on its own.</b> That is why it passes review."},{"badge":"300 customers","lanes":[{"found":[0],"count":1},{"bad":[0,1,2,3,4,5,6,7,8,9,10,11],"count":300}],"say":"At three hundred customers it is still tolerable, so it ships, and the database team correctly reports that every query is fast."},{"badge":"3,000 customers","lanes":[{"found":[0],"count":1},{"bad":[0,1,2,3,4,5,6,7,8,9,10,11],"count":3000}],"say":"<b>Three thousand customers. Three thousand requests. Nobody deployed anything.</b> The count followed the customer list, which is the one number nobody was watching."},{"badge":"the lesson","lanes":[{"found":[0],"count":1},{"bad":[0,1,2,3,4,5,6,7,8,9,10,11],"count":3000}],"say":"<b>A fast wrong answer does not look like a bug, it looks like a working feature.</b> Every measurement anybody took was of one step, and every one of them was fine."}]},{"part":"Part 3 · The same shapes, in things you used today","tab":"Group chat","title":"Act 13 · A group chat is Act 6 wearing different clothes","type":"graph-walk","speed":1500,"unit":112,"legend":[["sending now","look"],["already delivered to","seen"],["everybody","found"]],"nodes":[{"id":"g1","label":"1","x":1,"y":0},{"id":"g2","label":"2","x":2,"y":0},{"id":"g3","label":"3","x":2.6,"y":1},{"id":"g4","label":"4","x":2,"y":2},{"id":"g5","label":"5","x":1,"y":2},{"id":"g6","label":"6","x":0.4,"y":1}],"edges":[{"from":"g1","to":"g2"},{"from":"g1","to":"g3"},{"from":"g1","to":"g4"},{"from":"g1","to":"g5"},{"from":"g1","to":"g6"},{"from":"g2","to":"g3"},{"from":"g2","to":"g4"},{"from":"g2","to":"g5"},{"from":"g2","to":"g6"},{"from":"g3","to":"g4"},{"from":"g3","to":"g5"},{"from":"g3","to":"g6"},{"from":"g4","to":"g5"},{"from":"g4","to":"g6"},{"from":"g5","to":"g6"}],"steps":[{"look":["g1"],"edges":[],"say":"<b>Same picture as Act 6, different labels.</b> Six people in a group chat."},{"look":["g1"],"seen":["g2","g3","g4","g5","g6"],"edges":["g1-g2","g1-g3","g1-g4","g1-g5","g1-g6"],"say":"You send one message. It is delivered five times, once to every other device."},{"look":["g2"],"seen":["g1","g3","g4","g5","g6"],"edges":["g1-g2","g1-g3","g1-g4","g1-g5","g1-g6","g2-g3","g2-g4","g2-g5","g2-g6","g3-g4","g3-g5","g3-g6","g4-g5","g4-g6","g5-g6"],"say":"Somebody replies. Five more deliveries."},{"found":["g1","g2","g3","g4","g5","g6"],"edges":["g1-g2","g1-g3","g1-g4","g1-g5","g1-g6","g2-g3","g2-g4","g2-g5","g2-g6","g3-g4","g3-g5","g3-g6","g4-g5","g4-g6","g5-g6"],"say":"Everybody posts once: <b>thirty deliveries for six people.</b>"},{"found":["g1","g2","g3","g4","g5","g6"],"edges":["g1-g2","g1-g3","g1-g4","g1-g5","g1-g6","g2-g3","g2-g4","g2-g5","g2-g6","g3-g4","g3-g5","g3-g6","g4-g5","g4-g6","g5-g6"],"say":"Twelve people each posting once is 132 deliveries. <b>Double the group to twenty four and it is 552.</b>"},{"found":["g1","g2","g3","g4","g5","g6"],"edges":["g1-g2","g1-g3","g1-g4","g1-g5","g1-g6","g2-g3","g2-g4","g2-g5","g2-g6","g3-g4","g3-g5","g3-g6","g4-g5","g4-g6","g5-g6"],"say":"552 divided by 132 is 4.18. <b>That is the exact ratio from the dinner table</b>, and it is why very large group chats are a genuinely hard engineering problem rather than a bigger version of a small one."}]},{"part":"Part 4 · The map","tab":"The map","title":"Act 14 · Every line, and the question that puts you on it","type":"reveal","speed":1700,"viz":{"maxChars":14,"gy":46,"nodes":[{"id":"r","label":"Name the thing that happens over and over","col":2,"row":0,"kind":"dark"},{"id":"q","label":"Double it. Is the answer still a sane number?","col":2,"row":1,"kind":"gold","shape":"diamond"},{"id":"a","label":"Unchanged. Act 2","col":0,"row":2,"kind":"accent"},{"id":"b","label":"Plus one look. Act 3","col":1,"row":3,"kind":"accent"},{"id":"c","label":"Doubles. Act 4","col":2,"row":2,"kind":"accent"},{"id":"d","label":"Doubles plus a bit. Act 5","col":3,"row":3,"kind":"accent"},{"id":"e","label":"Quadruples. Act 6","col":4,"row":2,"kind":"gold"},{"id":"f","label":"No. Ask what one more item does. Act 7","col":5,"row":1,"kind":"bad"},{"id":"g","label":"Now ask it three more times: best day, ordinary day, cruellest day","col":2,"row":4,"kind":"dark"},{"id":"h","label":"Then point both questions at memory, and watch for the wall","col":2,"row":5,"kind":"dark"}],"edges":[{"from":"r","to":"q"},{"from":"q","to":"a","label":"yes"},{"from":"q","to":"b","label":"yes"},{"from":"q","to":"c","label":"yes"},{"from":"q","to":"d","label":"yes"},{"from":"q","to":"e","label":"yes","style":"gold"},{"from":"q","to":"f","label":"no"},{"from":"c","to":"g","style":"green"},{"from":"g","to":"h","style":"green"}],"gx":40},"steps":[{"show":["r"],"look":["r"],"say":"Fourteen acts collapse into one question asked twice, and then asked again in three moods."},{"show":["r","q"],"look":["q"],"say":"<b>Double the thing that repeats. Is the answer still a sane number?</b>"},{"show":["r","q","a","c"],"found":["a","c"],"say":"Unchanged, from Act 2. Doubles, from Act 4. The two you meet most often."},{"show":["r","q","a","b","c","d"],"found":["b","d"],"say":"Plus one look, from Act 3. Doubles plus a bit, from Act 5. Both of these are somebody having paid for order in advance."},{"show":["r","q","a","b","c","d","e"],"found":["e"],"say":"Quadruples, from Act 6. <b>The ordinary result of doing something sensible to every item, for every item</b>, and the one that ships quietly and waits."},{"show":["r","q","a","b","c","d","e","f"],"bad":["f"],"say":"And if the answer is absurd, the probe was wrong. Ask what one more item does, from Act 7."},{"show":["r","q","a","b","c","d","e","f","g"],"look":["g"],"say":"<b>Then ask the same question three more times</b>, because every count has a best day, an ordinary day, and a cruellest day, and the cruellest one has a cause rather than bad luck."},{"show":["r","q","a","b","c","d","e","f","g","h"],"found":["h"],"say":"<b>And then point both questions at memory.</b> Time slows down. Space slows down too, and then one day it simply refuses. That is the chapter."}]}]}'></div>
+
+<div class="wrap" style="padding-top:34px;">
+  <h2><span class="ix gold">✓</span> What You Just Watched</h2>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>Act</th><th>Double the pile and the count</th><th>Its name</th><th>Where it came back in Part 3</th></tr>
+    <tr><td>2</td><td>does not move at all</td><td>constant</td><td>Act 9, every copy your phone keeps so a screen opens in one look</td></tr>
+    <tr><td>3</td><td>goes up by exactly one</td><td>logarithmic</td><td>Act 10, git bisect finding one commit in about ten tests</td></tr>
+    <tr><td>4</td><td>doubles</td><td>linear</td><td>Act 12, the honest half of the dashboard</td></tr>
+    <tr><td>5</td><td>doubles, plus a bit</td><td>linearithmic</td><td>Act 11, clicking a column header to sort</td></tr>
+    <tr><td>6</td><td>quadruples</td><td>quadratic</td><td>Acts 12 and 13, the dashboard and the group chat</td></tr>
+    <tr><td>7</td><td>returns a number too large to mean anything</td><td>exponential</td><td>Nowhere, and that is the point. When it turns up, the answer is a different question</td></tr>
+  </table>
+  <div class="tbl-cap">Read the right hand column down the page. Not one idea in Part 3 was new. They were the same six counts, standing inside things you touched this week.</div></div>
+
+  <div class="callout accent">
+    <div class="ch">The line to carry into Chapter 3</div>
+    <p>You do not need to see inside a system to predict it. <strong>You need two counts at two sizes.</strong> From here on, every structure in this course gets priced in exactly this currency, and you now hold the meter that does the pricing.</p>
+  </div>
+
+  <div class="callout warn">
+    <div class="ch">And the line from Act 12</div>
+    <p>Every measurement anybody took on that dashboard was of a single step, and every single step was genuinely fine. <strong>A fast wrong answer does not look like a bug, it looks like a working feature</strong>, and it will pass review, because at three hundred customers it is tolerable and nobody is measuring the one number that grows.</p>
+  </div>
+
+  <div class="quiz" data-correct="1">
+    <div class="q">In Act 3 the search took four looks at twelve cards and five at twenty four. What is the right way to describe what doubling did?</div>
+    <div class="opt" data-i="0">It multiplied the looks by about 1.25</div>
+    <div class="opt" data-i="1">It added exactly one, because doubling the pile means you performed exactly one more halving</div>
+    <div class="opt" data-i="2">It barely changed anything, so the shape is effectively flat</div>
+    <div class="qexp">Option zero is arithmetically true at this size and useless, because that ratio keeps shrinking: at a million cards doubling takes you from about twenty looks to twenty one, a ratio of 1.05. The invariant on this line is a difference of one, never a ratio, which is exactly why the chapter tells you to say what happened rather than to divide. Option two is the mistake that guts Chapters 6 and 10.</div>
+  </div>
+
+  <div class="quiz" data-correct="2">
+    <div class="q">In Act 12, why did the dashboard pass review and ship?</div>
+    <div class="opt" data-i="0">Because nobody tested it</div>
+    <div class="opt" data-i="1">Because the database was too slow at the time</div>
+    <div class="opt" data-i="2">Because every individual request really was fast, and at three hundred customers the count was small enough that nobody looked at it</div>
+    <div class="qexp">This is why the quadratic and the accidental linear lines are dangerous rather than obvious. Nothing is broken, nothing measures badly, and every person involved is doing their job correctly. The only thing wrong is a count that follows a number the company is actively trying to increase, which means the failure arrives as a consequence of success.</div>
+  </div>
+
+  <div class="quiz" data-correct="0">
+    <div class="q">Act 9 showed your phone spending storage on copies. What does that have to do with Act 2?</div>
+    <div class="opt" data-i="0">Act 2 was free in time and never free overall. Those copies are what was paid so that a screen could open in one look</div>
+    <div class="opt" data-i="1">They are unrelated, since one is about time and the other about storage</div>
+    <div class="opt" data-i="2">Storage is cheap, so it is not really a cost</div>
+    <div class="qexp">A count that never hears about the pile is not magic, it is purchased. Every constant-time answer in a real product is somebody having held a second copy in advance, and the bill for that is the second meter. It also has an ending time does not have: space gets quietly dearer and then refuses.</div>
+  </div>
+
+  <div class="callout good">
+    <div class="ch">Chapter 2 complete</div>
+    <p>Speed is not a feeling, it is a count, and you can do the counting. Two questions find the meter, six shapes are almost everything it reads, a seventh means stop, three readings keep you honest about which day you are describing, and a second meter watches the boxes. Next: arrays, and the first structure to be priced in this currency.</p>
   </div>
 __NAV__
 </div>`,
@@ -2342,9 +3002,11 @@ const ST = {
   look:  {fill:CLR.gold0, stroke:CLR.gold,  text:CLR.gold6, op:1},
   dead:  {fill:'#ffffff', stroke:CLR.line,  text:CLR.mute,  op:.34},
   found: {fill:CLR.g050,  stroke:CLR.g600,  text:CLR.g700,  op:1},
-  seen:  {fill:CLR.g050,  stroke:CLR.g500,  text:CLR.g700,  op:1}
+  seen:  {fill:CLR.g050,  stroke:CLR.g500,  text:CLR.g700,  op:1},
+  bad:   {fill:CLR.bad0,   stroke:CLR.bad,   text:CLR.bad,   op:1}
 };
 function stateOf(step, i){
+  if ((step.bad   || []).indexOf(i) > -1) return 'bad';
   if ((step.found || []).indexOf(i) > -1) return 'found';
   if ((step.look  || []).indexOf(i) > -1) return 'look';
   if ((step.seen  || []).indexOf(i) > -1) return 'seen';
@@ -2374,7 +3036,7 @@ ANIM['array-scan'] = function(spec){
   const cellW = Math.max(Math.round(46 * K), Math.ceil(maxLen * charW(fs)) + Math.round(22 * K));
   const idxH = Math.round(20 * K), ptrH = spec.pointers === false ? 0 : Math.round(42 * K);
   const w = data.length * cellW + (data.length - 1) * gap;
-  const top = 26, h = top + cellH + idxH + ptrH + 8;
+  const top = 26, h = top + cellH + idxH + ptrH + 26;
   let s = '';
   if (spec.target != null){
     s += labelAt(0, 10, 'looking for ' + spec.target, 12, CLR.g700, 'start', 700);
@@ -2395,6 +3057,9 @@ ANIM['array-scan'] = function(spec){
     });
   }
   s += '<g class="counter">' + labelAt(w, 10, '', 12, CLR.gold6, 'end', 700) + '</g>';
+  s += '<g class="abadge" opacity="0" style="transition:opacity .3s">' +
+       '<rect x="0" y="' + (top + cellH + idxH + ptrH - 4) + '" width="196" height="24" rx="8" fill="#ffffff" stroke="' + CLR.lineS + '"/>' +
+       '<text x="98" y="' + (top + cellH + idxH + ptrH + 8) + '" text-anchor="middle" dominant-baseline="central" font-family="' + FONT + '" font-size="11.5" font-weight="700" fill="' + CLR.g700 + '"></text></g>';
   return {
     svg: frame(s, w, h),
     apply: function(root, step){
@@ -2419,6 +3084,11 @@ ANIM['array-scan'] = function(spec){
       });
       const c = root.querySelector('.counter text');
       if (c) c.textContent = step.count != null ? (step.count + (spec.countLabel || ' checks')) : '';
+      const ab = root.querySelector('.abadge');
+      if (ab){
+        ab.setAttribute('opacity', step.badge ? '1' : '0');
+        const at = ab.querySelector('text'); if (at) at.textContent = step.badge || '';
+      }
     }
   };
 };
@@ -2427,8 +3097,16 @@ ANIM['array-scan'] = function(spec){
 ANIM['race'] = function(spec){
   const tracks = spec.tracks || [];
   const n = (tracks[0] && tracks[0].data ? tracks[0].data.length : 0);
-  const fs = 12.5, cellH = 36, gap = 6, laneGap = 30, labelW = 128;
-  const cellW = 40, w = labelW + n * cellW + (n - 1) * gap + 96;
+  const fs = 12.5, cellH = 36, gap = 6, laneGap = 30;
+  /* The lane label column has to be as wide as the longest lane name, or a descriptive
+     label runs straight into the first cell. */
+  const labelW = Math.max(128, Math.ceil(Math.max.apply(null,
+    tracks.map(function(t){ return String(t.label || '').length * charW(12); }).concat([0]))) + 18);
+  /* Long tracks used to run past the edge of the reel stage. The cell shrinks to fit a
+     sensible canvas instead, down to a floor where the digits are still legible. */
+  const room = 1000 - labelW - 96;
+  const cellW = Math.max(22, Math.min(40, Math.floor((room - (n - 1) * gap) / Math.max(1, n))));
+  const w = labelW + n * cellW + (n - 1) * gap + 96;
   const h = tracks.length * (cellH + laneGap);
   let s = '';
   tracks.forEach(function(t, ti){
@@ -2442,8 +3120,12 @@ ANIM['race'] = function(spec){
     });
     s += '<g class="tcount" data-t="' + ti + '">' + labelAt(w, y + cellH/2, '', 12, CLR.gold6, 'end', 700) + '</g>';
   });
+  s += '<g class="rbadge" opacity="0" style="transition:opacity .3s">' +
+       '<rect x="' + labelW + '" y="' + (-26) + '" width="164" height="24" rx="8" fill="#ffffff" stroke="' + CLR.lineS + '"/>' +
+       '<text x="' + (labelW + 82) + '" y="' + (-14) + '" text-anchor="middle" dominant-baseline="central" font-family="' + FONT + '" font-size="11.5" font-weight="700" fill="' + CLR.g700 + '"></text></g>';
+  const units = tracks.map(function(t){ return t.countLabel || spec.countLabel || ' checks'; });
   return {
-    svg: frame(s, w, h),
+    svg: frameFit(s, [{x:labelW, y:-30, w:164, h:30}], w, h),
     apply: function(root, step){
       const lanes = step.lanes || [];
       root.querySelectorAll('.cell').forEach(function(g){
@@ -2451,8 +3133,13 @@ ANIM['race'] = function(spec){
         paintCell(g, lanes[t] ? stateOf(lanes[t], i) : 'idle');
       });
       root.querySelectorAll('.tcount text').forEach(function(t, ti){
-        t.textContent = lanes[ti] && lanes[ti].count != null ? lanes[ti].count + ' checks' : '';
+        t.textContent = lanes[ti] && lanes[ti].count != null ? lanes[ti].count + units[ti] : '';
       });
+      const rb = root.querySelector('.rbadge');
+      if (rb){
+        rb.setAttribute('opacity', step.badge ? '1' : '0');
+        const bt = rb.querySelector('text'); if (bt) bt.textContent = step.badge || '';
+      }
     }
   };
 };
@@ -2611,7 +3298,7 @@ ANIM['curve'] = function(spec){
   const series = (spec.series || []).map(function(sr){
     const f = FN[sr.fn] || FN.n, pts = [];
     for (let i = 1; i <= N; i++) pts.push([i, f(i)]);
-    return { label:sr.label, pts:pts,
+    return { label:sr.label, label2:sr.label2, pts:pts,
       color: sr.color === 'gold' ? CLR.gold6 : sr.color === 'bad' ? CLR.bad : sr.color === 'green' ? CLR.g600 : CLR.grey };
   });
   const maxY = Math.max.apply(null, series.map(function(sr){ return sr.pts[sr.pts.length-1][1]; })) || 1;
@@ -2636,7 +3323,9 @@ ANIM['curve'] = function(spec){
     s += '<g class="cline" data-s="' + i + '" opacity="0" style="transition:opacity .3s">' +
       '<path d="' + d + '" fill="none" stroke="' + sr.color + '" stroke-width="2.6" stroke-linecap="round" ' +
       'pathLength="100" stroke-dasharray="100" stroke-dashoffset="100" style="transition:stroke-dashoffset .55s ease-out"/>' +
-      labelAt(ml + px + 10, ly, sr.label, 11.5, sr.color, 'start', 700) + '</g>';
+      labelAt(ml + px + 10, ly, sr.label, 11.5, sr.color, 'start', 700) +
+      (sr.label2 ? '<g class="cnote" opacity="0" style="transition:opacity .3s">' +
+        labelAt(ml + px + 10, ly + 15, sr.label2, 10.5, sr.color, 'start', 600) + '</g>' : '') + '</g>';
   });
   s += '<g class="cbadge" opacity="0" style="transition:opacity .3s">' +
        '<rect x="' + (ml + 12) + '" y="' + (mt + 10) + '" width="150" height="26" rx="8" fill="#ffffff" stroke="' + CLR.lineS + '"/>' +
@@ -2650,6 +3339,7 @@ ANIM['curve'] = function(spec){
         g.setAttribute('opacity', on ? '1' : '0');
         const p = g.querySelector('path');
         if (p) p.setAttribute('stroke-dashoffset', on ? String(100 - (step.pct == null ? 100 : step.pct)) : '100');
+        g.querySelectorAll('.cnote').forEach(function(nt){ nt.setAttribute('opacity', (on && step.notation) ? '1' : '0'); });
       });
       const b = root.querySelector('.cbadge');
       if (b){

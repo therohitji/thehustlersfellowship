@@ -522,7 +522,7 @@ milestones:
         layers: []
       - id: M5.C02
         name: Ch02 The Cost of Doing Things
-        status: not started, 5 lessons planned.
+        status: shipped. 5 lessons live, qa green.
         layers: []
       - id: M5.C03
         name: Ch03 Arrays: The Row of Boxes

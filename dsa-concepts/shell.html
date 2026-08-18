@@ -1042,9 +1042,11 @@ const ST = {
   look:  {fill:CLR.gold0, stroke:CLR.gold,  text:CLR.gold6, op:1},
   dead:  {fill:'#ffffff', stroke:CLR.line,  text:CLR.mute,  op:.34},
   found: {fill:CLR.g050,  stroke:CLR.g600,  text:CLR.g700,  op:1},
-  seen:  {fill:CLR.g050,  stroke:CLR.g500,  text:CLR.g700,  op:1}
+  seen:  {fill:CLR.g050,  stroke:CLR.g500,  text:CLR.g700,  op:1},
+  bad:   {fill:CLR.bad0,   stroke:CLR.bad,   text:CLR.bad,   op:1}
 };
 function stateOf(step, i){
+  if ((step.bad   || []).indexOf(i) > -1) return 'bad';
   if ((step.found || []).indexOf(i) > -1) return 'found';
   if ((step.look  || []).indexOf(i) > -1) return 'look';
   if ((step.seen  || []).indexOf(i) > -1) return 'seen';
@@ -1074,7 +1076,7 @@ ANIM['array-scan'] = function(spec){
   const cellW = Math.max(Math.round(46 * K), Math.ceil(maxLen * charW(fs)) + Math.round(22 * K));
   const idxH = Math.round(20 * K), ptrH = spec.pointers === false ? 0 : Math.round(42 * K);
   const w = data.length * cellW + (data.length - 1) * gap;
-  const top = 26, h = top + cellH + idxH + ptrH + 8;
+  const top = 26, h = top + cellH + idxH + ptrH + 26;
   let s = '';
   if (spec.target != null){
     s += labelAt(0, 10, 'looking for ' + spec.target, 12, CLR.g700, 'start', 700);
@@ -1095,6 +1097,9 @@ ANIM['array-scan'] = function(spec){
     });
   }
   s += '<g class="counter">' + labelAt(w, 10, '', 12, CLR.gold6, 'end', 700) + '</g>';
+  s += '<g class="abadge" opacity="0" style="transition:opacity .3s">' +
+       '<rect x="0" y="' + (top + cellH + idxH + ptrH - 4) + '" width="196" height="24" rx="8" fill="#ffffff" stroke="' + CLR.lineS + '"/>' +
+       '<text x="98" y="' + (top + cellH + idxH + ptrH + 8) + '" text-anchor="middle" dominant-baseline="central" font-family="' + FONT + '" font-size="11.5" font-weight="700" fill="' + CLR.g700 + '"></text></g>';
   return {
     svg: frame(s, w, h),
     apply: function(root, step){
@@ -1119,6 +1124,11 @@ ANIM['array-scan'] = function(spec){
       });
       const c = root.querySelector('.counter text');
       if (c) c.textContent = step.count != null ? (step.count + (spec.countLabel || ' checks')) : '';
+      const ab = root.querySelector('.abadge');
+      if (ab){
+        ab.setAttribute('opacity', step.badge ? '1' : '0');
+        const at = ab.querySelector('text'); if (at) at.textContent = step.badge || '';
+      }
     }
   };
 };
@@ -1127,8 +1137,16 @@ ANIM['array-scan'] = function(spec){
 ANIM['race'] = function(spec){
   const tracks = spec.tracks || [];
   const n = (tracks[0] && tracks[0].data ? tracks[0].data.length : 0);
-  const fs = 12.5, cellH = 36, gap = 6, laneGap = 30, labelW = 128;
-  const cellW = 40, w = labelW + n * cellW + (n - 1) * gap + 96;
+  const fs = 12.5, cellH = 36, gap = 6, laneGap = 30;
+  /* The lane label column has to be as wide as the longest lane name, or a descriptive
+     label runs straight into the first cell. */
+  const labelW = Math.max(128, Math.ceil(Math.max.apply(null,
+    tracks.map(function(t){ return String(t.label || '').length * charW(12); }).concat([0]))) + 18);
+  /* Long tracks used to run past the edge of the reel stage. The cell shrinks to fit a
+     sensible canvas instead, down to a floor where the digits are still legible. */
+  const room = 1000 - labelW - 96;
+  const cellW = Math.max(22, Math.min(40, Math.floor((room - (n - 1) * gap) / Math.max(1, n))));
+  const w = labelW + n * cellW + (n - 1) * gap + 96;
   const h = tracks.length * (cellH + laneGap);
   let s = '';
   tracks.forEach(function(t, ti){
@@ -1142,8 +1160,12 @@ ANIM['race'] = function(spec){
     });
     s += '<g class="tcount" data-t="' + ti + '">' + labelAt(w, y + cellH/2, '', 12, CLR.gold6, 'end', 700) + '</g>';
   });
+  s += '<g class="rbadge" opacity="0" style="transition:opacity .3s">' +
+       '<rect x="' + labelW + '" y="' + (-26) + '" width="164" height="24" rx="8" fill="#ffffff" stroke="' + CLR.lineS + '"/>' +
+       '<text x="' + (labelW + 82) + '" y="' + (-14) + '" text-anchor="middle" dominant-baseline="central" font-family="' + FONT + '" font-size="11.5" font-weight="700" fill="' + CLR.g700 + '"></text></g>';
+  const units = tracks.map(function(t){ return t.countLabel || spec.countLabel || ' checks'; });
   return {
-    svg: frame(s, w, h),
+    svg: frameFit(s, [{x:labelW, y:-30, w:164, h:30}], w, h),
     apply: function(root, step){
       const lanes = step.lanes || [];
       root.querySelectorAll('.cell').forEach(function(g){
@@ -1151,8 +1173,13 @@ ANIM['race'] = function(spec){
         paintCell(g, lanes[t] ? stateOf(lanes[t], i) : 'idle');
       });
       root.querySelectorAll('.tcount text').forEach(function(t, ti){
-        t.textContent = lanes[ti] && lanes[ti].count != null ? lanes[ti].count + ' checks' : '';
+        t.textContent = lanes[ti] && lanes[ti].count != null ? lanes[ti].count + units[ti] : '';
       });
+      const rb = root.querySelector('.rbadge');
+      if (rb){
+        rb.setAttribute('opacity', step.badge ? '1' : '0');
+        const bt = rb.querySelector('text'); if (bt) bt.textContent = step.badge || '';
+      }
     }
   };
 };
@@ -1311,7 +1338,7 @@ ANIM['curve'] = function(spec){
   const series = (spec.series || []).map(function(sr){
     const f = FN[sr.fn] || FN.n, pts = [];
     for (let i = 1; i <= N; i++) pts.push([i, f(i)]);
-    return { label:sr.label, pts:pts,
+    return { label:sr.label, label2:sr.label2, pts:pts,
       color: sr.color === 'gold' ? CLR.gold6 : sr.color === 'bad' ? CLR.bad : sr.color === 'green' ? CLR.g600 : CLR.grey };
   });
   const maxY = Math.max.apply(null, series.map(function(sr){ return sr.pts[sr.pts.length-1][1]; })) || 1;
@@ -1336,7 +1363,9 @@ ANIM['curve'] = function(spec){
     s += '<g class="cline" data-s="' + i + '" opacity="0" style="transition:opacity .3s">' +
       '<path d="' + d + '" fill="none" stroke="' + sr.color + '" stroke-width="2.6" stroke-linecap="round" ' +
       'pathLength="100" stroke-dasharray="100" stroke-dashoffset="100" style="transition:stroke-dashoffset .55s ease-out"/>' +
-      labelAt(ml + px + 10, ly, sr.label, 11.5, sr.color, 'start', 700) + '</g>';
+      labelAt(ml + px + 10, ly, sr.label, 11.5, sr.color, 'start', 700) +
+      (sr.label2 ? '<g class="cnote" opacity="0" style="transition:opacity .3s">' +
+        labelAt(ml + px + 10, ly + 15, sr.label2, 10.5, sr.color, 'start', 600) + '</g>' : '') + '</g>';
   });
   s += '<g class="cbadge" opacity="0" style="transition:opacity .3s">' +
        '<rect x="' + (ml + 12) + '" y="' + (mt + 10) + '" width="150" height="26" rx="8" fill="#ffffff" stroke="' + CLR.lineS + '"/>' +
@@ -1350,6 +1379,7 @@ ANIM['curve'] = function(spec){
         g.setAttribute('opacity', on ? '1' : '0');
         const p = g.querySelector('path');
         if (p) p.setAttribute('stroke-dashoffset', on ? String(100 - (step.pct == null ? 100 : step.pct)) : '100');
+        g.querySelectorAll('.cnote').forEach(function(nt){ nt.setAttribute('opacity', (on && step.notation) ? '1' : '0'); });
       });
       const b = root.querySelector('.cbadge');
       if (b){

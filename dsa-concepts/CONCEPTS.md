@@ -67,17 +67,17 @@ Authoring rules for all of this live in [CONSISTENCY.md](CONSISTENCY.md).
 
 > Speed is not a feeling, it is a count. Learn to count steps and you can predict any system before you build it.
 
-**Status:** planned
+**Status:** live
 
 ### Lessons
 
 | id | lesson | status |
 |---|---|---|
-| `2.1` | Counting Steps Without Any Maths | planned |
-| `2.2` | The Seven Shapes of Growth You Will Ever Meet | planned |
-| `2.3` | Best, Average and Worst: Which One Actually Bites You | planned |
-| `2.4` | Space Costs Too, and When To Trade It For Time | planned |
-| `2.5` | The Whiteboard: Watch Cost Grow | planned |
+| `2.1` | Counting Steps Without Any Maths | live |
+| `2.2` | The Seven Shapes of Growth You Will Ever Meet | live |
+| `2.3` | Best, Average and Worst: Which One Actually Bites You | live |
+| `2.4` | Space Costs Too, and When To Trade It For Time | live |
+| `2.5` | The Whiteboard: Watch Cost Grow | live |
 
 ### Concepts taught here
 
