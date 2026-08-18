@@ -130,18 +130,18 @@ Authoring rules for all of this live in [CONSISTENCY.md](CONSISTENCY.md).
 
 > A linked list buys cheap insertion by giving up instant position. That single swap explains all of its behaviour.
 
-**Status:** planned
+**Status:** live
 
 ### Lessons
 
 | id | lesson | status |
 |---|---|---|
-| `4.1` | The Chain: Each Box Knows Only the Next One | planned |
-| `4.2` | Insert and Delete: Where the Chain Wins | planned |
-| `4.3` | Singly, Doubly and Circular | planned |
-| `4.4` | The Two-Pointer Trick: Finding the Middle and the Loop | planned |
-| `4.5` | Where Chains Show Up: Undo, Playlists, Browser History | planned |
-| `4.6` | The Whiteboard: The Chain, Rewired Step by Step | planned |
+| `4.1` | The Chain: Each Box Knows Only the Next One | live |
+| `4.2` | Insert and Delete: Where the Chain Wins | live |
+| `4.3` | Singly, Doubly and Circular | live |
+| `4.4` | The Two-Pointer Trick: Finding the Middle and the Loop | live |
+| `4.5` | Where Chains Show Up: Undo, Playlists, Browser History | live |
+| `4.6` | The Whiteboard: The Chain, Rewired Step by Step | live |
 
 ### Concepts taught here
 

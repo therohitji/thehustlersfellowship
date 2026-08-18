@@ -530,7 +530,7 @@ milestones:
         layers: []
       - id: M5.C04
         name: Ch04 Linked Lists: The Chain
-        status: not started, 6 lessons planned.
+        status: shipped. 6 lessons live, qa green.
         layers: []
       - id: M5.C05
         name: Ch05 Stacks and Queues: Who Gets Served First
