@@ -1166,9 +1166,18 @@ ANIM['race'] = function(spec){
     tracks.map(function(t){ return String(t.label || '').length * charW(12); }).concat([0]))) + 18);
   /* Long tracks used to run past the edge of the reel stage. The cell shrinks to fit a
      sensible canvas instead, down to a floor where the digits are still legible. */
-  const room = 1000 - labelW - 96;
+  /* the counter is right anchored at the canvas edge, so the right margin has to be as wide as
+     the longest counter string a step can produce, not a fixed guess */
+  const unitTxt = tracks.map(function(t){ return t.countLabel || spec.countLabel || ' checks'; });
+  const widestCount = Math.ceil(Math.max.apply(null, (spec.steps || []).map(function(st){
+    return Math.max.apply(null, (st.lanes || []).map(function(ln, li){
+      return ln && ln.count != null ? String(ln.count).length + (unitTxt[li] || '').length : 0;
+    }).concat([0]));
+  }).concat([8])) * charW(12) + 22);
+  const rightM = Math.max(96, widestCount);
+  const room = 1000 - labelW - rightM;
   const cellW = Math.max(22, Math.min(40, Math.floor((room - (n - 1) * gap) / Math.max(1, n))));
-  const w = labelW + n * cellW + (n - 1) * gap + 96;
+  const w = labelW + n * cellW + (n - 1) * gap + rightM;
   const h = tracks.length * (cellH + laneGap);
   let s = '';
   tracks.forEach(function(t, ti){
