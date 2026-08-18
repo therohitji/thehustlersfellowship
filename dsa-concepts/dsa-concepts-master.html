@@ -4560,11 +4560,15 @@ ANIM['array-scan'] = function(spec){
          labelAt(x + cellW/2, top + cellH + 12, (spec.labels && spec.labels[i] != null) ? spec.labels[i] : i, 9.5, CLR.mute, 'middle', 600);
   });
   if (ptrH){
+    /* the four pointer slots can be renamed per board. A queue wants front and back, a stack
+       wants top, and calling them lo and hi in those lessons would be teaching the renderer
+       rather than the structure. */
+    const PL = spec.pointerLabels || {};
     ['lo','mid','hi','i'].forEach(function(p){
       const col = p === 'mid' ? CLR.gold6 : p === 'i' ? CLR.gold6 : CLR.g700;
       s += '<g class="ptr" data-p="' + p + '" opacity="0" style="transition:opacity .2s,transform .3s">' +
            '<path d="M0,' + (top + cellH + idxH + 6) + ' l-5,9 h10 Z" fill="' + col + '"/>' +
-           labelAt(0, top + cellH + idxH + 25, p, 10, col, 'middle', 700) + '</g>';
+           labelAt(0, top + cellH + idxH + 25, PL[p] || p, 10, col, 'middle', 700) + '</g>';
     });
   }
   s += '<g class="counter">' + labelAt(w, 10, '', 12, CLR.gold6, 'end', 700) + '</g>';

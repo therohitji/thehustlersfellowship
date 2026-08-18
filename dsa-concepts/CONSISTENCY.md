@@ -264,7 +264,7 @@ grid based, which is why nothing overlaps. Two things you must respect:
 
 | Type | Use it for |
 |---|---|
-| `array-scan` | any linear or halving walk over a row. States: `look` `dead` `found` `seen` `range` `bad`. Pointers `lo` `mid` `hi` `i` fan out automatically when they coincide. `big:true` for reel acts, `countLabel`, and a per step `badge`. Set `capacity` to draw spare dashed slots beyond the data, and `step.shift = {from, by}` to slide everything from an index rightwards, which is how an insert or delete is shown |
+| `array-scan` | any linear or halving walk over a row. States: `look` `dead` `found` `seen` `range` `bad`. Pointers `lo` `mid` `hi` `i` fan out automatically when they coincide, and `pointerLabels` renames them per board, so a queue can show `front` and `back` rather than teaching the reader the renderer. `big:true` for reel acts, `countLabel`, and a per step `badge`. Set `capacity` to draw spare dashed slots beyond the data, and `step.shift = {from, by}` to slide everything from an index rightwards, which is how an insert or delete is shown |
 | `grid` | a 2D array. Cells are addressed as `[row, col]` in every state list, plus `step.row` and `step.col` to light a whole row or column. Set `flatRow: true` and the same cells are drawn again in memory order underneath, so the reader watches row times width plus column being computed rather than being told it |
 | `race` | two or more methods on the same data, with live counters |
 | `tree-walk` | trees, tries, BSTs. Nodes carry `x` and `d` (depth). |
