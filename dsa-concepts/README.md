@@ -75,6 +75,7 @@ dsa-concepts/
 │   ├── qa.sh                  # runs everything in order, stops at the first failure
 │   ├── check_style.py
 │   ├── check_js.sh
+│   ├── check_renderers.mjs
 │   ├── check_layout.mjs
 │   ├── check_lesson.py
 │   └── screenshots.mjs        # optional visual check, needs Playwright
@@ -148,7 +149,7 @@ Two engine properties worth knowing before you author anything:
 
 ## Quality gates
 
-`bash verify/qa.sh` runs five checks in dependency order and stops at the first failure. A skip
+`bash verify/qa.sh` runs six checks in dependency order and stops at the first failure. A skip
 is not a pass.
 
 | Check | Refuses to let through |
@@ -156,6 +157,7 @@ is not a pass.
 | `build.py` | bad JSON payload, unknown diagram or animation type, animation with no steps |
 | `check_style.py` | em-dash, `${...}`, unbalanced backticks, an apostrophe inside a payload, a lesson without `__NAV__` |
 | `check_js.sh` | a master whose script does not parse |
+| `check_renderers.mjs` | any registered renderer that breaks, including ones no lesson uses yet |
 | `check_layout.mjs` | any diagram rendering `NaN`; any two grid nodes overlapping; any animation step that throws |
 | `check_lesson.py` | wrong block count, missing animation, too few visuals or quizzes, over the word ceiling, a whiteboard lesson with fewer than six acts |
 

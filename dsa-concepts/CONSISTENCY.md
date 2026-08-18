@@ -258,7 +258,7 @@ grid based, which is why nothing overlaps. Two things you must respect:
 | `erd` | entities and their relationships, with typed fields |
 | `wire` | a screen wireframe on a twelve column grid |
 | `card` | an intelligence card: a metric readout with bars |
-| `curve` | a static growth chart |
+| `curve` | a static growth chart. Nine growth functions: `1` `logn` `sqrtn` `n` `nlogn` `n2` `n3` `2n` `nfact`. Pass `logScale: true` when the family spans orders of magnitude, or five of the seven shapes lie flat on the floor. The axis label announces the log scale itself |
 
 ### Animation types (`data-anim`, and inside reel acts)
 
@@ -371,6 +371,7 @@ diagram and animation payload, and refuses to build on bad JSON or an unknown ty
 | `build.py` | bad JSON payload, unknown diagram or animation type, animation with no steps, missing shell placeholder |
 | `check_style.py` | em-dash, `${...}`, unbalanced backticks, apostrophe inside a payload, a lesson without `__NAV__` |
 | `check_js.sh` | a master whose script does not parse, unbalanced template literals |
+| `check_renderers.mjs` | any registered renderer that breaks, **including ones no lesson uses yet**. It also prints which registered types are still unproven in a real lesson |
 | `check_layout.mjs` | any diagram rendering `NaN`, `undefined` or `Infinity`; any two grid nodes overlapping; any animation step that throws |
 | `check_lesson.py` | wrong block count, missing animation, too few visuals, too few quizzes, over the word ceiling, a whiteboard lesson with under six acts |
 | `qa.sh` | runs all of the above in order and stops at the first failure |

@@ -2129,12 +2129,15 @@ function renderCurve(spec){
   const px = w - ml - mr, py = h - mt - mb;
   const N = spec.n || 32;
   const FN = {
-    '1':      function(){ return 1; },
-    'logn':   function(n){ return Math.log2(n + 1); },
-    'n':      function(n){ return n; },
-    'nlogn':  function(n){ return n * Math.log2(n + 1); },
-    'n2':     function(n){ return n*n; },
-    '2n':     function(n){ return Math.pow(2, Math.min(n, 12)); }
+    '1':     function(){ return 1; },
+    'logn':  function(n){ return Math.log2(n + 1); },
+    'sqrtn': function(n){ return Math.sqrt(n); },
+    'n':     function(n){ return n; },
+    'nlogn': function(n){ return n * Math.log2(n + 1); },
+    'n2':    function(n){ return n * n; },
+    'n3':    function(n){ return n * n * n; },
+    '2n':    function(n){ return Math.pow(2, Math.min(n, 60)); },
+    'nfact': function(n){ let v = 1; for (let k = 2; k <= Math.min(n, 20); k++) v *= k; return v; }
   };
   const series = (spec.series || []).map(function(s){
     const f = FN[s.fn] || FN.n;
@@ -2142,10 +2145,14 @@ function renderCurve(spec){
     return { label:s.label, color:s.color === 'gold' ? CLR.gold : s.color === 'bad' ? CLR.bad : s.color === 'green' ? CLR.g600 : CLR.grey, pts:pts };
   });
   const maxY = spec.maxY || Math.max.apply(null, series.map(function(s){ return s.pts[s.pts.length-1][1]; }));
+  const LOG = !!spec.logScale;
+  const frac = function(v){ return LOG ? Math.log10(Math.max(1, v)) / Math.log10(Math.max(10, maxY))
+                                       : Math.min(1, v / maxY); };
   let out = '<line x1="' + ml + '" y1="' + mt + '" x2="' + ml + '" y2="' + (mt+py) + '" stroke="' + CLR.lineS + '" stroke-width="1.2"/>' +
             '<line x1="' + ml + '" y1="' + (mt+py) + '" x2="' + (ml+px) + '" y2="' + (mt+py) + '" stroke="' + CLR.lineS + '" stroke-width="1.2"/>' +
             labelAt(ml + px/2, mt + py + 22, spec.xlabel || 'how much data', 11, CLR.mute, 'middle', 600) +
-            '<g transform="translate(14,' + (mt + py/2) + ') rotate(-90)">' + labelAt(0, 0, spec.ylabel || 'steps of work', 11, CLR.mute, 'middle', 600) + '</g>';
+            '<g transform="translate(14,' + (mt + py/2) + ') rotate(-90)">' +
+              labelAt(0, 0, (spec.ylabel || 'steps of work') + (LOG ? ', log scale' : ''), 11, CLR.mute, 'middle', 600) + '</g>';
   series.forEach(function(s){
     const d = s.pts.map(function(p, i){
       const x = ml + (p[0]/N) * px, y = mt + py - Math.min(1, p[1]/maxY) * py;
@@ -2593,9 +2600,13 @@ ANIM['curve'] = function(spec){
   const FN = {
     '1':     function(){ return 1; },
     'logn':  function(n){ return Math.log2(n + 1); },
+    'sqrtn': function(n){ return Math.sqrt(n); },
     'n':     function(n){ return n; },
     'nlogn': function(n){ return n * Math.log2(n + 1); },
-    'n2':    function(n){ return n * n; }
+    'n2':    function(n){ return n * n; },
+    'n3':    function(n){ return n * n * n; },
+    '2n':    function(n){ return Math.pow(2, Math.min(n, 60)); },
+    'nfact': function(n){ let v = 1; for (let k = 2; k <= Math.min(n, 20); k++) v *= k; return v; }
   };
   const series = (spec.series || []).map(function(sr){
     const f = FN[sr.fn] || FN.n, pts = [];
@@ -2604,17 +2615,24 @@ ANIM['curve'] = function(spec){
       color: sr.color === 'gold' ? CLR.gold6 : sr.color === 'bad' ? CLR.bad : sr.color === 'green' ? CLR.g600 : CLR.grey };
   });
   const maxY = Math.max.apply(null, series.map(function(sr){ return sr.pts[sr.pts.length-1][1]; })) || 1;
+  /* On a linear axis, putting O(1) and O(2 to the n) on one chart flattens five of the seven
+     shapes onto the floor. A log axis is the only way the family is legible together, so it is
+     opt in per chart and always announced on the axis label. */
+  const LOG = !!spec.logScale;
+  const frac = function(v){ return LOG ? Math.log10(Math.max(1, v)) / Math.log10(Math.max(10, maxY))
+                                       : Math.min(1, v / maxY); };
   let s = '<line x1="' + ml + '" y1="' + mt + '" x2="' + ml + '" y2="' + (mt+py) + '" stroke="' + CLR.lineS + '" stroke-width="1.3"/>' +
           '<line x1="' + ml + '" y1="' + (mt+py) + '" x2="' + (ml+px) + '" y2="' + (mt+py) + '" stroke="' + CLR.lineS + '" stroke-width="1.3"/>' +
           labelAt(ml + px/2, mt + py + 26, spec.xlabel || 'how much data', 11.5, CLR.mute, 'middle', 600) +
-          '<g transform="translate(18,' + (mt + py/2) + ') rotate(-90)">' + labelAt(0, 0, spec.ylabel || 'looks it takes', 11.5, CLR.mute, 'middle', 600) + '</g>';
+          '<g transform="translate(18,' + (mt + py/2) + ') rotate(-90)">' +
+            labelAt(0, 0, (spec.ylabel || 'looks it takes') + (LOG ? ', log scale' : ''), 11.5, CLR.mute, 'middle', 600) + '</g>';
   series.forEach(function(sr, i){
     const d = sr.pts.map(function(p, k){
-      const x = ml + (p[0]/N) * px, y = mt + py - Math.min(1, p[1]/maxY) * py;
+      const x = ml + (p[0]/N) * px, y = mt + py - frac(p[1]) * py;
       return (k ? 'L' : 'M') + x.toFixed(1) + ',' + y.toFixed(1);
     }).join(' ');
     const last = sr.pts[sr.pts.length-1];
-    const ly = Math.max(mt + 8, mt + py - Math.min(1, last[1]/maxY) * py);
+    const ly = Math.max(mt + 8, mt + py - frac(last[1]) * py);
     s += '<g class="cline" data-s="' + i + '" opacity="0" style="transition:opacity .3s">' +
       '<path d="' + d + '" fill="none" stroke="' + sr.color + '" stroke-width="2.6" stroke-linecap="round" ' +
       'pathLength="100" stroke-dasharray="100" stroke-dashoffset="100" style="transition:stroke-dashoffset .55s ease-out"/>' +
