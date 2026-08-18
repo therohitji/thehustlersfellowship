@@ -426,6 +426,10 @@ function route(a, b, gy){
   return 'M' + ax + ',' + a.y + ' L' + ax + ',' + (my2) + ' L' + bx + ',' + my2 + ' L' + bx + ',' + (b.y+b.h);
 }
 
+function rectsHit(a, b){
+  return a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h;
+}
+
 /* ============================ LAYOUT ENGINES ============================ */
 const GAP = { gx:56, gy:46, padX:15, padY:12, minW:104, minH:44 };
 
@@ -554,8 +558,20 @@ function renderLayered(spec, preset){
   nodes.forEach(function(n){
     out += addr ? '<g class="cell" data-i="' + n.id + '" opacity="1">' + nodeSvg(n) + '</g>' : nodeSvg(n);
   });
+  /* Two edges running between the same pair of nodes share a midpoint, so their labels would
+     print on top of each other. Each label takes the first offset that collides with nothing
+     already placed, counting the nodes themselves as obstacles. */
+  const occupied = nodes.map(function(n){ return { x:n.x, y:n.y, w:n.w, h:n.h }; });
+  const OFFSETS = [0, 17, -17, 34, -34, 51, -51];
   elabels.forEach(function(l){
-    const c = chip(l[0], l[1], l[2], 10, l[3], 600);
+    const lw = String(l[2]).length * charW(10) + 12, lh = 18;
+    let y = l[1];
+    for (const dy of OFFSETS){
+      const r = { x: l[0] - lw/2, y: l[1] + dy - lh/2, w: lw, h: lh };
+      if (!occupied.some(function(o){ return rectsHit(r, o); })){ y = l[1] + dy; break; }
+    }
+    occupied.push({ x: l[0] - lw/2, y: y - lh/2, w: lw, h: lh });
+    const c = chip(l[0], y, l[2], 10, l[3], 600);
     out += addr ? '<g class="ge" data-e="' + l[4] + '" opacity="1">' + c + '</g>' : c;
   });
   (spec.groups || []).forEach(function(g){
@@ -844,10 +860,7 @@ function renderCurve(spec){
 }
 
 /* ---- real-life scene: a tiny illustration primitive set ---- */
-/* --- collision helpers, so a hand placed scene can heal itself --- */
-function rectsHit(a, b){
-  return a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h;
-}
+/* --- collision helpers --- */
 function segHitsRect(x1, y1, x2, y2, r){
   if (Math.max(x1,x2) < r.x || Math.min(x1,x2) > r.x + r.w) return false;
   if (Math.max(y1,y2) < r.y || Math.min(y1,y2) > r.y + r.h) return false;

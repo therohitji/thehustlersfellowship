@@ -43,9 +43,16 @@ const lessons = wanted ? [wanted]
 
 let shots = 0;
 for (const id of lessons){
-  const link = await page.$(`.les[data-id="${id}"]`);
-  if (!link){ console.error(`  skip ${id}: not in the sidebar`); continue; }
-  await link.click();
+  /* Drive the reader directly rather than clicking the sidebar: a lesson whose chapter is
+     collapsed has a hidden link, and clicking it would just time out. */
+  const ok = await page.evaluate(id => {
+    if (typeof load !== 'function') return false;
+    const el = document.querySelector(`.les[data-id="${id}"]`);
+    if (el) el.closest('.chap')?.classList.add('open');
+    load(id);
+    return true;
+  }, id);
+  if (!ok){ console.error(`  skip ${id}: reader not ready`); continue; }
   await page.waitForTimeout(800);
 
   const blocks = await page.$$('.viz, .board, .reel');

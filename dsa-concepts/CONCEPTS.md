@@ -39,17 +39,17 @@ Authoring rules for all of this live in [CONSISTENCY.md](CONSISTENCY.md).
 
 > A data structure is just a decision about how you lay things down. Every later cost follows from that one decision.
 
-**Status:** planned
+**Status:** live
 
 ### Lessons
 
 | id | lesson | status |
 |---|---|---|
-| `1.1` | Everything Is Boxes and Labels: How a Computer Holds a Thing | planned |
-| `1.2` | The Two Real Choices: Keep It Together, or Keep It Linked | planned |
-| `1.3` | What an Algorithm Actually Is: A Recipe With a Guarantee | planned |
-| `1.4` | The Trade That Never Goes Away: Time, Space and Order | planned |
-| `1.5` | The Whiteboard: How a Computer Holds a Thing | planned |
+| `1.1` | Everything Is Boxes and Labels: How a Computer Holds a Thing | live |
+| `1.2` | The Two Real Choices: Keep It Together, or Keep It Linked | live |
+| `1.3` | What an Algorithm Actually Is: A Recipe With a Guarantee | live |
+| `1.4` | The Trade That Never Goes Away: Time, Space and Order | live |
+| `1.5` | The Whiteboard: How a Computer Holds a Thing | live |
 
 ### Concepts taught here
 
