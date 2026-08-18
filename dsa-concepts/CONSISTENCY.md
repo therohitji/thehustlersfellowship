@@ -268,7 +268,7 @@ grid based, which is why nothing overlaps. Two things you must respect:
 | `grid` | a 2D array. Cells are addressed as `[row, col]` in every state list, plus `step.row` and `step.col` to light a whole row or column. Set `flatRow: true` and the same cells are drawn again in memory order underneath, so the reader watches row times width plus column being computed rather than being told it |
 | `race` | two or more methods on the same data, with live counters |
 | `tree-walk` | trees, tries, BSTs. Nodes carry `x` and `d` (depth). |
-| `graph-walk` | graph traversal, with edge highlighting |
+| `graph-walk` | graph traversal, and the chain renderer. Nodes carry `x` and `y` on a unit grid; `step.edges` lists which edges are live, which is how a **rewire** is animated: declare every edge that will ever exist and change the live list. `step.tags` puts a named marker under a node, so two travelling pointers can be told apart by name. Set `directed: true` for arrowheads, per spec or per edge, because the same renderer also draws handshakes where an arrow would be a lie |
 | `vector` | semantic space, a query point and an expanding neighbourhood. Labels place themselves. |
 | `curve` | cost lines drawing themselves, with a data-size badge |
 | `reveal` | **any grid diagram, drawn into existence one node at a time.** Wrap a `viz` spec and give each step a `show` list. Use this whenever a diagram is the argument. |
