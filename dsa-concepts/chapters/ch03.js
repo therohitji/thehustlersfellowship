@@ -66,9 +66,9 @@
     <tr><td>Size known before it runs</td><td>exactly as many boxes as items</td><td>You must know the count before anything arrives</td></tr>
     <tr><td>Claimed while running</td><td>as many as you asked for at that moment</td><td>The run must exist unbroken right then, or you are refused</td></tr>
     <tr><td>With spare capacity</td><td>more boxes than it holds things</td><td>You hold and pay for the spare from the moment you claim it</td></tr>
-    <tr><td>A row of addresses</td><td>one fixed width box per item, items kept elsewhere</td><td>The escape hatch when clause one is impossible. Chapter 4 is built on it</td></tr>
+    <tr><td>A row of addresses</td><td>one fixed width box per item, items kept elsewhere</td><td>The escape hatch when clause one is impossible. Still a row, still contiguous, and Lesson 3.5 prices what it costs</td></tr>
   </table>
-  <div class="tbl-cap">Row four is how anything variable-sized gets stored in a row at all, and it is the seam between this chapter and the next one.</div></div>
+  <div class="tbl-cap">Row four is how anything variable-sized gets stored in a row at all. Note what it is not: the addresses still sit side by side, so all four clauses still apply to them. Chapter 4 is the structure that gives up the row entirely.</div></div>
 
   <div class="viz" data-viz='{"type":"dtree","title":"Which claim are you making","maxChars":18,"nodes":[{"id":"q1","label":"Do you know the count before anything arrives?","col":1,"row":0,"kind":"gold","shape":"diamond"},{"id":"f","label":"Claim exactly that many. Nothing spare, nothing wasted","col":0,"row":1,"kind":"accent"},{"id":"q2","label":"Will it keep growing after the first claim?","col":2,"row":1,"kind":"gold","shape":"diamond"},{"id":"o","label":"Claim once, at the size you need right now","col":1,"row":2,"kind":"accent"},{"id":"g","label":"Claim more than you need and hold the spare","col":3,"row":2,"kind":"gold"}],"edges":[{"from":"q1","to":"f","label":"yes","style":"green"},{"from":"q1","to":"q2","label":"no"},{"from":"q2","to":"o","label":"no"},{"from":"q2","to":"g","label":"yes","style":"gold"}],"caption":"Notice what this tree does not contain. There is no branch that avoids claiming in advance. The only choice on offer is how much and when, which is clause three refusing to be negotiated with."}'></div>
 
@@ -623,7 +623,7 @@ __NAV__
 
   <div class="viz" data-viz='{"type":"kgraph","title":"Every limit you met this week, and the bill behind it","unit":162,"nodes":[{"id":"c","label":"A limit you met this week","x":2,"y":1,"kind":"dark"},{"id":"p","label":"Fifty results, then a button","x":0,"y":0,"kind":"box"},{"id":"u","label":"Undo goes back a fixed number of steps","x":0,"y":2,"kind":"box"},{"id":"n","label":"Two hundred rows a page in the admin tool","x":4,"y":0,"kind":"box"},{"id":"s","label":"A saved position that stopped pointing at the right thing","x":4,"y":2,"kind":"gold"},{"id":"e","label":"An export that has to be requested and emailed","x":2,"y":3,"kind":"box"}],"edges":[{"from":"c","to":"p","label":"refusing the copy"},{"from":"c","to":"u","label":"refusing the copy"},{"from":"c","to":"n","label":"refusing the trips"},{"from":"c","to":"s","label":"the row moved","style":"gold"},{"from":"c","to":"e","label":"refusing the claim"}],"caption":"Four clauses, four bills: the copy, the shuffle, the trips, and the one nobody names, which is a position you wrote down while the row was still where you left it."}'></div>
 
-  <p>A results page that hands you fifty and then a button is <strong>refusing the copy</strong>: fifty is a count known in advance, so the row is claimed once and never grown. An undo history that forgets its oldest step is the same refusal in different clothes, a fixed set of boxes reused forever. And the gold node is the fourth bill, the one nobody names: <strong>you wrote down a position, and then the row was replaced by a longer one somewhere else.</strong> The position is still a number. It just points at nothing you meant.</p>
+  <p>A results page that hands you fifty and then a button is <strong>refusing the copy</strong>: fifty is a count known in advance, so the row is claimed once and never grown. An undo history that forgets its oldest step after a fixed number is the same refusal in different clothes, a fixed set of boxes reused forever. <em class="k">An undo history with no cap at all is a different structure entirely</em>, and Chapter 4 shows you which one and how to tell from the outside. And the gold node is the fourth bill, the one nobody names: <strong>you wrote down a position, and then the row was replaced by a longer one somewhere else.</strong> The position is still a number. It just points at nothing you meant.</p>
 
   <h2><span class="ix">8</span> How Problems Show Up</h2>
   <div class="sub">Six sentences, and the clause being billed in each.</div>
@@ -715,7 +715,7 @@ __NAV__
 
   <div class="callout accent">
     <div class="ch">The line to carry into Chapter 4</div>
-    <p>Every one of those four bills came from the same purchase: <strong>any position, by one sum.</strong> The next chapter is the structure that refuses that purchase entirely, and therefore refuses all four bills and takes a completely different one instead.</p>
+    <p>Every one of those four bills came from the same purchase: <strong>any position, by one sum.</strong> The next chapter is the structure that refuses that purchase entirely. Do not expect it to refuse all four bills. It cancels three of them, and it makes the fourth one considerably worse, which is exactly the sort of trade this course keeps promising you and is about to show you in full.</p>
   </div>
 
   <div class="callout warn">
