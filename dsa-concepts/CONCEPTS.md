@@ -101,18 +101,18 @@ Authoring rules for all of this live in [CONSISTENCY.md](CONSISTENCY.md).
 
 > An array is fast because it is rigid. Every array problem is that rigidity showing its bill.
 
-**Status:** planned
+**Status:** live
 
 ### Lessons
 
 | id | lesson | status |
 |---|---|---|
-| `3.1` | The Row of Boxes: Why Position Is Instant | planned |
-| `3.2` | Insert and Delete: The Shuffle Nobody Warns You About | planned |
-| `3.3` | Growing an Array: The Doubling Trick | planned |
-| `3.4` | Grids and 2D Arrays: Maps, Screens and Spreadsheets | planned |
-| `3.5` | Where Arrays Show Up, and the Problems They Create | planned |
-| `3.6` | The Whiteboard: Arrays, Every Operation Animated | planned |
+| `3.1` | The Row of Boxes: Why Position Is Instant | live |
+| `3.2` | Insert and Delete: The Shuffle Nobody Warns You About | live |
+| `3.3` | Growing an Array: The Doubling Trick | live |
+| `3.4` | Grids and 2D Arrays: Maps, Screens and Spreadsheets | live |
+| `3.5` | Where Arrays Show Up, and the Problems They Create | live |
+| `3.6` | The Whiteboard: Arrays, Every Operation Animated | live |
 
 ### Concepts taught here
 
