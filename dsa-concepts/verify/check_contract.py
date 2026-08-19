@@ -92,6 +92,19 @@ for f in sorted(glob.glob('chapters/*.js')):
                 run = 0
         if worst > 3:
             fails.append('%s has %d consecutive paragraphs with no visual, ceiling is 3' % (lid, worst))
+        # A quiz whose data-correct points at nothing, or whose options are not 0..n-1,
+        # silently marks every answer wrong. Nothing checked this.
+        for q in re.finditer(r'<div class="quiz" data-correct="(\d+)">(.*?)</div>\s*</div>', seg, re.S):
+            corr = int(q.group(1)); body = q.group(2)
+            opts = [int(i) for i, _ in re.findall(r'<div class="opt" data-i="(\d+)">(.*?)</div>', body, re.S)]
+            if opts != list(range(len(opts))):
+                fails.append('%s quiz option indices are %s, expected 0..n-1' % (lid, opts))
+            if corr not in opts:
+                fails.append('%s quiz data-correct=%d but the options are %s' % (lid, corr, opts))
+            if len(opts) < 3:
+                fails.append('%s quiz offers only %d option(s)' % (lid, len(opts)))
+            if '<div class="qexp">' not in body:
+                fails.append('%s quiz has no explanation' % lid)
         blk8 = block_slice(seg, 8)
         if blk8 is not None:
             rows = len(re.findall(r'<tr><td>', blk8))
