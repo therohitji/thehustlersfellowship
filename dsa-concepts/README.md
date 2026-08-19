@@ -177,6 +177,15 @@ is not a pass.
 `check_layout.mjs` renders every diagram in Node against a fake DOM and walks every animation
 frame. That is how **"nothing overlaps" is a build failure rather than an opinion**.
 
+### One command for all of it
+
+```bash
+bash verify/all.sh
+```
+
+Runs the eight harness checks, the block and reel contract, the reader-interaction pass and
+a full render of every visual, stopping at the first failure. The last two need Playwright.
+
 ### Driving it like a reader
 
 `verify/interact.mjs` opens the built master and uses it: it loads every live lesson, answers
