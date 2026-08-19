@@ -264,7 +264,7 @@ grid based, which is why nothing overlaps. Two things you must respect:
 
 | Type | Use it for |
 |---|---|
-| `array-scan` | any linear or halving walk over a row. States: `look` `dead` `found` `seen` `range` `bad`. Pointers `lo` `mid` `hi` `i` fan out automatically when they coincide, and `pointerLabels` renames them per board, so a queue can show `front` and `back` rather than teaching the reader the renderer. `big:true` for reel acts, `countLabel`, and a per step `badge`. Set `capacity` to draw spare dashed slots beyond the data, and `step.shift = {from, by}` to slide everything from an index rightwards, which is how an insert or delete is shown. `step.order` lists the ORIGINAL cell indices in their new left-to-right arrangement, and it may be SPARSE: `[null,3,null,2]` puts cell 3 in slot 1 and cell 2 in slot 3, which is how a rehash spreads keys across a wider table. Slots and position labels are drawn at every position from 0 to `capacity`, behind the cells, so an empty bucket in the middle of a table is visible rather than only at the right hand end. It is the only way to show a sort: a cell's text is baked in at build time and can never change, so values move by moving their boxes. The position labels underneath stay put on purpose, so the reader watches values travel between fixed positions. States still address a cell by its original index, which is what lets you follow one value across a whole sort |
+| `array-scan` | any linear or halving walk over a row. States: `look` `dead` `found` `seen` `range` `bad`. Pointers `lo` `mid` `hi` `i` fan out automatically when they coincide, and `pointerLabels` renames them per board, so a queue can show `front` and `back` rather than teaching the reader the renderer. `big:true` for reel acts, `countLabel`, and a per step `badge`. Set `capacity` to draw spare dashed slots beyond the data, and `step.shift = {from, by}` to slide everything from an index rightwards, which is how an insert or delete is shown. `step.order` lists the ORIGINAL cell indices in their new left-to-right arrangement, and it may be SPARSE: `[null,3,null,2]` puts cell 3 in slot 1 and cell 2 in slot 3, which is how a rehash spreads keys across a wider table. Slots and position labels are drawn at every position from 0 to `capacity`, behind the cells, so an empty bucket in the middle of a table is visible rather than only at the right hand end. **`step.order` is the COMPLETE arrangement of what is on the table, not a partial one**: a cell the order does not mention is not on the table in that frame and is hidden. Leaving such a cell parked at its own array index is what made five hash boards open on a table the caption calls empty with four names already drawn in it. The pointer addresses POSITIONS, so it may sit on any slot up to `capacity`, including an empty one, which is usually the interesting box. It is the only way to show a sort: a cell's text is baked in at build time and can never change, so values move by moving their boxes. The position labels underneath stay put on purpose, so the reader watches values travel between fixed positions. States still address a cell by its original index, which is what lets you follow one value across a whole sort |
 | `grid` | a 2D array. Cells are addressed as `[row, col]` in every state list, plus `step.row` and `step.col` to light a whole row or column. Set `flatRow: true` and the same cells are drawn again in memory order underneath, so the reader watches row times width plus column being computed rather than being told it |
 | `race` | two or more methods on the same data, with live counters |
 | `tree-walk` | trees, tries, BSTs. Nodes carry `x` and `d` (depth). Edges carry a label via `e.w`, placed outside the branch, which is what makes a trie legible. `step.count` with `countLabel` and `step.badge` were added for traversals: a walk is an ORDER, and a board that only paints nodes can show which were visited but never what sequence came out, so the badge carries the sequence so far |
@@ -381,13 +381,14 @@ diagram and animation payload, and refuses to build on bad JSON or an unknown ty
 
 | Check | What it refuses to let through |
 |---|---|
-| `build.py` | bad JSON payload, unknown diagram or animation type, animation with no steps, missing shell placeholder |
+| `build.py` | bad JSON payload, unknown diagram or animation type, animation with no steps, missing shell placeholder, a `kind` outside the seven, a race step whose lane count does not match its tracks, **a legend row naming a state no step ever paints**, **an `order` entry that is not a real unique data index**, **a step asking for more slots than the board draws** |
 | `check_style.py` | em-dash, `${...}`, unbalanced backticks, apostrophe inside a payload, a lesson without `__NAV__` |
 | `check_js.sh` | a master whose script does not parse, unbalanced template literals |
 | `check_renderers.mjs` | any registered renderer that breaks, **including ones no lesson uses yet**. It also prints which registered types are still unproven in a real lesson |
 | `check_layout.mjs` | any diagram rendering `NaN`, `undefined` or `Infinity`; any two grid nodes overlapping; any animation step that throws |
 | `check_lesson.py` | wrong block count, missing animation, too few visuals, too few quizzes, over the word ceiling, a whiteboard lesson with under six acts |
-| `qa.sh` | runs all of the above in order and stops at the first failure |
+| `reel_time.py` | a reel caption or lesson pill claiming a runtime the acts do not add up to. Duration is `sum(steps x speed)`, rounded to the nearest half minute, and the script rewrites both |
+| `qa.sh` | runs all eight in order and stops at the first failure |
 
 `check_layout.mjs` renders every diagram in Node against a fake DOM. That is how "nothing
 overlaps" is a build failure instead of an opinion.
@@ -410,6 +411,12 @@ overlaps" is a build failure instead of an opinion.
 | A diagram throws `cannot read fill` | a `kind` outside the seven | `build.py` fails it now and names the diagram |
 | A board is 2px wider than the column | the usable widths are 634 board, 638 diagram, 1126 reel | `box-sizing:border-box` is global, so borders and inner padding both come off |
 | You need a value to change inside a box | it cannot; the text is baked in at build time | move the box instead with `step.order`, or use a second board |
+| A key sits in the table while the caption says it has not arrived | it was left out of `step.order`, which used to mean "leave it where it started" | `order` is now the complete arrangement and omitted cells are hidden; `build.py` validates every entry |
+| A legend row promises a colour the reader never sees | nothing tied the legend to the steps | `build.py` fails it now. Twelve boards across six chapters were promising a colour that never appeared |
+| A board draws a name outside its own frame | a step asked for more `capacity` than the spec ever drew slots for | `build.py` fails it now; the board sizes itself once, at build time |
+| The counter reads "1 looks" | the count was concatenated with a fixed plural | `countText` singularises the counting word |
+| A reel claims 1.5 minutes and runs 54 seconds | the caption and the pill were both written by hand | `reel_time.py` derives both. It found ten stale claims |
+| A board asks the reader to imagine a shape it is not drawing | the picture and the caption drifted apart during editing | put the claim in the card or the paragraph, where no picture argues with it |
 
 ---
 
