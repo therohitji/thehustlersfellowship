@@ -527,3 +527,132 @@ __NAV__
   </div>
 __NAV__
 </div>`
+,
+
+"7.5": `<div class="wrap">
+  <div class="les-kicker">Chapter 7 · Lesson 7.5</div>
+  <h1 class="les-title">Heap Sort, Counting Sort and Radix Sort</h1>
+  <div class="les-meta">
+    <span class="pill">foundational</span><span class="pill">~13 min</span>
+    <span class="pill gold">no code needed</span><span class="pill">9 visuals</span>
+  </div>
+
+  <p class="motto">Every sort so far asked which of two things comes first. There is a proven floor on what that question can buy, and the only way under it is to stop asking it.</p>
+
+  <p class="lead">Lessons 7.2, 7.3 and 7.4 all did the same thing: compare two items. This lesson has one method that compares differently and two that do not compare at all, which is why they are not bound by the limit everything else in this chapter obeys. By the end you can say what that limit is, and the exact condition that lets you escape it.</p>
+
+  <h2><span class="ix">1</span> The Everyday Situation</h2>
+  <div class="sub">Nobody sorts a class by comparing pupils.</div>
+  <p>Thirty pupils, and you want them lined up by school year. You do not compare pairs of children. <strong>You call out the years and let them gather</strong>, then read the groups back in order. You never once asked whether this child comes before that one.</p>
+
+  <div class="viz" data-viz='{"type":"scene","title":"Two ways to line up thirty children","width":820,"height":280,"items":[{"icon":"person","x":120,"y":126,"kind":"muted","label":"compare two, swap, repeat"},{"icon":"person","x":330,"y":126,"kind":"gold","label":"or: call out the years"},{"icon":"shelf","x":560,"y":124,"kind":"accent","label":"seven groups gather themselves"},{"icon":"doc","x":740,"y":124,"kind":"box","label":"read the groups back in order"}],"arrows":[{"x1":180,"y1":126,"x2":268,"y2":126,"style":"gold","label":"or do not"},{"x1":400,"y1":126,"x2":500,"y2":126,"style":"green","label":"nobody was compared"}],"caption":"The second method works because there are only seven possible years. It is not cleverer than comparing, it is exploiting a fact about the values that comparison sorts are forbidden from using: there is a small, known set of things any value can be."}'></div>
+
+  <p>That works because there are only seven possible answers. <strong>It is not cleverness, it is a fact about the values</strong>, and every method in this lesson is built on a fact that the previous three chapters were not allowed to use.</p>
+
+  <h2><span class="ix">2</span> What It Actually Is</h2>
+  <div class="sub">The floor, and the one way under it.</div>
+  <p>If the only thing you may do is ask which of two items comes first, then <strong>there is a proven limit on how few questions can possibly be enough</strong>, and it is the layers-times-size figure Lesson 7.3 derived. No comparison sort will ever beat it, and merge sort essentially reaches it.</p>
+
+  <div class="viz" data-viz='{"type":"arch","title":"Three methods, and which rule each one breaks","maxChars":18,"nodes":[{"id":"f","label":"The floor: layers times size, for anything that compares","col":0,"row":1,"kind":"dark"},{"id":"h","label":"Heap sort: still compares, so it lives on the floor","col":1,"row":0,"kind":"accent"},{"id":"c","label":"Counting sort: never compares two items at all","col":1,"row":2,"kind":"gold"},{"id":"hr","label":"But needs no extra room, and never has a bad day","col":2,"row":0,"kind":"accent"},{"id":"cr","label":"So the floor does not apply to it, and it goes under","col":2,"row":2,"kind":"gold"},{"id":"cd","label":"Its condition: the values must come from a small known set","col":2,"row":3,"kind":"bad"}],"edges":[{"from":"f","to":"h","label":"obeys"},{"from":"f","to":"c","label":"escapes","style":"green"},{"from":"h","to":"hr","label":"and buys","style":"green"},{"from":"c","to":"cr","label":"and buys","style":"green"},{"from":"c","to":"cd","label":"and demands"}],"caption":"Heap sort is not here to be faster. It is here because it reaches the floor while needing almost no extra room and having no bad case at all, which is a combination neither merge sort nor quick sort can offer. The two below it are a different argument entirely."}'></div>
+
+  <p>Heap sort still compares, so it cannot beat the floor. <strong>It is here for a different reason:</strong> it reaches the floor with almost no extra memory and, unlike Lesson 7.4, it has no catastrophic case at all.</p>
+
+  <h2><span class="ix">3</span> Watch It Work</h2>
+  <div class="sub">Eight values, five possible answers, and no comparison anywhere.</div>
+  <p>Eight numbers, and every one of them is between 1 and 5. That is the fact everything below depends on. <strong>Count how many of each, then read the counts back in order.</strong> Nothing is ever compared with anything.</p>
+
+  <div class="board" data-anim='{"type":"array-scan","title":"Sorting by counting, with nothing compared","speed":1600,"big":true,"data":[3,1,4,1,5,2,3,1],"countLabel":" values counted","pointerLabels":{"i":"counting"},"legend":[["being counted","look"],["already counted","seen"],["placed by its count","found"]],"steps":[{"order":[0,1,2,3,4,5,6,7],"look":[0],"ptr":{"i":0},"count":1,"say":"Eight numbers, and every value is between 1 and 5. <b>That is the whole condition</b>, and without it nothing in this board works."},{"order":[0,1,2,3,4,5,6,7],"look":[3],"seen":[0,1,2],"ptr":{"i":3},"count":4,"say":"Walk the row once and keep a tally: how many 1s, how many 2s, and so on. <b>Not one comparison has happened</b>, because no item has been held up against another item."},{"order":[0,1,2,3,4,5,6,7],"seen":[0,1,2,3,4,5,6,7],"count":8,"badge":"three 1s, one 2, two 3s","say":"One pass, and the tally is complete: <b>three 1s, one 2, two 3s, one 4, one 5.</b> Eight numbers, and eight tally marks, and no item was ever examined twice."},{"order":[1,3,7,5,0,6,2,4],"found":[1,3,7],"seen":[5,0,6,2,4],"count":8,"say":"Now read the tally back in order. Three 1s, so write three 1s. <b>The row is being produced rather than rearranged</b>, and the answer is being read off a count."},{"order":[1,3,7,5,0,6,2,4],"found":[1,3,7,5,0,6,2,4],"count":8,"badge":"sorted, 0 comparisons","say":"<b>Sorted, and not one comparison happened at any point.</b> Two passes over the data: one to count, one to write out. The floor from block 2 simply does not apply, because the floor is a statement about comparing."}],"caption":"Watch the three 1s at the end. They came from positions 1, 3 and 7, and they left in that same order, because the tally was read front to back. That is stability, arriving for free, and Lesson 7.6 is where it turns out to matter."}'></div>
+
+  <h2><span class="ix">4</span> Under The Hood</h2>
+  <div class="sub">What counting knows that comparing cannot.</div>
+
+  <div class="viz" data-viz='{"type":"seq","title":"Two methods asking about the same item","actors":[{"label":"A comparison sort","kind":"muted"},{"label":"The value 3","kind":"accent"},{"label":"A counting sort","kind":"gold"}],"messages":[{"from":0,"to":1,"label":"are you smaller than this other item"},{"from":1,"to":0,"label":"yes. That is all I can tell you about myself"},{"from":2,"to":1,"label":"what are you","style":"gold"},{"from":1,"to":2,"label":"I am a 3","style":"green"},{"from":2,"to":2,"label":"then I already know exactly which group you belong in","style":"green"}],"caption":"A comparison sort is only ever allowed to learn about pairs, which is why it needs so many questions. A counting sort asks each item what it is, once, and that single answer places it, because the set of possible answers was known before anybody started."}'></div>
+
+  <p><strong>A comparison only ever tells you about a pair.</strong> Asking an item what it is, when there are only five things it could be, tells you where it goes immediately. That is the whole difference, and it is bought with a condition rather than with cleverness.</p>
+
+  <h2><span class="ix">5</span> The Types</h2>
+  <div class="sub">Three methods, three completely different reasons to exist.</div>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>The method</th><th>Why it exists</th><th>The one condition it demands</th></tr>
+    <tr><td>Heap sort</td><td>Reaches the floor with almost no extra memory and no bad case</td><td>Nothing about your data. It is the safe choice, and it is not stable</td></tr>
+    <tr><td>Counting sort</td><td>Goes under the floor entirely, by never comparing</td><td>Values from a small known set. Ages yes, customer ids no</td></tr>
+    <tr><td>Radix sort</td><td>Counting sort applied one digit at a time, so the set stays tiny</td><td>Values you can chop into digits, and a stable pass per digit</td></tr>
+  </table>
+  <div class="tbl-cap">Radix is the clever one and it is worth seeing why. Sorting a million nine-digit numbers by counting would need a billion tallies. Sorting them one digit at a time needs ten tallies, six or nine times over, and it only works because each pass preserves the order the previous pass established, which is exactly the stability the board above got for free.</div></div>
+
+  <p>And heap sort deserves its own sentence, because it is the one people skip. <strong>It repeatedly grabs the largest remaining item</strong>, using a shape that makes finding the largest cheap. That shape is a heap, and Chapter 11, Heaps and Priority Queues, builds it properly. It is also exactly the shape Lesson 5.3 said priority needed and could not have.</p>
+
+  <h2><span class="ix">6</span> What It Costs, In Plain English</h2>
+  <div class="sub">A million items, and when the condition pays.</div>
+  <p>A million items through a comparison sort is <strong>about 20,000,000 comparisons</strong>, which Lesson 7.3 derived. Now suppose those million items are ages, so every value is between 0 and 99.</p>
+
+  <div class="viz" data-viz='{"type":"card","title":"A million items, and what the condition buys","eyebrow":"OPERATIONS","badge":"same million","width":560,"rows":[{"k":"Any comparison sort","v":"about 20,000,000","tone":"bad","bar":0.02},{"k":"Counting, if values are ages 0 to 99","v":"about 1,000,100","tone":"good","bar":0.001},{"k":"Radix, six digits, ten tallies per pass","v":"about 6,000,000","tone":"good","bar":0.006},{"k":"Counting, if values are ids up to a billion","v":"about 1,001,000,000","tone":"bad","bar":1},{"k":"So the condition is not a detail","v":"1,000 times either way","tone":"bad","bar":1}],"caption":"Every bar is drawn against a maximum of about a billion. Row two is twenty times better than any comparison sort. Row four is the identical method on the identical million items, and it is fifty times worse, because the tally now needs a billion slots for a million values. Nothing changed but the range."}'></div>
+
+  <p>That is the honest shape of it. <strong>Counting sort is either magnificent or absurd</strong>, and which one depends entirely on the spread of the values rather than how many there are. In the Chapter 2 currency it is <em class="g">O(n + k)</em>, where k is the size of the range, and the whole art is noticing when k is small.</p>
+
+  <h2><span class="ix">7</span> Where It Lives In Real Life</h2>
+  <div class="sub">Five places, and in three of them nobody would say the word sort.</div>
+
+  <div class="viz" data-viz='{"type":"kgraph","title":"Sorting without comparing, where it already runs","unit":178,"nodes":[{"id":"c","label":"Sorting by what a thing IS, not how it ranks","x":2,"y":1,"kind":"dark"},{"id":"a","label":"Grouping records by a small fixed set: status, country, year","x":0,"y":0,"kind":"gold"},{"id":"p","label":"Ordering pixels or scores, where values have a fixed range","x":0,"y":2,"kind":"accent"},{"id":"r","label":"Sorting long ids or dates one digit at a time","x":4,"y":0,"kind":"accent"},{"id":"h","label":"Heap sort, where predictable memory matters more than speed","x":4,"y":2,"kind":"accent"},{"id":"t","label":"And the top ten, which needs no sorting at all. Chapter 11","x":2,"y":3,"kind":"gold"}],"edges":[{"from":"c","to":"a","label":"a few dozen buckets","style":"gold"},{"from":"c","to":"p","label":"a known range","style":"green"},{"from":"c","to":"r","label":"ten buckets, many passes","style":"green"},{"from":"c","to":"h","label":"no extra room, no bad case"},{"from":"c","to":"t","label":"grab the largest, ten times","style":"gold"}],"caption":"The bottom node is the trick this chapter has been circling since Lesson 7.1 asked why you would sort a million rows to answer a question about ten. If you only want the ten largest, a shape that makes grabbing the largest cheap answers it without ever ordering the other 999,990."}'></div>
+
+  <h2><span class="ix">8</span> How Problems Show Up</h2>
+  <div class="sub">Six sentences, and the tell is the shape of the values.</div>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>What somebody actually says</th><th>The test to run</th><th>What it is really telling you</th></tr>
+    <tr><td>"We sort a million rows to group them by status"</td><td>Ask how many distinct statuses exist</td><td>A handful. Counting beats comparing by a wide margin</td></tr>
+    <tr><td>"We only ever look at the top ten"</td><td>Ask whether the other rows are read at all</td><td>A full sort for a question that never needed one. Chapter 11</td></tr>
+    <tr><td>"Sorting is fine but memory spikes during it"</td><td>Ask whether the sort needs a second copy</td><td>Merge sort honest price. Heap sort does not pay it</td></tr>
+    <tr><td>"We tried counting sort and it used gigabytes"</td><td>Ask the range of the values, not the count</td><td>The tally is sized by the range. Ids break it, ages do not</td></tr>
+    <tr><td>"Occasionally a run takes far longer than usual"</td><td>Ask what happens on the unlucky input</td><td>Lesson 7.4 worst case. Heap sort has no unlucky input</td></tr>
+    <tr><td>"Sorting by digit gave the wrong answer"</td><td>Ask whether each pass preserves the previous order</td><td>Radix collapses without stability. Lesson 7.6 explains why</td></tr>
+  </table>
+  <div class="tbl-cap">Rows one and four are the same question with opposite answers, and the difference is never how much data there is. It is how many different things a value is allowed to be, which is a question almost nobody asks before choosing a sort.</div></div>
+
+  <h2><span class="ix">9</span> Solve It Live</h2>
+  <div class="sub">Twenty minutes to group a million rows into four piles.</div>
+  <div class="callout">
+    <div class="ch">The problem, as it arrives</div>
+    <p>"Our reporting job sorts about a million order rows by status so that the report can show them grouped: pending, paid, shipped, cancelled. The sort takes about twenty minutes and it is the slowest part of the night. Somebody suggested moving it to a bigger machine. There are only those four statuses and there have only ever been four."</p>
+  </div>
+
+  <div class="viz" data-viz='{"type":"swim","title":"A million rows, four possible answers","lanes":[{"label":"The team"},{"label":"You"},{"label":"The job"}],"steps":[{"id":"a1","lane":0,"col":0,"kind":"gold","label":"20 minutes to sort a million rows by status"},{"id":"b1","lane":1,"col":1,"kind":"box","label":"Ask: how many different values can status be?"},{"id":"c1","lane":2,"col":1,"kind":"accent","label":"Four. It has always been four"},{"id":"b2","lane":1,"col":2,"kind":"accent","label":"Then nothing needs comparing. Count into four buckets"},{"id":"c2","lane":2,"col":2,"kind":"bad","label":"The sort does about 20,000,000 comparisons"},{"id":"b3","lane":1,"col":3,"kind":"accent","label":"Counting is one pass to tally, one to write out"},{"id":"b4","lane":1,"col":4,"kind":"accent","label":"About 2 million operations, on the same machine"}],"edges":[{"from":"a1","to":"b1"},{"from":"b1","to":"c1"},{"from":"c1","to":"b2"},{"from":"b2","to":"c2"},{"from":"c2","to":"b3"},{"from":"b3","to":"b4"}],"caption":"The report never needed an order at all. It needed four groups, and asking a general sort to produce four groups is asking it to establish a million relationships when only four answers were ever possible."}'></div>
+
+  <p><strong>The report does not want a sorted list. It wants four piles.</strong> A general sort has no idea that status can only be one of four things, so it does the full twenty million comparisons establishing an order between rows whose relative position nobody will ever look at. Counting is two passes: tally the four, then write them out.</p>
+
+  <div class="callout good">
+    <div class="ch">Why this reasoning wins</div>
+    <p>It asked about the values rather than about the volume. <strong>How many different things can this field be?</strong> When the answer is a handful, comparing is doing enormously more work than the question requires, and no machine you buy will change that. The bigger machine would have made the wrong method faster, which is the most expensive kind of fix because it works just well enough to stop anybody asking again.</p>
+  </div>
+
+  <h2><span class="ix">10</span> Your Turn</h2>
+  <div class="callout accent">
+    <div class="ch">Your rep, one deck and one tally</div>
+    <p>Take a full deck and deal out thirty cards. <strong>Round one:</strong> sort them by suit using any comparison method you like, and count your comparisons. <strong>Round two:</strong> reshuffle, then deal each card straight into one of four piles by suit, and count how many comparisons you made. The answer should be zero, because you never held two cards against each other. <strong>Round three:</strong> now try the same trick sorting them by their exact value including suit, so that every card is distinct, and notice how many piles you would need. That number is the condition, and it is the whole lesson.</p>
+  </div>
+
+  <h2><span class="ix gold">✓</span> Check Yourself</h2>
+
+  <div class="quiz" data-correct="1">
+    <div class="q">A job sorts a million rows by a status field that can only ever hold four values, and it takes twenty minutes. What is the fix?</div>
+    <div class="opt" data-i="0">A faster machine, since twenty million comparisons is a lot of work</div>
+    <div class="opt" data-i="1">Stop comparing. Tally the four values in one pass and write the groups out in a second</div>
+    <div class="opt" data-i="2">Sort a sample and use it to estimate the grouping</div>
+    <div class="qexp">A general sort must establish an order between rows because it is not allowed to know anything about the values. When a field has four possible values, asking each row what it is places it immediately, and no row is ever held up against another. That is two passes instead of about twenty million comparisons, and the bigger machine would only have made the wrong method faster.</div>
+  </div>
+
+  <div class="quiz" data-correct="2">
+    <div class="q">Counting sort is spectacular on a million ages and disastrous on a million customer ids. Why?</div>
+    <div class="opt" data-i="0">Because ids are longer, so each comparison takes more time</div>
+    <div class="opt" data-i="1">Because ages are already nearly in order and ids are not</div>
+    <div class="opt" data-i="2">Because the tally is sized by the range of possible values, not by how many items there are</div>
+    <div class="qexp">A hundred possible ages needs a hundred tally slots for any number of people. Ids running up to a billion need a billion slots to hold the same million values, which is fifty times worse than simply comparing. The method never looks at how much data there is; it looks at how many different things a value is allowed to be, and radix sort exists precisely to keep that number small by taking one digit at a time.</div>
+  </div>
+
+  <div class="callout good">
+    <div class="ch">Next</div>
+    <p>You now have every sorting idea in the chapter, and one of them quietly appeared twice: the three 1s in the block 3 board left in the order they arrived, and radix sort collapses without it. <strong>Next: why that property is a business requirement rather than a footnote</strong>, and why the sort your language actually ships is none of these methods but a mixture of three of them.</p>
+  </div>
+__NAV__
+</div>`
