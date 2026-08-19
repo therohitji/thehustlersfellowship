@@ -74,7 +74,10 @@ dsa-concepts/
 │   ├── ch03.js                # Arrays: The Row of Boxes
 │   ├── ch04.js                # Linked Lists: The Chain
 │   ├── ch05.js                # Stacks and Queues: Who Gets Served First
-│   └── ch06.js                # Searching (the reference chapter)
+│   ├── ch06.js                # Searching (the reference chapter)
+│   ├── ch07.js                # Sorting: Putting Things In Order
+│   ├── ch08.js                # Hashing: The Address You Compute
+│   └── ch09.js                # Trees: One Thing Owns Many
 ├── verify/                    # the QA harness, exit codes only
 │   ├── qa.sh                  # runs everything in order, stops at the first failure
 │   ├── check_style.py
@@ -82,6 +85,9 @@ dsa-concepts/
 │   ├── check_renderers.mjs
 │   ├── check_layout.mjs
 │   ├── check_lesson.py
+│   ├── check_contract.py      # the block and reel contract from CONSISTENCY.md
+│   ├── reel_time.py           # derives every reel runtime claim from its own acts
+│   ├── sync_docs.py           # derives CONCEPTS.md and tree.yaml status from the build
 │   └── screenshots.mjs        # optional visual check, needs Playwright
 └── dsa-concepts-master.html   # GENERATED. Never hand-edit
 ```
@@ -153,17 +159,20 @@ Two engine properties worth knowing before you author anything:
 
 ## Quality gates
 
-`bash verify/qa.sh` runs six checks in dependency order and stops at the first failure. A skip
+`bash verify/qa.sh` runs every check in dependency order and stops at the first failure. A skip
 is not a pass.
 
 | Check | Refuses to let through |
 |---|---|
-| `build.py` | bad JSON payload, unknown diagram or animation type, animation with no steps |
+| `build.py` | bad JSON payload, unknown diagram or animation type, animation with no steps, a node `kind` outside the seven, a race step whose lane count does not match its tracks, a legend row naming a state no step paints, an `order` entry that is not a real unique cell, a step asking for more slots than the board draws |
 | `check_style.py` | em-dash, `${...}`, unbalanced backticks, an apostrophe inside a payload, a lesson without `__NAV__` |
 | `check_js.sh` | a master whose script does not parse |
 | `check_renderers.mjs` | any registered renderer that breaks, including ones no lesson uses yet |
 | `check_layout.mjs` | any diagram rendering `NaN`; any two grid nodes overlapping; any animation step that throws |
-| `check_lesson.py` | wrong block count, missing animation, too few visuals or quizzes, over the word ceiling, a whiteboard lesson with fewer than six acts |
+| `check_lesson.py` | wrong block count, missing animation, too few visuals or quizzes, over the word ceiling, a meta pill whose visual count is wrong, a lesson missing its chapter through line, a whiteboard lesson with fewer than six acts |
+| `check_contract.py` | a block carrying the wrong kind of visual, a signal table outside 6 to 8 rows, a reel outside its act, step or part budget, a Part 3 act naming no Part 2 act |
+| `reel_time.py` | a reel caption or lesson pill claiming a runtime its own acts do not add up to |
+| `sync_docs.py` | CONCEPTS.md or tree.yaml disagreeing with what is actually built |
 
 `check_layout.mjs` renders every diagram in Node against a fake DOM and walks every animation
 frame. That is how **"nothing overlaps" is a build failure rather than an opinion**.
