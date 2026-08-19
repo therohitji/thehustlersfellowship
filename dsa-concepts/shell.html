@@ -1241,6 +1241,15 @@ ANIM['tree-walk'] = function(spec){
     const a = pos[e.from], b = pos[e.to];
     if (!a || !b) return;
     s += '<line x1="' + a.cx + '" y1="' + (a.cy + r) + '" x2="' + b.cx + '" y2="' + (b.cy - r) + '" stroke="' + CLR.line + '" stroke-width="1.6"/>';
+    /* a trie is unreadable without the character on the branch, so e.w rides the edge. It sits
+       on the OUTSIDE of the branch rather than on the line, because a tree edge is close to
+       vertical and a label centred on it would be struck through by its own edge. */
+    if (e.w != null){
+      const mx = a.cx + (b.cx - a.cx) * 0.45;
+      const my = (a.cy + r) + ((b.cy - r) - (a.cy + r)) * 0.45;
+      const off = b.cx === a.cx ? -12 : (b.cx > a.cx ? 12 : -12);
+      s += labelAt(mx + off, my, e.w, 11, CLR.gold6, 'middle', 700);
+    }
   });
   nodes.forEach(function(n){
     const p = pos[n.id];
