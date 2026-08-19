@@ -295,7 +295,7 @@ __NAV__
   <h1 class="les-title">Growing an Array: The Doubling Trick</h1>
   <div class="les-meta">
     <span class="pill">foundational</span><span class="pill">~12 min</span>
-    <span class="pill gold">no code needed</span><span class="pill">10 visuals</span>
+    <span class="pill gold">no code needed</span><span class="pill">11 visuals</span>
   </div>
 
   <p class="motto">A row does not grow. It is quietly replaced by a longer one wearing its name, and you pay for the move in boxes.</p>
@@ -343,6 +343,8 @@ __NAV__
     <tr><td>Grow by half when full</td><td>about 2,500</td><td>The same deal, with less waste and slightly more copying</td></tr>
   </table>
   <div class="tbl-cap">Rows two and three are the same shape at two sizes. A bigger chunk divides the bill by the chunk and leaves the line exactly where it stood, which is why raising it looks like a fix for about a month.</div></div>
+
+  <div class="viz" data-viz='{"type":"dtree","title":"Which growth rule are you allowed to use","maxChars":20,"gx":50,"nodes":[{"id":"q1","label":"Do you know the final count before the first item arrives?","col":0,"row":3,"kind":"gold","shape":"diamond"},{"id":"exact","label":"Claim it once at the exact size. 1,000 writes and no copy at all","col":1,"row":1,"kind":"accent"},{"id":"skip","label":"Then none of the three bills is ever sent to you","col":2,"row":0,"kind":"muted"},{"id":"q2","label":"Can you hold up to twice the boxes your data needs?","col":1,"row":4,"kind":"gold","shape":"diamond"},{"id":"dbl","label":"Double when full. 2,023 writes, and a flat cost per append","col":2,"row":2,"kind":"accent"},{"id":"q3","label":"Can you spare half again the boxes your data needs?","col":2,"row":5,"kind":"gold","shape":"diamond"},{"id":"half","label":"Grow by half when full. About 2,500 writes, less waste held","col":3,"row":4,"kind":"accent"},{"id":"fixed","label":"A fixed chunk. The bill divided, the line untouched","col":3,"row":6,"kind":"bad"}],"edges":[{"from":"q1","to":"exact","label":"yes","style":"green"},{"from":"q1","to":"q2","label":"no"},{"from":"exact","to":"skip","label":"and stop here"},{"from":"q2","to":"dbl","label":"yes","style":"green"},{"from":"q2","to":"q3","label":"no"},{"from":"q3","to":"half","label":"yes","style":"green"},{"from":"q3","to":"fixed","label":"no"}],"caption":"Every count is boxes written for a thousand items. The first question is the only one that removes the bill instead of shrinking it, so ask it before you argue about any growth rule at all. Doubling and growing by half are the same trade at two prices: one holds more spare boxes and copies less, the other holds less and copies more. The red node is where a fixed chunk lands whatever chunk you pick, because dividing a bill by a hundred leaves it on the line it was already on."}'></div>
 
   <h2><span class="ix">6</span> What It Costs, In Plain English</h2>
   <div class="sub">Count it before you name it.</div>
