@@ -167,7 +167,7 @@ __NAV__
   <h1 class="les-title">The Seven Shapes of Growth You Will Ever Meet</h1>
   <div class="les-meta">
     <span class="pill">foundational</span><span class="pill">~13 min</span>
-    <span class="pill gold">no code needed</span><span class="pill">9 visuals</span>
+    <span class="pill gold">no code needed</span><span class="pill">10 visuals</span>
   </div>
 
   <p class="motto">Nobody in this field is juggling a hundred growth shapes. There are seven, and on most days there are five.</p>
@@ -218,6 +218,8 @@ __NAV__
     <tr><td>Every possible seating order</td><td>every possible arrangement</td><td>ask instead: one more guest multiplies it</td><td>Chapter 15</td></tr>
   </table>
   <div class="tbl-cap">Row five decides most arguments. Four times per doubling is not a disaster, it is the ordinary result of doing something perfectly sensible to every item, for every item. It ships constantly, it reviews cleanly, and it is invisible until the data arrives.</div></div>
+
+  <div class="viz" data-viz='{"type":"dtree","title":"Which of the seven are you actually on","maxChars":20,"gx":50,"nodes":[{"id":"q1","label":"Double the data. What happened to the count?","col":0,"row":3,"kind":"gold","shape":"diamond"},{"id":"q2","label":"Did the guest list get into the count at all?","col":1,"row":1,"kind":"gold","shape":"diamond"},{"id":"c","label":"Unchanged. Reaching a thing you can already name","col":2,"row":0,"kind":"accent"},{"id":"lg","label":"Up by one. Halving a sorted pile. Chapter 6","col":2,"row":2,"kind":"accent"},{"id":"q3","label":"Exactly double, or double plus a bit?","col":1,"row":3,"kind":"gold","shape":"diamond"},{"id":"ln","label":"One touch per item. A full scan","col":2,"row":3,"kind":"box"},{"id":"nl","label":"One full pass per doubling. Sorting. Chapter 7","col":2,"row":5,"kind":"box"},{"id":"q4","label":"Is that still a number you can plan around?","col":0,"row":6,"kind":"gold","shape":"diamond"},{"id":"sq","label":"Four times. Every item against every item","col":1,"row":5,"kind":"warn"},{"id":"q5","label":"Every possible group, or every possible order?","col":1,"row":7,"kind":"gold","shape":"diamond"},{"id":"sub","label":"One more guest doubles it. Chapter 15","col":2,"row":7,"kind":"bad"},{"id":"perm","label":"One more guest multiplies it. Chapter 15","col":2,"row":9,"kind":"bad"}],"edges":[{"from":"q1","to":"q2","label":"barely moved","style":"green"},{"from":"q2","to":"c","label":"no","style":"green"},{"from":"q2","to":"lg","label":"one more look","style":"green"},{"from":"q1","to":"q3","label":"about doubled"},{"from":"q3","to":"ln","label":"exactly double"},{"from":"q3","to":"nl","label":"plus a bit"},{"from":"q1","to":"q4","label":"quadrupled or worse"},{"from":"q4","to":"sq","label":"yes"},{"from":"q4","to":"q5","label":"no, so ask what one more costs"},{"from":"q5","to":"sub","label":"every group"},{"from":"q5","to":"perm","label":"every order"}],"caption":"Each question is only fair once the one before it has been answered, which is why the probe changes inside the steepest branch and nowhere else. Four times per doubling is a real number you can plan around, and it is the ordinary result of doing something perfectly sensible to every item, for every item. Past that, doubling stops being a useful question at all, and the only one worth asking is what a single extra guest costs. The green branch is the only place where the count barely notices the pile growing."}'></div>
 
   <h2><span class="ix">6</span> What It Costs, In Plain English</h2>
   <div class="sub">Ten doublings, on your fingers.</div>
@@ -313,7 +315,7 @@ __NAV__
   <h1 class="les-title">Best, Average and Worst: Which One Actually Bites You</h1>
   <div class="les-meta">
     <span class="pill">foundational</span><span class="pill">~12 min</span>
-    <span class="pill gold">no code needed</span><span class="pill">9 visuals</span>
+    <span class="pill gold">no code needed</span><span class="pill">10 visuals</span>
   </div>
 
   <p class="motto">The worst case is not bad luck. It has a cause, and the cause is almost always your own success.</p>
@@ -365,6 +367,8 @@ __NAV__
     <div class="ch">Amortised, in one paragraph</div>
     <p>A growing row of boxes doubles its size whenever it fills up, and doubling means copying everything across. That copy is expensive and it is real. But look at when it happens: after the copy, the row has exactly as much free space as it just used, so <strong>the next copy is paid for by twice as many cheap appends as the last one was.</strong> Add a thousand items and the copies total 1,023 moves, which alongside the thousand writes themselves is about two moves per append. Cheap on average, forever, and one unlucky append really does pay for all of it.</p>
   </div>
+
+  <div class="viz" data-viz='{"type":"dtree","title":"Which reading are you allowed to quote","maxChars":20,"gx":50,"nodes":[{"id":"q1","label":"Is this a promise? A timeout, a guarantee, a plan","col":0,"row":2,"kind":"gold","shape":"diamond"},{"id":"w","label":"Worst case. The cruellest input allowed, and it has a cause","col":1,"row":0,"kind":"accent"},{"id":"q2","label":"Does one rare operation rebuild or resize for all the others?","col":1,"row":3,"kind":"gold","shape":"diamond"},{"id":"am","label":"Amortised, across the run. Never about one request","col":2,"row":1,"kind":"accent"},{"id":"q3","label":"Do you need what most real inputs cost?","col":2,"row":4,"kind":"gold","shape":"diamond"},{"id":"av","label":"Average case. Capacity, cost per request, sizing","col":3,"row":3,"kind":"accent"},{"id":"bs","label":"Best case. It says a shortcut exists, and nothing else","col":3,"row":5,"kind":"muted"}],"edges":[{"from":"q1","to":"w","label":"yes","style":"green"},{"from":"q1","to":"q2","label":"no"},{"from":"q2","to":"am","label":"yes","style":"green"},{"from":"q2","to":"q3","label":"no"},{"from":"q3","to":"av","label":"yes","style":"green"},{"from":"q3","to":"bs","label":"no"}],"caption":"The order of these questions is the whole diagram. Ask about the rebuild before you ask what most inputs cost, because a row that copies everything on about one append in a hundred is cheap across the run and expensive on exactly one request, and only one of those two facts belongs inside a timeout. Best case is the last stop rather than a rejected branch. It is an honest measurement, and it turns into a lie only when it travels without the word best in front of it."}'></div>
 
   <h2><span class="ix">6</span> What It Costs, In Plain English</h2>
   <div class="sub">The three counts, at twelve names and at a million.</div>

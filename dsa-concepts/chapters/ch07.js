@@ -10,7 +10,7 @@
   <h1 class="les-title">Why Sort At All: The Question Searching Asked</h1>
   <div class="les-meta">
     <span class="pill">foundational</span><span class="pill">~13 min</span>
-    <span class="pill gold">no code needed</span><span class="pill">9 visuals</span>
+    <span class="pill gold">no code needed</span><span class="pill">11 visuals</span>
   </div>
 
   <p class="motto">Sorting is never the goal. It is the invoice six chapters have been quoting.</p>
@@ -45,6 +45,8 @@
 
   <div class="board" data-anim='{"type":"array-scan","title":"Six numbers, and what a sort actually does to them","speed":1500,"big":true,"data":[7,2,9,4,1,5],"countLabel":" moves","pointerLabels":{"i":"placing"},"legend":[["being compared","look"],["in its final place","found"],["still unsorted","seen"]],"steps":[{"order":[0,1,2,3,4,5],"look":[0,1],"count":0,"say":"Six numbers in the order they arrived. <b>Nothing here is wrong yet</b>, because arrival order is a perfectly good order until somebody asks a question it cannot answer."},{"order":[4,0,1,2,3,5],"look":[4],"found":[4],"count":1,"say":"The 1 belongs at the front, so it travels there and everything it passed slides right. <b>Watch the box, not the position:</b> one box is one value for this whole animation."},{"order":[4,1,0,2,3,5],"found":[4,1],"look":[1],"count":2,"say":"The 2 lands next to it. Two values are now in their final places and four are still homeless."},{"order":[4,1,3,0,2,5],"found":[4,1,3],"seen":[0,2,5],"count":3,"say":"The 4 moves in front of the 7 and the 9. <b>Three moves so far, and the position labels underneath have not moved at all</b>, because positions never move. Values do."},{"order":[4,1,3,5,0,2],"found":[4,1,3,5],"seen":[0,2],"count":4,"say":"The 5 slots in. Only the 7 and the 9 are left, and they are already in the right order relative to each other."},{"order":[4,1,3,5,0,2],"found":[4,1,3,5,0,2],"count":4,"badge":"1 2 4 5 7 9","say":"<b>Sorted, in four moves.</b> No value was created, destroyed or changed. Every single thing that happened was a comparison or a move, and the rest of this chapter is only ever arguing about how many of each."}],"caption":"This is the physical act underneath every algorithm in the chapter. The whole argument from here is how few comparisons and how few moves you can get away with, and what you have to know about the data to get away with fewer."}'></div>
 
+  <div class="viz" data-viz='{"type":"seq","title":"The only two things a sort ever says","actors":[{"label":"The sort","kind":"gold"},{"label":"Two items","kind":"accent"},{"label":"The row","kind":"muted"}],"messages":[{"from":0,"to":1,"label":"which of you two comes first","style":"gold"},{"from":1,"to":0,"label":"that one, and that is all you learn","style":"green"},{"from":0,"to":2,"label":"then put it there, and slide what it passed"},{"from":2,"to":0,"label":"done. One value sits somewhere new","style":"green"},{"from":0,"to":0,"label":"and again. There is no third message"}],"caption":"Every method in this chapter is assembled out of these two messages and nothing else. A comparison buys information and changes nothing in the row, and a move changes the row and buys no information at all. That is why the chapter only ever argues about two numbers, and why Lesson 7.2 can show two methods with identical comparison counts and five times the difference in moves."}'></div>
+
   <h2><span class="ix">5</span> The Types</h2>
   <div class="sub">Four questions one purchase makes cheap.</div>
 
@@ -56,6 +58,8 @@
     <tr><td>The ten largest</td><td>a full pass, keeping a running ten</td><td>the last ten boxes. No searching at all</td></tr>
   </table>
   <div class="tbl-cap">Only the first row is what Chapter 6 talked about. The other three are why sorting survives in systems where nobody ever runs a binary search, and rows three and four are the reason a report that was never about searching still gets faster when somebody sorts.</div></div>
+
+  <div class="viz" data-viz='{"type":"dtree","title":"Is the order worth buying, and who spends it","maxChars":20,"gx":50,"nodes":[{"id":"q1","label":"Does anything downstream read the order?","col":0,"row":2,"kind":"gold","shape":"diamond"},{"id":"none","label":"Do not buy it. An order with no reader is pure expense","col":1,"row":0,"kind":"bad"},{"id":"q2","label":"Did the data already arrive in that order, for free?","col":1,"row":3,"kind":"gold","shape":"diamond"},{"id":"free","label":"Then it is already paid for. Time order, log files, git history","col":2,"row":1,"kind":"accent"},{"id":"q3","label":"More than about twenty one searches before it changes?","col":2,"row":4,"kind":"gold","shape":"diamond"},{"id":"buy","label":"Buy it once. Searches, ranges, duplicates and the top ten all get cheap together","col":3,"row":3,"kind":"accent"},{"id":"scan","label":"Scan instead, and pay per question. Lesson 6.2 defended exactly this","col":3,"row":5,"kind":"muted"}],"edges":[{"from":"q1","to":"none","label":"no"},{"from":"q1","to":"q2","label":"yes","style":"green"},{"from":"q2","to":"free","label":"yes"},{"from":"q2","to":"q3","label":"no","style":"green"},{"from":"q3","to":"buy","label":"yes","style":"green"},{"from":"q3","to":"scan","label":"no"}],"caption":"The first question saves the most and is the one nobody asks, which is how a nightly job spends four million rows on a report that was retired last year. The second is nearly free money, because a log file and a git history arrive in time order for no reason other than that is the order things happened. Only when both come up empty does the break even matter, and the other three rows of the table above pull that number down, since ranges, duplicates and the top ten all come out of the same single purchase."}'></div>
 
   <h2><span class="ix">6</span> What It Costs, In Plain English</h2>
   <div class="sub">The itemised bill, at a million.</div>
@@ -140,7 +144,7 @@ __NAV__
   <h1 class="les-title">The Simple Three: Bubble, Selection, Insertion</h1>
   <div class="les-meta">
     <span class="pill">foundational</span><span class="pill">~13 min</span>
-    <span class="pill gold">no code needed</span><span class="pill">10 visuals</span>
+    <span class="pill gold">no code needed</span><span class="pill">11 visuals</span>
   </div>
 
   <p class="motto">There are not three simple sorts. There is one question, and three different answers about what a comparison is allowed to buy.</p>
@@ -190,6 +194,8 @@ __NAV__
   <p>And now the reason insertion sort survives into modern systems, which the first board could not show. Here it is on data that is <strong>already nearly in order</strong>: only one pair out of place.</p>
 
   <div class="board" data-anim='{"type":"array-scan","title":"Nearly sorted, and the same method costs almost nothing","speed":1500,"big":true,"data":[1,2,3,5,4,6,7,8],"countLabel":" comparisons","pointerLabels":{"i":"this card"},"legend":[["the card being placed","look"],["already in order","seen"],["moved","found"]],"steps":[{"order":[0,1,2,3,4,5,6,7],"look":[1],"seen":[0],"count":1,"say":"Pick up the 2. Compare it with the 1 to its left. <b>It is bigger, so it stays put and the search ends immediately.</b> One comparison, no move."},{"order":[0,1,2,3,4,5,6,7],"look":[3],"seen":[0,1,2],"count":3,"say":"Same for the 3 and the 5. Each one is bigger than its left neighbour, so each costs exactly one comparison and stops. <b>Three cards placed for three comparisons.</b>"},{"order":[0,1,2,4,3,5,6,7],"look":[4],"found":[4],"seen":[0,1,2],"count":5,"say":"The 4 is smaller than the 5, so it moves left one place and stops. <b>Two comparisons and one move</b>, and this is the only real work in the entire sort."},{"order":[0,1,2,4,3,5,6,7],"seen":[0,1,2,4,3],"look":[5],"count":6,"say":"The 6 is bigger than the 5. One comparison, stop."},{"order":[0,1,2,4,3,5,6,7],"found":[0,1,2,4,3,5,6,7],"count":8,"badge":"8 comparisons, 1 move","say":"<b>Eight comparisons and one move.</b> On the same eight items, bubble and selection would both spend twenty eight comparisons and would not notice the data was nearly sorted at all."}],"caption":"Eight against twenty eight, on identical data, and the method did not change. Insertion sort is the only one of the three that can stop early, because a card that is bigger than its left neighbour is already home and there is nothing left to check."}'></div>
+
+  <div class="viz" data-viz='{"type":"dtree","title":"Which of the simple three, and when none of them","maxChars":20,"gx":50,"nodes":[{"id":"q1","label":"Is the data already nearly in order?","col":0,"row":2,"kind":"gold","shape":"diamond"},{"id":"ins1","label":"Insertion sort. It stops the moment a card is bigger than its left neighbour","col":1,"row":0,"kind":"accent"},{"id":"q2","label":"Is moving one item expensive, a big record or a slow write?","col":1,"row":3,"kind":"gold","shape":"diamond"},{"id":"sel","label":"Selection sort. Never more than one move per pass, the fewest in this chapter","col":2,"row":1,"kind":"accent"},{"id":"q3","label":"Is the pile under about twenty items?","col":2,"row":4,"kind":"gold","shape":"diamond"},{"id":"ins2","label":"Insertion sort again. Below twenty the clever sorts lose to their own overhead","col":3,"row":3,"kind":"accent"},{"id":"neither","label":"None of the three. Doubling costs four times here, and Lesson 7.3 breaks that","col":3,"row":5,"kind":"muted"}],"edges":[{"from":"q1","to":"ins1","label":"yes","style":"green"},{"from":"q1","to":"q2","label":"no"},{"from":"q2","to":"sel","label":"yes","style":"green"},{"from":"q2","to":"q3","label":"no"},{"from":"q3","to":"ins2","label":"yes","style":"green"},{"from":"q3","to":"neither","label":"no"}],"caption":"Every branch here is a fact about your data or your machine, not a preference about methods, which is why the answers do not argue back. Insertion sort arrives twice from two unrelated conditions: it is the only one of the three that gets cheaper when order already exists, and it is also the one that wins under about twenty items where the clever sorts lose to their own overhead. Bubble sort appears nowhere on this diagram, and that is the finding rather than an oversight, because no question in this chapter has bubble sort as its honest answer."}'></div>
 
   <h2><span class="ix">6</span> What It Costs, In Plain English</h2>
   <div class="sub">Three costs, and only one of them moves with the data.</div>
@@ -274,7 +280,7 @@ __NAV__
   <h1 class="les-title">Merge Sort: Split, Sort, Stitch</h1>
   <div class="les-meta">
     <span class="pill">foundational</span><span class="pill">~13 min</span>
-    <span class="pill gold">no code needed</span><span class="pill">9 visuals</span>
+    <span class="pill gold">no code needed</span><span class="pill">10 visuals</span>
   </div>
 
   <p class="motto">Merge sort never sorts anything. It only ever merges two things that are already sorted, and it arranges for that to always be true.</p>
@@ -320,6 +326,8 @@ __NAV__
     <tr><td>It works on data too big to hold at once</td><td>Room for a second copy while stitching</td><td>Merging reads two things front to back, which is what a disk and a network want</td></tr>
   </table>
   <div class="tbl-cap">The middle column is the honest price and it is the same price three times: this method needs somewhere to put the merged result. That extra room is the one thing it cannot avoid, and it is exactly what Lesson 7.4 refuses to pay.</div></div>
+
+  <div class="viz" data-viz='{"type":"dtree","title":"Is merge sort the one you are allowed to use","maxChars":20,"gx":50,"nodes":[{"id":"q1","label":"Is there room anywhere for a second copy while it stitches?","col":0,"row":2,"kind":"gold","shape":"diamond"},{"id":"noroom","label":"Not this one. Lesson 7.4 works inside the row it was handed","col":1,"row":0,"kind":"muted"},{"id":"q2","label":"Is the data bigger than the memory you have?","col":1,"row":3,"kind":"gold","shape":"diamond"},{"id":"disk","label":"Merge it in runs. Front to back is the one thing a disk is good at","col":2,"row":1,"kind":"accent"},{"id":"q3","label":"Must equal rows come out in the order they arrived?","col":2,"row":4,"kind":"gold","shape":"diamond"},{"id":"stable","label":"Merge sort. It prefers the left run on a tie, and that is all stability is","col":3,"row":3,"kind":"accent"},{"id":"even","label":"An even fight with Lesson 7.4: predictable against faster in practice","col":3,"row":5,"kind":"muted"}],"edges":[{"from":"q1","to":"noroom","label":"no"},{"from":"q1","to":"q2","label":"yes","style":"green"},{"from":"q2","to":"disk","label":"yes"},{"from":"q2","to":"q3","label":"no","style":"green"},{"from":"q3","to":"stable","label":"yes","style":"green"},{"from":"q3","to":"even","label":"no"}],"caption":"Every branch is a demand this method makes rather than a taste anybody has. The room for a second copy is the one price it can never negotiate, so it is asked first, and a file larger than the memory you own is the case where paying it is obviously worth it, because merging reads each run strictly front to back. The last node is honest rather than decisive: when nothing forces the choice, this method is selling predictability and Lesson 7.4 is selling speed, and that is a real trade instead of a right answer."}'></div>
 
   <h2><span class="ix">6</span> What It Costs, In Plain English</h2>
   <div class="sub">Where Chapter 6 numbers came from.</div>
@@ -404,7 +412,7 @@ __NAV__
   <h1 class="les-title">Quick Sort: Pick a Pivot and Partition</h1>
   <div class="les-meta">
     <span class="pill">foundational</span><span class="pill">~13 min</span>
-    <span class="pill gold">no code needed</span><span class="pill">9 visuals</span>
+    <span class="pill gold">no code needed</span><span class="pill">10 visuals</span>
   </div>
 
   <p class="motto">Everything good and everything catastrophic about this method follows from one decision made before a single comparison happens.</p>
@@ -450,6 +458,8 @@ __NAV__
     <tr><td>A randomly chosen item</td><td>Nothing at all. It refuses to bet</td><td>Never systematically, though any single run can be unlucky</td></tr>
   </table>
   <div class="tbl-cap">Only the first row is genuinely dangerous, and it is the one people write when implementing this from memory. The bottom two rows are why the method survives in production despite having a worst case as bad as bubble sort.</div></div>
+
+  <div class="viz" data-viz='{"type":"dtree","title":"Which pivot are you allowed to choose","maxChars":20,"gx":50,"nodes":[{"id":"q1","label":"Can anybody outside choose what order the data arrives in?","col":0,"row":2,"kind":"gold","shape":"diamond"},{"id":"rand","label":"Choose at random. It is the only choice that refuses to bet on anything","col":1,"row":0,"kind":"accent"},{"id":"q2","label":"Could the input ever arrive sorted, reversed or grouped?","col":1,"row":3,"kind":"gold","shape":"diamond"},{"id":"med","label":"The middle of first, middle and last. Three samples, and this is what most real sorts do","col":2,"row":1,"kind":"accent"},{"id":"mid","label":"The middle item. The same bet, moved, and ordinary data will not beat it","col":2,"row":4,"kind":"accent"},{"id":"last","label":"The first or last item, which hangs on any file somebody already sorted","col":3,"row":4,"kind":"bad"}],"edges":[{"from":"q1","to":"rand","label":"yes","style":"green"},{"from":"q1","to":"q2","label":"no"},{"from":"q2","to":"med","label":"yes","style":"green"},{"from":"q2","to":"mid","label":"no"},{"from":"mid","to":"last","label":"but never"}],"caption":"The order of the two questions is the whole diagram. A crafted input can defeat any fixed rule however clever it is, so when an outsider decides what arrives, the only safe move is to stop having a rule at all. Accidental order is a much softer problem and three samples handle it, which is why most real sorts take three. The red node is not a branch anybody chooses, it is what people write from memory, and this lesson watched it turn twenty layers into a million."}'></div>
 
   <h2><span class="ix">6</span> What It Costs, In Plain English</h2>
   <div class="sub">The same eight numbers, and a thirty six times difference at scale.</div>
@@ -534,7 +544,7 @@ __NAV__
   <h1 class="les-title">Heap Sort, Counting Sort and Radix Sort</h1>
   <div class="les-meta">
     <span class="pill">foundational</span><span class="pill">~13 min</span>
-    <span class="pill gold">no code needed</span><span class="pill">9 visuals</span>
+    <span class="pill gold">no code needed</span><span class="pill">10 visuals</span>
   </div>
 
   <p class="motto">Every sort so far asked which of two things comes first. There is a proven floor on what that question can buy, and the only way under it is to stop asking it.</p>
@@ -582,6 +592,8 @@ __NAV__
   <div class="tbl-cap">Radix is the clever one and it is worth seeing why. Sorting a million nine-digit numbers by counting would need a billion tallies. Sorting them one digit at a time needs ten tallies, six or nine times over, and it only works because each pass preserves the order the previous pass established, which is exactly the stability the board above got for free.</div></div>
 
   <p>And heap sort deserves its own sentence, because it is the one people skip. <strong>It repeatedly grabs the largest remaining item</strong>, using a shape that makes finding the largest cheap. That shape is a heap, and Chapter 11, Heaps and Priority Queues, builds it properly. It is also exactly the shape Lesson 5.3 said priority needed and could not have.</p>
+
+  <div class="viz" data-viz='{"type":"dtree","title":"Which of the three, and what each demands of your values","maxChars":20,"gx":50,"nodes":[{"id":"q1","label":"Do the values come from a small known set?","col":0,"row":2,"kind":"gold","shape":"diamond"},{"id":"count","label":"Counting sort. One pass to tally, one to write, and nothing compared","col":1,"row":0,"kind":"accent"},{"id":"q2","label":"Can one value be chopped into digits?","col":1,"row":3,"kind":"gold","shape":"diamond"},{"id":"radix","label":"Radix sort. Ten buckets, one pass per digit, and every pass must be stable","col":2,"row":1,"kind":"accent"},{"id":"q3","label":"Is memory tight, or must no input ever be unlucky?","col":2,"row":4,"kind":"gold","shape":"diamond"},{"id":"heap","label":"Heap sort. It reaches the floor with no extra room and no bad case","col":3,"row":3,"kind":"accent"},{"id":"back","label":"Back to Lesson 7.3 and Lesson 7.4. The floor applies, so pay it","col":3,"row":5,"kind":"muted"}],"edges":[{"from":"q1","to":"count","label":"yes","style":"green"},{"from":"q1","to":"q2","label":"no"},{"from":"q2","to":"radix","label":"yes","style":"green"},{"from":"q2","to":"q3","label":"no"},{"from":"q3","to":"heap","label":"yes","style":"green"},{"from":"q3","to":"back","label":"no"}],"caption":"Both of the first two questions are about what a value is allowed to be, never about how many rows there are, and that reversal is the whole lesson. A million ages need a hundred tally slots and a million ids need a billion, so counting is asked first and radix catches exactly the case where counting collapses, by keeping the set of possible answers down to ten digits at a time. Heap sort sits at the end because it demands nothing whatsoever about your data, which makes it the answer when there is no fact left to exploit. It is also not stable, and Lesson 7.6 turns that into a business requirement."}'></div>
 
   <h2><span class="ix">6</span> What It Costs, In Plain English</h2>
   <div class="sub">A million items, and when the condition pays.</div>
@@ -663,7 +675,7 @@ __NAV__
   <h1 class="les-title">Stability, In-Place, and Why Real Systems Use Hybrids</h1>
   <div class="les-meta">
     <span class="pill">foundational</span><span class="pill">~13 min</span>
-    <span class="pill gold">no code needed</span><span class="pill">9 visuals</span>
+    <span class="pill gold">no code needed</span><span class="pill">10 visuals</span>
   </div>
 
   <p class="motto">Two sorts can both be correct, produce different answers, and only one of them keeps the promise your product made.</p>
@@ -711,6 +723,8 @@ __NAV__
   <div class="tbl-cap">Read down the middle two columns and the problem of this chapter appears: no single row is stable, in place, and free of a worst case. That is not a gap in anybody knowledge. It is a genuine trade, and it is why the next section exists.</div></div>
 
   <p>Read that table again and the whole chapter turns into one uncomfortable fact. <strong>Nothing is stable, in place, and safe at the same time.</strong> So real systems stopped choosing.</p>
+
+  <div class="viz" data-viz='{"type":"dtree","title":"Which method survives your two promises","maxChars":20,"gx":50,"nodes":[{"id":"q1","label":"Must equal rows keep the order they arrived in?","col":0,"row":2,"kind":"gold","shape":"diamond"},{"id":"q2","label":"Is there room for a second copy?","col":1,"row":0,"kind":"gold","shape":"diamond"},{"id":"q3","label":"Must the worst case be bounded, whatever the input?","col":1,"row":4,"kind":"gold","shape":"diamond"},{"id":"merge","label":"Merge sort. Stable and predictable, and it pays in memory","col":2,"row":-1,"kind":"accent"},{"id":"ins","label":"Insertion sort, and only while the pile stays small. Nothing else is both","col":2,"row":1,"kind":"muted"},{"id":"heap","label":"Heap sort. In place, no bad case, and not stable","col":2,"row":3,"kind":"accent"},{"id":"quick","label":"Quick sort with a guard. Usually the fastest in practice, in place, and Lesson 7.4 says what to watch","col":2,"row":5,"kind":"accent"}],"edges":[{"from":"q1","to":"q2","label":"yes"},{"from":"q1","to":"q3","label":"no"},{"from":"q2","to":"merge","label":"yes","style":"green"},{"from":"q2","to":"ins","label":"no"},{"from":"q3","to":"heap","label":"yes","style":"green"},{"from":"q3","to":"quick","label":"no"}],"caption":"No row of the table above has all three properties, which is why this diagram makes you pay both promises before speed is ever mentioned. The upper branch is the expensive one: keeping ties in their arrival order costs you either memory or a method that only works while the pile stays small, and counting sort from Lesson 7.5 is the one escape, if your values happen to come from a small known set. The lower branch is why a real language sort is a mixture rather than a choice, because it takes those last two destinations and switches between them while it is running."}'></div>
 
   <h2><span class="ix">6</span> What It Costs, In Plain English</h2>
   <div class="sub">The sort your language ships is a mixture, and here is why.</div>
@@ -792,7 +806,7 @@ __NAV__
   <h1 class="les-title">How Sorting Problems Show Up, and Six Systems Torn Down</h1>
   <div class="les-meta">
     <span class="pill">foundational</span><span class="pill">~13 min</span>
-    <span class="pill gold">no code needed</span><span class="pill">9 visuals</span>
+    <span class="pill gold">no code needed</span><span class="pill">10 visuals</span>
   </div>
 
   <p class="motto">Nobody has ever asked which sorting algorithm to use. They ask for a report, and the sort is a decision somebody made on their behalf years ago.</p>
@@ -839,6 +853,8 @@ __NAV__
     <tr><td>A nightly export nobody reads in order</td><td>Nothing</td><td>Delete the sort. Lesson 7.1</td></tr>
   </table>
   <div class="tbl-cap">Only the first row is a sorting decision in the sense this chapter has been teaching. Two of the six needed no sort at all, two needed something that is not a sort, and one needed an order that was already free. That ratio is roughly what you will find in a real system.</div></div>
+
+  <div class="viz" data-viz='{"type":"dtree","title":"Which of the six is the request in front of you","maxChars":20,"gx":50,"nodes":[{"id":"q1","label":"Does anything downstream read the order?","col":0,"row":3,"kind":"gold","shape":"diamond"},{"id":"del","label":"Delete it. The nightly export bought an order nobody read. Lesson 7.1","col":1,"row":1,"kind":"bad"},{"id":"q2","label":"Must the order survive constant writes?","col":1,"row":4,"kind":"gold","shape":"diamond"},{"id":"idx","label":"Never sort it. Keep the order as a shape, paid per write. Lesson 6.5","col":2,"row":2,"kind":"accent"},{"id":"q3","label":"Is the whole thing really needed in order?","col":2,"row":5,"kind":"gold","shape":"diamond"},{"id":"few","label":"Keep only the few you show, and never order the rest. Chapter 11","col":3,"row":3,"kind":"accent"},{"id":"cnt","label":"Count into groups. Four statuses need no comparison. Lesson 7.5","col":3,"row":5,"kind":"accent"},{"id":"q4","label":"Do the pieces already arrive in order?","col":3,"row":7,"kind":"gold","shape":"diamond"},{"id":"stitch","label":"Stitch the runs. Twelve servers already emit time order. Lesson 7.3","col":4,"row":6,"kind":"accent"},{"id":"sortit","label":"Now sort it, and let Lesson 7.6 decide which one","col":4,"row":8,"kind":"accent"}],"edges":[{"from":"q1","to":"del","label":"no"},{"from":"q1","to":"q2","label":"yes","style":"green"},{"from":"q2","to":"idx","label":"yes"},{"from":"q2","to":"q3","label":"no","style":"green"},{"from":"q3","to":"few","label":"only the top few"},{"from":"q3","to":"cnt","label":"only a few piles"},{"from":"q3","to":"q4","label":"yes","style":"green"},{"from":"q4","to":"stitch","label":"yes"},{"from":"q4","to":"sortit","label":"no","style":"green"}],"caption":"The green path is the rare one, and its last destination is the only sorting decision in the sense this chapter has been teaching, though it is the one every system reaches for first. Of the six in the table above, two needed no sort at all, two needed something that is not a sort, and one needed an order that was already paid for. Ask the questions in this order and most requests leave the diagram before any method is chosen, which is why the skill worth having is these four questions rather than the seven algorithms."}'></div>
 
   <h2><span class="ix">6</span> What It Costs, In Plain English</h2>
   <div class="sub">Five ways to get an order, and what each one charges.</div>
