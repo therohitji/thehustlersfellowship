@@ -172,6 +172,44 @@ for (const f of readdirSync(path.join(root, 'chapters')).filter(f => /^ch\d+\.js
 const unused = [...Object.keys(VIZ), ...Object.keys(ANIM)].filter(t => !declared.has(t));
 if (unused.length) console.log('\n  registered but not yet used by any lesson: ' + unused.join(', '));
 
+/* ---- state contract ----------------------------------------------------------------
+   A renderer that paints cells must handle the whole palette, not the part its first lesson
+   happened to need. When one hand-rolls a partial chain it silently drops whatever it forgot,
+   and the payload still parses, still lays out, still passes every other check. `bad` was inert
+   in graph-walk, tree-walk and reveal for four chapters: fifteen authored frames asked for red
+   and rendered plain grey. A dropped state is not an error, it is a colour nobody set.
+
+   So: a renderer either delegates to stateOf / stateOfId, or assigns all five itself. Anything
+   in between is the bug. grid legitimately hand-rolls, because it addresses cells as row and
+   column pairs, and it assigns all five. */
+const STATES = ['bad', 'found', 'look', 'seen', 'dead'];
+const body = src.slice(0, cut).replace(/function stateOfI?d?\(step, [ai]\)\{[\s\S]*?\n\}/g, '');
+for (const m of body.matchAll(/(?:ANIM|VIZ)\['([a-z-]+)'\]\s*=\s*function[\s\S]*?(?=\n(?:ANIM|VIZ)\[|$)/g)){
+  const assigned = new Set([...m[0].matchAll(/st\s*=\s*'(bad|found|look|seen|dead)'/g)].map(x => x[1]));
+  if (!assigned.size) continue;
+  const missing = STATES.filter(st => !assigned.has(st));
+  if (missing.length) problems.push(`renderer "${m[1]}" assigns states but never paints ${missing.join(', ')} `
+    + `- delegate to stateOf/stateOfId or handle all five`);
+}
+
+/* a step key the engine never reads is the same failure wearing a different hat: it parses,
+   it renders, and the frame quietly means nothing. Derived from the engine rather than an
+   allowlist, so it stays true as renderers gain options. */
+const readKeys = new Set([...src.slice(0, cut).matchAll(/step\.([a-zA-Z]+)/g)].map(m => m[1]));
+const unknown = new Map();
+for (const f of readdirSync(path.join(root, 'chapters')).filter(f => /^ch\d+\.js$/.test(f))){
+  const txt = readFileSync(path.join(root, 'chapters', f), 'utf8');
+  for (const m of txt.matchAll(/data-(?:anim|reel)='([^']*)'/g)){
+    let o; try { o = JSON.parse(m[1]); } catch { continue; }
+    for (const a of (Array.isArray(o.acts) ? o.acts : [o])){
+      for (const st of (a.steps || [])) for (const k of Object.keys(st)){
+        if (!readKeys.has(k)) unknown.set(`${k} (${a.type || o.type})`, f);
+      }
+    }
+  }
+}
+for (const [k, f] of unknown) problems.push(`step key "${k}" in ${f} is never read by the engine`);
+
 for (const w of warnings) problems.push('overlap warning: ' + w);
 if (problems.length){
   console.error(`\nFAIL: ${problems.length} renderer problem(s)`);

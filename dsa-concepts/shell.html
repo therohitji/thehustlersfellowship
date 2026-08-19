@@ -1049,6 +1049,16 @@ const ST = {
   seen:  {fill:CLR.g050,  stroke:CLR.g500,  text:CLR.g700,  op:1},
   bad:   {fill:CLR.bad0,   stroke:CLR.bad,   text:CLR.bad,   op:1}
 };
+/* the id-keyed twin of stateOf, for renderers whose cells are named rather than indexed.
+   same precedence, minus the range window, which only means anything on a row. */
+function stateOfId(step, id){
+  if ((step.bad   || []).indexOf(id) > -1) return 'bad';
+  if ((step.found || []).indexOf(id) > -1) return 'found';
+  if ((step.look  || []).indexOf(id) > -1) return 'look';
+  if ((step.seen  || []).indexOf(id) > -1) return 'seen';
+  if ((step.dead  || []).indexOf(id) > -1) return 'dead';
+  return 'idle';
+}
 function stateOf(step, i){
   if ((step.bad   || []).indexOf(i) > -1) return 'bad';
   if ((step.found || []).indexOf(i) > -1) return 'found';
@@ -1243,12 +1253,7 @@ ANIM['tree-walk'] = function(spec){
     apply: function(root, step){
       root.querySelectorAll('.cell').forEach(function(g){
         const id = g.dataset.i;
-        let st = 'idle';
-        if ((step.found || []).indexOf(id) > -1) st = 'found';
-        else if ((step.look || []).indexOf(id) > -1) st = 'look';
-        else if ((step.seen || []).indexOf(id) > -1) st = 'seen';
-        else if ((step.dead || []).indexOf(id) > -1) st = 'dead';
-        paintCell(g, st);
+        paintCell(g, stateOfId(step, id));
       });
     }
   };
@@ -1293,11 +1298,7 @@ ANIM['graph-walk'] = function(spec){
     apply: function(root, step){
       root.querySelectorAll('.cell').forEach(function(g){
         const id = g.dataset.i;
-        let st = 'idle';
-        if ((step.found || []).indexOf(id) > -1) st = 'found';
-        else if ((step.look || []).indexOf(id) > -1) st = 'look';
-        else if ((step.seen || []).indexOf(id) > -1) st = 'seen';
-        paintCell(g, st);
+        paintCell(g, stateOfId(step, id));
       });
       root.querySelectorAll('.ge').forEach(function(l){
         const live = (step.edges || []).indexOf(l.dataset.e) > -1;
@@ -1459,12 +1460,7 @@ ANIM['reveal'] = function(spec){
       root.querySelectorAll('.cell').forEach(function(g){
         const id = g.dataset.i;
         if (show.indexOf(id) < 0){ g.setAttribute('opacity', '0'); return; }
-        let st = 'idle';
-        if ((step.found || []).indexOf(id) > -1) st = 'found';
-        else if ((step.look || []).indexOf(id) > -1) st = 'look';
-        else if ((step.seen || []).indexOf(id) > -1) st = 'seen';
-        else if ((step.dead || []).indexOf(id) > -1) st = 'dead';
-        paintCell(g, st);
+        paintCell(g, stateOfId(step, id));
       });
       root.querySelectorAll('.ge').forEach(function(g){
         const ends = String(g.dataset.e).split('-');

@@ -273,6 +273,13 @@ grid based, which is why nothing overlaps. Two things you must respect:
 | `curve` | cost lines drawing themselves, with a data-size badge |
 | `reveal` | **any grid diagram, drawn into existence one node at a time.** Wrap a `viz` spec and give each step a `show` list. Use this whenever a diagram is the argument. |
 
+**Every cell-painting renderer honours the same five states**, in the same precedence:
+`bad`, then `found`, then `look`, then `seen`, then `dead`. Row renderers add the `range`
+window underneath, which paints anything outside it as `dead`; `found` and `seen` survive a
+range, which is what lets one queue frame show served, waiting and not-yet-arrived at once.
+Renderers reach this through `stateOf` (indexed) or `stateOfId` (named), never by hand, and
+`check_renderers.mjs` fails any renderer that assigns states without covering all five.
+
 **Rule of thumb:** if a picture explains a *result*, use `data-viz`. If it explains a
 *process*, use `reveal` and let it build.
 
@@ -392,6 +399,7 @@ overlaps" is a build failure instead of an opinion.
 | Two pointers print on top of each other | `lo` and `mid` landed on the same box | already handled, they fan out |
 | A diagram is clipped at an edge | a node authored at coordinate zero | `net` and `scene` auto-fit, `layered` never clips |
 | Everything passes but the lesson is boring | block 3 was written last and rushed | write block 3 first, then the prose around it |
+| A state you set never appears on the board | the renderer dropped a state it never implemented | `check_renderers.mjs` fails it now; every renderer must cover all five |
 
 ---
 
