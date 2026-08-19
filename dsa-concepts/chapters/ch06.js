@@ -1050,6 +1050,137 @@ __NAV__
 __NAV__
 </div>`,
 
+"6.8": `<div class="wrap">
+  <div class="les-kicker">Chapter 6 · Lesson 6.8</div>
+  <h1 class="les-title">Choose Your Search: The Decision Flowchart and Six Systems Torn Down</h1>
+  <div class="les-meta">
+    <span class="pill">foundational</span><span class="pill">~14 min</span>
+    <span class="pill gold">no code needed</span><span class="pill">9 visuals</span>
+  </div>
+
+  <p class="motto">Read the write column. The fastest read on the page has the biggest bill somewhere else.</p>
+
+  <p class="lead">Search is the price you pay for order you did not keep, and this is the invoice. You never choose a search algorithm: you answer four questions and exactly one method is left standing. Lesson 6.1 gave you three of them, all about your data. This adds the fourth, which is about your traffic, and it is the one nobody asks.</p>
+
+  <h2><span class="ix">1</span> The Everyday Situation</h2>
+  <div class="sub">The question nobody puts on the form.</div>
+  <p>Two teams store a million records and both ask the same thing: what is the fastest way to find one. The first team searches that data ten thousand times a day and changes it once a week. <strong>The second changes it constantly and searches it twice.</strong></p>
+
+  <div class="viz" data-viz='{"type":"scene","title":"Same million records, opposite correct answers","width":820,"height":280,"items":[{"icon":"server","x":120,"y":124,"kind":"accent","label":"searched 10,000 times a day, changed weekly"},{"icon":"doc","x":410,"y":124,"kind":"gold","label":"the same million records"},{"icon":"server","x":700,"y":124,"kind":"muted","label":"changed constantly, searched twice"}],"arrows":[{"x1":200,"y1":124,"x2":330,"y2":124,"style":"green","label":"buy every order you can"},{"x1":492,"y1":124,"x2":620,"y2":124,"style":"gold","label":"buy nothing at all"}],"caption":"The data is identical and the right answers are opposites. Nothing about the records decides this. The only thing that decides it is how many times somebody will ask before the answer changes, and that number is almost never written down anywhere."}'></div>
+
+  <p>Identical data, opposite correct answers. <strong>Nothing about the records decides it.</strong> The deciding number is how many times you will search before the data changes, and it is almost never on the ticket.</p>
+
+  <h2><span class="ix">2</span> What It Actually Is</h2>
+  <div class="sub">Three questions about the data, and one about the traffic.</div>
+  <p>Lesson 6.1 gave you three. <em class="k">Exact value or meaning. Is it kept in order. Can you jump to any position.</em> All three are about the data sitting in front of you. The fourth is about everything around it.</p>
+
+  <div class="viz" data-viz='{"type":"arch","title":"The fourth question, and why it is last","maxChars":18,"nodes":[{"id":"d","label":"Three questions about your data, from Lesson 6.1","col":0,"row":1,"kind":"accent"},{"id":"t","label":"How many searches before the data changes?","col":1,"row":1,"kind":"gold"},{"id":"a","label":"Many: buy every order you can afford","col":2,"row":0,"kind":"accent"},{"id":"b","label":"Few: buy nothing, and scan","col":2,"row":2,"kind":"muted"}],"edges":[{"from":"d","to":"t","label":"then ask","style":"green"},{"from":"t","to":"a","label":"thousands","style":"green"},{"from":"t","to":"b","label":"a handful"}],"caption":"The first three narrow the family. The fourth decides whether buying any order at all is worth it, which is why it is last and why it overrules everything: a perfect index on data nobody searches twice is money burned, and Lesson 6.3 put the break even at about twenty one searches."}'></div>
+
+  <p>It is last because it can overrule the other three. <strong>A perfect index on data nobody searches twice is money burned</strong>, and Lesson 6.3 already put that break even at about twenty one searches.</p>
+
+  <h2><span class="ix">3</span> Watch It Work</h2>
+  <div class="sub">The whole chapter, built one node at a time.</div>
+  <p>Every search question in your working life enters at the top. Watch each node arrive with its bill attached, because the destination is not the interesting part. <strong>The payer is.</strong></p>
+
+  <div class="board" data-anim='{"type":"reveal","title":"Four questions, six destinations, and who pays for each","speed":1700,"legend":[["the question you are on","look"],["where you land","found"],["ruled out","dead"]],"viz":{"maxChars":13,"gy":46,"nodes":[{"id":"start","label":"Find one thing","col":1,"row":0,"kind":"dark"},{"id":"q1","label":"Exact, or meaning?","col":1,"row":1,"kind":"gold"},{"id":"q2","label":"Searches per change?","col":1,"row":2,"kind":"gold"},{"id":"q5","label":"Is a near miss cheap?","col":3,"row":2,"kind":"gold"},{"id":"lin","label":"Scan it. Buy nothing","col":0,"row":3,"kind":"muted"},{"id":"hash","label":"Hash. One step. Ch 8","col":2,"row":3,"kind":"accent"},{"id":"appx","label":"Nearest, then rerank","col":3,"row":3,"kind":"gold"},{"id":"q4","label":"Can you jump?","col":1,"row":4,"kind":"gold"},{"id":"exq","label":"Filter first, then rank","col":3,"row":4,"kind":"accent"},{"id":"tree","label":"Order as a shape","col":0,"row":5,"kind":"accent"},{"id":"bins","label":"Sort once, then halve","col":1,"row":5,"kind":"accent"}],"edges":[{"from":"start","to":"q1"},{"from":"q1","to":"q2","label":"exact"},{"from":"q1","to":"q5","label":"meaning"},{"from":"q5","to":"appx","label":"cheap"},{"from":"q5","to":"exq","label":"costly"},{"from":"q2","to":"lin","label":"rarely"},{"from":"q2","to":"hash","label":"one key"},{"from":"q2","to":"q4","label":"often"},{"from":"q4","to":"tree","label":"no"},{"from":"q4","to":"bins","label":"yes"}]},"steps":[{"show":["start"],"look":["start"],"say":"Every search question in your working life enters here, and most of them arrive without the word search in them at all."},{"show":["start","q1"],"look":["q1"],"say":"Question one, unchanged from Lesson 6.1, and <b>the only one that can send you out of this family entirely.</b>"},{"show":["start","q1","q5"],"look":["q5"],"say":"Meaning leaves the exact branch and brings a question no other branch asks: <b>how expensive is it to be slightly wrong?</b>"},{"show":["start","q1","q5","appx"],"found":["appx"],"say":"Cheap to be wrong: approximate neighbours, then rerank the shortlist. <b>Paid at ingest, per chunk, before anybody asks anything</b>, and it hands back exactness for a budget you set."},{"show":["start","q1","q5","appx","exq"],"found":["exq"],"say":"Expensive to be wrong: the exact filter runs first and meaning only ranks what survives. <b>Paid by whoever defines what a fact is</b>, and Lesson 6.6 showed what it costs to skip."},{"show":["start","q1","q5","appx","exq","q2"],"look":["q2"],"dead":["q5"],"say":"Back on the exact branch, and here is the fourth question. <b>How many times will you search before the data changes?</b> This is the one nobody asks."},{"show":["start","q1","q5","appx","exq","q2","lin"],"found":["lin"],"dead":["q5"],"say":"Rarely: buy nothing at all. <b>Paid by the reader, every single time</b>, and that is the correct trade below about twenty one searches."},{"show":["start","q1","q5","appx","exq","q2","lin","hash"],"found":["hash"],"dead":["q5"],"say":"One exact key and nothing else, with spare memory: one step, forever. <b>Paid in memory, up front and permanently</b>, and Chapter 8 builds it."},{"show":["start","q1","q5","appx","exq","q2","lin","hash","q4"],"look":["q4"],"dead":["q5"],"say":"Often, and you need ranges or neighbours as well as exact hits. So: <b>can you land on any position in one look?</b>"},{"show":["start","q1","q5","appx","exq","q2","lin","hash","q4","tree"],"found":["tree"],"dead":["q5"],"say":"No, or the data changes constantly: keep the order as a shape. <b>Paid by every writer, a little, forever.</b>"},{"show":["start","q1","q5","appx","exq","q2","lin","hash","q4","tree","bins"],"found":["bins","tree","hash","lin","appx","exq"],"dead":["q5"],"say":"Yes, and it holds still: sort once and halve. <b>Paid once by whoever sorts, and again by every later insert.</b> Six destinations, and not one of them is free. They differ only in who pays and when."}],"caption":"Nobody on this board picked a favourite. Four answers eliminated everything else, and the last frame is the whole chapter: six destinations, six different payers, and no free option anywhere on the page."}'></div>
+
+  <h2><span class="ix">4</span> Under The Hood</h2>
+  <div class="sub">The same request, priced by three different people.</div>
+
+  <div class="viz" data-viz='{"type":"seq","title":"Who actually pays for a fast read","actors":[{"label":"The reader","kind":"gold"},{"label":"The writer","kind":"accent"},{"label":"Whoever built the order","kind":"muted"}],"messages":[{"from":0,"to":2,"label":"I want this in twenty looks instead of a million","style":"gold"},{"from":2,"to":1,"label":"then you will update a second ordered copy on every write"},{"from":1,"to":2,"label":"how often"},{"from":2,"to":1,"label":"every single time, forever, whether anybody searches or not","style":"green"},{"from":2,"to":0,"label":"and your twenty looks are now guaranteed","style":"green"}],"caption":"Nothing in this chapter makes work disappear. Every method moves it: off the reader and onto the writer, or off the read and onto a one-off cost, or off certainty and onto a budget. The only question is which of those you can afford in your particular room."}'></div>
+
+  <p><strong>Nothing here makes work disappear.</strong> Every method moves it: off the reader and onto the writer, off the read and onto a one-off sort, or off certainty and onto a budget you set.</p>
+
+  <h2><span class="ix">5</span> The Types</h2>
+  <div class="sub">The invoice, on a million items.</div>
+  <p>Read the write column first. Every figure here was derived somewhere earlier in the chapter, so nothing in it is asserted.</p>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>The method</th><th>Paid up front</th><th>Paid per write</th><th>Paid per read</th></tr>
+    <tr><td>Scan it</td><td>nothing</td><td>1 move</td><td>up to 1,000,000</td></tr>
+    <tr><td>Sort once, then halve</td><td>about 20,000,000 comparisons</td><td>about 500,000 moves</td><td>20</td></tr>
+    <tr><td>Order kept as a shape</td><td>nothing, it is built as you go</td><td>about 20 walked, 1 written</td><td>about 20</td></tr>
+    <tr><td>A database index</td><td>one ordered copy of that column</td><td>the same again, per index</td><td>3 or 4 pages</td></tr>
+    <tr><td>Hash lookup</td><td>spare memory, permanently</td><td>1</td><td>1, and no ranges ever</td></tr>
+    <tr><td>Nearest by meaning</td><td>one point per chunk, at ingest</td><td>1 point</td><td>a budget you set, and no guarantee</td></tr>
+  </table>
+  <div class="tbl-cap">The right column is what everybody compares and it is the least interesting column on the page. Read the middle two, because that is where the fastest read on the table turns out to have the largest bill, and where a method that looks lazy turns out to be correct for data nobody searches twice.</div></div>
+
+  <h2><span class="ix">6</span> What It Costs, In Plain English</h2>
+  <div class="sub">The number nobody puts on the ticket.</div>
+  <p>Take the second row and make the decision concrete. A million items, sorted once at about twenty million comparisons, and each search then saves roughly a million looks against a scan.</p>
+
+  <div class="viz" data-viz='{"type":"card","title":"When does buying the order pay for itself","eyebrow":"A MILLION ITEMS","badge":"searches per change","width":560,"rows":[{"k":"Searched twice, then changed","v":"scan wins, easily","tone":"good","bar":0.02},{"k":"Searched twenty times, then changed","v":"about break even","tone":"good","bar":0.2},{"k":"Searched ten thousand times a day","v":"buy every order you can","tone":"good","bar":1},{"k":"Changed on every write, searched rarely","v":"buy nothing, and mean it","tone":"bad","bar":0.05},{"k":"Changed constantly and searched constantly","v":"a shape, not a sorted row","tone":"good","bar":1}],"caption":"Every bar is a rough weight rather than a measurement, and the point is the shape of the table rather than any single figure. The last row is the case that produces the most wrong decisions, because both halves are heavy and only a shape survives paying for both at once."}'></div>
+
+  <p>And the last row is where most bad decisions live. When a system is written to constantly <strong>and</strong> read constantly, a sorted row is the worst of both worlds: it pays half a million moves on every write to protect twenty looks on every read. <strong>That is the exact trade Lesson 6.5 refused.</strong></p>
+
+  <h2><span class="ix">7</span> Where It Lives In Real Life</h2>
+  <div class="sub">Six systems, and the bill each one chose.</div>
+
+  <div class="viz" data-viz='{"type":"kgraph","title":"Six systems you touched this week, and who pays in each","unit":178,"nodes":[{"id":"c","label":"Four questions, six answers, six different payers","x":2,"y":1,"kind":"dark"},{"id":"f","label":"Ctrl and F: buys nothing, and is right to, because you search a page once","x":0,"y":0,"kind":"muted"},{"id":"d","label":"A database index: every writer pays a little, forever, so every reader gets three hops","x":0,"y":2,"kind":"accent"},{"id":"a","label":"Autocomplete: the shape is the answer, and it costs what you typed","x":4,"y":0,"kind":"gold"},{"id":"g","label":"git bisect: the order was free, because history made it for another reason","x":4,"y":2,"kind":"accent"},{"id":"r","label":"An assistant reading your documents: paid at ingest, and exactness is a dial","x":2,"y":3,"kind":"gold"},{"id":"e","label":"A signup duplicate check: one key, one step, paid in memory","x":2,"y":-1,"kind":"accent"}],"edges":[{"from":"c","to":"f","label":"pays nothing, reads everything"},{"from":"c","to":"d","label":"pays on write","style":"green"},{"from":"c","to":"a","label":"pays at ingest","style":"gold"},{"from":"c","to":"g","label":"pays nothing at all","style":"green"},{"from":"c","to":"r","label":"pays in certainty","style":"gold"},{"from":"c","to":"e","label":"pays in memory","style":"green"}],"caption":"Six systems, six payers, and not one of them chose an algorithm. Each answered the four questions about its own room and took what was left standing. git bisect is the cheapest of the six, because the order it uses was a side effect of history happening and nobody paid for it at all."}'></div>
+
+  <h2><span class="ix">8</span> How Problems Show Up</h2>
+  <div class="sub">Seven decisions, and the question that was skipped in each.</div>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>What somebody actually says</th><th>Which question they skipped</th><th>What it is really telling you</th></tr>
+    <tr><td>"We indexed everything to be safe"</td><td>How many searches per change</td><td>Every index is paid on every write. Safe is the expensive word here</td></tr>
+    <tr><td>"We sort it before every search"</td><td>How many searches per sort</td><td>The order is bought fresh each time. Below about twenty one, scanning was cheaper</td></tr>
+    <tr><td>"Vector search will handle all of it"</td><td>Exact or meaning</td><td>Part numbers and ids have right answers. Meaning cannot protect a fact</td></tr>
+    <tr><td>"Just put it in a hash and it is instant"</td><td>Do you need ranges or neighbours</td><td>One step for exact keys, and nothing at all for between two dates</td></tr>
+    <tr><td>"Reads are fast so the design is fine"</td><td>Read the write column</td><td>The fastest read on the page has the largest bill somewhere else</td></tr>
+    <tr><td>"It works on our test data"</td><td>Is the spread of values the same</td><td>Test data is even and real data clumps. Lesson 6.4 priced that</td></tr>
+    <tr><td>"We will add an index if it gets slow"</td><td>Nothing, and this one is correct</td><td>A defensible answer when searches per change is genuinely low</td></tr>
+  </table>
+  <div class="tbl-cap">The last row is deliberately not a mistake. Deciding to buy no order is a real answer to the fourth question, and it is the right one more often than anybody admits, which is why Lesson 6.2 opened this chapter rather than closing it.</div></div>
+
+  <h2><span class="ix">9</span> Solve It Live</h2>
+  <div class="sub">Everything indexed, and everything slower.</div>
+  <div class="callout">
+    <div class="ch">The problem, as it arrives</div>
+    <p>"We were told indexes make things fast, so last quarter we indexed every column on our main tables. Reads did get better, a bit. But writes are roughly three times slower, the nightly load no longer fits its window, storage has grown by more than the data itself, and two of the pages we were trying to fix are exactly as slow as before."</p>
+  </div>
+
+  <div class="viz" data-viz='{"type":"swim","title":"Every column indexed, and two pages unchanged","lanes":[{"label":"The team"},{"label":"You"},{"label":"The system"}],"steps":[{"id":"a1","lane":0,"col":0,"kind":"gold","label":"Indexed every column. Writes 3x slower, 2 pages unchanged"},{"id":"b1","lane":1,"col":1,"kind":"box","label":"Ask: which question does each page actually filter on?"},{"id":"c1","lane":2,"col":1,"kind":"bad","label":"Those two filter on two columns together"},{"id":"b2","lane":1,"col":2,"kind":"accent","label":"Two separate orders are not one order for the pair"},{"id":"c2","lane":2,"col":2,"kind":"bad","label":"So one narrows, then every survivor is checked one by one"},{"id":"b3","lane":1,"col":3,"kind":"accent","label":"And every unused index is still paid on every write"},{"id":"b4","lane":1,"col":4,"kind":"accent","label":"Drop what no query uses. Build one order for the pair"}],"edges":[{"from":"a1","to":"b1"},{"from":"b1","to":"c1"},{"from":"c1","to":"b2"},{"from":"b2","to":"c2"},{"from":"c2","to":"b3"},{"from":"b3","to":"b4"}],"caption":"Two separate failures with one cause. The unused indexes are pure write cost with no reader, and the two unchanged pages needed an order that was never built, because an order over one column is not an order over a pair."}'></div>
+
+  <p><strong>Indexing everything is not a safe default, it is the most expensive possible answer to a question nobody asked.</strong> Every index that no query uses is pure write cost with no reader at all. And the two pages that did not improve are the honest half: they filter on two columns together, and Lesson 6.5 said it plainly, an order over one column is not an order over a pair.</p>
+
+  <div class="callout good">
+    <div class="ch">Why this reasoning wins</div>
+    <p>It ran the fourth question per column rather than per table: <strong>how many searches use this order, before the data changes?</strong> For most of the indexed columns the answer was none, which turns them from insurance into a permanent bill. And it asked what each slow page actually filters on, which is the only way to see that the missing order was never a column at all.</p>
+  </div>
+
+  <h2><span class="ix">10</span> Your Turn</h2>
+  <div class="callout accent">
+    <div class="ch">Your rep, one system you use every day</div>
+    <p>Pick anything you use daily: your email, your files, your bank app, your photo library. <strong>Round one:</strong> find one thing three different ways, by exact word, by rough meaning, and by browsing, and note which one felt instant. <strong>Round two:</strong> for the instant one, work out who paid and when. Somebody built an order before you asked, and it was either at ingest, on every write, or once at the start. <strong>Round three:</strong> find the question that thing is bad at, and you will find the order nobody built. Every product in the world is a set of these four answers, and once you can read them off a screen, this chapter has done its job.</p>
+  </div>
+
+  <h2><span class="ix gold">✓</span> Check Yourself</h2>
+
+  <div class="quiz" data-correct="2">
+    <div class="q">A team indexes every column on their main tables. Writes get three times slower, storage more than doubles, and two target pages are unchanged. What went wrong?</div>
+    <div class="opt" data-i="0">The indexes need rebuilding, since they have become fragmented</div>
+    <div class="opt" data-i="1">Nothing. This is the expected cost of fast reads and should be accepted</div>
+    <div class="opt" data-i="2">Most indexes have no reader at all and are pure write cost, and the two slow pages filter on a pair of columns, which no single-column order can answer</div>
+    <div class="qexp">The fourth question is asked per order, not per table: how many searches use this one before the data changes? For most of those columns the answer is none, so they are a permanent bill with no benefit. And an order built over one column is not an order over two, so a query filtering on a pair narrows with one and then checks every survivor individually, which is why those pages never moved.</div>
+  </div>
+
+  <div class="quiz" data-correct="0">
+    <div class="q">Two systems hold identical data. One is searched ten thousand times a day and changed weekly. The other changes constantly and is searched twice. What is the right answer for each?</div>
+    <div class="opt" data-i="0">Buy every order you can afford for the first, and buy nothing at all for the second</div>
+    <div class="opt" data-i="1">The same method for both, since the data is identical</div>
+    <div class="opt" data-i="2">A hash table for both, because one step is always the fastest read available</div>
+    <div class="qexp">Nothing about the records decides this, which is why the fourth question exists and why it is last. Order is an investment repaid per search, so thousands of searches per change makes almost any order worth buying, and two searches per change makes all of it waste. The hash answer also fails on its own terms: one step is only available for exact keys, and it can never answer anything about a range.</div>
+  </div>
+
+  <div class="callout good">
+    <div class="ch">Next</div>
+    <p>You never choose a search algorithm. <strong>You choose how much order you are willing to maintain, and the algorithm is whatever that choice leaves standing.</strong> The whiteboard now runs the entire chapter end to end, every method side by side, and one of them being chosen wrongly.</p>
+  </div>
+__NAV__
+</div>`,
+
 "6.9": `<div class="wrap">
   <div class="les-kicker">Chapter 6 · Lesson 6.9</div>
   <h1 class="les-title">The Whiteboard: All of Searching in One Run</h1>

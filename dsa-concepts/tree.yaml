@@ -538,7 +538,7 @@ milestones:
         layers: []
       - id: M5.C06
         name: Ch06 Searching: Finding One Thing
-        status: partial, 8 of 9 lessons live.
+        status: shipped. 9 lessons live, qa green.
         layers: []
       - id: M5.C07
         name: Ch07 Sorting: Putting Things in Order
