@@ -93,6 +93,26 @@ for (const id of ids) {
   }
 }
 
+// a planned lesson must still render an honest, titled placeholder with its scope, never a
+// blank page and never filler dressed up as content
+const planned = await page.$$eval('.les:not(.live)', ns => ns.map(n => n.dataset.id));
+console.log(`  ${planned.length} planned lessons to check`);
+for (const id of planned) {
+  await page.evaluate(i => { const el = document.querySelector(`.les[data-id="${i}"]`);
+    el.closest('.chap')?.classList.add('open'); load(i); }, id);
+  await page.waitForTimeout(120);
+  const s = await page.evaluate(() => {
+    const v = document.getElementById('view');
+    return { txt: v.innerText, h2: (v.querySelector('h2') || {}).textContent || '',
+             scope: v.querySelectorAll('.scope li').length,
+             crumb: (document.getElementById('crumb') || {}).innerText || '' };
+  });
+  if (!/ships next/i.test(s.txt)) fails.push(`${id}: planned lesson has no "ships next" banner`);
+  if (!s.h2.trim())              fails.push(`${id}: planned lesson placeholder has no title`);
+  if (s.scope < 1)               fails.push(`${id}: planned lesson lists no planned scope`);
+  if (!s.crumb.trim())           fails.push(`${id}: planned lesson has no chapter breadcrumb`);
+}
+
 const overflow = await page.evaluate(() => document.body.scrollWidth > document.documentElement.clientWidth + 1);
 if (overflow) fails.push('the page scrolls horizontally');
 await browser.close();
