@@ -534,7 +534,7 @@ milestones:
         layers: []
       - id: M5.C05
         name: Ch05 Stacks and Queues: Who Gets Served First
-        status: not started, 5 lessons planned.
+        status: shipped. 5 lessons live, qa green.
         layers: []
       - id: M5.C06
         name: Ch06 Searching: Finding One Thing

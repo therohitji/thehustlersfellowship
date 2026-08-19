@@ -160,17 +160,17 @@ Authoring rules for all of this live in [CONSISTENCY.md](CONSISTENCY.md).
 
 > Most systems are not about storing things, they are about deciding who gets served next. That rule is the structure.
 
-**Status:** planned
+**Status:** live
 
 ### Lessons
 
 | id | lesson | status |
 |---|---|---|
-| `5.1` | Stack: Last In, First Out, Like a Pile of Plates | planned |
-| `5.2` | Queue: First In, First Out, Like a Ticket Line | planned |
-| `5.3` | Deque, Circular Queue and the Priority Twist | planned |
-| `5.4` | Where Order of Service Decides Everything | planned |
-| `5.5` | The Whiteboard: Plates and Ticket Lines | planned |
+| `5.1` | Stack: Last In, First Out, Like a Pile of Plates | live |
+| `5.2` | Queue: First In, First Out, Like a Ticket Line | live |
+| `5.3` | Deque, Circular Queue and the Priority Twist | live |
+| `5.4` | Where Order of Service Decides Everything | live |
+| `5.5` | The Whiteboard: Plates and Ticket Lines | live |
 
 ### Concepts taught here
 
@@ -190,7 +190,7 @@ Authoring rules for all of this live in [CONSISTENCY.md](CONSISTENCY.md).
 
 > Search is the price you pay for order you did not keep. Every search method is one trade: how much structure you maintain up front, against how fast you find later. Decide the structure first and the algorithm picks itself.
 
-**Status:** partial, 2 of 9
+**Status:** partial, 2 of 9 lessons written
 
 ### Lessons
 
