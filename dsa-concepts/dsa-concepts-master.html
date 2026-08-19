@@ -356,7 +356,7 @@ const COURSE = [
       {id:"6.4", t:"The Search Family: Jump, Exponential, Interpolation, Ternary", state:"live"},
       {id:"6.5", t:"Searching Structured Data: Trees, Tries and Database Indexes", state:"live"},
       {id:"6.6", t:"Searching by Meaning: Vector Search, ANN and RAG", state:"live"},
-      {id:"6.7", t:"How Search Problems Show Up: Reading the Disguise", state:"soon"},
+      {id:"6.7", t:"How Search Problems Show Up: Reading the Disguise", state:"live"},
       {id:"6.8", t:"Choose Your Search: The Decision Flowchart and Six Systems Torn Down", state:"soon"},
       {id:"6.9", t:"The Whiteboard: All of Searching in One Run", state:"live"}
   ]},
@@ -4948,6 +4948,140 @@ __NAV__
   <div class="callout good">
     <div class="ch">Next</div>
     <p>Every lesson so far has had a collection in it: a row, a shape, a folder of paragraphs. <strong>The hardest search problems have no collection at all</strong>, and nobody who brings you one will use the word search. Next: reading the disguise.</p>
+  </div>
+__NAV__
+</div>`,
+
+"6.7": `<div class="wrap">
+  <div class="les-kicker">Chapter 6 · Lesson 6.7</div>
+  <h1 class="les-title">How Search Problems Show Up: Reading the Disguise</h1>
+  <div class="les-meta">
+    <span class="pill">foundational</span><span class="pill">~13 min</span>
+    <span class="pill gold">no code needed</span><span class="pill">9 visuals</span>
+  </div>
+
+  <p class="motto">The hardest search problems have no collection in them at all.</p>
+
+  <p class="lead">Nobody has ever walked up to you and said they have a search problem. They say the page is slow, the report times out, the suggestions feel laggy, or they ask how many vans to buy. This lesson is the instrument for hearing what is underneath. By the end you can name the structure behind a complaint you have never heard before, and say when it was never a search problem at all.</p>
+
+  <h2><span class="ix">1</span> The Everyday Situation</h2>
+  <div class="sub">Nobody says the word.</div>
+  <p>Four sentences, from four different people, in one week. <em class="k">The customer page got slow.</em> <em class="k">Can we suggest as they type?</em> <em class="k">The month end report times out.</em> <em class="k">How many vans do we need so everything arrives by six?</em></p>
+
+  <div class="viz" data-viz='{"type":"scene","title":"Four complaints, and not one of them says search","width":820,"height":280,"items":[{"icon":"person","x":112,"y":126,"kind":"gold","label":"the customer page got slow"},{"icon":"phone","x":300,"y":126,"kind":"accent","label":"can we suggest as they type"},{"icon":"doc","x":500,"y":124,"kind":"muted","label":"the month end report times out"},{"icon":"server","x":716,"y":124,"kind":"bad","label":"how many vans do we need"}],"arrows":[{"x1":600,"y1":124,"x2":660,"y2":124,"style":"gold","label":"and this one has no data at all"}],"caption":"Three of these are searches wearing a performance complaint. The fourth has no collection anywhere in it, nothing stored, nothing sorted, and it is the one this chapter has been building towards."}'></div>
+
+  <p>Three of those are searches in costume. <strong>The fourth has no collection anywhere in it</strong>, and it is still a binary search.</p>
+
+  <h2><span class="ix">2</span> What It Actually Is</h2>
+  <div class="sub">One question, asked of the sentence rather than the code.</div>
+  <p>The instrument is a single question: <strong>what order does this question need, and is anybody maintaining it?</strong> If somebody is, you have a search. If nobody is, you have an ordering problem wearing a search costume, and no cleverer algorithm will touch it.</p>
+
+  <div class="viz" data-viz='{"type":"flow","title":"The instrument, and its off switch","maxChars":18,"nodes":[{"id":"s","label":"Somebody says something is slow","col":0,"row":1,"kind":"gold"},{"id":"t","label":"Imagine ten times the data. Say the new wait out loud","col":1,"row":1,"kind":"dark","shape":"diamond"},{"id":"n","label":"The wait does not move: it was never a search problem","col":2,"row":0,"kind":"bad"},{"id":"g","label":"The wait grows with the pile: something opens every box","col":2,"row":2,"kind":"accent"},{"id":"q","label":"Then ask: what order does this need, and who maintains it?","col":3,"row":2,"kind":"gold"}],"edges":[{"from":"s","to":"t"},{"from":"t","to":"n","label":"unchanged"},{"from":"t","to":"g","label":"grows in step","style":"green"},{"from":"g","to":"q","label":"then","style":"green"}],"caption":"The off switch is the half of this skill nobody teaches. If the wait does not move when you imagine ten times the data, the rows are not involved, and hunting for an index will waste a week. Knowing when to stop looking is part of the instrument."}'></div>
+
+  <p>And the test needs no code and no profiler. <strong>Imagine ten times the data and say the new wait out loud.</strong> 0.04 to 0.4 to 4 to 40 means something reads everything. 0.008 to 0.009 to 0.010 means the order is already kept. 0.20 to 0.20 to 0.20 means the rows were never involved.</p>
+
+  <h2><span class="ix">3</span> Watch It Work</h2>
+  <div class="sub">Twelve answers, no list, and thirty seconds a guess.</div>
+  <p>A depot asks how many vans it needs so every parcel arrives by six. The only way to know whether a number works is to run a full simulation, which takes thirty seconds. <strong>There is no collection here.</strong> Nothing is stored and nothing is sorted.</p>
+  <p>But one fact is true about every candidate: <strong>if six vans finish by six, then seven certainly do.</strong> More vans never makes it later. That single fact is an order, and an order is all binary search has ever needed.</p>
+
+  <div class="board" data-anim='{"type":"array-scan","title":"Binary search over answers, where no data exists","speed":1700,"big":true,"data":[1,2,3,4,5,6,7,8,9,10,11,12],"labels":["","","","","","","","","","","",""],"countLabel":" simulations","pointerLabels":{"lo":"too few","mid":"simulating","hi":"known to work"},"legend":[["simulating now","look"],["tested, and it misses six o clock","bad"],["works, but maybe not the smallest","seen"],["deleted without simulating","dead"],["the smallest that works","found"]],"steps":[{"count":0,"badge":"12 answers, no list","say":"Twelve candidate fleet sizes. <b>There is no data anywhere in this problem</b>, and the boxes are answers rather than things. Testing one costs thirty seconds of simulation."},{"range":[0,11],"look":[5],"ptr":{"lo":0,"mid":5,"hi":11},"count":1,"badge":"6 vans: 7:40pm","say":"Test the middle answer rather than the first one. <b>Six vans finishes at twenty to eight.</b> Too late."},{"bad":[5],"dead":[0,1,2,3,4],"range":[6,11],"look":[8],"ptr":{"lo":6,"mid":8,"hi":11},"count":2,"badge":"9 vans: 5:20pm","say":"If six is too late then five, four, three, two and one are all worse. <b>Five answers deleted and nobody simulated any of them.</b> Nine vans works."},{"bad":[5],"seen":[8],"dead":[0,1,2,3,4,9,10,11],"range":[6,8],"look":[7],"ptr":{"lo":6,"mid":7,"hi":8},"count":3,"badge":"8 vans: 5:55pm","say":"Nine works, so ten, eleven and twelve certainly work, and none of them can be the smallest. Eight works too, with five minutes to spare."},{"bad":[5],"seen":[7,8],"dead":[0,1,2,3,4,9,10,11],"range":[6,6],"look":[6],"ptr":{"lo":6,"mid":6,"hi":6},"count":4,"badge":"7 vans: 6:10pm","say":"One candidate left between the too-few and the known-good. <b>Seven vans finishes at ten past six.</b> Too late."},{"bad":[5,6],"found":[7],"seen":[8],"dead":[0,1,2,3,4,9,10,11],"count":4,"badge":"8 vans, 4 simulations","say":"<b>Eight vans, found in four simulations instead of twelve.</b> Two minutes instead of six, and the only thing that made it possible is that somebody noticed the answers were in an order even though nothing on disk was."}],"caption":"Red means a test you actually paid thirty seconds for and lost. Faded means an answer deleted by reasoning alone, for free. The whole method is the second colour: five answers ruled out by one sentence about vans, with no simulation run."}'></div>
+
+  <h2><span class="ix">4</span> Under The Hood</h2>
+  <div class="sub">What binary search actually required, all along.</div>
+
+  <div class="viz" data-viz='{"type":"seq","title":"The requirement, stated properly for the first time","actors":[{"label":"Binary search","kind":"gold"},{"label":"A sorted row","kind":"accent"},{"label":"A fleet size","kind":"muted"}],"messages":[{"from":0,"to":1,"label":"if this box is too small, is everything before it too small","style":"gold"},{"from":1,"to":0,"label":"yes, because I am in order","style":"green"},{"from":0,"to":2,"label":"if this many vans is too few, is every smaller number too few","style":"gold"},{"from":2,"to":0,"label":"yes, because more vans never arrive later","style":"green"},{"from":0,"to":0,"label":"then you are the same problem, and I do not care that one of you is stored"}],"caption":"Sorted data was never the requirement. It was one way of satisfying the requirement. What halving actually needs is a fact that stays true once it becomes true, so that testing one candidate settles everything on one side of it."}'></div>
+
+  <p>Sorted data was never the real requirement. <strong>It was one way of meeting it.</strong> What halving needs is a property that, once true, stays true, so that one test settles an entire side. A row in order has that. So does a fleet of vans, a compression setting, a rate limit, and a commit history.</p>
+
+  <h2><span class="ix">5</span> The Types</h2>
+  <div class="sub">Four disguises, and what each one is really asking for.</div>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>The disguise</th><th>What it sounds like</th><th>What it is really asking for</th></tr>
+    <tr><td>A performance complaint</td><td>"It got slow and nothing changed"</td><td>An order nobody is maintaining. Lessons 6.3 and 6.5</td></tr>
+    <tr><td>A feature request</td><td>"Can we suggest as they type"</td><td>A shape built out of beginnings. Lesson 6.5</td></tr>
+    <tr><td>A quality complaint</td><td>"It answers confidently about the wrong thing"</td><td>A stage using the wrong kind of exactness. Lesson 6.6</td></tr>
+    <tr><td>A planning question</td><td>"How many do we need"</td><td>Halving over answers, where no collection exists at all</td></tr>
+  </table>
+  <div class="tbl-cap">The last row is the one worth practising, because nothing in the sentence looks like this chapter. The tell is never the word search. It is a claim that something stays true once it becomes true.</div></div>
+
+  <div class="callout warn">
+    <div class="ch">When it is not a search problem</div>
+    <p>The instrument has an off switch and it matters more than the rest of it. If the wait does not move when you imagine ten times the data, <strong>the rows are not involved</strong>. A fixed 200 milliseconds is a network call, a lock, a cold start, or an external service, and it will sit there unchanged while you spend a week adding indexes. Half of this skill is knowing when to stop looking.</p>
+  </div>
+
+  <h2><span class="ix">6</span> What It Costs, In Plain English</h2>
+  <div class="sub">The same simulator, and eight hours against five minutes.</div>
+  <p>Twelve candidates tested one at a time is twelve simulations: <strong>six minutes.</strong> Halving over the answers is four: <strong>two minutes.</strong> Now make it realistic. A depot choosing between one and a thousand delivery slots, at thirty seconds a simulation.</p>
+
+  <div class="viz" data-viz='{"type":"card","title":"One thousand candidate answers, thirty seconds each","eyebrow":"NO COLLECTION ANYWHERE","badge":"same simulator","width":560,"rows":[{"k":"Test every candidate","v":"1,000 simulations","tone":"bad","bar":1},{"k":"Which is","v":"about 8 hours","tone":"bad","bar":1},{"k":"Halve the answers instead","v":"10 simulations","tone":"good","bar":0.01},{"k":"Which is","v":"5 minutes","tone":"good","bar":0.01},{"k":"Because two multiplied by itself ten times","v":"1,024","tone":"good","bar":0.01}],"caption":"Every bar is drawn against a maximum of 1,000. Same simulator, same deadline, same data, and nothing was optimised. The only thing that changed is that somebody noticed the answers were in an order even though nothing on disk was."}'></div>
+
+  <p>This is the highest-value move in the chapter, and it is the one that looks least like searching. <strong>Nothing was made faster.</strong> A thousand candidates became ten, because ten answers is all you ever needed to test.</p>
+
+  <h2><span class="ix">7</span> Where It Lives In Real Life</h2>
+  <div class="sub">Five questions nobody would call a search.</div>
+
+  <div class="viz" data-viz='{"type":"kgraph","title":"Halving over answers, where nothing is stored","unit":178,"nodes":[{"id":"c","label":"A fact that stays true once it becomes true","x":2,"y":1,"kind":"dark"},{"id":"v","label":"How many vans, machines or people do we need","x":0,"y":0,"kind":"gold"},{"id":"g","label":"Which commit broke the build, which is git bisect","x":0,"y":2,"kind":"accent"},{"id":"r","label":"The highest quality setting that still fits the size limit","x":4,"y":0,"kind":"box"},{"id":"l","label":"The largest batch that still finishes inside the window","x":4,"y":2,"kind":"box"},{"id":"p","label":"And the exception: the peak of something that rises then falls","x":2,"y":3,"kind":"bad"}],"edges":[{"from":"c","to":"v","label":"more never makes it later","style":"green"},{"from":"c","to":"g","label":"broken stays broken","style":"green"},{"from":"c","to":"r","label":"smaller always fits"},{"from":"c","to":"l","label":"smaller always finishes"},{"from":"c","to":"p","label":"no such fact exists here"}],"caption":"The red node is the honest exception and the one Lesson 6.4 promised. A peak has no fact that stays true, because the answer is better on one side and worse on the other with no ordering across the whole range, so halving on a comparison does not work and a different split is needed. Chapter 15 owns it."}'></div>
+
+  <h2><span class="ix">8</span> How Problems Show Up</h2>
+  <div class="sub">Seven sentences, and one test for all of them.</div>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>What somebody actually says</th><th>Imagine ten times the data</th><th>What it is really telling you</th></tr>
+    <tr><td>"The customer page got slow this year"</td><td>0.4 becomes 4 becomes 40</td><td>Something opens every row. An order is missing</td></tr>
+    <tr><td>"It has always taken about 200 milliseconds"</td><td>0.20 stays 0.20</td><td>Not a search problem. A call, a lock or a cold start</td></tr>
+    <tr><td>"Can we suggest as they type"</td><td>Barely moves, if built right</td><td>A shape made of beginnings, and the cost is what you typed</td></tr>
+    <tr><td>"The month end report times out and the daily one is fine"</td><td>Thirty times the rows, thirty times the wait</td><td>The same scan, given thirty times the work at once</td></tr>
+    <tr><td>"How many workers do we need to clear the queue by nine"</td><td>There is no data to multiply</td><td>Halving over answers. Chapter 5 priced the queue itself</td></tr>
+    <tr><td>"It answered confidently about the wrong customer"</td><td>Unchanged, and still wrong</td><td>Not speed at all. A filter left to meaning. Lesson 6.6</td></tr>
+    <tr><td>"Adding an index did nothing"</td><td>Still grows with the pile</td><td>The order built does not match the question asked</td></tr>
+  </table>
+  <div class="tbl-cap">The middle column is the whole instrument, and you can run it in a meeting. Rows two and six are the ones worth memorising, because both are cases where the entire chapter does not apply and the honest answer is to look somewhere else.</div></div>
+
+  <h2><span class="ix">9</span> Solve It Live</h2>
+  <div class="sub">Four hours of simulations, every single morning.</div>
+  <div class="callout">
+    <div class="ch">The problem, as it arrives</div>
+    <p>"Every morning we work out the smallest number of delivery slots that still gets everything out by six. We run the simulator once per candidate, starting at one and going up until it passes. It takes about four hours and it is the reason the schedule is published late. We have asked for a faster simulator twice and been told it is already optimised."</p>
+  </div>
+
+  <div class="viz" data-viz='{"type":"swim","title":"Nobody needed a faster simulator","lanes":[{"label":"The team"},{"label":"You"},{"label":"The depot"}],"steps":[{"id":"a1","lane":0,"col":0,"kind":"gold","label":"Four hours every morning, simulator already optimised"},{"id":"b1","lane":1,"col":1,"kind":"box","label":"Ask: does more capacity ever make it finish later?"},{"id":"c1","lane":2,"col":1,"kind":"accent","label":"No. More slots never arrives later"},{"id":"b2","lane":1,"col":2,"kind":"accent","label":"Then the answers are in an order, and you can halve them"},{"id":"c2","lane":2,"col":2,"kind":"bad","label":"They test 1, 2, 3, 4 upwards until one passes"},{"id":"b3","lane":1,"col":3,"kind":"accent","label":"About 480 runs becomes about 10"},{"id":"b4","lane":1,"col":4,"kind":"accent","label":"Four hours becomes five minutes, same simulator"}],"edges":[{"from":"a1","to":"b1"},{"from":"b1","to":"c1"},{"from":"c1","to":"b2"},{"from":"b2","to":"c2"},{"from":"c2","to":"b3"},{"from":"b3","to":"b4"}],"caption":"The request that kept being made was for a faster simulator, and the simulator was never the problem. Walking the candidates one at a time is Lesson 6.2 applied to answers, and it was being done to a list that was in order the whole time."}'></div>
+
+  <p><strong>Nobody needed a faster simulator.</strong> They were walking candidate answers one at a time, which is Lesson 6.2 applied to a list nobody realised was in order. More slots never makes delivery later, so a single test settles every candidate below it. Around 480 runs becomes about ten, and four hours becomes five minutes on exactly the same machine.</p>
+
+  <div class="callout good">
+    <div class="ch">Why this reasoning wins</div>
+    <p>It never asked how the simulator worked. It asked one question about the world instead: <strong>does more capacity ever make it finish later?</strong> No. That single no establishes an order over the answers, and everything in Lesson 6.3 becomes legal on a problem with no collection in it. The two requests for a faster simulator were both aimed at the one thing that was already fine.</p>
+  </div>
+
+  <h2><span class="ix">10</span> Your Turn</h2>
+  <div class="callout accent">
+    <div class="ch">Your rep, one week of complaints</div>
+    <p>For one week, write down every sentence you hear about something being slow, awkward or wrong, without judging any of them. At the end, take each one and do exactly two things. <strong>First:</strong> imagine ten times the data and say the new wait out loud. <strong>Second:</strong> if the wait grows, ask what order that question needs and whether anybody is maintaining it. Then count how many of your sentences turned out to have nothing to do with the amount of data at all. That count is the part of this skill that saves the most time, and it is the part nobody teaches.</p>
+  </div>
+
+  <h2><span class="ix gold">✓</span> Check Yourself</h2>
+
+  <div class="quiz" data-correct="1">
+    <div class="q">A depot runs a thirty second simulation for each candidate fleet size, one at a time from the smallest, taking four hours. What is the fix?</div>
+    <div class="opt" data-i="0">Make the simulator faster, since it is run hundreds of times</div>
+    <div class="opt" data-i="1">Halve the candidate answers, because more vans never makes delivery later, so one test settles everything below it</div>
+    <div class="opt" data-i="2">Cache the results of previous mornings and reuse them</div>
+    <div class="qexp">There is no collection in this problem, and that is what hides it. The order is over the answers rather than over data: once a fleet size works, every larger one works too. That single fact is everything binary search ever required, so about 480 runs becomes about ten and four hours becomes five minutes on the same simulator, which was never the problem.</div>
+  </div>
+
+  <div class="quiz" data-correct="2">
+    <div class="q">A page has taken about 200 milliseconds for two years, through a tenfold increase in rows. Somebody suggests adding an index. What do you say?</div>
+    <div class="opt" data-i="0">Agree, since 200 milliseconds is slow and an index will reduce it</div>
+    <div class="opt" data-i="1">Ask which column to index before deciding</div>
+    <div class="opt" data-i="2">The wait did not move when the data grew tenfold, so the rows are not involved and no index will help</div>
+    <div class="qexp">This is the off switch, and it is half the skill. A cost that ignores the size of the pile is not a search cost. A flat 200 milliseconds through a tenfold growth points at a network call, a lock, a cold start or an external service, and every one of those sits somewhere no index can reach. Knowing when the chapter does not apply is what stops a week being spent in the wrong place.</div>
+  </div>
+
+  <div class="callout good">
+    <div class="ch">Next</div>
+    <p>You now have every method in the chapter and the instrument for hearing which one a complaint is asking for. <strong>The last lesson puts them on one page</strong>, as an invoice rather than a menu, and tears down six real systems to show which bill each of them chose to pay.</p>
   </div>
 __NAV__
 </div>`,
