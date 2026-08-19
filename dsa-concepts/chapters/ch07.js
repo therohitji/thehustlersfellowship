@@ -267,3 +267,133 @@ __NAV__
   </div>
 __NAV__
 </div>`
+,
+
+"7.3": `<div class="wrap">
+  <div class="les-kicker">Chapter 7 · Lesson 7.3</div>
+  <h1 class="les-title">Merge Sort: Split, Sort, Stitch</h1>
+  <div class="les-meta">
+    <span class="pill">foundational</span><span class="pill">~13 min</span>
+    <span class="pill gold">no code needed</span><span class="pill">9 visuals</span>
+  </div>
+
+  <p class="motto">Merge sort never sorts anything. It only ever merges two things that are already sorted, and it arranges for that to always be true.</p>
+
+  <p class="lead">The three simple sorts all share one limit: double the data and they get four times slower. This lesson breaks that, and the number it produces is the one Chapter 6 has been quoting since Lesson 6.3. By the end you will have derived where about 10,000 comparisons and about 20,000,000 comparisons actually came from.</p>
+
+  <h2><span class="ix">1</span> The Everyday Situation</h2>
+  <div class="sub">Two sorted piles, and the easiest job in this chapter.</div>
+  <p>Two people each hold a stack of forms, and each stack is already in date order. To combine them into one ordered stack you do not sort anything. <strong>You look at the top of each pile, take whichever is earlier, and repeat.</strong></p>
+
+  <div class="viz" data-viz='{"type":"scene","title":"Two ordered piles, and one glance at a time","width":820,"height":280,"items":[{"icon":"pile","x":130,"y":128,"kind":"accent","label":"already in date order"},{"icon":"pile","x":330,"y":128,"kind":"accent","label":"also already in date order"},{"icon":"person","x":540,"y":126,"kind":"gold","label":"look at both tops, take the earlier"},{"icon":"shelf","x":740,"y":124,"kind":"box","label":"one ordered pile"}],"arrows":[{"x1":400,"y1":128,"x2":480,"y2":128,"style":"gold","label":"one comparison"},{"x1":600,"y1":126,"x2":680,"y2":126,"style":"green","label":"places one form, forever"}],"caption":"Nobody would call this sorting, and that is exactly the point. Merging two ordered piles is so easy that a child can do it, and the entire method in this lesson is an arrangement for making sure you are only ever asked to do this."}'></div>
+
+  <p>That job is so easy nobody would call it sorting. <strong>The whole method in this lesson is an arrangement for only ever having to do that job</strong>, and never anything harder.</p>
+
+  <h2><span class="ix">2</span> What It Actually Is</h2>
+  <div class="sub">Split until the problem is already solved.</div>
+  <p>Merging needs two sorted piles. So where do the sorted piles come from? <strong>You split until they are sorted by accident.</strong> A pile of one item is always in order, and nobody has to do anything to make that true.</p>
+
+  <div class="viz" data-viz='{"type":"arch","title":"Split down to trivial, then only ever merge","maxChars":18,"nodes":[{"id":"a","label":"Eight items, in no order at all","col":0,"row":1,"kind":"muted"},{"id":"b","label":"Split, and split, and split again","col":1,"row":1,"kind":"gold"},{"id":"c","label":"Eight piles of one. Every one is sorted, for free","col":2,"row":1,"kind":"accent"},{"id":"d","label":"Merge pairs: four piles of two","col":3,"row":0,"kind":"accent"},{"id":"e","label":"Merge again: two piles of four","col":3,"row":1,"kind":"accent"},{"id":"f","label":"Merge once more: one pile of eight","col":3,"row":2,"kind":"accent"}],"edges":[{"from":"a","to":"b"},{"from":"b","to":"c","label":"until trivial","style":"green"},{"from":"c","to":"d","label":"merge","style":"green"},{"from":"d","to":"e","label":"merge","style":"green"},{"from":"e","to":"f","label":"merge","style":"green"}],"caption":"Nothing in this diagram sorts. The splitting does no comparing at all, and the merging only ever combines two things that are already in order. The sortedness is manufactured at the far left, for free, by making the piles small enough that being sorted is unavoidable."}'></div>
+
+  <p>Splitting does no comparing whatsoever. <strong>All the work is in the stitching</strong>, and stitching is the easy job from block 1.</p>
+
+  <h2><span class="ix">3</span> Watch It Work</h2>
+  <div class="sub">Two sorted halves, and one comparison per item placed.</div>
+  <p>The row below is two sorted runs sitting side by side: <em class="k">2 4 7 9</em> on the left and <em class="k">1 3 5 8</em> on the right. Watch how few comparisons it takes, and watch what happens to each value <strong>after</strong> it is placed.</p>
+
+  <div class="board" data-anim='{"type":"array-scan","title":"Stitching two ordered runs into one","speed":1600,"big":true,"data":[2,4,7,9,1,3,5,8],"countLabel":" comparisons","pointerLabels":{"lo":"left top","hi":"right top"},"legend":[["the two being compared","look"],["placed, and never touched again","found"],["still waiting in its run","seen"]],"steps":[{"order":[0,1,2,3,4,5,6,7],"look":[0,4],"ptr":{"lo":0,"hi":4},"count":1,"seen":[1,2,3,5,6,7],"say":"Two runs, each already in order. <b>Compare only the two fronts:</b> 2 against 1. Nothing else in either run needs looking at, because each run is sorted and its front is its smallest."},{"order":[4,0,1,2,3,5,6,7],"found":[4],"look":[0,5],"ptr":{"lo":0,"hi":5},"count":2,"seen":[1,2,3,6,7],"say":"1 is smaller, so it moves to the front and <b>it is finished for good.</b> Nothing later in this sort will ever look at it again. Now 2 against 3."},{"order":[4,0,5,1,2,3,6,7],"found":[4,0,5],"look":[1,6],"ptr":{"lo":1,"hi":6},"count":4,"seen":[2,3,7],"say":"2 goes, then 3 goes. <b>One comparison, one item placed permanently</b>, every single time. That is the property the whole method is built to get."},{"order":[4,0,5,1,6,2,3,7],"found":[4,0,5,1,6],"look":[2,7],"ptr":{"lo":2,"hi":7},"count":6,"seen":[3],"say":"4 and 5 land. Five of the eight are home and <b>not one of them has been moved twice.</b>"},{"order":[4,0,5,1,6,2,7,3],"found":[4,0,5,1,6,2,7,3],"count":7,"badge":"7 comparisons","say":"7, then 8, then 9 falls in with nothing to compare against. <b>Seven comparisons for eight items.</b> The simple sorts in Lesson 7.2 needed twenty eight on the same eight numbers."}],"caption":"Seven comparisons, and every one of them placed an item permanently. That is the difference from Lesson 7.2, where bubble moved the same value fifteen times. Nothing here is revisited, because a run is sorted and its front is the only part that can possibly be next."}'></div>
+
+  <h2><span class="ix">4</span> Under The Hood</h2>
+  <div class="sub">Why one comparison is enough.</div>
+
+  <div class="viz" data-viz='{"type":"seq","title":"What a sorted run can promise about itself","actors":[{"label":"The merge","kind":"gold"},{"label":"The left run","kind":"accent"},{"label":"The right run","kind":"accent"}],"messages":[{"from":0,"to":1,"label":"what is your smallest remaining item","style":"gold"},{"from":1,"to":0,"label":"whatever is at my front. I am in order","style":"green"},{"from":0,"to":2,"label":"and yours","style":"gold"},{"from":2,"to":0,"label":"the same. My front, and nothing else can beat it","style":"green"},{"from":0,"to":0,"label":"then the smaller of those two is the smallest thing left anywhere"}],"caption":"This is the whole justification. Because each run is sorted, its front is its smallest, so the smallest item across both runs must be one of exactly two candidates. One comparison settles it, and no other item in either run needs to be examined at all."}'></div>
+
+  <p>Bubble sort in Lesson 7.2 had no such promise. <strong>A comparison there told you about two neighbours and nothing else.</strong> Here a comparison between two fronts settles the smallest item out of everything remaining, which is why one comparison places one item and never has to be repeated.</p>
+
+  <h2><span class="ix">5</span> The Types</h2>
+  <div class="sub">One method, and the three things it always demands.</div>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>What it always gives you</th><th>What it always demands</th><th>Why that matters</th></tr>
+    <tr><td>The same speed on every input</td><td>It never adapts to data that is already sorted</td><td>No lucky cases, and no disastrous ones. Lesson 7.4 has both</td></tr>
+    <tr><td>Equal items keep their original order</td><td>Nothing extra. It falls out of preferring the left run on a tie</td><td>This is stability, and Lesson 7.6 shows why it is a business requirement</td></tr>
+    <tr><td>It works on data too big to hold at once</td><td>Room for a second copy while stitching</td><td>Merging reads two things front to back, which is what a disk and a network want</td></tr>
+  </table>
+  <div class="tbl-cap">The middle column is the honest price and it is the same price three times: this method needs somewhere to put the merged result. That extra room is the one thing it cannot avoid, and it is exactly what Lesson 7.4 refuses to pay.</div></div>
+
+  <h2><span class="ix">6</span> What It Costs, In Plain English</h2>
+  <div class="sub">Where Chapter 6 numbers came from.</div>
+  <p>Count it in layers. Splitting eight items takes three splits, because <strong>eight halves to four halves to two halves to one</strong>. At every layer, stitching touches each item about once, so each layer costs about eight comparisons. Three layers, eight items: about twenty four.</p>
+  <p>Now the rule. <strong>The number of layers is how many times you can halve the pile</strong>, and the cost of each layer is the size of the pile.</p>
+
+  <div class="viz" data-viz='{"type":"card","title":"The bill Chapter 6 kept quoting, finally itemised","eyebrow":"COMPARISONS TO SORT","badge":"layers times size","width":560,"rows":[{"k":"A thousand items: 10 layers of 1,000","v":"about 10,000","tone":"good","bar":0.0005},{"k":"The same thousand, simple sort","v":"about 499,500","tone":"bad","bar":0.025},{"k":"A million items: 20 layers of 1,000,000","v":"about 20,000,000","tone":"good","bar":1},{"k":"The same million, simple sort","v":"about 500,000,000,000","tone":"bad","bar":1},{"k":"Double the data, and the cost goes up by","v":"a bit over twice","tone":"good","bar":0.002}],"caption":"Every bar is a rough weight rather than a measurement. Rows one and three are the exact figures Lesson 6.3 and Lesson 6.8 have been quoting to the reader since before this chapter existed, and this is where they come from: layers times size, where layers is how many times you can halve the pile."}'></div>
+
+  <p>That is the promise Chapter 6 was spending. <strong>About 10,000 comparisons for a thousand items and about 20,000,000 for a million</strong>, which is ten layers of a thousand and twenty layers of a million. In the Chapter 2 currency this is <em class="g">O(n log n)</em>, and the reason it matters is the last row: doubling the data costs a bit over twice, not four times.</p>
+
+  <h2><span class="ix">7</span> Where It Lives In Real Life</h2>
+  <div class="sub">Five places, and most of them are about size rather than speed.</div>
+
+  <div class="viz" data-viz='{"type":"kgraph","title":"Where stitching beats sorting","unit":178,"nodes":[{"id":"c","label":"Combining things that are already in order","x":2,"y":1,"kind":"dark"},{"id":"f","label":"Sorting a file bigger than the memory you have","x":0,"y":0,"kind":"gold"},{"id":"d","label":"Combining results from several machines, each sorted locally","x":0,"y":2,"kind":"accent"},{"id":"l","label":"Merging log files from several servers into one timeline","x":4,"y":0,"kind":"accent"},{"id":"v","label":"Version control merging two branches of history","x":4,"y":2,"kind":"box"},{"id":"s","label":"And inside real language sorts, on the runs it finds. Lesson 7.6","x":2,"y":3,"kind":"gold"}],"edges":[{"from":"c","to":"f","label":"read front to back","style":"gold"},{"from":"c","to":"d","label":"sort locally, stitch centrally","style":"green"},{"from":"c","to":"l","label":"already in time order"},{"from":"c","to":"v","label":"two ordered histories"},{"from":"c","to":"s","label":"the runs are free","style":"gold"}],"caption":"The top left node is why this method refuses to die. Merging reads each run strictly front to back, which is the one access pattern a disk or a network is genuinely good at, so it can sort a file far larger than the memory available while a method that jumps around cannot."}'></div>
+
+  <p>Look at the merged log files. <strong>Each server already produced its lines in time order</strong>, for free, exactly as Lesson 7.1 pointed out, so combining them is only ever the easy job from block 1.</p>
+
+  <h2><span class="ix">8</span> How Problems Show Up</h2>
+  <div class="sub">Six sentences, and the tell is usually memory or order.</div>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>What somebody actually says</th><th>The test to run</th><th>What it is really telling you</th></tr>
+    <tr><td>"Sorting this file runs out of memory"</td><td>Ask whether the sort needs the whole file at once</td><td>A method that reads front to back can sort more than it can hold</td></tr>
+    <tr><td>"Doubling the data made it four times slower"</td><td>Time it at two sizes and compare the ratio</td><td>A simple sort. Layers times size grows a bit over twice</td></tr>
+    <tr><td>"Equal rows come back in a different order each run"</td><td>Ask whether the sort preserves ties</td><td>Not stable. Lesson 7.6 shows what that breaks</td></tr>
+    <tr><td>"It uses twice the memory of the data"</td><td>Ask where the merged result is being written</td><td>The honest price of this method. Lesson 7.4 avoids it</td></tr>
+    <tr><td>"Each machine finishes fast and combining takes forever"</td><td>Ask whether the combine re-sorts everything</td><td>It should stitch, not sort. The pieces already arrive in order</td></tr>
+    <tr><td>"It takes the same time whatever we feed it"</td><td>Feed it already-sorted data and compare</td><td>Correct behaviour for this method, and its main selling point</td></tr>
+  </table>
+  <div class="tbl-cap">The last row is the only one in this table that is not a problem. Predictability is what this method sells, and Lesson 7.4 is where somebody trades exactly that away for speed and memory.</div></div>
+
+  <h2><span class="ix">9</span> Solve It Live</h2>
+  <div class="sub">Twelve machines that finish in minutes, and a combine that takes an hour.</div>
+  <div class="callout">
+    <div class="ch">The problem, as it arrives</div>
+    <p>"We split a large dataset across twelve machines. Each one sorts its own share and finishes in about two minutes. Then one machine collects all twelve results and produces the final sorted output, and that step takes just over an hour. We have tried giving the collector more memory and a faster disk and neither made much difference."</p>
+  </div>
+
+  <div class="viz" data-viz='{"type":"swim","title":"Twelve sorted piles, and somebody sorting them again","lanes":[{"label":"The team"},{"label":"You"},{"label":"The collector"}],"steps":[{"id":"a1","lane":0,"col":0,"kind":"gold","label":"12 machines: 2 minutes each. Combine: over an hour"},{"id":"b1","lane":1,"col":1,"kind":"box","label":"Ask: what does the collector actually do with the twelve results?"},{"id":"c1","lane":2,"col":1,"kind":"bad","label":"Concatenates them, then sorts the whole thing"},{"id":"b2","lane":1,"col":2,"kind":"accent","label":"So it throws away twelve pieces of finished work"},{"id":"c2","lane":2,"col":2,"kind":"bad","label":"The order each machine produced is discarded"},{"id":"b3","lane":1,"col":3,"kind":"accent","label":"Stitch instead: compare twelve fronts, take the smallest"},{"id":"b4","lane":1,"col":4,"kind":"accent","label":"One pass, front to back, and no re-sorting at all"}],"edges":[{"from":"a1","to":"b1"},{"from":"b1","to":"c1"},{"from":"c1","to":"b2"},{"from":"b2","to":"c2"},{"from":"c2","to":"b3"},{"from":"b3","to":"b4"}],"caption":"More memory and a faster disk both aim at the symptom. The collector was handed twelve finished pieces of work and threw all of it away, which is why nothing about the hardware changed the outcome."}'></div>
+
+  <p><strong>The collector is sorting data that is already sorted twelve times over.</strong> Concatenating twelve ordered runs produces something that is not in order, so a general sort has no choice but to do the full job. Stitching them instead is one pass: look at twelve fronts, take the smallest, repeat, and every item is placed exactly once and never revisited.</p>
+
+  <div class="callout good">
+    <div class="ch">Why this reasoning wins</div>
+    <p>It asked what the collector <strong>does</strong>, not how fast it runs. The hardware questions could never have worked, because the problem was not that the work was slow but that finished work was being discarded. Whenever several producers each emit ordered output, the combine step should be the easy job from block 1, and if it is not, somebody is paying twice for order they already own.</p>
+  </div>
+
+  <h2><span class="ix">10</span> Your Turn</h2>
+  <div class="callout accent">
+    <div class="ch">Your rep, two ordered piles</div>
+    <p>Take twenty cards and deal them into two piles of ten, then sort each pile by hand however you like. <strong>Round one:</strong> combine them by looking only at the top card of each pile and taking the smaller, and count your comparisons. It should be close to nineteen, and never more. <strong>Round two:</strong> shuffle all twenty together and sort them from scratch, counting again. <strong>Round three:</strong> the question that matters. In round one, how many times did you pick up a card, put it down, and later pick it up again? The answer is zero, and that is the property Lesson 7.2 methods could not offer.</p>
+  </div>
+
+  <h2><span class="ix gold">✓</span> Check Yourself</h2>
+
+  <div class="quiz" data-correct="1">
+    <div class="q">Twelve machines each sort their share of a dataset, and a collector concatenates the twelve results and sorts the whole thing. Why is the collector so slow?</div>
+    <div class="opt" data-i="0">The collector has less memory than the twelve machines combined</div>
+    <div class="opt" data-i="1">Concatenating ordered runs produces unordered data, so the finished work of all twelve machines is thrown away and paid for again</div>
+    <div class="opt" data-i="2">Sorting always takes longer on one machine than on twelve</div>
+    <div class="qexp">Twelve sorted runs laid end to end are not sorted, so a general sort must do the full job from scratch. The order those machines produced is real and valuable, and merging exploits it: compare the twelve fronts, take the smallest, repeat. Each item is placed once and never revisited, which is why the hardware changes made no difference. The work was not slow, it was being repeated.</div>
+  </div>
+
+  <div class="quiz" data-correct="2">
+    <div class="q">Why does merging two sorted runs need only one comparison per item placed, when bubble sort moved the same value fifteen times?</div>
+    <div class="opt" data-i="0">Because merging uses a faster kind of comparison</div>
+    <div class="opt" data-i="1">Because the runs are shorter, so there is less to compare</div>
+    <div class="opt" data-i="2">Because each run is sorted, its front is its smallest, so the smallest item remaining anywhere must be one of exactly two candidates</div>
+    <div class="qexp">The promise a sorted run makes about itself is what does the work. Its front is its smallest, so nothing behind the front can possibly be next, and the smallest item across both runs is one of two things. One comparison settles it permanently. Bubble sort had no such promise available, because a comparison between two neighbours in an unordered row tells you about those two and nothing else.</div>
+  </div>
+
+  <div class="callout good">
+    <div class="ch">Next</div>
+    <p>This method is predictable, stable and needs room for a second copy. <strong>The next one is faster in practice, needs almost no extra room, and can fall apart completely on the most ordinary input there is.</strong> Everything about it follows from one decision made before a single comparison happens.</p>
+  </div>
+__NAV__
+</div>`

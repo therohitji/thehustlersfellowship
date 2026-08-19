@@ -231,7 +231,7 @@ Authoring rules for all of this live in [CONSISTENCY.md](CONSISTENCY.md).
 
 > Sorting is never the goal. It is the investment you make so that every later question becomes cheap.
 
-**Status:** partial, 2 of 8 lessons written
+**Status:** partial, 3 of 8 lessons written
 
 ### Lessons
 
@@ -239,7 +239,7 @@ Authoring rules for all of this live in [CONSISTENCY.md](CONSISTENCY.md).
 |---|---|---|
 | `7.1` | Why Sort At All: The Question Searching Asked | live |
 | `7.2` | The Simple Three: Bubble, Selection, Insertion | live |
-| `7.3` | Merge Sort: Split, Sort, Stitch | planned |
+| `7.3` | Merge Sort: Split, Sort, Stitch | live |
 | `7.4` | Quick Sort: Pick a Pivot and Partition | planned |
 | `7.5` | Heap Sort, Counting Sort and Radix Sort | planned |
 | `7.6` | Stability, In-Place, and Why Real Systems Use Hybrids | planned |
