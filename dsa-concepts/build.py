@@ -78,6 +78,15 @@ def check_payloads(blob):
                 sys.exit("BUILD FAILED: animation %r has no steps" % spec.get('title', t))
             # A kind outside the palette is not a styling nit: KIND[k] comes back undefined and
             # the renderer throws on it, which surfaces far downstream as "cannot read fill".
+            # A race step carries one lanes entry per track. Too few silently drops a track's
+            # state for that frame; too many is a typo that renders as nothing. Neither errors.
+            if spec.get('type') == 'race':
+                n_tracks = len(spec.get('tracks') or [])
+                for si, st in enumerate(spec.get('steps') or []):
+                    lanes = st.get('lanes')
+                    if lanes is not None and len(lanes) != n_tracks:
+                        sys.exit("BUILD FAILED: race %r step %d has %d lanes for %d tracks"
+                                 % (spec.get('title', t), si, len(lanes), n_tracks))
             bad_kinds = sorted({k for k in walk_kinds(spec) if k not in KINDS})
             if bad_kinds:
                 sys.exit("BUILD FAILED: %s %r uses unknown kind(s) %s (allowed: %s)"

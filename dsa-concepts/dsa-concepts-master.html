@@ -49,7 +49,7 @@
   .rail-brand .by{font-size:12.5px;color:rgba(220,236,229,.62);font-weight:500;}
   .rail-progress{padding:15px 22px 17px;font-size:11px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:rgba(220,236,229,.55);border-bottom:1px solid rgba(255,255,255,.09);}
   .pbar{height:5px;border-radius:99px;background:rgba(255,255,255,.13);margin-top:9px;overflow:hidden;}
-  .pbar i{display:block;height:100%;width:23%;background:linear-gradient(90deg,var(--green-500),var(--gold-500));border-radius:99px;}
+  .pbar i{display:block;height:100%;width:24%;background:linear-gradient(90deg,var(--green-500),var(--gold-500));border-radius:99px;}
 
   .chap{border-bottom:1px solid rgba(255,255,255,.06);}
   .chap-head{display:flex;align-items:center;gap:9px;padding:12px 22px;cursor:pointer;font-size:13.5px;font-weight:600;transition:background .14s;}
@@ -345,7 +345,7 @@ const COURSE = [
   { n:"05", title:"Stacks and Queues: Who Gets Served First", lessons:[
       {id:"5.1", t:"Stack: Last In, First Out, Like a Pile of Plates", state:"live"},
       {id:"5.2", t:"Queue: First In, First Out, Like a Ticket Line", state:"live"},
-      {id:"5.3", t:"Deque, Circular Queue and the Priority Twist", state:"soon"},
+      {id:"5.3", t:"Deque, Circular Queue and the Priority Twist", state:"live"},
       {id:"5.4", t:"Where Order of Service Decides Everything", state:"soon"},
       {id:"5.5", t:"The Whiteboard: Plates and Ticket Lines", state:"soon"}
   ]},
@@ -3696,6 +3696,151 @@ __NAV__
   <div class="callout good">
     <div class="ch">Next</div>
     <p>The last frame of the block 3 board is a line two people long sitting on a full row, with ten boxes on the left that can never be reached again. <strong>There are exactly three edits you can make to the one rule</strong>, and the first one fixes that wasted row by joining its ends. The third one throws the rule away entirely, because who gets served next is the whole structure, and Lesson 5.3 is where that rule starts bending.</p>
+  </div>
+__NAV__
+</div>`,
+
+"5.3": `<div class="wrap">
+  <div class="les-kicker">Chapter 5 · Lesson 5.3</div>
+  <h1 class="les-title">Deque, Circular Queue and the Priority Twist</h1>
+  <div class="les-meta">
+    <span class="pill">foundational</span><span class="pill">~14 min</span>
+    <span class="pill gold">no code needed</span><span class="pill">11 visuals</span>
+  </div>
+
+  <p class="motto">A ring cannot grow, and that is not the limitation you work around. That is the thing you bought.</p>
+
+  <p class="lead">This chapter has added no structure, only a rule about which end you may touch, because deciding who gets served next is the structure. Here that rule gets edited three times. By the end you can look at any serving policy, say whether it can be enforced at an end, and name what it costs when it cannot.</p>
+
+  <h2><span class="ix">1</span> The Everyday Situation</h2>
+  <div class="sub">The button exists because of what the card does when nobody is looking.</div>
+  <p>Your dashcam has recorded every day for two years on one small card. It has never filled up, never asked you to delete anything, never shown a warning. You have never thought about it, and that is exactly the point. It keeps <strong>the last hour</strong>, and it does that by writing every new minute over the oldest minute it still holds.</p>
+
+  <div class="viz" data-viz='{"type":"scene","title":"Two years of recording on a card that never filled","width":800,"height":280,"items":[{"icon":"phone","x":112,"y":126,"kind":"dark","label":"the camera, recording all day"},{"icon":"shelf","x":330,"y":124,"kind":"accent","label":"one hour of slots, reused forever"},{"icon":"person","x":548,"y":126,"kind":"gold","label":"you, reaching for the lock button"},{"icon":"doc","x":716,"y":124,"kind":"bad","label":"the minute that proves it"}],"arrows":[{"x1":168,"y1":126,"x2":268,"y2":126,"style":"green","label":"newest minute in"},{"x1":600,"y1":126,"x2":668,"y2":126,"style":"gold","label":"before it is written over"}],"caption":"Nothing here is a warning and nothing here is a bug. The card never fills because the oldest minute is destroyed on a schedule, and the lock button exists because that schedule does not know which minute mattered."}'></div>
+
+  <p>Then somebody clips your wing mirror and drives off. You reach for the lock button, and the reason it exists is the thing you never thought about. The hour is a loop, so <strong>the minute that proves what happened has about fifty nine minutes to live</strong> before the camera writes over it. The rule that protects the newest is the rule that will destroy your evidence, and it is only ever correct while the newest thing is the only thing you will want.</p>
+
+  <h2><span class="ix">2</span> What It Actually Is</h2>
+  <div class="sub">Three edits to one rule, and only one of them is expensive.</div>
+  <p>Chapter 5 has run on one rule: touch one end, or add at one end and take from the other. There are exactly three edits you can make to it. <strong>Open both ends</strong> and you get a deque. <strong>Join the two ends of a fixed row</strong> and you get a ring. <strong>Replace arrival with urgency</strong> and you get something that is not about ends at all.</p>
+
+  <div class="viz" data-viz='{"type":"arch","title":"Three edits to one rule, and where each one is paid","maxChars":18,"nodes":[{"id":"c","label":"The one rule: you may only touch an end","col":0,"row":1,"kind":"dark"},{"id":"d","label":"Open both ends: a deque","col":1,"row":0,"kind":"accent"},{"id":"r","label":"Join the ends of a fixed row: a ring","col":1,"row":1,"kind":"gold"},{"id":"p","label":"Replace arrival with urgency","col":1,"row":2,"kind":"bad"},{"id":"d2","label":"Free. Both ends are still ends","col":2,"row":0,"kind":"accent"},{"id":"r2","label":"Free to run, and you buy a fixed row up front","col":2,"row":1,"kind":"gold"},{"id":"p2","label":"The next to serve is not at an end. No handle finds it","col":2,"row":2,"kind":"bad"}],"edges":[{"from":"c","to":"d","label":"edit one"},{"from":"c","to":"r","label":"edit two"},{"from":"c","to":"p","label":"edit three"},{"from":"d","to":"d2","label":"costs","style":"green"},{"from":"r","to":"r2","label":"costs","style":"green"},{"from":"p","to":"p2","label":"costs"}],"caption":"Every rule you can enforce at an end is free to run. The first rule that needs the middle is the one that costs you a whole new shape, and that is the third edit."}'></div>
+
+  <p>Read the third row carefully, because it is the spine of the lesson. <strong>Every rule you can enforce at an end is free to run.</strong> A deque costs nothing, because both ends are still ends. A ring costs nothing to run either, but you buy a fixed row up front and sign all four of Chapter 3 clauses again. Urgency is the one that breaks: the next thing to serve is no longer at either end, so <strong>no handle can find it</strong>, and every trick in this chapter dies at once.</p>
+
+  <div class="callout warn">
+    <div class="ch">Not the same as a circular chain</div>
+    <p>Lesson 4.3 shipped circular linked lists, and these are different animals. A circular chain joins the last node to the first and <strong>can still grow</strong>, because every node still holds an address and you can always make another. A ring joins the last slot of a fixed row to the first and <strong>can never grow</strong>. That inability is not a limitation to work around. It is the entire purchase.</p>
+  </div>
+
+  <h2><span class="ix">3</span> Watch It Work</h2>
+  <div class="sub">Eight slots, and the drift that ended Lesson 5.2 undone with arithmetic.</div>
+  <p>Lesson 5.2 ended badly. The line was two people long, the row was full, and ten slots behind the front stood empty and could never be reached again. Every serve pushed the front further right and nothing ever came back. <strong>That drift is what this board fixes, with arithmetic rather than a new kind of box.</strong></p>
+  <p>Each box prints a slot number, because a slot number is the one thing about a slot that never changes. What a slot is holding lives entirely in its colour.</p>
+
+  <div class="board" data-anim='{"type":"array-scan","title":"Eight slots, two markers, and a row that never ends","speed":1700,"data":["0","1","2","3","4","5","6","7"],"pointerLabels":{"lo":"read","hi":"write"},"countLabel":" held","legend":[["holding work","found"],["being written now","look"],["free","dead"],["overwritten before anybody read it","bad"]],"steps":[{"look":[0],"dead":[1,2,3,4,5,6,7],"ptr":{"lo":0,"hi":0},"count":0,"badge":"empty: read meets write","say":"Eight slots, nothing in any of them. <b>Read names the oldest thing nobody has taken</b>, and there is nothing, so it names slot 0. Write names the slot the next arrival lands in, which is also slot 0. Both markers sit on one box and step apart so you can read them. Remember this picture."},{"found":[0,1,2],"look":[3],"dead":[4,5,6,7],"ptr":{"lo":0,"hi":3},"count":3,"badge":"3 held","say":"Three arrivals landed in slots 0, 1 and 2. Write advanced three times and now names slot 3. <b>Read never moved, because nothing was taken.</b> One marker moved. Nothing else on the board did."},{"found":[2,3,4],"look":[5],"dead":[0,1,6,7],"ptr":{"lo":2,"hi":5},"count":3,"badge":"2 read, 2 free again","say":"Two things were taken out of slots 0 and 1, so read advanced to slot 2 and those two slots went pale: <b>free again.</b> Two more arrivals landed in 3 and 4. Still three held, and this is the frame Lesson 5.2 could not draw."},{"found":[2,3,4,5,6],"look":[7],"dead":[0,1],"ptr":{"lo":2,"hi":7},"count":5,"badge":"the last slot","say":"Two more arrivals filled 5 and 6, so write now names slot 7, the last box in the row. <b>In Lesson 5.2 this was the end of the world.</b> Nothing has ended here. Watch where write goes next."},{"found":[2,3,4,5,6,7],"look":[0],"dead":[1],"ptr":{"lo":2,"hi":0},"count":6,"badge":"8 means slot 0","say":"The arrival landed in slot 7, so write should now name slot 8. There is no slot 8. <b>Divide by eight and keep the remainder, and 8 leaves 0</b>, so write jumps to the far left. That jump is the entire invention, and it is the Lesson 3.1 sum with a wrap on the end."},{"found":[3,4,5,6,7,0,1],"look":[2],"ptr":{"lo":2,"hi":2},"count":8,"badge":"full: write meets read","say":"Two more arrivals filled 0 and 1, and write has come all the way round to slot 2, which still holds the oldest thing nobody has read. Read names slot 2 as well. <b>Compare this with frame one: the same two markers on the same box, and the opposite meaning.</b>"},{"bad":[2],"found":[3,4,5,6,7,0,1],"ptr":{"lo":3,"hi":3},"count":8,"badge":"or refuse the newest","say":"The arrival landed anyway. Slot 2 held something nobody had read and <b>it is gone, and nobody was told.</b> The other door was to refuse the arrival and keep slot 2. Which door you take is not a performance decision. It is a decision about what the data is for, and that is Lesson 5.4."}],"caption":"The ambiguity in frame six lives in the markers and not in the cells, which is why a real ring keeps a count of what it holds, or leaves one slot permanently empty so that full and empty can never look the same. You pick one on purpose."}'></div>
+
+  <h2><span class="ix">4</span> Under The Hood</h2>
+  <div class="sub">One sum, with a remainder on the end.</div>
+
+  <div class="viz" data-viz='{"type":"seq","title":"What a ring asks for, and what it never asks for","actors":[{"label":"The ring","kind":"gold"},{"label":"The one sum","kind":"accent"},{"label":"The memory manager","kind":"muted"}],"messages":[{"from":0,"to":2,"label":"room for eight slots, once, before anything runs","style":"gold"},{"from":2,"to":0,"label":"one run of boxes, and never asked again","style":"green"},{"from":0,"to":1,"label":"the arrival after slot 7 goes where","style":"gold"},{"from":1,"to":0,"label":"8 divided by 8 leaves 0","style":"green"},{"from":0,"to":1,"label":"and the one after that"},{"from":1,"to":0,"label":"9 divided by 8 leaves 1","style":"green"}],"caption":"Lesson 3.1 gave a row its personality with one sum: start, plus position, times width. A row of eight will happily answer that sum for position eight, and the answer is a box belonging to somebody else. A ring divides by eight first and keeps the remainder, so the only positions it can ever name are the eight it owns."}'></div>
+
+  <p>That is why the row is claimed once and then never grown, never copied and never moved. <strong>A ring never asks the memory manager for anything after the first claim</strong>, which is the whole reason it turns up wherever something is not allowed to stop and wait.</p>
+
+  <div class="callout warn">
+    <div class="ch">What the circle in your head is not</div>
+    <p>If you are picturing eight boxes joined in a ring, be careful. <strong>Nothing is joined to anything.</strong> The row is a straight run of boxes exactly like Chapter 3, no slot holds an address, and no slot knows what follows it. The only thing that comes back around is a remainder. The circle is the arithmetic, not the memory.</p>
+  </div>
+
+  <h2><span class="ix">5</span> The Types</h2>
+  <div class="sub">Four arrangements, and the one condition each demands.</div>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>The edit</th><th>What you get</th><th>The one condition it demands</th></tr>
+    <tr><td>Open both ends</td><td>A deque. Join or leave at either end</td><td>Nothing extra. Both ends are still ends, so every move is still one write</td></tr>
+    <tr><td>Open both ends, and cap it</td><td>A bounded recent list</td><td>You are willing to abandon the newest at one end while adding at the other</td></tr>
+    <tr><td>Join the ends of a fixed row</td><td>A ring. The drift is gone</td><td>The size is decided before anything arrives and can never change</td></tr>
+    <tr><td>Replace arrival with urgency</td><td>A priority queue</td><td>The next to serve is not at an end, so no handle finds it. That is a shape, not a rule</td></tr>
+  </table>
+  <div class="tbl-cap">Rows one, two and three are edits to a rule and cost nothing to run. Row four is not an edit at all, it is a replacement, and it is the only one that has to buy a new structure to keep its promise.</div></div>
+
+  <div class="viz" data-viz='{"type":"dtree","title":"Can the next thing to serve be named by pointing at an end","maxChars":17,"nodes":[{"id":"q1","label":"Can you name the next to serve by pointing at an end?","col":1,"row":0,"kind":"gold","shape":"diamond"},{"id":"q2","label":"Yes. Must the space be decided before anything arrives?","col":0,"row":1,"kind":"gold","shape":"diamond"},{"id":"p","label":"No. Urgency. A shape, and Chapter 11 builds it","col":3,"row":1,"kind":"bad"},{"id":"r","label":"Yes: a ring. Claimed once, never grown, oldest dropped","col":0,"row":2,"kind":"accent"},{"id":"c","label":"No: a chain with two handles, growing as it likes","col":2,"row":2,"kind":"accent"}],"edges":[{"from":"q1","to":"q2","label":"yes","style":"green"},{"from":"q1","to":"p","label":"no"},{"from":"q2","to":"r","label":"fixed","style":"green"},{"from":"q2","to":"c","label":"unbounded","style":"green"}],"caption":"Only one branch here leaves the chapter. Everything on the left is still one rule about ends and still costs one write, and the moment the answer to the first question is no, none of the handles you have been carrying since Lesson 5.1 are any use."}'></div>
+
+  <h2><span class="ix">6</span> What It Costs, In Plain English</h2>
+  <div class="sub">A million waiting, and the most urgent one has to be found.</div>
+  <p>A million are waiting and you must serve the most urgent. Scan the row: a million looks, and a million again for the next one, because nothing you learned was written down. Keep the row sorted instead and the looking is free, but <strong>every arrival now shuffles about five hundred thousand things into place</strong>, which is Lesson 3.2 arriving as a service policy.</p>
+
+  <div class="viz" data-viz='{"type":"card","title":"One question at a million waiting, three answers","eyebrow":"FIND THE MOST URGENT","badge":"1,000,000 waiting","width":560,"rows":[{"k":"Scan the row every time","v":"1,000,000 looks","tone":"bad","bar":1},{"k":"Keep the row sorted: moves per arrival","v":"about 500,000","tone":"bad","bar":0.5},{"k":"The shape Chapter 11 builds","v":"about 20 steps","tone":"good","bar":0.00002}],"caption":"Every bar is drawn against a maximum of one million. The first two rows are everything the ends can do, and both of them are already in this course: one is a plain scan, and the other is the Lesson 3.2 shuffle charged on every single arrival."}'></div>
+
+  <p>Now the other half of the bill, which is not a count at all. Urgency does not just cost you a shape. <strong>It costs somebody their turn</strong>, and the board below is what that looks like when nobody has said out loud that waiting should count for anything.</p>
+
+  <div class="board" data-anim='{"type":"race","title":"The same eight tickets, two serving rules","speed":1600,"legend":[["served","found"],["waiting","look"],["never reached","bad"]],"tracks":[{"label":"Served in arrival order","data":["A","B","C","D","E","F","G","H"],"countLabel":" served"},{"label":"Served most urgent first","data":["A","B","C","D","E","F","G","H"],"countLabel":" min A has waited"}],"steps":[{"badge":"eight arrive","lanes":[{"count":0},{"count":0}],"say":"The same eight tickets arrive at the same moments in both lanes. <b>Ticket A is first, and it is an ordinary question.</b> Nothing about either lane is faster than the other."},{"badge":"the first serve","lanes":[{"found":[0],"look":[1],"count":1},{"found":[1],"look":[0],"count":0}],"say":"Arrival order serves A, because A arrived first. Urgency serves B, because B is on fire. <b>Both rules are working exactly as written.</b>"},{"badge":"more urgent arrive","lanes":[{"found":[0,1],"look":[2],"count":2},{"found":[1,2,3],"look":[0],"count":45}],"say":"Two more urgent tickets arrive. Arrival order has reached C. Urgency has served three, and none of them is A. <b>Watch the second counter, because it is the only thing on the board that is moving for A.</b>"},{"badge":"A is still there","lanes":[{"found":[0,1,2,3],"look":[4],"count":4},{"found":[1,2,3,4,5],"bad":[0],"count":180}],"say":"The urgent ones have not stopped arriving, and they never will. <b>A is not late. A is unreachable</b>, and it will stay unreachable for as long as anything more urgent keeps turning up."}],"caption":"Nothing in the right hand lane is broken, which is what makes this hard to see. Urgency with no memory of waiting cannot move a ticket that never becomes urgent, and the fix is not more people. It is letting time spent waiting count as urgency."}'></div>
+
+  <h2><span class="ix">7</span> Where It Lives In Real Life</h2>
+  <div class="sub">Five places, and all of them for the same reason.</div>
+
+  <div class="viz" data-viz='{"type":"kgraph","title":"A fixed set of slots, reused forever, in five places","unit":176,"nodes":[{"id":"c","label":"A fixed set of slots, reused forever","x":2,"y":1,"kind":"dark"},{"id":"a","label":"A sound card, which is never allowed to pause and ask for memory","x":0,"y":0,"kind":"accent"},{"id":"k","label":"The keyboard buffer holding what you typed while something was busy","x":0,"y":2,"kind":"gold"},{"id":"l","label":"A crash log keeping only the last few thousand lines","x":4,"y":0,"kind":"box"},{"id":"d","label":"A dashcam keeping the last hour and nothing before it","x":4,"y":2,"kind":"box"},{"id":"u","label":"A capped undo history, which Lesson 3.5 already called a fixed ring","x":2,"y":3,"kind":"accent"}],"edges":[{"from":"c","to":"a","label":"cannot stop to ask","style":"green"},{"from":"c","to":"k","label":"you have felt this one","style":"gold"},{"from":"c","to":"l","label":"the start is always missing"},{"from":"c","to":"d","label":"the oldest minute goes"},{"from":"c","to":"u","label":"Lesson 3.5 shipped it","style":"green"}],"caption":"Every one of these has the same reason. The thing filling the ring is not allowed to stop and wait for memory, so refusing to grow is cheaper than asking. The keyboard buffer is the one you have felt: type ahead while something is busy and your characters appear when it catches up."}'></div>
+
+  <p>The crash log is the one worth staring at. It keeps the last few thousand lines in a fixed set of slots, which is why <strong>the log is always missing the beginning of the incident</strong>. Nothing is broken. The crash simply outran the ring, and the minutes that would have explained it were written over by the minutes that came after.</p>
+
+  <h2><span class="ix">8</span> How Problems Show Up</h2>
+  <div class="sub">Seven sentences, and one question underneath all of them.</div>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>What somebody actually says</th><th>The tell</th><th>What it is really asking</th></tr>
+    <tr><td>"The camera never fills up and never warns"</td><td>Storage with no ceiling and no warning</td><td>Fixed slots reused forever, and the oldest is dropped without asking</td></tr>
+    <tr><td>"Crash logs are always missing the start"</td><td>Evidence thinning from the beginning</td><td>A ring of the last few thousand lines, and the crash outran it</td></tr>
+    <tr><td>"Memory climbs all afternoon and never comes down"</td><td>Cost tracking uptime, not requests</td><td>An unbounded line assumed to be fixed. The line is the leak</td></tr>
+    <tr><td>"Audio stutters when busy, never when idle"</td><td>A fault that arrives with load</td><td>A ring refilled slower than it drains, and its size is the hiccup you survive</td></tr>
+    <tr><td>"Open since March, and the average looks fine"</td><td>An average blind to its own victims</td><td>Urgency with no aging, averaged over the served only</td></tr>
+    <tr><td>"Can we let people jump the line?"</td><td>Serving from the middle</td><td>Not a rule about ends any more. That is a shape, and Chapter 11 builds it</td></tr>
+    <tr><td>"We need both ends, and we drop from either"</td><td>Two ends, both live</td><td>A deque, and free, because both ends are still ends</td></tr>
+  </table>
+  <div class="tbl-cap">One question sits under all seven: can the thing being asked for be named by pointing at an end? Five of these can. Rows five and six cannot, and both are urgency wearing a different coat.</div></div>
+
+  <h2><span class="ix">9</span> Solve It Live</h2>
+  <div class="sub">A flat average, and 1,200 tickets it cannot see.</div>
+  <div class="callout">
+    <div class="ch">The problem, as it arrives</div>
+    <p>"Our queue is ordered by urgency and it works. We close five hundred tickets a day, about five hundred and twenty come in, and the average wait has been nine minutes and flat for months. But 1,200 tickets have not been touched since March."</p>
+  </div>
+
+  <div class="viz" data-viz='{"type":"swim","title":"A flat average, and the tickets it cannot see","lanes":[{"label":"The team"},{"label":"You"},{"label":"The queue"}],"steps":[{"id":"a1","lane":0,"col":0,"kind":"gold","label":"500 closed a day, average nine minutes, flat for months"},{"id":"b1","lane":1,"col":1,"kind":"box","label":"Ask: does waiting move a ticket up the line?"},{"id":"c1","lane":2,"col":1,"kind":"bad","label":"No. Urgency is set on arrival and never moves again"},{"id":"b2","lane":1,"col":2,"kind":"accent","label":"Then the average can only cover the ones served"},{"id":"c2","lane":2,"col":2,"kind":"bad","label":"20 a day never reached, 60 working days, 1,200 untouched"},{"id":"c3","lane":2,"col":3,"kind":"bad","label":"Under arrival order those 20 would bend the average"},{"id":"b3","lane":1,"col":4,"kind":"accent","label":"Let waiting raise urgency, and hand the deficit to 5.4"}],"edges":[{"from":"a1","to":"b1"},{"from":"b1","to":"c1"},{"from":"c1","to":"b2"},{"from":"b2","to":"c2"},{"from":"c2","to":"c3"},{"from":"c3","to":"b3"}],"caption":"The flatness is the fingerprint. Under arrival order a growing backlog drags the average up, because the oldest waits are inside the number. Under urgency with no aging the oldest waits are outside it, so the number can sit still while the backlog grows all year."}'></div>
+
+  <p><strong>The queue is not slow. It is correct, and it has no memory of waiting.</strong> Twenty a day are never reached, and sixty working days of that is 1,200 tickets. The average covers tickets that were served, and the five hundred served each day are the most urgent five hundred, answered within the hour, so a ticket that is never served never enters the number at all.</p>
+
+  <div class="callout good">
+    <div class="ch">Why this reasoning wins</div>
+    <p>It asked one question: <strong>does waiting move a ticket up the line?</strong> No. That single no eliminates staffing, tooling and volume at once, because all three would move the victims around week to week and would bend the average as the backlog grew. The same tickets are stuck and the number has not moved. Add waiting to urgency, so a ticket open a week outranks a fresh ordinary one, and the starvation stops without hiring anybody. The twenty a day is a separate bill, and Lesson 5.4 is where it is paid.</p>
+  </div>
+
+  <h2><span class="ix">10</span> Your Turn</h2>
+  <div class="callout accent">
+    <div class="ch">Your rep, eight containers and two fingers</div>
+    <p>Find eight identical containers: an egg box, a pill box, a row of glasses. Number the slots nought to seven and write nothing else on them, ever. <strong>Round one:</strong> drop a coin in slot after slot, keeping one finger on the slot the next coin goes in. <strong>Round two:</strong> take coins out from behind with your other hand, and watch two slots come free while the front keeps moving. <strong>Round three:</strong> keep dropping and stop taking. When your two fingers meet, stop and answer the only question that matters: is this box full, or is it empty? You cannot tell from the fingers, and that is why a real ring keeps a count.</p>
+  </div>
+
+  <h2><span class="ix gold">✓</span> Check Yourself</h2>
+
+  <div class="quiz" data-correct="1">
+    <div class="q">A team swaps a growing queue for a fixed ring of 4,096 slots and says it saved memory. What did they buy, and what did they sell?</div>
+    <div class="opt" data-i="0">A smaller footprint, and nothing sold, since the queue was mostly empty anyway</div>
+    <div class="opt" data-i="1">A space that never grows and never asks for memory again, and they sold the right to keep everything past 4,096 waiting</div>
+    <div class="opt" data-i="2">Faster reads, because a ring sits together in memory and a queue does not</div>
+    <div class="qexp">A ring makes nothing faster. Taking the oldest and adding the newest were already one write each. What changes is that the space is decided before anything arrives and never changes again, so nothing is asked of the memory manager after the first claim. The bill is frame six of the board: lose the oldest, or refuse the newest, and not choosing is choosing the first.</div>
+  </div>
+
+  <div class="quiz" data-correct="2">
+    <div class="q">A priority queue has held a flat nine minute average for months while a set of old tickets has never been touched. What is the honest reading?</div>
+    <div class="opt" data-i="0">The queue is too slow and needs more people on it</div>
+    <div class="opt" data-i="1">The average is wrong and somebody should recompute it</div>
+    <div class="opt" data-i="2">The ordering is doing what it was told, and the average covers only tickets that were served</div>
+    <div class="qexp">Nothing is broken, which is what makes it hard to see. Urgency with no aging cannot move a ticket that never becomes urgent, so a ticket at the bottom is not late, it is unreachable. More people raises the number served and leaves exactly the same tickets stuck.</div>
+  </div>
+
+  <div class="callout good">
+    <div class="ch">Next</div>
+    <p>Two of the three edits were free, and the third one bought a shape. Every one of them still assumed somebody decided how big the line may get. <strong>Lesson 5.4 is what happens when nobody did</strong>, and it starts with two outages on one morning that were both called an overload and have nothing whatsoever in common.</p>
   </div>
 __NAV__
 </div>`,
