@@ -49,7 +49,7 @@
   .rail-brand .by{font-size:12.5px;color:rgba(220,236,229,.62);font-weight:500;}
   .rail-progress{padding:15px 22px 17px;font-size:11px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:rgba(220,236,229,.55);border-bottom:1px solid rgba(255,255,255,.09);}
   .pbar{height:5px;border-radius:99px;background:rgba(255,255,255,.13);margin-top:9px;overflow:hidden;}
-  .pbar i{display:block;height:100%;width:35%;background:linear-gradient(90deg,var(--green-500),var(--gold-500));border-radius:99px;}
+  .pbar i{display:block;height:100%;width:37%;background:linear-gradient(90deg,var(--green-500),var(--gold-500));border-radius:99px;}
 
   .chap{border-bottom:1px solid rgba(255,255,255,.06);}
   .chap-head{display:flex;align-items:center;gap:9px;padding:12px 22px;cursor:pointer;font-size:13.5px;font-weight:600;transition:background .14s;}
@@ -366,8 +366,8 @@ const COURSE = [
       {id:"7.3", t:"Merge Sort: Split, Sort, Stitch", state:"live"},
       {id:"7.4", t:"Quick Sort: Pick a Pivot and Partition", state:"live"},
       {id:"7.5", t:"Heap Sort, Counting Sort and Radix Sort", state:"live"},
-      {id:"7.6", t:"Stability, In-Place, and Why Real Systems Use Hybrids", state:"soon"},
-      {id:"7.7", t:"How Sorting Problems Show Up, and Six Systems Torn Down", state:"soon"},
+      {id:"7.6", t:"Stability, In-Place, and Why Real Systems Use Hybrids", state:"live"},
+      {id:"7.7", t:"How Sorting Problems Show Up, and Six Systems Torn Down", state:"live"},
       {id:"7.8", t:"The Whiteboard: Every Sort, Racing Side by Side", state:"soon"}
   ]},
   { n:"08", title:"Hashing: Finding Without Looking", locked:true, lessons:[
@@ -5943,6 +5943,264 @@ __NAV__
   <div class="callout good">
     <div class="ch">Next</div>
     <p>You now have every sorting idea in the chapter, and one of them quietly appeared twice: the three 1s in the block 3 board left in the order they arrived, and radix sort collapses without it. <strong>Next: why that property is a business requirement rather than a footnote</strong>, and why the sort your language actually ships is none of these methods but a mixture of three of them.</p>
+  </div>
+__NAV__
+</div>`
+,
+
+"7.6": `<div class="wrap">
+  <div class="les-kicker">Chapter 7 · Lesson 7.6</div>
+  <h1 class="les-title">Stability, In-Place, and Why Real Systems Use Hybrids</h1>
+  <div class="les-meta">
+    <span class="pill">foundational</span><span class="pill">~13 min</span>
+    <span class="pill gold">no code needed</span><span class="pill">9 visuals</span>
+  </div>
+
+  <p class="motto">Two sorts can both be correct, produce different answers, and only one of them keeps the promise your product made.</p>
+
+  <p class="lead">You now have every sorting idea in the chapter. This lesson is about the two properties nobody asks for until something breaks, and about why the sort your programming language actually ships is none of the methods you have met but a mixture of three of them. By the end you can say what your sort must promise before you care how fast it is.</p>
+
+  <h2><span class="ix">1</span> The Everyday Situation</h2>
+  <div class="sub">You have already relied on this and never noticed.</div>
+  <p>A table of products on a shop page. You click <em class="k">price</em> and it sorts cheapest first. Then you click <em class="k">rating</em>. <strong>What do you expect to see?</strong> Five star products at the top, and within those five star products, the cheap ones first, because that is what you asked for a moment ago.</p>
+
+  <div class="viz" data-viz='{"type":"scene","title":"Two clicks, and the promise between them","width":820,"height":280,"items":[{"icon":"person","x":120,"y":126,"kind":"gold","label":"click: sort by price"},{"icon":"doc","x":330,"y":124,"kind":"accent","label":"cheapest first"},{"icon":"person","x":540,"y":126,"kind":"gold","label":"click: sort by rating"},{"icon":"doc","x":740,"y":124,"kind":"box","label":"best rated first, and still cheapest within each"}],"arrows":[{"x1":180,"y1":126,"x2":268,"y2":126,"style":"green","label":"first sort"},{"x1":600,"y1":126,"x2":676,"y2":126,"style":"gold","label":"does it remember?"}],"caption":"Nobody has ever asked a product team for a stable sort. Everybody has complained when they clicked two columns and the second click destroyed the first. That complaint is this lesson, and it arrives as a bug report about the interface rather than about an algorithm."}'></div>
+
+  <p>Nobody has ever asked for that in writing. <strong>Everybody complains when it does not happen</strong>, and the complaint arrives as a bug about the page rather than about a sorting method.</p>
+
+  <h2><span class="ix">2</span> What It Actually Is</h2>
+  <div class="sub">Two properties, and neither one is about speed.</div>
+  <p><strong>Stable</strong> means that when two items are equal, they come out in the order they went in. <strong>In place</strong> means the sort works inside the row it was given, without needing room for a second copy. Neither is about how fast anything runs, and both decide whether a method is usable at all.</p>
+
+  <div class="viz" data-viz='{"type":"arch","title":"Two questions to ask before speed","maxChars":18,"nodes":[{"id":"q","label":"Before asking how fast","col":0,"row":1,"kind":"dark"},{"id":"s","label":"Does it keep the order of equal items?","col":1,"row":0,"kind":"gold"},{"id":"i","label":"Does it need room for a second copy?","col":1,"row":2,"kind":"gold"},{"id":"sy","label":"Yes: you can sort by one thing, then another, and keep both","col":2,"row":0,"kind":"accent"},{"id":"sn","label":"No: the second sort silently destroys the first","col":2,"row":1,"kind":"bad"},{"id":"iy","label":"Yes: merge sort, and memory spikes on big files","col":2,"row":2,"kind":"bad"},{"id":"in","label":"No: quick and heap sort, working inside the row","col":2,"row":3,"kind":"accent"}],"edges":[{"from":"q","to":"s"},{"from":"q","to":"i"},{"from":"s","to":"sy","label":"stable","style":"green"},{"from":"s","to":"sn","label":"not stable"},{"from":"i","to":"iy","label":"needs a copy"},{"from":"i","to":"in","label":"in place","style":"green"}],"caption":"These two questions have nothing to do with each other and nothing to do with speed, and between them they eliminate most methods for most jobs. The unhappy fact underneath this lesson is that the fastest in-place methods are the ones that are not stable."}'></div>
+
+  <h2><span class="ix">3</span> Watch It Work</h2>
+  <div class="sub">Two correct answers, and only one of them keeps the promise.</div>
+  <p>Six products. The number in each box is the <strong>rating</strong>, and the letter underneath is the product, listed in the order the previous sort left them: cheapest first. Now sort by rating and watch the letters.</p>
+
+  <div class="board" data-anim='{"type":"array-scan","title":"Sorted by rating, two ways, both correct","speed":1600,"big":true,"data":[3,1,2,3,1,2],"labels":["a","b","c","d","e","f"],"countLabel":" items placed","legend":[["being placed","look"],["placed, tie order kept","found"],["placed, tie order lost","bad"]],"steps":[{"order":[0,1,2,3,4,5],"count":0,"say":"Six products, already sorted by price so that a is cheapest and f is dearest. <b>The number is the rating. The letter is the product.</b> Three ratings, and every rating appears twice."},{"order":[1,4,2,5,0,3],"found":[1,4,2,5,0,3],"count":6,"badge":"stable: b e c f a d","say":"Sorted by rating with a <b>stable</b> method. Read the letters: b, e, then c, f, then a, d. Inside every rating the cheaper product still comes first, <b>because equal items left in the order they arrived.</b>"},{"order":[4,1,5,2,3,0],"bad":[4,1,5,2,3,0],"count":6,"badge":"unstable: e b f c d a","say":"The same six products, sorted by rating with an <b>unstable</b> method. Read the letters now: e, b, f, c, d, a. <b>Every rating is still correct.</b> The ratings are in perfect order and no item is in the wrong group."},{"order":[4,1,5,2,3,0],"bad":[4,1,5,2,3,0],"count":6,"badge":"both are correctly sorted","say":"That is the trap. <b>Neither of these is a bug in the ordinary sense.</b> Both rows are correctly sorted by rating and either would pass a test that checks the ratings are in order. The second one has quietly thrown away everything the price sort established."}],"caption":"Both answers are correct and only one is useful. The letters are the evidence: the price sort did real work, and an unstable method deletes it while leaving no trace that anything was lost, because the thing it was asked to sort is still perfectly sorted."}'></div>
+
+  <h2><span class="ix">4</span> Under The Hood</h2>
+  <div class="sub">Where stability comes from, and where it goes.</div>
+
+  <div class="viz" data-viz='{"type":"seq","title":"A tie, offered to two methods","actors":[{"label":"Two equal items","kind":"gold"},{"label":"Merge sort","kind":"accent"},{"label":"Quick sort","kind":"bad"}],"messages":[{"from":0,"to":1,"label":"we are equal. Which of us goes first","style":"gold"},{"from":1,"to":0,"label":"the one from the left run. I always prefer the left on a tie","style":"green"},{"from":0,"to":2,"label":"and you","style":"gold"},{"from":2,"to":0,"label":"whichever side of the pivot you landed on"},{"from":2,"to":0,"label":"and that depends on where you happened to be standing"}],"caption":"Stability is not a feature anybody adds. It falls out of merge sort by preferring the left run whenever two items are equal, and it is destroyed in quick sort because partitioning moves items across the row without regard for where they started. Lesson 7.5 counting sort was stable for the same reason: the tally is read front to back."}'></div>
+
+  <p><strong>Nobody adds stability. It either falls out of the method or it does not.</strong> Merge sort has it because a tie always resolves in favour of the left run. Quick sort loses it because partitioning throws items across the row, and Lesson 7.5 showed radix sort collapsing entirely without it.</p>
+
+  <h2><span class="ix">5</span> The Types</h2>
+  <div class="sub">Every method in this chapter, on the two questions that decide.</div>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>The method</th><th>Stable</th><th>Needs a second copy</th><th>Worst case</th></tr>
+    <tr><td>Insertion</td><td>yes</td><td>no</td><td>four times slower per doubling</td></tr>
+    <tr><td>Merge</td><td>yes</td><td>yes</td><td>none. Always layers times size</td></tr>
+    <tr><td>Quick</td><td>no</td><td>no</td><td>as bad as bubble, on sorted input</td></tr>
+    <tr><td>Heap</td><td>no</td><td>no</td><td>none. Always layers times size</td></tr>
+    <tr><td>Counting and radix</td><td>yes</td><td>yes</td><td>collapses if the value range is large</td></tr>
+  </table>
+  <div class="tbl-cap">Read down the middle two columns and the problem of this chapter appears: no single row is stable, in place, and free of a worst case. That is not a gap in anybody knowledge. It is a genuine trade, and it is why the next section exists.</div></div>
+
+  <p>Read that table again and the whole chapter turns into one uncomfortable fact. <strong>Nothing is stable, in place, and safe at the same time.</strong> So real systems stopped choosing.</p>
+
+  <h2><span class="ix">6</span> What It Costs, In Plain English</h2>
+  <div class="sub">The sort your language ships is a mixture, and here is why.</div>
+  <p>Every lesson in this chapter contributed one fact that a real sort now uses. <strong>Lesson 7.2:</strong> below about twenty items, insertion sort genuinely wins, and it is nearly free on data that is already nearly in order. <strong>Lesson 7.3:</strong> merging existing runs is cheap, stable, and predictable. <strong>Lesson 7.4:</strong> partitioning is fast and needs no extra room, but has a worst case that must be guarded.</p>
+
+  <div class="viz" data-viz='{"type":"card","title":"What a real sort actually does","eyebrow":"ONE SORT, THREE METHODS","badge":"per piece","width":560,"rows":[{"k":"Pieces under about 20 items","v":"insertion sort. Lesson 7.2","tone":"good","bar":0.02},{"k":"Runs of already-ordered data found in the input","v":"merged, not re-sorted. Lesson 7.3","tone":"good","bar":0.1},{"k":"Everything else, when stability is not required","v":"partitioning. Lesson 7.4","tone":"good","bar":0.5},{"k":"If the splitting goes too deep","v":"switch method, and stop the worst case","tone":"good","bar":0.5},{"k":"Nearly sorted input, end to end","v":"close to one pass","tone":"good","bar":0.05}],"caption":"Every row is a decision the sort makes about the data in front of it while it runs, rather than a decision somebody made in advance. That is the actual answer to which sort is best: none of them, and the useful skill is knowing which fact about your data each of them is exploiting."}'></div>
+
+  <p>And the guard in row four is Lesson 7.4 worst case being taken seriously. <strong>A real sort watches how deep its splitting has gone</strong>, and if it goes far deeper than layers-times-size would allow, it abandons partitioning and finishes with a method that has no bad case at all.</p>
+
+  <h2><span class="ix">7</span> Where It Lives In Real Life</h2>
+  <div class="sub">Five places where one of these two properties was the whole decision.</div>
+
+  <div class="viz" data-viz='{"type":"kgraph","title":"Where stability and memory decided it","unit":178,"nodes":[{"id":"c","label":"Two questions, asked before speed","x":2,"y":1,"kind":"dark"},{"id":"t","label":"A table where clicking two columns must keep both","x":0,"y":0,"kind":"gold"},{"id":"r","label":"Radix sort, which is wrong without stability. Lesson 7.5","x":0,"y":2,"kind":"accent"},{"id":"f","label":"A file larger than memory, where a second copy is impossible","x":4,"y":0,"kind":"accent"},{"id":"e","label":"An embedded device with a fixed, small memory budget","x":4,"y":2,"kind":"accent"},{"id":"l","label":"And library sorts, which usually promise stability in writing","x":2,"y":3,"kind":"gold"}],"edges":[{"from":"c","to":"t","label":"stability is the feature","style":"gold"},{"from":"c","to":"r","label":"stability is the mechanism","style":"green"},{"from":"c","to":"f","label":"in place, or nothing"},{"from":"c","to":"e","label":"no room for a copy"},{"from":"c","to":"l","label":"promised, so relied on","style":"gold"}],"caption":"The bottom node is worth checking rather than assuming. Some language libraries guarantee a stable sort and some explicitly do not, and code that quietly depends on stability will work perfectly until the day it runs somewhere that never promised it."}'></div>
+
+  <h2><span class="ix">8</span> How Problems Show Up</h2>
+  <div class="sub">Six sentences, and not one of them says stable.</div>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>What somebody actually says</th><th>The test to run</th><th>What it is really telling you</th></tr>
+    <tr><td>"Clicking the second column loses the first sort"</td><td>Sort by one column, then another, and read the ties</td><td>Not stable. The second sort deleted the first work</td></tr>
+    <tr><td>"The same list comes back in a different order each run"</td><td>Run it twice on identical input</td><td>Ties resolved arbitrarily. Nothing is wrong with the ordering</td></tr>
+    <tr><td>"It works locally and gives a different order in production"</td><td>Compare the two sort implementations</td><td>One promises stability and the other does not</td></tr>
+    <tr><td>"Memory doubles while sorting large files"</td><td>Ask whether the method needs a second copy</td><td>Merge sort honest price. Lesson 7.4 and heap sort avoid it</td></tr>
+    <tr><td>"Sorting by digit produced nonsense"</td><td>Ask whether each pass is stable</td><td>Radix has no meaning without it. Lesson 7.5</td></tr>
+    <tr><td>"Our tests pass and users say the order is wrong"</td><td>Check what the test actually asserts</td><td>It checks the sorted column. The complaint is about the ties</td></tr>
+  </table>
+  <div class="tbl-cap">The last row is why this whole lesson is worth its place. A test that asserts the list is sorted will pass on an unstable sort, every time, because the list genuinely is sorted. The information that was destroyed is in a column the test never looks at.</div></div>
+
+  <h2><span class="ix">9</span> Solve It Live</h2>
+  <div class="sub">Every test passes and the support queue disagrees.</div>
+  <div class="callout">
+    <div class="ch">The problem, as it arrives</div>
+    <p>"Users tell us our results page is scrambled. Our tests all pass and they assert the results are correctly ordered by relevance, which they are. We upgraded a library last month. Nobody can reproduce it reliably, and when we look at a screenshot the ordering looks correct to us. One user said it was fine until they filtered, then it went wrong."</p>
+  </div>
+
+  <div class="viz" data-viz='{"type":"swim","title":"Correctly sorted, and still wrong","lanes":[{"label":"The team"},{"label":"You"},{"label":"The page"}],"steps":[{"id":"a1","lane":0,"col":0,"kind":"gold","label":"Users say scrambled. Tests pass. Order looks correct"},{"id":"b1","lane":1,"col":1,"kind":"box","label":"Ask: what do the tests actually assert?"},{"id":"c1","lane":2,"col":1,"kind":"bad","label":"That relevance is in order. It is"},{"id":"b2","lane":1,"col":2,"kind":"accent","label":"Then look at rows with EQUAL relevance"},{"id":"c2","lane":2,"col":2,"kind":"bad","label":"Ties come back in a different order every run"},{"id":"b3","lane":1,"col":3,"kind":"accent","label":"The upgrade changed the sort to an unstable one"},{"id":"b4","lane":1,"col":4,"kind":"accent","label":"Restore stability, and assert on the ties in the test"}],"edges":[{"from":"a1","to":"b1"},{"from":"b1","to":"c1"},{"from":"c1","to":"b2"},{"from":"b2","to":"c2"},{"from":"c2","to":"b3"},{"from":"b3","to":"b4"}],"caption":"Nothing here is a sorting bug in the usual sense, which is why nobody could see it. The list is genuinely sorted by the thing it was asked to sort by, and the information that was destroyed lives entirely in rows the tests never compare with each other."}'></div>
+
+  <p><strong>The results are correctly sorted, and that is precisely why nobody could find it.</strong> Many results share the same relevance score, and the previous sort kept those ties in a sensible order, most likely the order an earlier stage produced. The upgraded library sorts just as correctly and resolves ties differently, so every screenshot looks right and every test passes.</p>
+
+  <div class="callout good">
+    <div class="ch">Why this reasoning wins</div>
+    <p>It stopped looking at the sorted column, which is where everybody looks and where nothing is wrong. <strong>The question is not is this sorted, it is what happens to items that are equal.</strong> That is invisible to any test that asserts ordering, invisible in a screenshot, and it changes the moment somebody swaps an implementation, which is exactly the shape of a bug that survives for months.</p>
+  </div>
+
+  <h2><span class="ix">10</span> Your Turn</h2>
+  <div class="callout accent">
+    <div class="ch">Your rep, one spreadsheet</div>
+    <p>Open any spreadsheet with at least two columns and twenty rows. <strong>Round one:</strong> sort by one column, then take a photograph or note the order. <strong>Round two:</strong> now sort by a second column that contains repeats, and look carefully at the rows that share a value in that second column. Are they still in the order round one put them? <strong>Round three:</strong> undo everything and do the two sorts in the opposite sequence. If the final result differs, your spreadsheet is stable and you have just relied on it. If it does not differ, find out which of the two behaviours your tools promises in writing, because you will one day depend on the answer.</p>
+  </div>
+
+  <h2><span class="ix gold">✓</span> Check Yourself</h2>
+
+  <div class="quiz" data-correct="2">
+    <div class="q">Users report a scrambled results page. Tests assert the results are ordered by relevance and they pass. What is happening?</div>
+    <div class="opt" data-i="0">The relevance scores are being computed incorrectly</div>
+    <div class="opt" data-i="1">The page is displaying results before the sort has finished</div>
+    <div class="opt" data-i="2">The sort is not stable, so rows with equal relevance come back in a different order, which is invisible to a test that only checks the sorted column</div>
+    <div class="qexp">Both a stable and an unstable sort produce a correctly sorted list, so any test asserting order will pass on either. The information destroyed lives entirely in the ties, which no test compares and no screenshot reveals. This is why swapping a sorting implementation can break a product months later with nothing in the change that looks related.</div>
+  </div>
+
+  <div class="quiz" data-correct="1">
+    <div class="q">Why does the sort in a real programming language use insertion sort, merge sort and partitioning rather than picking the best one?</div>
+    <div class="opt" data-i="0">Because different data types need different algorithms</div>
+    <div class="opt" data-i="1">Because no single method is stable, in place, and free of a worst case, so it switches based on what it finds in the data as it runs</div>
+    <div class="opt" data-i="2">Because older algorithms are kept for compatibility with existing code</div>
+    <div class="qexp">Read down the table in block 5 and no row has all three properties. So real sorts stop choosing in advance and decide while running: insertion below about twenty items where it genuinely wins, merging for runs of order already present in the input, partitioning for the rest, and a switch of method if the splitting goes suspiciously deep. Each of those is one lesson of this chapter being cashed in.</div>
+  </div>
+
+  <div class="callout good">
+    <div class="ch">Next</div>
+    <p>You now have every method, both properties, and the reason real systems mix them. <strong>The last lesson is the part nobody teaches:</strong> how sorting problems actually arrive, which is never as somebody asking which sorting algorithm to use, and six systems taken apart to show what each of them decided.</p>
+  </div>
+__NAV__
+</div>`
+,
+
+"7.7": `<div class="wrap">
+  <div class="les-kicker">Chapter 7 · Lesson 7.7</div>
+  <h1 class="les-title">How Sorting Problems Show Up, and Six Systems Torn Down</h1>
+  <div class="les-meta">
+    <span class="pill">foundational</span><span class="pill">~13 min</span>
+    <span class="pill gold">no code needed</span><span class="pill">9 visuals</span>
+  </div>
+
+  <p class="motto">Nobody has ever asked which sorting algorithm to use. They ask for a report, and the sort is a decision somebody made on their behalf years ago.</p>
+
+  <p class="lead">You have every method, both properties, and the reason real systems mix them. This is the part nobody teaches: sorting problems arrive as reports, exports, dashboards and complaints, and almost none of them are asking for a sorted list at all. By the end you can hear one and say what order it actually needs, who is paying for it, and whether it needs sorting in the first place.</p>
+
+  <h2><span class="ix">1</span> The Everyday Situation</h2>
+  <div class="sub">Three requests, and not one of them wants a sorted list.</div>
+  <p><em class="k">Show me our ten biggest customers.</em> <em class="k">Group these orders by status.</em> <em class="k">Which of these two files changed?</em> Every one of those gets answered by sorting something, in most systems, and <strong>not one of them asked for a sorted list.</strong></p>
+
+  <div class="viz" data-viz='{"type":"scene","title":"Three requests, three sorts nobody asked for","width":820,"height":280,"items":[{"icon":"person","x":120,"y":126,"kind":"gold","label":"show me the ten biggest"},{"icon":"person","x":330,"y":126,"kind":"gold","label":"group these by status"},{"icon":"person","x":540,"y":126,"kind":"gold","label":"which of these two files changed"},{"icon":"server","x":740,"y":124,"kind":"bad","label":"all three answered by sorting everything"}],"arrows":[{"x1":600,"y1":126,"x2":680,"y2":126,"style":"gold","label":"and only one of them needs to"}],"caption":"Each of these is a real request and each is usually answered by putting a million rows in order. Only one of the three genuinely needs an order, and the other two are paying for something nobody will look at, which is the most expensive kind of invisible cost."}'></div>
+
+  <h2><span class="ix">2</span> What It Actually Is</h2>
+  <div class="sub">Three questions, asked of the request rather than the code.</div>
+  <p>Lesson 6.7 gave you an instrument for hearing search problems. This is the same move for sorting, and it is three questions in a fixed order.</p>
+
+  <div class="viz" data-viz='{"type":"flow","title":"The instrument, and its off switch","maxChars":18,"nodes":[{"id":"s","label":"Somebody asks for a report","col":0,"row":1,"kind":"gold"},{"id":"q1","label":"Does anything downstream read the order?","col":1,"row":1,"kind":"dark","shape":"diamond"},{"id":"n","label":"No: delete the sort. Lesson 7.1","col":2,"row":0,"kind":"bad"},{"id":"q2","label":"Does it need ALL of it ordered?","col":2,"row":2,"kind":"gold","shape":"diamond"},{"id":"p","label":"No: keep the few you want, and touch nothing else","col":3,"row":1,"kind":"accent"},{"id":"q3","label":"Yes. Then: what shape is the data already in?","col":3,"row":3,"kind":"gold"}],"edges":[{"from":"s","to":"q1"},{"from":"q1","to":"n","label":"no"},{"from":"q1","to":"q2","label":"yes","style":"green"},{"from":"q2","to":"p","label":"no"},{"from":"q2","to":"q3","label":"yes","style":"green"}],"caption":"The off switch is first for the same reason it was in Lesson 6.7: it is the answer most likely to be missed and the one that saves the most. The second question is the one nobody asks, and it is where the top ten and the grouping requests both leave the chapter without ever needing a sort."}'></div>
+
+  <p>Question one is Lesson 7.1: <strong>an order with no reader is pure expense.</strong> Question two is new, and it is where most of the savings live: <em class="k">show me the ten biggest</em> does not need 999,990 rows put in order.</p>
+
+  <h2><span class="ix">3</span> Watch It Work</h2>
+  <div class="sub">The ten biggest, without sorting anything else.</div>
+  <p>Eight values, and the request is <strong>the top three.</strong> Hold three, and for every remaining item ask one question: are you bigger than the smallest one I am holding? Watch the counter.</p>
+
+  <div class="board" data-anim='{"type":"array-scan","title":"Top three, and the five values that were never ordered","speed":1600,"big":true,"data":[7,2,9,4,1,8,3,5],"countLabel":" comparisons","pointerLabels":{"i":"asking"},"legend":[["being asked one question","look"],["the three you are holding","found"],["never ordered, never needed","dead"]],"steps":[{"order":[0,1,2,3,4,5,6,7],"found":[0,1,2],"count":0,"say":"Take the first three and hold them: 7, 2, 9. <b>They are not in order and they do not need to be.</b> The only thing that matters is which of the three is smallest."},{"order":[0,1,2,3,4,5,6,7],"found":[0,1,2],"look":[3],"ptr":{"i":3},"count":1,"say":"Next value is 4. <b>One question: are you bigger than the smallest I hold?</b> The smallest I hold is 2. Yes, 4 is bigger, so 2 leaves and 4 joins."},{"order":[0,3,2,1,4,5,6,7],"found":[0,3,2],"look":[4],"ptr":{"i":4},"dead":[1],"count":2,"say":"Now holding 7, 4, 9. Next is 1. Bigger than 4? No. <b>It is discarded on one comparison and never looked at again.</b>"},{"order":[0,3,2,1,4,5,6,7],"found":[0,3,2],"look":[5],"ptr":{"i":5},"dead":[1,4],"count":3,"say":"Next is 8. Bigger than 4? Yes. So 4 leaves and 8 joins, and the three I hold are now 7, 8, 9."},{"order":[2,5,0,1,3,4,6,7],"found":[2,5,0],"dead":[1,3,4,6,7],"count":5,"badge":"5 comparisons","say":"3 and 5 are both smaller than 7, so both are discarded on one question each. <b>Five comparisons, and the answer is 9, 8, 7.</b>"},{"order":[2,5,0,1,3,4,6,7],"found":[2,5,0],"dead":[1,3,4,6,7],"count":5,"badge":"5 against 14, or 28","say":"Sorting all eight would have cost fourteen comparisons with Lesson 7.4, or twenty eight with Lesson 7.2. <b>The five faded values were never put in any order at all</b>, because nobody was ever going to look at their order."}],"caption":"Five comparisons instead of fourteen, and the saving grows with the pile: a million rows to find the top ten is about a million questions, against the twenty million comparisons a full sort would spend ordering rows nobody reads."}'></div>
+
+  <h2><span class="ix">4</span> Under The Hood</h2>
+  <div class="sub">Why the saving grows rather than staying the same.</div>
+
+  <div class="viz" data-viz='{"type":"seq","title":"The same request, two readings","actors":[{"label":"The request","kind":"gold"},{"label":"A full sort","kind":"bad"},{"label":"Keeping ten","kind":"accent"}],"messages":[{"from":0,"to":1,"label":"show me the ten biggest of a million","style":"gold"},{"from":1,"to":0,"label":"about 20,000,000 comparisons, and here is the whole list in order"},{"from":0,"to":2,"label":"show me the ten biggest of a million","style":"gold"},{"from":2,"to":0,"label":"about 1,000,000 questions, and here are ten","style":"green"},{"from":2,"to":0,"label":"I never established any order among the other 999,990","style":"green"}],"caption":"The full sort is not doing the job badly. It is doing a much larger job, correctly, and then throwing almost all of it away. Twenty times the work, and every unit of the difference went into ordering rows that were never displayed."}'></div>
+
+  <p><strong>The full sort is not slow. It is answering a much bigger question.</strong> It establishes a relationship between every pair of rows, and the request only ever needed ten of them.</p>
+
+  <h2><span class="ix">5</span> The Types</h2>
+  <div class="sub">Six systems, and what each one decided.</div>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>The system</th><th>What it needed</th><th>What it chose, and who pays</th></tr>
+    <tr><td>A shop page sorted by two columns</td><td>Stability above all else</td><td>A stable method, paid for in a second copy. Lesson 7.6</td></tr>
+    <tr><td>A database index</td><td>Order that survives constant writes</td><td>Never a sort. Order kept as a shape, paid per write. Lesson 6.5</td></tr>
+    <tr><td>A leaderboard showing the top ten</td><td>Ten rows, not an ordered million</td><td>Keep ten, and never order the rest. Chapter 11</td></tr>
+    <tr><td>A report grouped by status</td><td>Four piles, not an order</td><td>Counting, and no comparison at all. Lesson 7.5</td></tr>
+    <tr><td>Merging logs from twelve servers</td><td>To not re-sort work already done</td><td>Stitching, because each arrived in time order. Lesson 7.3</td></tr>
+    <tr><td>A nightly export nobody reads in order</td><td>Nothing</td><td>Delete the sort. Lesson 7.1</td></tr>
+  </table>
+  <div class="tbl-cap">Only the first row is a sorting decision in the sense this chapter has been teaching. Two of the six needed no sort at all, two needed something that is not a sort, and one needed an order that was already free. That ratio is roughly what you will find in a real system.</div></div>
+
+  <h2><span class="ix">6</span> What It Costs, In Plain English</h2>
+  <div class="sub">Five ways to get an order, and what each one charges.</div>
+  <p>Lesson 0.3 promised that this chapter would show <strong>the five ways to grow that boundary and why real systems mix them.</strong> Here they are, in one place, with the payer named.</p>
+
+  <div class="viz" data-viz='{"type":"card","title":"Five ways to have an order, and who pays","eyebrow":"A MILLION ROWS","badge":"who pays, and when","width":560,"rows":[{"k":"Do not have one. Scan instead","v":"free to write, paid on every read","tone":"good","bar":0.02},{"k":"Sort it once, when you need it","v":"about 20,000,000 comparisons, paid then","tone":"bad","bar":1},{"k":"Keep it as a shape, always ordered","v":"paid a little by every writer, forever","tone":"good","bar":0.05},{"k":"Take the order that already exists free","v":"paid by nobody. Time order, git history","tone":"good","bar":0},{"k":"Do not order at all. Count into groups","v":"two passes, if the values are few","tone":"good","bar":0.1}],"caption":"Every bar is a rough weight rather than a measurement. Row four is the cheapest order in computing and the one most often bought twice by accident, and row five is not an order at all, which is why it escapes the whole comparison floor from Lesson 7.5."}'></div>
+
+  <p>And why real systems mix them: <strong>because a system is not one question.</strong> The same database keeps a shape for its indexed columns, sorts once for a nightly report, counts for its status dashboard, and scans for the rest, and every one of those is the right answer to a different question in the same product.</p>
+
+  <h2><span class="ix">7</span> Where It Lives In Real Life</h2>
+  <div class="sub">Five complaints, and the question hiding under each.</div>
+
+  <div class="viz" data-viz='{"type":"kgraph","title":"What people actually say when they mean sorting","unit":178,"nodes":[{"id":"c","label":"Nobody says the word sort","x":2,"y":1,"kind":"dark"},{"id":"r","label":"The month end report times out and the daily one is fine","x":0,"y":0,"kind":"accent"},{"id":"t","label":"The table jumps about when I click a second column","x":0,"y":2,"kind":"gold"},{"id":"e","label":"The export got slow and nothing changed","x":4,"y":0,"kind":"accent"},{"id":"d","label":"The dashboard takes a minute to show four numbers","x":4,"y":2,"kind":"gold"},{"id":"m","label":"Combining results takes longer than producing them","x":2,"y":3,"kind":"accent"}],"edges":[{"from":"c","to":"r","label":"thirty times the rows"},{"from":"c","to":"t","label":"stability. Lesson 7.6","style":"gold"},{"from":"c","to":"e","label":"an order with no reader","style":"green"},{"from":"c","to":"d","label":"counting, not sorting","style":"gold"},{"from":"c","to":"m","label":"stitching, not re-sorting","style":"green"}],"caption":"Not one of these five sentences contains a word from this chapter, and every one of them is answered by something in it. That gap between how a problem is described and what it actually is, is the entire reason this lesson exists."}'></div>
+
+  <h2><span class="ix">8</span> How Problems Show Up</h2>
+  <div class="sub">Seven sentences, and the question to ask each one.</div>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>What somebody actually says</th><th>The question to ask</th><th>What it is really telling you</th></tr>
+    <tr><td>"The dashboard takes a minute to show four numbers"</td><td>How many values can that field hold?</td><td>Counting, not sorting. Lesson 7.5</td></tr>
+    <tr><td>"We only show the top twenty"</td><td>Is the rest of the order ever displayed?</td><td>Keep twenty. Never order the other million</td></tr>
+    <tr><td>"The export got slower every month"</td><td>What reads the order afterwards?</td><td>Possibly nothing. Lesson 7.1</td></tr>
+    <tr><td>"Clicking a second column loses the first"</td><td>Is the sort stable?</td><td>Lesson 7.6, and it will pass every test</td></tr>
+    <tr><td>"It hangs only on the pre-sorted file"</td><td>How is the pivot chosen?</td><td>Lesson 7.4 worst case, on the most common input</td></tr>
+    <tr><td>"Combining twelve results is the slow part"</td><td>Does the combine re-sort?</td><td>It should stitch. Lesson 7.3</td></tr>
+    <tr><td>"We sort it fresh before every search"</td><td>How many searches per sort?</td><td>Below about twenty one, the scan was cheaper. Lesson 6.3</td></tr>
+  </table>
+  <div class="tbl-cap">Every question in the middle column can be asked in a meeting, without opening any code, and each one points at exactly one lesson of this chapter. That is what a chapter is for: not knowing seven algorithms, but knowing which seven questions retire them.</div></div>
+
+  <h2><span class="ix">9</span> Solve It Live</h2>
+  <div class="sub">Ninety seconds to show ten rows.</div>
+  <div class="callout">
+    <div class="ch">The problem, as it arrives</div>
+    <p>"Our top customers dashboard takes about ninety seconds to load and it shows ten rows. It pulls about four million order rows, sorts them by total value, and displays the first ten. It has got slower every year in a way that tracks our growth exactly. We have been asked to cache it, but the numbers need to be live."</p>
+  </div>
+
+  <div class="viz" data-viz='{"type":"swim","title":"Four million rows ordered, ten displayed","lanes":[{"label":"The team"},{"label":"You"},{"label":"The dashboard"}],"steps":[{"id":"a1","lane":0,"col":0,"kind":"gold","label":"90 seconds to show 10 rows. Cache it?"},{"id":"b1","lane":1,"col":1,"kind":"box","label":"Ask: is the order of rows 11 to 4,000,000 ever displayed?"},{"id":"c1","lane":2,"col":1,"kind":"accent","label":"No. The page shows ten"},{"id":"b2","lane":1,"col":2,"kind":"accent","label":"Then the sort is answering a much larger question"},{"id":"c2","lane":2,"col":2,"kind":"bad","label":"About 88,000,000 comparisons to order 4 million"},{"id":"b3","lane":1,"col":3,"kind":"accent","label":"Hold ten. Ask each row one question against the smallest"},{"id":"b4","lane":1,"col":4,"kind":"accent","label":"About 4,000,000 questions. Same data, still live"}],"edges":[{"from":"a1","to":"b1"},{"from":"b1","to":"c1"},{"from":"c1","to":"b2"},{"from":"b2","to":"c2"},{"from":"c2","to":"b3"},{"from":"b3","to":"b4"}],"caption":"Caching was aimed at the symptom and would have traded correctness for speed, which the request explicitly refused. The sort was never wrong, it was answering a question about four million rows when the page asked about ten."}'></div>
+
+  <p><strong>Nothing here is slow and nothing is broken.</strong> A full sort establishes an order between every pair of four million rows, which is about 88,000,000 comparisons, and then the page displays ten of them and discards the rest. Holding ten and asking each row a single question is about four million questions, on the same data, still live, with no cache and no staleness.</p>
+
+  <div class="callout good">
+    <div class="ch">Why this reasoning wins</div>
+    <p>It asked the second question of the instrument, which almost nobody asks: <strong>does this need ALL of it ordered?</strong> Caching, faster hardware and a better sorting algorithm all accept the premise that four million rows must be put in order. Once that premise is questioned, the answer is not a faster version of the same work. It is twenty times less work, and it was hiding in the difference between what the page asked for and what the code went and got.</p>
+  </div>
+
+  <h2><span class="ix">10</span> Your Turn</h2>
+  <div class="callout accent">
+    <div class="ch">Your rep, one screen you look at every week</div>
+    <p>Pick any dashboard, report or list you see regularly at work or at home. <strong>First:</strong> ask whether anything downstream reads the order, or whether you only ever look at the top few. <strong>Second:</strong> if you only look at the top few, work out how many rows sit underneath being ordered for nobody. <strong>Third:</strong> ask what the values in the sorted column actually are. If there are only a handful of distinct values, nothing needed comparing at all. Almost every screen you check will fail at least one of those three, and now you can say which.</p>
+  </div>
+
+  <h2><span class="ix gold">✓</span> Check Yourself</h2>
+
+  <div class="quiz" data-correct="1">
+    <div class="q">A dashboard sorts four million rows by value and displays the top ten, taking ninety seconds. The numbers must stay live. What is the fix?</div>
+    <div class="opt" data-i="0">Cache the result and refresh it every few minutes</div>
+    <div class="opt" data-i="1">Hold ten and ask each row one question against the smallest of them, which never orders the other rows at all</div>
+    <div class="opt" data-i="2">Move the sort to a faster machine, since the data volume is the cause</div>
+    <div class="qexp">A full sort establishes an order between every pair of four million rows, about 88,000,000 comparisons, and the page then discards all but ten. Keeping ten costs about one question per row. Caching was refused by the requirement and a faster machine accepts the premise that four million rows must be ordered, which is the premise that was wrong.</div>
+  </div>
+
+  <div class="quiz" data-correct="0">
+    <div class="q">Which of these three requests genuinely needs a sorted list?</div>
+    <div class="opt" data-i="0">Show every order from this year in date order, for an auditor to read through</div>
+    <div class="opt" data-i="1">Group these orders by status into four piles</div>
+    <div class="opt" data-i="2">Show the ten biggest customers</div>
+    <div class="qexp">Only the first asks for an order that somebody will actually read from beginning to end, which is the test from block 2. Grouping by a field with four possible values is counting and needs no comparison at all. The top ten needs ten rows and never needs the other rows ordered against each other. Two of these three are answered by sorting in most real systems, and in both cases the order produced is thrown away unread.</div>
+  </div>
+
+  <div class="callout good">
+    <div class="ch">Next</div>
+    <p>Sorting is never the goal. It is the investment you make so that every later question becomes cheap, and this chapter has been the itemised bill for it. <strong>The whiteboard now runs the whole thing end to end:</strong> every method on the same row, the one decision that breaks the fastest of them, and the request that needed no sort at all.</p>
   </div>
 __NAV__
 </div>`
