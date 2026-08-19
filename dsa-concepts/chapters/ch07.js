@@ -133,3 +133,137 @@
   </div>
 __NAV__
 </div>`
+,
+
+"7.2": `<div class="wrap">
+  <div class="les-kicker">Chapter 7 · Lesson 7.2</div>
+  <h1 class="les-title">The Simple Three: Bubble, Selection, Insertion</h1>
+  <div class="les-meta">
+    <span class="pill">foundational</span><span class="pill">~13 min</span>
+    <span class="pill gold">no code needed</span><span class="pill">10 visuals</span>
+  </div>
+
+  <p class="motto">There are not three simple sorts. There is one question, and three different answers about what a comparison is allowed to buy.</p>
+
+  <p class="lead">Lesson 7.1 said every event in a sort is a comparison or a move. These three methods spend those two currencies in completely different proportions, and one of them is still inside the sort your programming language ships today. By the end you can say which one your data wants before you know anything about the algorithms.</p>
+
+  <h2><span class="ix">1</span> The Everyday Situation</h2>
+  <div class="sub">Your hands already picked one.</div>
+  <p>You are dealt a hand of cards. Nobody has ever sorted a hand by repeatedly scanning it for the lowest card, and nobody has ever swapped neighbours over and over until it settled. <strong>You pick up one card at a time and push it into place</strong> among the cards you are already holding.</p>
+
+  <div class="viz" data-viz='{"type":"scene","title":"Three ways to sort a hand, and the one everybody actually uses","width":820,"height":280,"items":[{"icon":"person","x":120,"y":126,"kind":"gold","label":"you, holding a sorted hand"},{"icon":"doc","x":330,"y":124,"kind":"accent","label":"one new card at a time"},{"icon":"shelf","x":560,"y":124,"kind":"muted","label":"pushed into place among what you hold"},{"icon":"pile","x":740,"y":128,"kind":"box","label":"the rest, still face down"}],"arrows":[{"x1":180,"y1":126,"x2":268,"y2":126,"style":"green","label":"already in order"},{"x1":392,"y1":124,"x2":500,"y2":124,"style":"gold","label":"where does this one go"}],"caption":"That is insertion sort, and your hands chose it without being taught. The reason is that it is the only one of the three that gets cheaper when the thing you are adding to is already in order, and a hand of cards always is."}'></div>
+
+  <p>That is one of the three, and your hands chose it for a reason this lesson will make explicit. <strong>It is the only one of the three that gets cheaper when what you are adding to is already in order.</strong></p>
+
+  <h2><span class="ix">2</span> What It Actually Is</h2>
+  <div class="sub">One comparison, three different purchases.</div>
+  <p>Lesson 6.2 said one look eliminates one box, and that was the whole reason a scan is slow. Sorting has the same question with a different verb: <strong>what does one comparison actually buy?</strong></p>
+
+  <div class="viz" data-viz='{"type":"arch","title":"What one comparison buys, three ways","maxChars":18,"nodes":[{"id":"q","label":"What does one comparison buy?","col":0,"row":1,"kind":"dark"},{"id":"b","label":"Bubble: it fixes one adjacent pair, and nothing else","col":1,"row":0,"kind":"bad"},{"id":"s","label":"Selection: it narrows the hunt for one extreme","col":1,"row":1,"kind":"accent"},{"id":"i","label":"Insertion: it may end the search for this card immediately","col":1,"row":2,"kind":"gold"},{"id":"br","label":"So it needs many, and moves constantly","col":2,"row":0,"kind":"bad"},{"id":"sr","label":"So it places one item perfectly, with almost no moving","col":2,"row":1,"kind":"accent"},{"id":"ir","label":"So it is nearly free when the data is nearly in order","col":2,"row":2,"kind":"gold"}],"edges":[{"from":"q","to":"b"},{"from":"q","to":"s"},{"from":"q","to":"i"},{"from":"b","to":"br","label":"and so"},{"from":"s","to":"sr","label":"and so","style":"green"},{"from":"i","to":"ir","label":"and so","style":"green"}],"caption":"Read the middle column and the right column falls out of it. Nothing about these three is a matter of style: each one is a different answer to what a single comparison is permitted to conclude, and everything about their behaviour follows from that."}'></div>
+
+  <p>Bubble only ever compares neighbours, so one comparison can only ever settle one adjacent pair. <strong>That single restriction is why it is the slow one</strong>, and it is not a coding flaw.</p>
+
+  <h2><span class="ix">3</span> Watch It Work</h2>
+  <div class="sub">Same eight numbers, and the sorted part grows from different ends.</div>
+  <p>Three methods on the same starting row: 7, 2, 9, 4, 1, 5, 8, 3. Each cell below is a <strong>position</strong>, not a value, and green means that position now holds the value it will end with. Watch two things: the running comparison count, and <em class="k">which end the green grows from.</em></p>
+
+  <div class="board" data-anim='{"type":"race","title":"Three sorts, eight positions, and where the order appears","speed":1700,"legend":[["settled: this position is final","found"],["sorted so far, but may still shift","seen"],["still unsorted","look"]],"tracks":[{"label":"Bubble","data":[1,2,3,4,5,6,7,8],"countLabel":" comparisons"},{"label":"Selection","data":[1,2,3,4,5,6,7,8],"countLabel":" comparisons"},{"label":"Insertion","data":[1,2,3,4,5,6,7,8],"countLabel":" comparisons"}],"steps":[{"badge":"7 2 9 4 1 5 8 3","lanes":[{"count":0},{"count":0},{"count":0}],"say":"The same eight numbers in all three lanes, in the same order. <b>Nothing has been compared yet.</b>"},{"badge":"after one pass","lanes":[{"found":[7],"count":7},{"found":[0],"count":7},{"seen":[0,1],"count":1}],"say":"One pass each. Bubble has walked the whole row and pushed the largest to <b>the right end</b>. Selection scanned the whole row to place the smallest at <b>the left end</b>. Both spent seven comparisons to place one item. Insertion spent <b>one</b>, and placed nothing permanently."},{"badge":"after three passes","lanes":[{"found":[5,6,7],"count":18},{"found":[0,1,2],"count":18},{"seen":[0,1,2,3],"count":5}],"say":"The two counters on the left are identical and will stay identical, because both do the same shrinking scan. <b>Insertion is less than a third of the way up.</b>"},{"badge":"after five passes","lanes":[{"found":[3,4,5,6,7],"count":25},{"found":[0,1,2,3,4],"count":25},{"seen":[0,1,2,3,4,5],"count":12}],"say":"Green grows from opposite ends, which is the clearest visible difference between the two. Insertion green is a different colour on purpose: <b>its front is sorted, but the next card can still push into the middle of it.</b>"},{"badge":"28, 28, 20","lanes":[{"found":[0,1,2,3,4,5,6,7],"count":28},{"found":[0,1,2,3,4,5,6,7],"count":28},{"found":[0,1,2,3,4,5,6,7],"count":20}],"say":"All three finish with the identical row. <b>Twenty eight, twenty eight and twenty comparisons.</b> And the number not on this board is the one that separates the first two: bubble moved fifteen times, selection moved three."}],"caption":"Two of these three lanes are the same cost in comparisons and wildly different in moves, and the third is cheaper in comparisons for a reason that has nothing to do with cleverness. Every difference on this board comes from what one comparison was allowed to conclude."}'></div>
+
+  <h2><span class="ix">4</span> Under The Hood</h2>
+  <div class="sub">The move nobody counts.</div>
+
+  <div class="viz" data-viz='{"type":"seq","title":"Two sorts, the same comparisons, opposite move counts","actors":[{"label":"Bubble","kind":"bad"},{"label":"The row","kind":"muted"},{"label":"Selection","kind":"accent"}],"messages":[{"from":0,"to":1,"label":"these two are out of order, swap them"},{"from":1,"to":0,"label":"done. That is 15 swaps so far"},{"from":2,"to":1,"label":"I have looked at all of you and found the smallest"},{"from":1,"to":2,"label":"and","style":"green"},{"from":2,"to":1,"label":"one swap. That is 3 in total","style":"green"}],"caption":"Identical comparison counts and five times the moving. Bubble commits after every comparison, so it moves constantly and often moves the same value repeatedly. Selection commits once per pass, having looked at everything first, which is why it does the fewest moves of any sort in this chapter."}'></div>
+
+  <p><strong>Bubble commits after every comparison. Selection commits once per pass.</strong> That is the entire difference between fifteen moves and three, on identical data with an identical number of comparisons.</p>
+
+  <h2><span class="ix">5</span> The Types</h2>
+  <div class="sub">Three methods, and the one situation each is actually best at.</div>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>The method</th><th>What it is genuinely best at</th><th>What it costs you</th></tr>
+    <tr><td>Selection</td><td>The fewest moves of anything here, never more than one per pass</td><td>Always the full comparison count, even on sorted data</td></tr>
+    <tr><td>Insertion</td><td>Data that is already nearly in order, where it is close to free</td><td>Moves a lot when the data is badly out of order</td></tr>
+    <tr><td>Bubble</td><td>Nothing. It is never the best answer to any question</td><td>The full comparison count and the most moves</td></tr>
+  </table>
+  <div class="tbl-cap">Bubble earns its place in this table by being the honest loser: it is worth knowing precisely because it shows what happens when a comparison is allowed to conclude as little as possible. Selection is the one to reach for when moving an item is genuinely expensive, which is a real situation and not a textbook one.</div></div>
+
+  <p>And now the reason insertion sort survives into modern systems, which the first board could not show. Here it is on data that is <strong>already nearly in order</strong>: only one pair out of place.</p>
+
+  <div class="board" data-anim='{"type":"array-scan","title":"Nearly sorted, and the same method costs almost nothing","speed":1500,"big":true,"data":[1,2,3,5,4,6,7,8],"countLabel":" comparisons","pointerLabels":{"i":"this card"},"legend":[["the card being placed","look"],["already in order","seen"],["moved","found"]],"steps":[{"order":[0,1,2,3,4,5,6,7],"look":[1],"seen":[0],"count":1,"say":"Pick up the 2. Compare it with the 1 to its left. <b>It is bigger, so it stays put and the search ends immediately.</b> One comparison, no move."},{"order":[0,1,2,3,4,5,6,7],"look":[3],"seen":[0,1,2],"count":3,"say":"Same for the 3 and the 5. Each one is bigger than its left neighbour, so each costs exactly one comparison and stops. <b>Three cards placed for three comparisons.</b>"},{"order":[0,1,2,4,3,5,6,7],"look":[4],"found":[4],"seen":[0,1,2],"count":5,"say":"The 4 is smaller than the 5, so it moves left one place and stops. <b>Two comparisons and one move</b>, and this is the only real work in the entire sort."},{"order":[0,1,2,4,3,5,6,7],"seen":[0,1,2,4,3],"look":[5],"count":6,"say":"The 6 is bigger than the 5. One comparison, stop."},{"order":[0,1,2,4,3,5,6,7],"found":[0,1,2,4,3,5,6,7],"count":8,"badge":"8 comparisons, 1 move","say":"<b>Eight comparisons and one move.</b> On the same eight items, bubble and selection would both spend twenty eight comparisons and would not notice the data was nearly sorted at all."}],"caption":"Eight against twenty eight, on identical data, and the method did not change. Insertion sort is the only one of the three that can stop early, because a card that is bigger than its left neighbour is already home and there is nothing left to check."}'></div>
+
+  <h2><span class="ix">6</span> What It Costs, In Plain English</h2>
+  <div class="sub">Three costs, and only one of them moves with the data.</div>
+  <p>On eight items in random order: bubble is 28 comparisons and 15 moves, selection is 28 and 3, insertion is 20 and 15. Now change the data rather than the method. <strong>Nearly sorted: insertion drops to 8 comparisons.</strong> The other two do not move at all.</p>
+
+  <div class="viz" data-viz='{"type":"card","title":"Eight items, three methods, two kinds of data","eyebrow":"COMPARISONS","badge":"same eight items","width":560,"rows":[{"k":"Random order: bubble","v":"28 comparisons, 15 moves","tone":"bad","bar":1},{"k":"Random order: selection","v":"28 comparisons, 3 moves","tone":"good","bar":1},{"k":"Random order: insertion","v":"20 comparisons, 15 moves","tone":"good","bar":0.71},{"k":"Nearly sorted: bubble and selection","v":"28 comparisons, unchanged","tone":"bad","bar":1},{"k":"Nearly sorted: insertion","v":"8 comparisons","tone":"good","bar":0.29}],"caption":"Every bar is drawn against a maximum of 28 comparisons. Rows four and five are the whole reason this lesson exists: two methods that cannot see the shape of their data, and one that can. In the Chapter 2 currency all three are O(n squared) in the worst case, and insertion alone is O(n) when the data is already nearly in order."}'></div>
+
+  <p>That last line is what carries this method into real software. <strong>All three are the same shape when the data is random.</strong> Only one of them gets dramatically cheaper when the data is not, and real data is very rarely random.</p>
+
+  <h2><span class="ix">7</span> Where It Lives In Real Life</h2>
+  <div class="sub">Five places, and one of them is inside the sort you use every day.</div>
+
+  <div class="viz" data-viz='{"type":"kgraph","title":"Where the simple three actually run","unit":178,"nodes":[{"id":"c","label":"Simple sorts, and where they still win","x":2,"y":1,"kind":"dark"},{"id":"h","label":"Inside a real language sort, on the small pieces. Lesson 7.6","x":0,"y":0,"kind":"gold"},{"id":"n","label":"A list that is already almost in order and gets one new item","x":0,"y":2,"kind":"gold"},{"id":"m","label":"Where moving an item is genuinely expensive, so selection wins","x":4,"y":0,"kind":"accent"},{"id":"s","label":"Anything under about twenty items, where the fancy sorts lose to overhead","x":4,"y":2,"kind":"accent"},{"id":"b","label":"And bubble sort, which lives almost entirely in classrooms","x":2,"y":3,"kind":"bad"}],"edges":[{"from":"c","to":"h","label":"insertion, on small runs","style":"gold"},{"from":"c","to":"n","label":"insertion, nearly free","style":"gold"},{"from":"c","to":"m","label":"selection, fewest moves","style":"green"},{"from":"c","to":"s","label":"simple beats clever","style":"green"},{"from":"c","to":"b","label":"honestly, nowhere"}],"caption":"The top left node is the surprise. The sophisticated sorts in Lessons 7.3 and 7.4 split their work into smaller and smaller pieces, and when a piece gets small enough almost every real implementation stops splitting and finishes it with insertion sort, because on twenty items it genuinely wins."}'></div>
+
+  <p>That first node is worth holding on to. <strong>Insertion sort is not the sort you graduate from.</strong> It is the sort that the clever ones call when their pieces get small, and Lesson 7.6 is where that arrangement gets its name.</p>
+
+  <h2><span class="ix">8</span> How Problems Show Up</h2>
+  <div class="sub">Seven sentences, and the shape of the data is under most of them.</div>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>What somebody actually says</th><th>The test to run</th><th>What it is really telling you</th></tr>
+    <tr><td>"Re-sorting after adding one row takes as long as the first sort"</td><td>Ask what the sort does with data already in order</td><td>A method that cannot see existing order. Insertion can</td></tr>
+    <tr><td>"It is fast on our nightly file and slow on the live one"</td><td>Compare how ordered each arrives</td><td>The nightly file arrives nearly sorted, and something is exploiting it</td></tr>
+    <tr><td>"Sorting these is slow and each item is a huge object"</td><td>Count moves, not comparisons</td><td>Moving is the expensive act here, which is selection sort case</td></tr>
+    <tr><td>"It got slower when we doubled the list"</td><td>Ask whether it got four times slower</td><td>Four times for double is the simple-sort shape. Lesson 7.3 fixes it</td></tr>
+    <tr><td>"Sorting twenty items is slower with the fancy library"</td><td>Compare against a simple sort at that size</td><td>Below about twenty, the overhead costs more than it saves</td></tr>
+    <tr><td>"The data is already sorted and it still takes the full time"</td><td>Ask if the sort can stop early</td><td>Selection and bubble never notice. Insertion notices immediately</td></tr>
+    <tr><td>"We wrote our own bubble sort because it is simple"</td><td>Ask what it is best at</td><td>Nothing. Insertion is the same difficulty and strictly better</td></tr>
+  </table>
+  <div class="tbl-cap">Rows one, two and six are the same question asked three ways: can this method see that its data is already partly in order? Two of the three cannot, and that blindness costs more in practice than any difference in their comparison counts.</div></div>
+
+  <h2><span class="ix">9</span> Solve It Live</h2>
+  <div class="sub">The same file, sorted twice a day, and only one of them is slow.</div>
+  <div class="callout">
+    <div class="ch">The problem, as it arrives</div>
+    <p>"We sort the same product list twice a day. The morning run takes about forty seconds. The evening run takes about forty seconds too. The odd thing is that the evening run is sorting a list that is already sorted, because the morning run sorted it and only about thirty rows changed during the day. Somebody suggested caching the result, but the thirty changes are real and have to land."</p>
+  </div>
+
+  <div class="viz" data-viz='{"type":"swim","title":"Already sorted, and it still pays full price","lanes":[{"label":"The team"},{"label":"You"},{"label":"The job"}],"steps":[{"id":"a1","lane":0,"col":0,"kind":"gold","label":"Evening run sorts sorted data, still 40 seconds"},{"id":"b1","lane":1,"col":1,"kind":"box","label":"Ask: can this sort tell that the data is already in order?"},{"id":"c1","lane":2,"col":1,"kind":"bad","label":"No. It scans the same way whatever it is given"},{"id":"b2","lane":1,"col":2,"kind":"accent","label":"Then order it already has is worth nothing to it"},{"id":"c2","lane":2,"col":2,"kind":"bad","label":"About 30 rows out of place, out of 200,000"},{"id":"b3","lane":1,"col":3,"kind":"accent","label":"A method that stops early would barely work at all"},{"id":"b4","lane":1,"col":4,"kind":"accent","label":"Or do not re-sort. Insert 30 rows into an ordered list"}],"edges":[{"from":"a1","to":"b1"},{"from":"b1","to":"c1"},{"from":"c1","to":"b2"},{"from":"b2","to":"c2"},{"from":"c2","to":"b3"},{"from":"b3","to":"b4"}],"caption":"Caching was the wrong instinct because the thirty changes are real. The right observation is that the evening job is being handed an enormous amount of order for free and is throwing all of it away, because the method it uses cannot see order that already exists."}'></div>
+
+  <p><strong>The evening run is not sorting a hard problem. It is being handed a nearly finished one and refusing to notice.</strong> Thirty rows out of two hundred thousand are out of place, and a method that can stop early does almost nothing on the other 199,970. The honest fix is smaller still: do not re-sort at all, and insert thirty rows into a list that is already in order.</p>
+
+  <div class="callout good">
+    <div class="ch">Why this reasoning wins</div>
+    <p>It asked one question about the method rather than about the machine: <strong>can this sort tell that its data is already in order?</strong> Most cannot, and that blindness is invisible in a benchmark because benchmarks use random data. The moment somebody notices that real input arrives nearly sorted, the choice of method stops being a matter of taste.</p>
+  </div>
+
+  <h2><span class="ix">10</span> Your Turn</h2>
+  <div class="callout accent">
+    <div class="ch">Your rep, one deck of cards</div>
+    <p>Deal ten cards face up in a row. <strong>Round one:</strong> sort them by repeatedly swapping any two neighbours that are out of order, and count both your comparisons and your swaps. <strong>Round two:</strong> reshuffle, then sort by scanning for the lowest card, moving it to the front, and repeating, again counting both. <strong>Round three:</strong> reshuffle, then pick the cards up one at a time and push each into place in your hand. Now the question that matters: <strong>which round had the fewest swaps, and which had the fewest comparisons?</strong> They are not the same round, and that is the entire lesson.</p>
+  </div>
+
+  <h2><span class="ix gold">✓</span> Check Yourself</h2>
+
+  <div class="quiz" data-correct="2">
+    <div class="q">A nightly job re-sorts a 200,000 row list that is already sorted apart from about thirty rows, and it takes the same time as sorting it from scratch. Why?</div>
+    <div class="opt" data-i="0">Sorted data is a worst case for most sorting algorithms</div>
+    <div class="opt" data-i="1">The list is too large to detect existing order efficiently</div>
+    <div class="opt" data-i="2">The method it uses cannot see order that already exists, so it does the same work whatever it is given</div>
+    <div class="qexp">Selection and bubble do the full comparison count on every input, sorted or not, because neither has any step at which it could conclude it is finished early. Insertion sort can: a card bigger than its left neighbour is already home. On thirty rows out of two hundred thousand that difference is enormous, and it is invisible in any benchmark run on random data.</div>
+  </div>
+
+  <div class="quiz" data-correct="1">
+    <div class="q">Bubble and selection sort do the same number of comparisons on the same eight items, 28 each. Bubble makes 15 moves and selection makes 3. Where does that difference come from?</div>
+    <div class="opt" data-i="0">Selection uses a more efficient comparison that rules out more items</div>
+    <div class="opt" data-i="1">Bubble commits after every comparison, while selection looks at everything first and then moves once</div>
+    <div class="opt" data-i="2">Bubble compares each pair twice, which doubles its work</div>
+    <div class="qexp">The comparison counts are identical because both perform the same shrinking scan. What differs is when each one is willing to act. Bubble swaps the instant it sees a pair out of order, so the same value can be moved many times on its way across the row. Selection gathers all the information first and then makes at most one move per pass, which gives it the fewest moves of any sort in this chapter and makes it the right choice when moving an item is expensive.</div>
+  </div>
+
+  <div class="callout good">
+    <div class="ch">Next</div>
+    <p>All three of these share one limit: <strong>doubling the data makes them four times slower</strong>, because each item is compared against many others. The next two lessons break that, and they do it with the same idea in two different disguises. First: stop trying to sort the whole thing at once.</p>
+  </div>
+__NAV__
+</div>`

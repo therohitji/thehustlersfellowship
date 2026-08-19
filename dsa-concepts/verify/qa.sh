@@ -2,7 +2,9 @@
 # The whole harness, in dependency order. Non-zero on the first failure. No skips.
 set -e
 cd "$(dirname "$0")/.."
-echo "1/7 build";        python3 build.py | sed 's/^/  /'
+# NOT piped into sed: with a pipe, set -e only sees the LAST command, so a failed build
+# printed BUILD FAILED and QA still went green. Found by hitting it while writing 7.2.
+echo "1/7 build";        python3 build.py
 echo "2/7 style";        python3 verify/check_style.py
 echo "3/7 js syntax";    bash   verify/check_js.sh
 echo "4/7 renderers";    node   verify/check_renderers.mjs
