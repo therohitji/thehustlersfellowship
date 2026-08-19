@@ -511,6 +511,145 @@ __NAV__
 __NAV__
 </div>`,
 
+"6.4": `<div class="wrap">
+  <div class="les-kicker">Chapter 6 · Lesson 6.4</div>
+  <h1 class="les-title">The Search Family: Jump, Exponential, Interpolation, Ternary</h1>
+  <div class="les-meta">
+    <span class="pill">foundational</span><span class="pill">~13 min</span>
+    <span class="pill gold">no code needed</span><span class="pill">10 visuals</span>
+  </div>
+
+  <p class="motto">There is no search family. There is binary search and four assumptions you can break.</p>
+
+  <p class="lead">Lesson 6.3 rested on two demands and a set of quiet assumptions underneath them. This lesson breaks those assumptions one at a time, and each named method is simply the repair. By the end you will not remember four algorithms. You will remember four questions to ask about a room.</p>
+
+  <h2><span class="ix">1</span> The Everyday Situation</h2>
+  <div class="sub">Your hands already know which move is expensive.</div>
+  <p>A fat ring binder with plastic tabs down the edge, one every twenty-five pages. You want page 187, and <strong>you do not open the middle.</strong> Your thumb flicks to the nearest tab, you overshoot, and then you leaf forward one page at a time.</p>
+
+  <div class="viz" data-viz='{"type":"scene","title":"Two different physical acts, and your hands know the difference","width":800,"height":280,"items":[{"icon":"person","x":110,"y":126,"kind":"gold","label":"you, wanting page 187"},{"icon":"shelf","x":330,"y":124,"kind":"accent","label":"tabs, one every twenty five pages"},{"icon":"doc","x":600,"y":124,"kind":"muted","label":"then one page at a time"}],"arrows":[{"x1":168,"y1":126,"x2":268,"y2":126,"style":"gold","label":"flick to the nearest tab"},{"x1":404,"y1":126,"x2":540,"y2":126,"style":"green","label":"then leaf forward"}],"caption":"Nobody taught you this. You do it because flicking to a tab and turning one page are different physical acts with different costs, and binary search assumes they are the same act. That single assumption is what this lesson takes apart."}'></div>
+
+  <p>Binary search would tell you to open the exact middle of the binder, then the middle of that, and it would be right about the number of looks and wrong about your hands. <strong>It assumes a long jump costs the same as a short step.</strong> In a ring binder it does not.</p>
+
+  <h2><span class="ix">2</span> What It Actually Is</h2>
+  <div class="sub">Four assumptions, four repairs, and no new data.</div>
+  <p>Binary search makes four quiet assumptions beyond its two demands. Each of the methods in this lesson exists because one of them failed somewhere real.</p>
+
+  <div class="viz" data-viz='{"type":"arch","title":"Break one assumption, get one method","maxChars":18,"nodes":[{"id":"c","label":"Binary search, and what it quietly assumes","col":0,"row":2,"kind":"dark"},{"id":"a1","label":"A long jump costs the same as a short step","col":1,"row":0,"kind":"gold"},{"id":"a2","label":"Somebody can tell you where the collection ends","col":1,"row":1,"kind":"gold"},{"id":"a3","label":"You know nothing about how the values are spread","col":1,"row":2,"kind":"gold"},{"id":"a4","label":"More splits must mean fewer comparisons","col":1,"row":3,"kind":"gold"},{"id":"m1","label":"Jump search","col":2,"row":0,"kind":"accent"},{"id":"m2","label":"Exponential search","col":2,"row":1,"kind":"accent"},{"id":"m3","label":"Interpolation search","col":2,"row":2,"kind":"accent"},{"id":"m4","label":"Ternary search, which loses","col":2,"row":3,"kind":"bad"}],"edges":[{"from":"c","to":"a1"},{"from":"c","to":"a2"},{"from":"c","to":"a3"},{"from":"c","to":"a4"},{"from":"a1","to":"m1","label":"repair","style":"green"},{"from":"a2","to":"m2","label":"repair","style":"green"},{"from":"a3","to":"m3","label":"repair","style":"green"},{"from":"a4","to":"m4","label":"repair"}],"caption":"Read the middle column and the right column disappears. Nobody needs to memorise four names, because each name is only the answer to one broken assumption, and three of the four repairs pay off in a specific room while the fourth loses on paper."}'></div>
+
+  <p>Not one of these changes the data, and not one of them changes the order. <strong>Every one changes only what a single look is allowed to buy.</strong></p>
+
+  <h2><span class="ix">3</span> Watch It Work</h2>
+  <div class="sub">Same twelve numbers, same order, same target, four different opening moves.</div>
+  <p>Watch where each one <em class="k">chooses</em> to start. That choice is the assumption, made visible, before a single comparison has happened.</p>
+
+  <div class="board" data-anim='{"type":"race","title":"Four methods, one row, target 72","speed":1600,"countLabel":" looks","legend":[["checking now","look"],["still possible","range"],["ruled out","dead"],["found it","found"]],"tracks":[{"label":"Check every box","data":[6,13,17,25,29,34,41,49,58,72,80,90]},{"label":"Jump in fours","data":[6,13,17,25,29,34,41,49,58,72,80,90]},{"label":"Halve it","data":[6,13,17,25,29,34,41,49,58,72,80,90]},{"label":"Guess the spot","data":[6,13,17,25,29,34,41,49,58,72,80,90]}],"steps":[{"badge":"where each one starts","lanes":[{"look":[0],"count":1},{"look":[3],"count":1},{"look":[5],"range":[0,11],"count":1},{"look":[8],"count":1}],"say":"Same twelve, same order, same target. <b>Look where each one chooses to start.</b> Linear starts at the edge because it has no reason not to. Jump lands at the end of the first block of four. Binary goes to the middle because it assumes nothing about the values. Guessing goes straight to box 8, because 72 sits about three quarters of the way between 6 and 90."},{"lanes":[{"look":[3],"dead":[0,1,2],"count":4},{"look":[7],"dead":[0,1,2,3],"count":2},{"look":[8],"dead":[0,1,2,3,4,5],"range":[6,11],"count":2},{"found":[9],"seen":[8],"count":2}],"say":"<b>Guessing is already finished, in two looks</b>, because it was allowed to use the values themselves and the values happened to be evenly spread. Remember that word happened."},{"lanes":[{"look":[6],"dead":[0,1,2,3,4,5],"count":7},{"look":[11],"dead":[0,1,2,3,4,5,6,7],"count":3},{"look":[10],"dead":[0,1,2,3,4,5,6,7,8],"range":[9,11],"count":3},{"found":[9],"count":2}],"say":"Jump has landed on 90 and overshot. <b>That is the useful signal, not a failure</b>, because 72 must be inside the block it just flew over."},{"lanes":[{"look":[8],"dead":[0,1,2,3,4,5,6,7],"count":9},{"look":[8],"range":[8,11],"dead":[0,1,2,3,4,5,6,7],"count":4},{"found":[9],"range":[9,9],"dead":[0,1,2,3,4,5,6,7,8,10,11],"count":4},{"found":[9],"count":2}],"say":"So jump walks back into that block, one step at a time, which is the leafing you did in the binder. Binary lands on 72 on its fourth look."},{"badge":"10, 5, 4, 2","lanes":[{"found":[9],"dead":[0,1,2,3,4,5,6,7,8],"count":10},{"found":[9],"dead":[0,1,2,3,4,5,6,7],"count":5},{"found":[9],"count":4},{"found":[9],"count":2}],"say":"Ten, five, four, two. <b>Not one of the four touched the data or changed the order.</b> The only thing that differed was what each was willing to assume before it looked."},{"badge":"change the room","lanes":[{"found":[9],"dead":[0,1,2,3,4,5,6,7,8],"count":10},{"found":[9],"dead":[0,1,2,3,4,5,6,7],"count":5},{"found":[9],"count":4},{"found":[9],"count":2}],"say":"Now change the room and the ranking inverts. Give guessing twelve numbers where eleven sit between 1 and 15 and one sits at 1,000, and <b>its guess lands on box 0 every time and it walks the row.</b> And jump lost here only because in memory a long jump is free. Put this row on a chain, or on pages fetched one at a time over a network, and jump is suddenly the cheap one."}],"caption":"The winner on this board is the method with the best assumption about this particular room. Change the room and the order of finish changes with it, which is why the four names are worth less than the four questions."}'></div>
+
+  <h2><span class="ix">4</span> Under The Hood</h2>
+  <div class="sub">The overshoot is the information.</div>
+
+  <div class="viz" data-viz='{"type":"seq","title":"Why flying past the answer is the point","actors":[{"label":"Jump search","kind":"gold"},{"label":"Box 11, holding 90","kind":"accent"},{"label":"The block it flew over","kind":"muted"}],"messages":[{"from":0,"to":1,"label":"are you smaller than 72","style":"gold"},{"from":1,"to":0,"label":"no, I am 90"},{"from":0,"to":0,"label":"so I have gone too far, and I know exactly when I was last too small"},{"from":0,"to":2,"label":"then 72 is inside you, or nowhere","style":"green"},{"from":2,"to":0,"label":"four boxes. Walk me","style":"green"}],"caption":"A single overshoot converts a whole row into one small block. That is the same move binary search makes, with one difference: the block boundary was decided in advance rather than by halving, which is what lets the method control how far apart its jumps are."}'></div>
+
+  <p>Every method here is doing the same thing binary search does: <strong>turning one comparison into a statement about many boxes.</strong> They differ only in how they choose where to stand when they make it.</p>
+
+  <h2><span class="ix">5</span> The Types</h2>
+  <div class="sub">Four repairs, and the one condition each demands.</div>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>The method</th><th>The assumption it repairs</th><th>The one condition it demands</th></tr>
+    <tr><td>Jump search</td><td>That a long jump is as cheap as a short step</td><td>You know the length, and hops really are more expensive than steps</td></tr>
+    <tr><td>Exponential search</td><td>That somebody can tell you where it ends</td><td>The answer is usually near the front, or the length is unknowable</td></tr>
+    <tr><td>Interpolation search</td><td>That you know nothing about how values are spread</td><td>The values really are evenly spread, and it collapses to a scan when they are not</td></tr>
+    <tr><td>Ternary search</td><td>That more splits must mean fewer comparisons</td><td>Nothing, for finding a value. It simply loses, and block 6 does the arithmetic</td></tr>
+  </table>
+  <div class="tbl-cap">Rows one to three are trades with a room attached. Row four is the only place in this chapter where the arithmetic says a method is just worse, and it is worth keeping because it teaches you to check rather than assume.</div></div>
+
+  <p>Now the second assumption, on its own board. Sometimes nobody can tell you how long the collection is: a stream still arriving, a paged result nobody has counted, a file being written while you read it. <strong>You cannot go to the middle of something with no end.</strong></p>
+
+  <div class="board" data-anim='{"type":"array-scan","title":"Doubling your reach when nobody will tell you where it ends","speed":1600,"capacity":18,"data":[4,9,13,18,25,31,38,44,52,57,63,70,77,82,88,95],"countLabel":" looks","pointerLabels":{"lo":"start","mid":"probing","hi":"end"},"legend":[["probing now","look"],["bracket that must hold it","range"],["ruled out","dead"],["found it","found"]],"steps":[{"capacity":18,"look":[1],"ptr":{"mid":1},"count":1,"badge":"looking for 70","say":"The dashed slots are the point: <b>the row continues past anything anybody will tell you.</b> There is no middle to go to, so start one step in."},{"capacity":18,"look":[2],"dead":[1],"ptr":{"mid":2},"count":2,"say":"Still too small. Double the reach rather than step. One, two, and next will be four."},{"capacity":18,"look":[4],"dead":[1,2],"ptr":{"mid":4},"count":3,"say":"25 is still smaller than 70. Double again."},{"capacity":18,"look":[8],"dead":[1,2,4],"ptr":{"mid":8},"count":4,"say":"52, still smaller. Double again. <b>Four looks and you have already covered eight boxes without knowing the length.</b>"},{"capacity":18,"look":[15],"dead":[1,2,4,8],"ptr":{"mid":15},"count":5,"say":"95 is bigger than 70 at last. <b>So the answer is between the last probe that was too small and this one</b>, and you have just invented an end for a row that never gave you one."},{"capacity":18,"range":[9,15],"look":[12],"dead":[0,1,2,3,4,5,6,7,8],"ptr":{"lo":9,"mid":12,"hi":15},"count":6,"say":"And now it is Lesson 6.3, unchanged, inside a bracket you built yourself. 77 is bigger than 70."},{"capacity":18,"range":[9,11],"look":[10],"dead":[0,1,2,3,4,5,6,7,8,12,13,14,15],"ptr":{"lo":9,"mid":10,"hi":11},"count":7,"say":"63 is smaller. One box left."},{"capacity":18,"found":[11],"range":[11,11],"dead":[0,1,2,3,4,5,6,7,8,9,10,12,13,14,15],"count":8,"badge":"8 looks, no length known","say":"Found in eight, and <b>nobody ever said how long the row was.</b> Five looks to build a bracket, three to halve it."}],"caption":"The doubling is not the clever part. Building a finite bracket out of something with no stated end is the clever part, and once the bracket exists the rest is binary search doing exactly what Lesson 6.3 described."}'></div>
+
+  <h2><span class="ix">6</span> What It Costs, In Plain English</h2>
+  <div class="sub">Derive the block size instead of being told it.</div>
+  <p>Jump search has one dial: how big is a block. Try three settings on 10,000 sorted items, hopping between blocks and then walking back inside one.</p>
+  <p><strong>Blocks of 10:</strong> up to 1,000 hops, then up to 10 steps. 1,010. <strong>Blocks of 1,000:</strong> up to 10 hops, then up to 1,000 steps. 1,010 again. <strong>Blocks of 100:</strong> up to 100 hops, then up to 100 steps. <em class="g">200.</em> The cheapest block is the square root of the pile, and the reason is worth more than the algorithm: <strong>two halves of one bill are cheapest when they are equal.</strong></p>
+
+  <div class="viz" data-viz='{"type":"card","title":"One million sorted items, five ways","eyebrow":"LOOKS TO FIND ONE","badge":"1,000,000 items","width":560,"rows":[{"k":"Check every box","v":"1,000,000","tone":"bad","bar":1},{"k":"Jump, in blocks of a thousand","v":"about 2,000","tone":"bad","bar":0.002},{"k":"Halve it","v":"20","tone":"good","bar":0.00002},{"k":"Guess the spot, values evenly spread","v":"about 4","tone":"good","bar":0.000004},{"k":"Guess the spot, values clumped","v":"up to 1,000,000","tone":"bad","bar":1}],"caption":"Every bar is drawn against a maximum of one million. The last two rows are the same method on the same amount of data, and the only difference is how the values are spread. That is the widest gap on any card in this course, and it is why a method with an assumption is a bet."}'></div>
+
+  <p>And ternary search, which is the honest failure. Two binary looks leave you a quarter of the pile. Two ternary looks leave you <strong>a third</strong>, and a third is more than a quarter, so splitting into three deletes less per comparison than splitting into two. Properly: a million needs about 12.6 rounds of thirds, but each round costs two comparisons, so about <strong>25 against binary search 20</strong>. It is not close, and it is not a matter of taste.</p>
+
+  <div class="callout warn">
+    <div class="ch">Where ternary is not wrong</div>
+    <p>Splitting into three is the right move when there is <strong>no target to compare against</strong>: finding the highest point of something that rises and then falls, like the price that maximises profit before it starts hurting demand. There you cannot ask is this the answer, only is this side going up. That is a different problem, Lesson 6.7 opens on it, and chapter 15 owns it properly.</p>
+  </div>
+
+  <h2><span class="ix">7</span> Where It Lives In Real Life</h2>
+  <div class="sub">Five rooms, and the assumption each one rewards.</div>
+
+  <div class="viz" data-viz='{"type":"kgraph","title":"The room decides the method","unit":178,"nodes":[{"id":"c","label":"What does one look cost here","x":2,"y":1,"kind":"dark"},{"id":"p","label":"Pages fetched one at a time over a network, where a hop is a round trip","x":0,"y":0,"kind":"accent"},{"id":"s","label":"A result set still arriving, with no length to ask for","x":0,"y":2,"kind":"accent"},{"id":"t","label":"Timestamps in a log, which really are evenly spread","x":4,"y":0,"kind":"gold"},{"id":"i","label":"Customer ids with huge gaps, where guessing is worse than halving","x":4,"y":2,"kind":"bad"},{"id":"m","label":"A plain row in memory, where every look costs the same","x":2,"y":3,"kind":"box"}],"edges":[{"from":"c","to":"p","label":"jump, fewer round trips","style":"green"},{"from":"c","to":"s","label":"exponential, invent an end","style":"green"},{"from":"c","to":"t","label":"guessing wins","style":"gold"},{"from":"c","to":"i","label":"guessing collapses"},{"from":"c","to":"m","label":"just halve it","style":"green"}],"caption":"The bottom node is the ordinary case and the correct default. Every other node is a room where something about the cost of a look, or the shape of the values, is unusual enough to be worth naming."}'></div>
+
+  <p>The two on the right are the same method with opposite outcomes. Timestamps in a log are genuinely evenly spread, so guessing lands close. Customer ids with big gaps are not, and <strong>the same guess lands at the edge every time and walks the row.</strong></p>
+
+  <h2><span class="ix">8</span> How Problems Show Up</h2>
+  <div class="sub">Six sentences, and the question is always about the room.</div>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>What somebody actually says</th><th>The test to run</th><th>What it is really telling you</th></tr>
+    <tr><td>"Each lookup is only twenty steps and it still takes a second"</td><td>Ask what one step physically costs</td><td>Twenty round trips, not twenty looks. Fewer, larger hops win here</td></tr>
+    <tr><td>"We cannot use binary search, we do not know how many there are"</td><td>Ask whether the answer is usually near the front</td><td>Double your reach until you overshoot, then halve inside that bracket</td></tr>
+    <tr><td>"It is lightning fast in testing and ordinary in production"</td><td>Compare how the values are spread in each</td><td>Test data is evenly spread and real data is clumped. A guess is a bet on spread</td></tr>
+    <tr><td>"Somebody replaced it with a three-way split and it got slower"</td><td>Count comparisons per round, not rounds</td><td>Three splits cost two comparisons, and leave a third rather than a quarter</td></tr>
+    <tr><td>"It is fast for most customers and terrible for one"</td><td>Look at that customer distribution of ids or dates</td><td>One clumped range, and a method that assumed even spread</td></tr>
+    <tr><td>"Reading forward is fine, jumping around is slow"</td><td>Ask whether it is a chain, a stream or a disk</td><td>The two acts have different costs, which is the assumption jump search repairs</td></tr>
+  </table>
+  <div class="tbl-cap">Not one row here is about the size of the data. Every one is about the cost of a look or the shape of the values, and both are properties of the room rather than of the algorithm.</div></div>
+
+  <h2><span class="ix">9</span> Solve It Live</h2>
+  <div class="sub">Twenty looks, and a second and a half.</div>
+  <div class="callout">
+    <div class="ch">The problem, as it arrives</div>
+    <p>"We store a million sorted records in a remote store and look them up with binary search. It is twenty looks, which should be nothing, and it takes about a second and a half per lookup. The store is not slow, we measured it: a single fetch comes back in about 70 milliseconds. Nobody can find the slow part."</p>
+  </div>
+
+  <div class="viz" data-viz='{"type":"swim","title":"Twenty looks that are twenty round trips","lanes":[{"label":"The team"},{"label":"You"},{"label":"The store"}],"steps":[{"id":"a1","lane":0,"col":0,"kind":"gold","label":"Twenty looks, a second and a half, nothing is slow"},{"id":"b1","lane":1,"col":1,"kind":"box","label":"Ask: what does one look physically cost here?"},{"id":"c1","lane":2,"col":1,"kind":"bad","label":"One fetch is a round trip, about 70 ms"},{"id":"b2","lane":1,"col":2,"kind":"accent","label":"20 x 70 ms is 1.4 s. Nothing is slow, there are just twenty"},{"id":"c2","lane":2,"col":2,"kind":"bad","label":"And each look lands somewhere unrelated to the last"},{"id":"b3","lane":1,"col":3,"kind":"accent","label":"So make the looks fewer and fatter, not faster"},{"id":"b4","lane":1,"col":4,"kind":"accent","label":"Fetch a block per trip, then scan it in memory"}],"edges":[{"from":"a1","to":"b1"},{"from":"b1","to":"c1"},{"from":"c1","to":"b2"},{"from":"b2","to":"c2"},{"from":"c2","to":"b3"},{"from":"b3","to":"b4"}],"caption":"Twenty is a wonderful number of comparisons and a terrible number of round trips. The count was never the problem, and no faster algorithm helps, because every method in Lesson 6.3 is optimising the thing that was already cheap."}'></div>
+
+  <p><strong>Twenty looks at seventy milliseconds each is a second and a half.</strong> Nothing is slow. There are simply twenty of them, and binary search made them as few as possible only under the assumption that all looks cost the same. Here they do not: a look is a round trip, and the method that minimises round trips is the one that fetches a fat block and then scans it locally, which is jump search wearing production clothes.</p>
+
+  <div class="callout good">
+    <div class="ch">Why this reasoning wins</div>
+    <p>It asked the only question this lesson teaches: <strong>what does one look physically cost in this room?</strong> The team measured the store and found it healthy, which is exactly what pointed at the count rather than the speed. Twenty comparisons in memory is free. Twenty round trips is a second and a half, and the fix is fewer, fatter looks rather than a cleverer algorithm.</p>
+  </div>
+
+  <h2><span class="ix">10</span> Your Turn</h2>
+  <div class="callout accent">
+    <div class="ch">Your rep, one thick book</div>
+    <p>Take a book of at least three hundred pages and find page 187 three ways, counting your physical movements each time. <strong>Round one:</strong> from page one, one page at a time, and stop after thirty and estimate the rest. <strong>Round two:</strong> open the exact middle, then the middle of the half, and so on. <strong>Round three:</strong> use your thumb to flick in chunks of about twenty five, then leaf. Now the question that matters: <strong>which round felt fastest, and was it the one with the fewest movements?</strong> If those two answers differ, you have just measured the assumption this whole lesson is about.</p>
+  </div>
+
+  <h2><span class="ix gold">✓</span> Check Yourself</h2>
+
+  <div class="quiz" data-correct="1">
+    <div class="q">A lookup over a remote store takes twenty binary search looks and about 1.4 seconds. A single fetch measures 70 milliseconds and the store is healthy. What is the fix?</div>
+    <div class="opt" data-i="0">A faster search algorithm, since twenty looks is clearly too many</div>
+    <div class="opt" data-i="1">Fewer and fatter looks: fetch a block per round trip and scan it in memory</div>
+    <div class="opt" data-i="2">Add more machines to the store, since 70 milliseconds per fetch is the bottleneck</div>
+    <div class="qexp">Twenty times seventy milliseconds is 1.4 seconds, so nothing is slow and there are simply twenty round trips. Binary search minimises comparisons, which were already free, while leaving the expensive thing untouched. Any method that trades more local comparisons for fewer trips wins here, and that is jump search in production clothes.</div>
+  </div>
+
+  <div class="quiz" data-correct="2">
+    <div class="q">Why does splitting the search space into three parts lose to splitting it into two?</div>
+    <div class="opt" data-i="0">Because three-way splits are harder to implement correctly</div>
+    <div class="opt" data-i="1">Because the pile does not divide evenly into three</div>
+    <div class="opt" data-i="2">Because one three-way round costs two comparisons and leaves a third, while two two-way rounds cost two comparisons and leave a quarter</div>
+    <div class="qexp">Count comparisons, not rounds. Spend two comparisons on halving and a quarter remains. Spend two on a three-way split and a third remains, and a third is more than a quarter. On a million that is about 25 comparisons against 20. The method is not badly built, it is simply a worse trade, and the only way to see that is to price the round rather than count it.</div>
+  </div>
+
+  <div class="callout good">
+    <div class="ch">Next</div>
+    <p>Everything so far has assumed a row that somebody keeps in order, and Lesson 6.3 priced that: the shuffle, on every single insert, forever. <strong>Next, somebody refuses to keep paying it</strong>, and keeps the order as a shape instead of a row, which is what a database index actually is and why it survives the writes that would destroy a sorted list.</p>
+  </div>
+__NAV__
+</div>`,
+
 "6.9": `<div class="wrap">
   <div class="les-kicker">Chapter 6 · Lesson 6.9</div>
   <h1 class="les-title">The Whiteboard: All of Searching in One Run</h1>
