@@ -423,4 +423,137 @@ __NAV__
     <p>Two of the three edits were free, and the third one bought a shape. Every one of them still assumed somebody decided how big the line may get. <strong>Lesson 5.4 is what happens when nobody did</strong>, and it starts with two outages on one morning that were both called an overload and have nothing whatsoever in common.</p>
   </div>
 __NAV__
+</div>`,
+
+"5.4": `<div class="wrap">
+  <div class="les-kicker">Chapter 5 · Lesson 5.4</div>
+  <h1 class="les-title">Where Order of Service Decides Everything</h1>
+  <div class="les-meta">
+    <span class="pill">foundational</span><span class="pill">~14 min</span>
+    <span class="pill gold">no code needed</span><span class="pill">11 visuals</span>
+  </div>
+
+  <p class="motto">Every queue is bounded. The only question is whether you chose the bound, or memory chose it for you.</p>
+
+  <p class="lead">Most systems are not about storing things, they are about deciding who gets served next, and that rule is the structure. This lesson turns the chapter into a diagnostic you can run on something you did not build. By the end you can hear a complaint, ask two questions, and say whether the thing in front of you ran out of a ceiling somebody set, or grew past one nobody set.</p>
+
+  <h2><span class="ix">1</span> The Everyday Situation</h2>
+  <div class="sub">Two failures before lunch, and the group chat called them the same thing.</div>
+  <p>The photo app died the moment you opened one particular folder. Not slowly. You tapped, it vanished, and it vanished again every time. Somebody had dropped a shortcut inside that folder pointing back at the folder itself, so opening it means opening it. <strong>That is Lesson 4.4 arriving as an outage</strong>: a loop in the data, not a piece of work calling itself.</p>
+
+  <div class="viz" data-viz='{"type":"scene","title":"Two incidents, one word, nothing in common","width":820,"height":280,"items":[{"icon":"phone","x":112,"y":126,"kind":"bad","label":"gone the instant you open it"},{"icon":"doc","x":286,"y":124,"kind":"gold","label":"a folder pointing back at itself"},{"icon":"server","x":516,"y":124,"kind":"muted","label":"slightly slower, for forty minutes"},{"icon":"person","x":714,"y":126,"kind":"bad","label":"then nothing answered at all"}],"arrows":[{"x1":170,"y1":126,"x2":230,"y2":126,"style":"gold","label":"depth"},{"x1":572,"y1":126,"x2":656,"y2":126,"style":"green","label":"a slope, all morning"}],"caption":"Both were called an overload in the incident channel. One ran out of a ceiling that was fixed before it started. The other never hit a ceiling at all, because nobody had set one, and that difference is the whole lesson."}'></div>
+
+  <p>The lunch shop went the other way. It got slightly slower. Then a little slower. Forty minutes later it stopped answering entirely. <strong>Nothing ran out and nothing crashed.</strong> One of these failed instantly and totally. The other looked healthy the whole time it was dying.</p>
+
+  <h2><span class="ix">2</span> What It Actually Is</h2>
+  <div class="sub">Two questions, and the second one is the lesson.</div>
+  <p>The diagnostic runs on two questions. First: <strong>does this work nest, or does it arrive?</strong> Work that nests contains work, so the only thing you can resume is the most recent thing you left, and Lesson 5.1 priced the ceiling that comes with it. Work that arrives has no such shape, and it fails the opposite way: slowly, invisibly, by growing.</p>
+
+  <div class="viz" data-viz='{"type":"flow","title":"Two questions, and the four doors the second one opens","maxChars":18,"nodes":[{"id":"q1","label":"Does this work nest, or does it arrive?","col":0,"row":1,"kind":"gold","shape":"diamond"},{"id":"n","label":"Nests. A ceiling fixed before the run, spent by depth","col":1,"row":0,"kind":"accent"},{"id":"ns","label":"Fails instantly and totally. Lesson 5.1","col":2,"row":0,"kind":"bad"},{"id":"a","label":"Arrives. What happens when the line is full?","col":1,"row":2,"kind":"gold","shape":"diamond"},{"id":"a1","label":"Refuse the newest, drop the oldest, or make the sender wait","col":2,"row":1,"kind":"accent"},{"id":"a2","label":"Or let it grow, which is a bound nobody can see","col":2,"row":3,"kind":"bad"}],"edges":[{"from":"q1","to":"n","label":"nests"},{"from":"q1","to":"a","label":"arrives","style":"green"},{"from":"n","to":"ns","label":"a stop"},{"from":"a","to":"a1","label":"you chose","style":"green"},{"from":"a","to":"a2","label":"nobody chose"}],"caption":"The first question separates two failures that sound identical in a group chat. The second one is where this lesson lives, and only one of its answers removes a cause instead of picking a victim."}'></div>
+
+  <p>Second, and this is the lesson: <strong>when work arrives faster than you serve it, what happens at the moment the line is full?</strong> A queue absorbs a burst and it cannot absorb a deficit. It can only convert a refusal into a wait. So an unbounded queue does not remove the limit. It moves the limit somewhere nobody can see, and charges the difference in waiting.</p>
+
+  <h2><span class="ix">3</span> Watch It Work</h2>
+  <div class="sub">120 arriving, 100 served, and the only lane that remembers.</div>
+  <p>A hundred and twenty requests arrive every second and a hundred are answered. Every frame below is that pair and its arithmetic. <strong>Watch the third lane, because it is the only one holding a memory.</strong> The top two are instant rates, which is exactly what the dashboards show, and both look ordinary the whole way through.</p>
+
+  <div class="board" data-anim='{"type":"race","title":"Two rates, and the number nobody is graphing","speed":1700,"legend":[["arriving, or being served","look"],["answered and still wanted","found"],["answered after the caller left","bad"],["standing in the line","range"]],"tracks":[{"label":"Requests arriving","data":["","","","","","","","","","","","","","",""],"countLabel":" per second"},{"label":"Requests served","data":["","","","","","","","","","","","","","",""],"countLabel":" per second"},{"label":"Waiting in the line","data":["","","","","","","","","","","","","","",""],"countLabel":" waiting"}],"steps":[{"badge":"9:05, steady","lanes":[{"look":[0,1,2,3,4],"count":100},{"found":[0,1,2,3,4],"count":100},{"count":0}],"say":"A hundred arrive, a hundred are answered, and nobody is standing in the line. <b>An empty queue is doing nothing, and that is correct.</b> A line is not storage. It exists to absorb the difference between two rates, and right now there is no difference."},{"badge":"9:06, a burst","lanes":[{"look":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14],"count":300},{"found":[0,1,2,3,4],"count":100},{"range":[0,0],"count":600}],"say":"Three hundred a second, for three seconds. The bottom lane lit because two hundred a second more arrived than left, three times over, so <b>six hundred are standing there and nobody was refused.</b> The newest waits six seconds. This is what a line is for."},{"badge":"9:07, drained","lanes":[{"look":[0,1,2,3],"count":80},{"found":[0,1,2,3,4],"count":100},{"count":0}],"say":"The burst is over. Eighty arriving against a hundred answered, so the line shrinks by twenty a second and the six hundred are gone in thirty seconds. <b>A line that fills and empties is a line doing its job.</b>"},{"badge":"9:21, one minute in","lanes":[{"look":[0,1,2,3,4,5],"count":120},{"found":[0,1,2,3,4],"count":100},{"range":[0,1],"count":1200}],"say":"From 9:20 the arrivals settle at a hundred and twenty and stay there. One extra lit cell on the top lane, and <b>this time it does not go away.</b> Twenty a second that never leave, and sixty seconds of that is twelve hundred standing there. The shape is a straight line, not a triangle."},{"badge":"9:25, five minutes in","lanes":[{"look":[0,1,2,3,4,5],"count":120},{"found":[0,1,2,3,4],"count":100},{"range":[0,5],"count":6000}],"say":"Five minutes of twenty a second is six thousand. <b>The top two lanes have not moved a single cell since the last frame.</b> That is what the dashboards are showing. The newest arrival will be answered in sixty seconds, and only the third lane knows it."},{"badge":"the caller left at 30s","lanes":[{"look":[0,1,2,3,4,5],"count":120},{"bad":[0,1,2,3,4],"count":100},{"range":[0,5],"count":6000}],"say":"The caller gave up at thirty seconds and the answer takes sixty. From this second on, every one of the hundred answers a second goes to somebody who has already gone. <b>Full capacity, and zero useful output.</b> Nothing on the top lane changed."},{"badge":"bounded at 500","lanes":[{"look":[0,1,2,3,4],"bad":[5],"count":120},{"found":[0,1,2,3,4],"count":100},{"range":[0,0],"count":500}],"say":"Same deficit, one decision added: the line may never pass five hundred. Twenty a second now get an instant no, and <b>the wait can never exceed five seconds.</b> A fast no beats a slow yes that arrives after the customer has gone."}],"caption":"One lit cell is twenty a second on the top two lanes, and one thousand waiting on the bottom one. The two rates never once looked alarming, and every frame from the fourth onwards is the same subtraction: a hundred and twenty in, a hundred out, twenty a second that have to stand somewhere."}'></div>
+
+  <h2><span class="ix">4</span> Under The Hood</h2>
+  <div class="sub">The loop that puts the failure somewhere else.</div>
+
+  <div class="viz" data-viz='{"type":"state","title":"One request, four endings, and the loop that feeds itself","maxChars":17,"nodes":[{"id":"q","label":"Queued, waiting its turn","col":0,"row":1,"kind":"gold"},{"id":"s","label":"Served before the caller gave up","col":2,"row":0,"kind":"accent"},{"id":"t","label":"Wait crossed the timeout. Caller gone","col":2,"row":1,"kind":"bad"},{"id":"w","label":"Served anyway, and nobody wants it","col":4,"row":1,"kind":"bad"},{"id":"r","label":"Caller sends it again","col":2,"row":2,"kind":"warn"},{"id":"d","label":"Shed at the door, an instant no","col":0,"row":2,"kind":"accent"}],"edges":[{"from":"q","to":"s","label":"answered in time","style":"green"},{"from":"q","to":"t","label":"waited too long"},{"from":"t","to":"w","label":"still gets served"},{"from":"t","to":"r","label":"and retries"},{"from":"r","to":"q","label":"one arrival became two"},{"from":"q","to":"d","label":"if bounded","style":"green"}],"caption":"The loop is the picture. Waits cross the timeout, callers retry, retries raise the arrival rate, and a higher arrival rate makes the wait longer still. That is why the failure never appears where the queue is, and why turning on retries during an incident makes it worse rather than better."}'></div>
+
+  <p>A request joins the back of the line and waits. If the wait crosses the timeout, the caller gives up, and <strong>the request is still in the line and still going to be answered.</strong> That is not the loop yet. The loop is what the caller does next: it sends the request again. One arrival became two, on top of a deficit that was already there.</p>
+
+  <h2><span class="ix">5</span> The Types</h2>
+  <div class="sub">A full line has exactly four doors.</div>
+  <p>Every system you have used stands at one of them. Three of the four pick a victim. <strong>One removes the cause.</strong> Read the third column first, because the condition decides which door you may use, and it is almost never a performance question.</p>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>The door</th><th>What it does</th><th>The one condition it demands</th></tr>
+    <tr><td>Refuse the newest</td><td>An instant no at the door</td><td>The sender can be told no and will cope. A checkout cannot use this lightly</td></tr>
+    <tr><td>Drop the oldest</td><td>The ring from Lesson 5.3</td><td>Only the newest matters. True for a sensor reading, false for a payment</td></tr>
+    <tr><td>Make the sender wait</td><td>Backpressure. The line pushes back up the pipe</td><td>The sender is something you control and can be slowed down</td></tr>
+    <tr><td>Let it grow</td><td>Nothing, until memory decides</td><td>Nothing is demanded, which is why it is the default and why it is the trap</td></tr>
+  </table>
+  <div class="tbl-cap">Doors one, two and four leave 120 arriving a second exactly where it was and argue about who suffers for it. Door three is the only one that reaches back and changes a rate, which is the only thing that ever removes a deficit.</div></div>
+
+  <div class="viz" data-viz='{"type":"dtree","title":"Which door may you actually use","maxChars":17,"nodes":[{"id":"q1","label":"Can you slow the sender down?","col":1,"row":0,"kind":"gold","shape":"diamond"},{"id":"b","label":"Yes: backpressure. The only door that removes the cause","col":0,"row":1,"kind":"accent"},{"id":"q2","label":"No. Does only the newest thing matter?","col":2,"row":1,"kind":"gold","shape":"diamond"},{"id":"r","label":"Yes: drop the oldest. A ring, and Lesson 5.3 built it","col":2,"row":2,"kind":"accent"},{"id":"n","label":"No: refuse the newest, and say so out loud","col":4,"row":2,"kind":"gold"}],"edges":[{"from":"q1","to":"b","label":"yes","style":"green"},{"from":"q1","to":"q2","label":"no"},{"from":"q2","to":"r","label":"yes","style":"green"},{"from":"q2","to":"n","label":"no"}],"caption":"There is no branch here labelled let it grow, and that is deliberate. Letting it grow is not a fourth answer to this question, it is what happens when nobody asked the question at all."}'></div>
+
+  <h2><span class="ix">6</span> What It Costs, In Plain English</h2>
+  <div class="sub">One counter, twelve people a minute, six served.</div>
+  <p>Forget machines. One person serving, twelve people a minute walking in, six served. Nobody is broken and nothing is slow. Six a minute more arrive than leave, so after ten minutes sixty people are standing there and the sixtieth waits ten minutes. After fifty minutes there are three hundred people and the wait is fifty minutes.</p>
+
+  <div class="viz" data-viz='{"type":"card","title":"Twelve in, six out, and a rush that lasts fifty minutes","eyebrow":"ONE COUNTER","badge":"6 a minute short","width":560,"rows":[{"k":"After 10 minutes: people standing there","v":"60","tone":"bad","bar":0.2},{"k":"After 10 minutes: what the last one waits","v":"10 min","tone":"bad","bar":0.2},{"k":"After 50 minutes: people standing there","v":"300","tone":"bad","bar":1},{"k":"After 50 minutes: what the last one waits","v":"50 min","tone":"bad","bar":1},{"k":"Serve 12 a minute instead","v":"0 waiting","tone":"good","bar":0}],"caption":"Every bar is drawn against a maximum of 300. The wait in minutes equals the length of the rush in minutes, for as long as the rush lasts, and the only row that fixes anything is the last one, because it is the only row that changes a rate."}'></div>
+
+  <p>Nothing in that shop broke. <strong>The wait grows by exactly one minute for every minute the rush lasts</strong>, and it stops growing the moment the two rates meet. Which gives the one formula this chapter earns, called Little law: <strong>the average wait is the average number waiting divided by the rate you actually serve at.</strong></p>
+
+  <h2><span class="ix">7</span> Where It Lives In Real Life</h2>
+  <div class="sub">Five doors picked on purpose, and one chapter closing.</div>
+
+  <div class="viz" data-viz='{"type":"kgraph","title":"Somebody chose a door, and you have met all of them","unit":178,"nodes":[{"id":"c","label":"What happens when the line is full","x":2,"y":1,"kind":"dark"},{"id":"v","label":"A video call dropping the oldest frame rather than showing it late","x":0,"y":0,"kind":"accent"},{"id":"s","label":"A site showing try again in a moment instead of a slow blank page","x":0,"y":2,"kind":"gold"},{"id":"d","label":"A download slowing itself because the disk cannot keep up","x":4,"y":0,"kind":"accent"},{"id":"l","label":"A log file that quietly loses lines during the worst minute","x":4,"y":2,"kind":"bad"},{"id":"k","label":"The call stack, a bounded queue whose bound somebody chose for you","x":2,"y":3,"kind":"gold"}],"edges":[{"from":"c","to":"v","label":"drop the oldest","style":"green"},{"from":"c","to":"s","label":"refuse the newest","style":"green"},{"from":"c","to":"d","label":"make the sender wait","style":"green"},{"from":"c","to":"l","label":"nobody chose"},{"from":"c","to":"k","label":"Lesson 5.1, all along","style":"gold"}],"caption":"Four of these were decisions. The log file is the one that was not, and it is the only node here that surprises somebody at the worst possible moment. The node at the bottom closes the chapter: a stack is already a bounded queue, and nobody has ever argued that its bound should be allowed to grow forever."}'></div>
+
+  <p>Most queues never become a decision, which is exactly why the ones that do catch everybody unprepared. A print queue never needed a door, because nothing there is scarce enough to fill a line. <strong>The moment something is scarce, the door you did not choose is chosen for you.</strong></p>
+
+  <h2><span class="ix">8</span> How Problems Show Up</h2>
+  <div class="sub">Seven sentences, and one subtraction underneath.</div>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>What somebody actually says</th><th>The tell</th><th>What it is really asking</th></tr>
+    <tr><td>"It is not down, it is just slow, and it has been getting slower all morning"</td><td>A slowness with a slope rather than a level</td><td>Arrivals exceed service. The slope is the deficit, and only a rate change removes it</td></tr>
+    <tr><td>"We raised the queue size and it got worse"</td><td>A bound moved without either rate moving</td><td>Longer waits and identical throughput. A bound picks who is told no, never how fast you serve</td></tr>
+    <tr><td>"Every dashboard is green and customers say nothing works"</td><td>Healthy instant rates, invisible memory</td><td>The graphs show arrivals and completions. Nobody is graphing the number standing in the line</td></tr>
+    <tr><td>"It crashes instantly on one file, and that file is tiny"</td><td>Total failure, and size is irrelevant</td><td>Nesting, not arrival. A ceiling fixed before the run. Hunt for data that leads back to itself</td></tr>
+    <tr><td>"Turning on retries made it worse"</td><td>The cure raising the arrival rate</td><td>Every abandoned request sent again is a new arrival stacked on a deficit you already had</td></tr>
+    <tr><td>"Can we add memory so the queue never fills?"</td><td>A request to remove the bound</td><td>A request to move the bound where nobody can see it, and pay in waiting instead of refusals</td></tr>
+    <tr><td>"The video plays, then stalls a second every few minutes"</td><td>A line that empties rather than fills</td><td>The same subtraction with the sign flipped. Frames arrive slower than they are shown</td></tr>
+  </table>
+  <div class="tbl-cap">Six of these rows are one number in six costumes: arrivals minus service. The seventh is that subtraction with the sign flipped, which is why a buffer running dry and a queue running away are the same lesson twice.</div></div>
+
+  <h2><span class="ix">9</span> Solve It Live</h2>
+  <div class="sub">We doubled the queue, and the incident lasted six times longer.</div>
+  <div class="callout">
+    <div class="ch">The problem, as it arrives</div>
+    <p>"Last month we had an incident where the queue filled and we shed about fourteen thousand requests over twenty minutes. So we doubled the queue from ten thousand to twenty thousand. Same rush happened again yesterday, and this time we shed far fewer, but the incident lasted four hours instead of forty minutes and the complaints were much worse."</p>
+  </div>
+
+  <div class="viz" data-viz='{"type":"swim","title":"Twice the queue, six times the incident","lanes":[{"label":"The team"},{"label":"You"},{"label":"The system"}],"steps":[{"id":"a1","lane":0,"col":0,"kind":"gold","label":"Doubled the queue, shed less, incident far longer"},{"id":"b1","lane":1,"col":1,"kind":"box","label":"Ask: did either rate change?"},{"id":"c1","lane":2,"col":1,"kind":"bad","label":"No. 120 in, 100 served, both mornings"},{"id":"b2","lane":1,"col":2,"kind":"accent","label":"Then the deficit is 20 a second, unchanged"},{"id":"c2","lane":2,"col":2,"kind":"bad","label":"20 minutes of rush is 24,000 extra arrivals"},{"id":"c3","lane":2,"col":3,"kind":"bad","label":"Old: absorb 10,000, refuse 14,000 instantly"},{"id":"c4","lane":2,"col":4,"kind":"bad","label":"New: absorb 20,000, and 20,000 waiting is 200 s"},{"id":"b3","lane":1,"col":5,"kind":"accent","label":"Raise service, or push back. A bound is not capacity"}],"edges":[{"from":"a1","to":"b1"},{"from":"b1","to":"c1"},{"from":"c1","to":"b2"},{"from":"b2","to":"c2"},{"from":"c2","to":"c3"},{"from":"c3","to":"c4"},{"from":"c4","to":"b3"}],"caption":"The queue was doubled and the throughput was not, so the only thing that could change is how long each victim waits before being served or giving up. Ten thousand fast refusals became twenty thousand long waits, and the drain afterwards took twice as long too."}'></div>
+
+  <p><strong>Doubling the line did what doubling a line does: it turned ten thousand fast refusals into ten thousand long waits.</strong> A hundred and twenty arrived a second and a hundred were served, both mornings, so the deficit was twenty a second either way. The old line absorbed ten thousand and refused the rest in a fraction of a second each. The new line absorbed twenty thousand, and twenty thousand waiting at a hundred served a second is a two hundred second wait for anybody at the back.</p>
+
+  <div class="callout good">
+    <div class="ch">Why this reasoning wins</div>
+    <p>It asked one question: <strong>did either rate change?</strong> No. Once both rates are known to be unchanged, the deficit is fixed at twenty a second by subtraction, and no size of queue can touch a subtraction. The invariant is the difference between the two rates and never the ratio, which is why doubling the queue doubles the delay and adds no capacity whatsoever. A bound decides who is told no. It never decides how fast you serve.</p>
+  </div>
+
+  <h2><span class="ix">10</span> Your Turn</h2>
+  <div class="callout accent">
+    <div class="ch">Your rep, one line and a stopwatch</div>
+    <p>Stand where there is a queue: a coffee counter, a checkout, a security lane. <strong>Count arrivals for one minute. Count departures for one minute. Subtract.</strong> If that number is positive, you now know how much longer the line will be in ten minutes, and you knew it before anybody standing in it did. Then find the bound, because there is always one: what happens when the next person cannot fit? Somebody is turned away, somebody at the front is hurried, or the line spills out of the door and the shop stops working. Name which of those three that place has chosen, and then ask whether anybody there chose it on purpose.</p>
+  </div>
+
+  <h2><span class="ix gold">✓</span> Check Yourself</h2>
+
+  <div class="quiz" data-correct="2">
+    <div class="q">A service takes 120 requests a second and serves 100. The queue is doubled from 10,000 to 20,000. What changes?</div>
+    <div class="opt" data-i="0">Capacity doubles, so the deficit is absorbed and the incident is half as bad</div>
+    <div class="opt" data-i="1">Nothing at all, since the queue was never the problem</div>
+    <div class="opt" data-i="2">Nobody is refused for twice as long, and everybody who does get served waits twice as long for it</div>
+    <div class="qexp">The invariant is the difference between the rates and never the ratio. Twenty a second have to stand somewhere no matter how much room there is, so a bigger bound buys a longer wait and not one unit of extra throughput. Option one is the belief this lesson exists to kill, and it is the reason the incident in block 9 lasted six times longer.</div>
+  </div>
+
+  <div class="quiz" data-correct="0">
+    <div class="q">A nightly job dies instantly on a 40 KB file and handles a 900 MB file without noticing. Which question do you ask first?</div>
+    <div class="opt" data-i="0">Does this work nest, or does it arrive? A total instant failure on a tiny input points at depth, not at amount</div>
+    <div class="opt" data-i="1">What is the queue bound? Anything that dies under load has an unbounded line somewhere</div>
+    <div class="opt" data-i="2">How many requests a second was it receiving at the time?</div>
+    <div class="qexp">The two failures in this chapter look identical in a group chat and share nothing. Arrival failures are gradual, load-shaped and look healthy while they happen. Nesting failures are instant, total, and completely indifferent to size, which is why the tiny file is the tell and why the honest next move is to hunt for data that leads back to itself.</div>
+  </div>
+
+  <div class="callout good">
+    <div class="ch">Next</div>
+    <p>The chapter closes where it opened. A stack is already a bounded queue whose bound somebody chose for you, and <strong>nobody has ever argued that the call stack should be allowed to grow forever.</strong> The whiteboard runs the whole chapter end to end: one rule, three edits, four doors, and the person each of them is willing to lose.</p>
+  </div>
+__NAV__
 </div>`
