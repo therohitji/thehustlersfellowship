@@ -177,6 +177,18 @@ is not a pass.
 `check_layout.mjs` renders every diagram in Node against a fake DOM and walks every animation
 frame. That is how **"nothing overlaps" is a build failure rather than an opinion**.
 
+### Driving it like a reader
+
+`verify/interact.mjs` opens the built master and uses it: it loads every live lesson, answers
+a quiz wrong and then right and checks both are marked and the explanation appears, steps
+every animation and checks the frame advances, and clicks through the reel act tabs. The other
+checks prove the page **builds**. This one proves it **works**. It needs Playwright, so like
+the screenshots it is not part of `qa.sh`.
+
+```bash
+node verify/interact.mjs
+```
+
 ### The one check that is not automated
 
 `verify/screenshots.mjs` captures every diagram in the built master so they can be looked at.
