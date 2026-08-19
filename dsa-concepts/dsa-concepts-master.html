@@ -49,7 +49,7 @@
   .rail-brand .by{font-size:12.5px;color:rgba(220,236,229,.62);font-weight:500;}
   .rail-progress{padding:15px 22px 17px;font-size:11px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:rgba(220,236,229,.55);border-bottom:1px solid rgba(255,255,255,.09);}
   .pbar{height:5px;border-radius:99px;background:rgba(255,255,255,.13);margin-top:9px;overflow:hidden;}
-  .pbar i{display:block;height:100%;width:26%;background:linear-gradient(90deg,var(--green-500),var(--gold-500));border-radius:99px;}
+  .pbar i{display:block;height:100%;width:27%;background:linear-gradient(90deg,var(--green-500),var(--gold-500));border-radius:99px;}
 
   .chap{border-bottom:1px solid rgba(255,255,255,.06);}
   .chap-head{display:flex;align-items:center;gap:9px;padding:12px 22px;cursor:pointer;font-size:13.5px;font-weight:600;transition:background .14s;}
@@ -352,7 +352,7 @@ const COURSE = [
   { n:"06", title:"Searching: Finding One Thing", lessons:[
       {id:"6.1", t:"What Searching Really Is, and the One Question That Decides Everything", state:"live"},
       {id:"6.2", t:"Linear Search: Check Every Box", state:"live"},
-      {id:"6.3", t:"Binary Search: Halve the Haystack", state:"soon"},
+      {id:"6.3", t:"Binary Search: Halve the Haystack", state:"live"},
       {id:"6.4", t:"The Search Family: Jump, Exponential, Interpolation, Ternary", state:"soon"},
       {id:"6.5", t:"Searching Structured Data: Trees, Tries and Database Indexes", state:"soon"},
       {id:"6.6", t:"Searching by Meaning: Vector Search, ANN and RAG", state:"soon"},
@@ -4408,6 +4408,141 @@ __NAV__
   <div class="callout good">
     <div class="ch">Next</div>
     <p>Search is the price you pay for order you did not keep, and this lesson is the full invoice with nothing prepaid. <strong>Next, somebody pays.</strong> The same twelve numbers, put in order first, and a single look that eliminates six boxes instead of one.</p>
+  </div>
+__NAV__
+</div>`,
+
+"6.3": `<div class="wrap">
+  <div class="les-kicker">Chapter 6 · Lesson 6.3</div>
+  <h1 class="les-title">Binary Search: Halve the Haystack</h1>
+  <div class="les-meta">
+    <span class="pill">foundational</span><span class="pill">~13 min</span>
+    <span class="pill gold">no code needed</span><span class="pill">10 visuals</span>
+  </div>
+
+  <p class="motto">Binary search is not fast. It is prepaid, and somebody else paid.</p>
+
+  <p class="lead">Lesson 6.2 was the full invoice with nothing prepaid. This is what changes when somebody has already paid. By the end you can name the promise that makes halving legal, price what it costs to keep, and say why a broken promise produces a confident wrong answer instead of an error.</p>
+
+  <h2><span class="ix">1</span> The Everyday Situation</h2>
+  <div class="sub">You have done this since you were seven.</div>
+  <p>A printed dictionary, nine hundred pages, and you want the word <em class="k">lantern</em>. You do not start at page one, and you do not even consider it. You open somewhere near the middle, land on something starting with <em class="k">m</em>, and shut the entire second half of the book without reading a word of it.</p>
+
+  <div class="viz" data-viz='{"type":"scene","title":"The book you can skip, and the room that made it skippable","width":800,"height":280,"items":[{"icon":"person","x":112,"y":126,"kind":"gold","label":"you, opening near the middle"},{"icon":"doc","x":316,"y":124,"kind":"accent","label":"nine hundred pages, in order"},{"icon":"server","x":560,"y":124,"kind":"muted","label":"the print house that put them in order"},{"icon":"shelf","x":730,"y":124,"kind":"box","label":"and does it again every edition"}],"arrows":[{"x1":170,"y1":126,"x2":250,"y2":126,"style":"gold","label":"one look, half the book gone"},{"x1":620,"y1":124,"x2":676,"y2":124,"style":"green","label":"pays on every change"}],"caption":"The skill in your hands is not the interesting half. Somebody put nine hundred pages in order once, and pays again for every new edition, and that invoice is what your one look is spending."}'></div>
+
+  <p>Notice who is not in the room when you do it. <strong>Somebody put nine hundred pages in order</strong>, once, and does it again for every edition. Your clever move is spending their invoice.</p>
+
+  <h2><span class="ix">2</span> What It Actually Is</h2>
+  <div class="sub">A promise, and the halving is only what the promise permits.</div>
+  <p>Binary search is not a trick for splitting things. It is <strong>a promise you inherit</strong>, and the promise is this: <em class="k">if the thing is here at all, it is inside the window.</em> That sentence is called the invariant, and it is true before the first look, after every look, and at the very end.</p>
+
+  <div class="viz" data-viz='{"type":"arch","title":"One promise, and the two things it demands","maxChars":18,"nodes":[{"id":"c","label":"If it is here at all, it is inside the window","col":1,"row":1,"kind":"dark"},{"id":"o","label":"Demand one: the row is kept in order","col":0,"row":0,"kind":"gold"},{"id":"j","label":"Demand two: you can land on any box in one look","col":0,"row":2,"kind":"gold"},{"id":"w","label":"Who pays for order: every insert, forever","col":2,"row":0,"kind":"bad"},{"id":"r","label":"Who paid for landing: Chapter 3, already","col":2,"row":2,"kind":"accent"}],"edges":[{"from":"o","to":"c","label":"needs"},{"from":"j","to":"c","label":"needs"},{"from":"o","to":"w","label":"billed to"},{"from":"j","to":"r","label":"billed to","style":"green"}],"caption":"Two demands, not one. Almost everybody remembers the sorted half and forgets the landing half, and Lesson 6.4 is unusable until you hold both, because each of its methods is what you do when one of these two stops being true."}'></div>
+
+  <p>Two demands, and people only ever remember the first. It needs the row <strong>in order</strong>, and it needs to <strong>land on any box in one look</strong>. Lesson 3.1 sold you that landing and labelled it the loan this chapter collects. Here is where it is collected.</p>
+
+  <h2><span class="ix">3</span> Watch It Work</h2>
+  <div class="sub">The same twelve, in order, and then the question nobody asks.</div>
+  <p>Watch the grey window, not the gold box. The window is the promise. Everything outside it has been proved impossible, and no box in there was ever opened.</p>
+
+  <div class="board" data-anim='{"type":"array-scan","title":"Three looks to find it, four to prove it is not there","speed":1600,"big":true,"data":[6,13,17,25,29,34,41,49,58,72,80,90],"countLabel":" looks","pointerLabels":{"lo":"start","mid":"middle","hi":"end"},"legend":[["checking now","look"],["still possible","range"],["ruled out","dead"],["found it","found"]],"steps":[{"range":[0,11],"look":[5],"ptr":{"lo":0,"mid":5,"hi":11},"count":1,"badge":"12 still possible","say":"Twelve in order, and the order was paid for before you arrived. <b>The promise you inherit: if 41 is here at all, it is inside the grey window.</b>"},{"range":[6,11],"look":[8],"dead":[0,1,2,3,4,5],"ptr":{"lo":6,"mid":8,"hi":11},"count":2,"badge":"6 still possible","say":"The middle held 34, and 41 is bigger. Because the row is in order, <b>everything left of 34 is smaller than 34</b>, so six boxes are deleted by one comparison and the promise still holds."},{"range":[6,7],"look":[6],"dead":[0,1,2,3,4,5,8,9,10,11],"ptr":{"lo":6,"mid":6,"hi":7},"count":3,"badge":"2 still possible","say":"58 is bigger than 41, so the right end goes too. Two boxes left, and the promise is still the same sentence it was at the start."},{"found":[6],"range":[6,7],"dead":[0,1,2,3,4,5,8,9,10,11],"count":3,"badge":"3 looks","say":"Found, in three. <b>Nine boxes were never opened</b>, and not one of them was skipped by luck. Each was proved impossible by a comparison somebody else had already paid for."},{"range":[0,11],"look":[5],"ptr":{"lo":0,"mid":5,"hi":11},"count":1,"badge":"now looking for 42","say":"Now the question the whiteboard never asks, and the one your software asks constantly. <b>Is 42 in here?</b>"},{"range":[6,11],"look":[8],"dead":[0,1,2,3,4,5],"ptr":{"lo":6,"mid":8,"hi":11},"count":2,"say":"34 is smaller than 42, so the left half goes, exactly as before. The method does not know yet that this search is different."},{"range":[6,7],"look":[6],"dead":[0,1,2,3,4,5,8,9,10,11],"ptr":{"lo":6,"mid":6,"hi":7},"count":3,"say":"58 is bigger. Two boxes left. Then: 41 is smaller than 42, so 42 must be to its right."},{"range":[7,7],"look":[7],"dead":[0,1,2,3,4,5,6,8,9,10,11],"ptr":{"lo":7,"mid":7,"hi":7},"count":4,"say":"One box left, and it holds 49. <b>49 is bigger than 42, so 42 must be to its left</b>, and there is nothing to the left inside the window."},{"range":[7,6],"ptr":{"lo":7,"hi":6},"count":4,"badge":"not here, in 4 looks","say":"The two ends have crossed and the window has closed with nothing in it. <b>That is not a failure to find 42. It is a proof that 42 was never here</b>, and it took four looks. Lesson 6.2 needed all twelve to say the same thing."},{"range":[7,6],"ptr":{"lo":7,"hi":6},"count":4,"badge":"42 belongs at box 7","say":"And the window did not just close, <b>it closed on a seam.</b> That seam is exactly where 42 would have to go. Nobody computed it and nobody paid extra for it, and it is the answer behind show me everything between two dates."}],"caption":"Two runs on one row. The first found something in three looks. The second proved something absent in four, and handed back the position it would belong at, for free. That free seam is the reason real systems ask this question far more often than they ask whether a value is present."}'></div>
+
+  <h2><span class="ix">4</span> Under The Hood</h2>
+  <div class="sub">What one comparison is actually allowed to buy.</div>
+
+  <div class="viz" data-viz='{"type":"seq","title":"The same question, asked of two rows","actors":[{"label":"The search","kind":"gold"},{"label":"A box in a sorted row","kind":"accent"},{"label":"A box in an unsorted row","kind":"muted"}],"messages":[{"from":0,"to":1,"label":"are you 41","style":"gold"},{"from":1,"to":0,"label":"no, I am 34, and everything behind me is smaller than me","style":"green"},{"from":0,"to":2,"label":"are you 41","style":"gold"},{"from":2,"to":0,"label":"no, I am 34, and that is all I can tell you"}],"caption":"The two answers are the same length and cost the same to produce. The difference is the second clause, and the second clause is not a property of the box. It is a property of the work somebody did to the row before anybody searched it."}'></div>
+
+  <p>The box did not get cleverer. <strong>It got permission to speak for its neighbours</strong>, and that permission is what order is. In Lesson 6.2 one look bought one box. Here one look bought six, and the difference was paid for in advance.</p>
+
+  <h2><span class="ix">5</span> The Types</h2>
+  <div class="sub">One method, four places to stop.</div>
+  <p>Almost every real use of this is not <em class="k">is it present</em>. It is one of the other three, and all four are the same walk with a different stopping rule.</p>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>What you actually want</th><th>Where the walk stops</th><th>What it is called</th></tr>
+    <tr><td>Is this value here at all</td><td>The moment a box matches</td><td>Plain binary search</td></tr>
+    <tr><td>The first position this value could occupy</td><td>The seam, keeping the left edge</td><td>Lower bound</td></tr>
+    <tr><td>The first position past the last copy</td><td>The seam, keeping the right edge</td><td>Upper bound</td></tr>
+    <tr><td>Everything between two values</td><td>Two walks, one for each end</td><td>A range query, which is most of what a database is asked</td></tr>
+  </table>
+  <div class="tbl-cap">Rows two and three are the free seam from the board, given names. The last row is why an ordered column answers show me every order between two dates without reading a single row outside the answer.</div></div>
+
+  <p>And now the failure that makes all of this dangerous. Give the same method a row that is <strong>not</strong> in order, and it does not complain, because nothing in it ever checks.</p>
+
+  <div class="board" data-anim='{"type":"array-scan","title":"The promise broken, and nothing warns you","speed":1600,"big":true,"data":[58,13,72,29,6,90,34,17,41,25,80,49],"countLabel":" looks","pointerLabels":{"lo":"start","mid":"middle","hi":"end"},"legend":[["checking now","look"],["still possible","range"],["ruled out","dead"],["it was here the whole time","bad"]],"steps":[{"range":[0,11],"look":[5],"ptr":{"lo":0,"mid":5,"hi":11},"count":1,"badge":"looking for 25","say":"The same twelve numbers, <b>not</b> in order. The method cannot tell, because it never looks at more than one box at a time. Middle box holds 90."},{"range":[0,4],"look":[2],"dead":[5,6,7,8,9,10,11],"ptr":{"lo":0,"mid":2,"hi":4},"count":2,"say":"90 is bigger than 25, so it throws away the entire right half. <b>25 was sitting in that half</b>, and it has just been deleted from the search by a rule that was never true here."},{"range":[0,0],"look":[0],"dead":[1,2,3,4,5,6,7,8,9,10,11],"ptr":{"lo":0,"mid":0,"hi":0},"count":3,"say":"72 is bigger. Throw away more. One box left, holding 58, which is also bigger."},{"bad":[9],"dead":[0,1,2,3,4,5,6,7,8,10,11],"count":3,"badge":"not found, in 3 looks","say":"It reports <b>not found</b>, confidently, in three looks. And 25 is at box 9, in red, untouched. <b>A fast wrong answer does not look like a bug. It looks like a working feature.</b>"}],"caption":"Nothing here errored and nothing here was slow. That is the danger: the method is only correct while the promise holds, it never checks whether the promise holds, and a broken promise produces an answer with exactly the same shape as a right one."}'></div>
+
+  <h2><span class="ix">6</span> What It Costs, In Plain English</h2>
+  <div class="sub">Count on your fingers, then count the bill.</div>
+  <p>Doubling first, and you can derive it yourself. Two multiplied by itself ten times is 1,024, so <strong>a thousand items costs about ten looks</strong>. Twenty times is 1,048,576, so a million costs twenty. Thirty times is just over a billion, so a billion costs thirty. Doubling the pile adds exactly one look, and a thousand times more data costs about twice the work.</p>
+
+  <div class="viz" data-viz='{"type":"card","title":"What order costs, and when it starts paying","eyebrow":"A THOUSAND ITEMS","badge":"break even at 21","width":560,"rows":[{"k":"One scan, on average","v":"about 500 looks","tone":"bad","bar":0.5},{"k":"One binary search","v":"about 10 looks","tone":"good","bar":0.01},{"k":"Saved, per search","v":"about 490 looks","tone":"good","bar":0.49},{"k":"Putting a thousand items in order, once","v":"about 10,000 comparisons","tone":"bad","bar":1},{"k":"Searches before the order has paid for itself","v":"about 21","tone":"good","bar":0.021}],"caption":"Every bar is drawn against a maximum of 10,000. Divide the one-off 10,000 by the 490 you save each time and you get about 21. Search the list twenty one times and the order was free. Search it once and you wasted the afternoon, which is exactly the case Lesson 6.2 defended."}'></div>
+
+  <p>And the bill does not stop after the first payment. <strong>Every later insert has to keep the row in order</strong>, which Lesson 3.2 priced as the shuffle: about half the row moved, every time something arrives. In the Chapter 2 currency the search is <em class="g">O(log n)</em>, the shape Lesson 2.2 named as the one where doubling adds a step, and the insert that funds it is <em class="g">O(n)</em>. Lesson 6.5 is where somebody refuses to keep paying that.</p>
+
+  <h2><span class="ix">7</span> Where It Lives In Real Life</h2>
+  <div class="sub">Five places, and one of them is not a collection at all.</div>
+
+  <div class="viz" data-viz='{"type":"kgraph","title":"Halving, in things you have already used","unit":178,"nodes":[{"id":"c","label":"Cut the possibilities in half, then again","x":2,"y":1,"kind":"dark"},{"id":"g","label":"git bisect, finding the commit that broke the build","x":0,"y":0,"kind":"accent"},{"id":"d","label":"A dictionary, a phone book, an index at the back","x":0,"y":2,"kind":"box"},{"id":"b","label":"A database answering between two dates from an ordered column","x":4,"y":0,"kind":"accent"},{"id":"v","label":"Twenty questions, and every guessing game you have played","x":4,"y":2,"kind":"box"},{"id":"a","label":"Finding the highest setting that still works, where no list exists","x":2,"y":3,"kind":"gold"}],"edges":[{"from":"c","to":"g","label":"commits are already in order","style":"green"},{"from":"c","to":"d","label":"somebody paid the print house"},{"from":"c","to":"b","label":"two walks, one per end","style":"green"},{"from":"c","to":"v","label":"each answer halves the field"},{"from":"c","to":"a","label":"Lesson 6.7 opens here","style":"gold"}],"caption":"The gold node is the one that breaks the pattern, and it is where this chapter is going. There is no collection anywhere in it, nothing is stored, and nothing is sorted, and yet the same halving works. Lesson 6.7 is built on that."}'></div>
+
+  <p>Look at git bisect for a moment. Commits are already in order, by time, and <strong>nobody built that order for searching</strong>. It was a side effect of history happening. That is the cheapest kind of order there is: the sort somebody else already paid for, for another reason entirely.</p>
+
+  <h2><span class="ix">8</span> How Problems Show Up</h2>
+  <div class="sub">Seven sentences, and the tell is almost never the word sorted.</div>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>What somebody actually says</th><th>The test to run</th><th>What it is really telling you</th></tr>
+    <tr><td>"It finds the wrong record, but only sometimes"</td><td>Ask whether the list is ever appended to after being sorted</td><td>The promise is broken. It cannot detect that, so it answers confidently</td></tr>
+    <tr><td>"Ten times the data barely changed the wait"</td><td>Say the next wait out loud before measuring</td><td>Order is already kept. This is the halving shape, and it is healthy</td></tr>
+    <tr><td>"Reads are instant and saving got slow"</td><td>Ask what has to stay sorted on every write</td><td>The read is prepaid and the write is paying. That is the trade working</td></tr>
+    <tr><td>"It is fast on our list and slow on the linked one"</td><td>Ask whether it can land on the middle without walking</td><td>Demand two is missing. Lesson 4.1 priced that walk</td></tr>
+    <tr><td>"Between two dates is fast, but contains this word is not"</td><td>Ask which column the order was built on</td><td>Order answers the question it was built for and no other</td></tr>
+    <tr><td>"It says not found and I can see the row right there"</td><td>Check whether the sort and the search agree on the rule</td><td>Two different orderings. Text sorted one way, searched another</td></tr>
+    <tr><td>"We sort it every time before searching"</td><td>Ask how many searches happen per sort</td><td>The order is being bought fresh for each search. Below about 21, the scan was cheaper</td></tr>
+  </table>
+  <div class="tbl-cap">Rows one and six are the dangerous pair, because in both the software is confident and wrong. Nothing errors, nothing is slow, and the only symptom is an answer that happens to be false.</div></div>
+
+  <h2><span class="ix">9</span> Solve It Live</h2>
+  <div class="sub">The search that is right ninety nine times out of a hundred.</div>
+  <div class="callout">
+    <div class="ch">The problem, as it arrives</div>
+    <p>"Our price lookup uses binary search over a sorted list of products and it has been perfect for two years. Last month we started letting the catalogue team add products during the day instead of overnight. Since then, roughly once or twice a day, a lookup returns the wrong product. Never the same product, never reproducible, and every test passes."</p>
+  </div>
+
+  <div class="viz" data-viz='{"type":"swim","title":"Perfect for two years, wrong twice a day","lanes":[{"label":"The team"},{"label":"You"},{"label":"The catalogue"}],"steps":[{"id":"a1","lane":0,"col":0,"kind":"gold","label":"Wrong product twice a day, never reproducible"},{"id":"b1","lane":1,"col":1,"kind":"box","label":"Ask: what changed, and when did it start?"},{"id":"c1","lane":2,"col":1,"kind":"bad","label":"Products are now added during the day"},{"id":"b2","lane":1,"col":2,"kind":"accent","label":"Are they appended, or inserted in order?"},{"id":"c2","lane":2,"col":2,"kind":"bad","label":"Appended to the end. The list is no longer sorted"},{"id":"b3","lane":1,"col":3,"kind":"accent","label":"So the promise is broken, and nothing checks it"},{"id":"b4","lane":1,"col":4,"kind":"accent","label":"Keep it sorted on insert, or use a shape. Lesson 6.5"}],"edges":[{"from":"a1","to":"b1"},{"from":"b1","to":"c1"},{"from":"c1","to":"b2"},{"from":"b2","to":"c2"},{"from":"c2","to":"b3"},{"from":"b3","to":"b4"}],"caption":"Nothing here is a bug in the search. The search is doing exactly what it was told, on data that stopped satisfying the one condition it silently depends on, and it has no way to notice."}'></div>
+
+  <p><strong>The search did not break. The promise did.</strong> A product appended to the end sits out of order, so every look that lands to the left of it throws away the half it was in. It is wrong only when the search happens to walk past the unsorted tail, which is why it is rare, unreproducible, and invisible to tests that run on a freshly sorted list.</p>
+
+  <div class="callout good">
+    <div class="ch">Why this reasoning wins</div>
+    <p>It did not look at the search at all. It asked <strong>what changed, and does the method still have what it silently requires?</strong> Binary search never verifies its own precondition, so any change to how data arrives is a change to whether the method is legal. The fix is to keep the order on insert and pay the shuffle, or to stop using a row and keep the order as a shape instead, which is Lesson 6.5.</p>
+  </div>
+
+  <h2><span class="ix">10</span> Your Turn</h2>
+  <div class="callout accent">
+    <div class="ch">Your rep, twenty cards in order</div>
+    <p>Deal twenty cards face down, but sorted low to high, and remember that you sorted them. <strong>Round one:</strong> find the card worth 13 by turning only the middle of whatever range is left, and count the turns. <strong>Round two:</strong> look for a value that is not in the deck, and stop when your two hands cross. Look at where they crossed: that gap is where the missing card would go, and you got it without asking for it. <strong>Round three:</strong> have somebody swap two cards while your eyes are shut, then search again. Notice that nothing tells you anything is wrong, and that is the whole warning of this lesson.</p>
+  </div>
+
+  <h2><span class="ix gold">✓</span> Check Yourself</h2>
+
+  <div class="quiz" data-correct="2">
+    <div class="q">A binary search over a product list starts returning the wrong product occasionally, after the team began appending new products during the day. What broke?</div>
+    <div class="opt" data-i="0">The search has a bug that only appears under concurrent access</div>
+    <div class="opt" data-i="1">The list got too large for binary search to remain accurate</div>
+    <div class="opt" data-i="2">The list is no longer in order, and the method never checks whether it is</div>
+    <div class="qexp">Binary search is correct only while the promise holds, and it has no step in which it verifies the promise. Appending puts values out of order, so a comparison that says everything left of here is smaller is simply false, and the half it discards may contain the answer. Nothing errors, because from the inside a broken promise looks exactly like a satisfied one.</div>
+  </div>
+
+  <div class="quiz" data-correct="0">
+    <div class="q">A list of a thousand items will be searched three times and then thrown away. Sorting it costs about 10,000 comparisons. What should you do?</div>
+    <div class="opt" data-i="0">Scan it. Three scans is about 1,500 looks, and the order costs 10,000 before you save anything</div>
+    <div class="opt" data-i="1">Sort it, because binary search is always faster than scanning</div>
+    <div class="opt" data-i="2">Sort it, because the sort will pay for itself after the first search</div>
+    <div class="qexp">Each binary search saves about 490 looks against a scan, so the 10,000 spent on order does not come back until about the twenty first search. At three searches you would pay 10,000 to save roughly 1,470. This is the trade in one number, and it is why Lesson 6.2 is not a straw man: the patient method wins whenever the data is read few times or changes often.</div>
+  </div>
+
+  <div class="callout good">
+    <div class="ch">Next</div>
+    <p>Search is the price you pay for order you did not keep, and this lesson bought the order outright. But the halving rested on two demands, not one, and each of them can fail on its own. <strong>Next: what you do when a long jump costs more than a short step, when nobody can tell you where the collection ends, and when you already know roughly where the answer lives.</strong></p>
   </div>
 __NAV__
 </div>`,
