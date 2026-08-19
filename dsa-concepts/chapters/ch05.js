@@ -562,7 +562,7 @@ __NAV__
   <div class="les-kicker">Chapter 5 · Lesson 5.5</div>
   <h1 class="les-title">The Whiteboard: Plates and Ticket Lines</h1>
   <div class="les-meta">
-    <span class="pill">whiteboard</span><span class="pill">~2 min</span>
+    <span class="pill">whiteboard</span><span class="pill">~1.5 min</span>
     <span class="pill gold">watch, do not read</span><span class="pill">13 acts</span>
   </div>
 

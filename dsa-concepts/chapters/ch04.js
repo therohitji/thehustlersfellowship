@@ -692,7 +692,7 @@ __NAV__
   <div class="les-kicker">Chapter 4 · Lesson 4.6</div>
   <h1 class="les-title">The Whiteboard: The Chain, Rewired Step by Step</h1>
   <div class="les-meta">
-    <span class="pill">whiteboard</span><span class="pill">~2 min</span>
+    <span class="pill">whiteboard</span><span class="pill">~1.5 min</span>
     <span class="pill gold">watch, do not read</span><span class="pill">13 acts</span>
   </div>
 

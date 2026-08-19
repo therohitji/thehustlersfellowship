@@ -1051,6 +1051,20 @@ const ST = {
 };
 /* the id-keyed twin of stateOf, for renderers whose cells are named rather than indexed.
    same precedence, minus the range window, which only means anything on a row. */
+/* "1 looks", "1 boxes touched", "1 nodes touched". The counter concatenates a number with a
+   fixed plural label, so every board that starts at one opened on a small grammatical error.
+   Singularise the FIRST word only, which is the one carrying the count: boxes touched -> box
+   touched, touches -> touch, comparisons -> comparison, emitted -> emitted. */
+function countText(n, label){
+  label = label || ' checks';
+  if (n !== 1) return n + label;
+  const m = label.match(/^(\s*)(\S+)([\s\S]*)$/);
+  if (!m) return n + label;
+  let w = m[2];
+  if (/(ch|sh|ss|x)es$/.test(w)) w = w.slice(0, -2);
+  else if (/[^s]s$/.test(w))     w = w.slice(0, -1);
+  return n + m[1] + w + m[3];
+}
 function stateOfId(step, id){
   if ((step.bad   || []).indexOf(id) > -1) return 'bad';
   if ((step.found || []).indexOf(id) > -1) return 'found';
@@ -1197,7 +1211,7 @@ ANIM['array-scan'] = function(spec){
         g.setAttribute('transform', 'translate(' + (v * (cellW + gap) + cellW/2 + (nudge[p] || 0)) + ',0)');
       });
       const c = root.querySelector('.counter text');
-      if (c) c.textContent = step.count != null ? (step.count + (spec.countLabel || ' checks')) : '';
+      if (c) c.textContent = step.count != null ? countText(step.count, spec.countLabel) : '';
       const ab = root.querySelector('.abadge');
       if (ab){
         ab.setAttribute('opacity', step.badge ? '1' : '0');
@@ -1256,7 +1270,7 @@ ANIM['race'] = function(spec){
         paintCell(g, lanes[t] ? stateOf(lanes[t], i) : 'idle');
       });
       root.querySelectorAll('.tcount text').forEach(function(t, ti){
-        t.textContent = lanes[ti] && lanes[ti].count != null ? lanes[ti].count + units[ti] : '';
+        t.textContent = lanes[ti] && lanes[ti].count != null ? countText(lanes[ti].count, units[ti]) : '';
       });
       const rb = root.querySelector('.rbadge');
       if (rb){
@@ -1310,7 +1324,7 @@ ANIM['tree-walk'] = function(spec){
         paintCell(g, stateOfId(step, id));
       });
       const c = root.querySelector('.counter text');
-      if (c) c.textContent = step.count != null ? (step.count + (spec.countLabel || ' visited')) : '';
+      if (c) c.textContent = step.count != null ? countText(step.count, spec.countLabel || ' visited') : '';
       const ab = root.querySelector('.abadge');
       if (ab){
         ab.setAttribute('opacity', step.badge ? '1' : '0');

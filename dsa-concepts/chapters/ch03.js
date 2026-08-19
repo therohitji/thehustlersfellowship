@@ -690,7 +690,7 @@ __NAV__
   <div class="les-kicker">Chapter 3 · Lesson 3.6</div>
   <h1 class="les-title">The Whiteboard: Arrays, Every Operation Animated</h1>
   <div class="les-meta">
-    <span class="pill">whiteboard</span><span class="pill">~2 min</span>
+    <span class="pill">whiteboard</span><span class="pill">~1.5 min</span>
     <span class="pill gold">watch, do not read</span><span class="pill">14 acts</span>
   </div>
 
