@@ -255,3 +255,134 @@ __NAV__
   </div>
 __NAV__
 </div>`
+,
+
+"8.3": `<div class="wrap">
+  <div class="les-kicker">Chapter 8 · Lesson 8.3</div>
+  <h1 class="les-title">Load Factor and Resizing: Why It Stays Fast</h1>
+  <div class="les-meta">
+    <span class="pill">foundational</span><span class="pill">~13 min</span>
+    <span class="pill gold">no code needed</span><span class="pill">9 visuals</span>
+  </div>
+
+  <p class="motto">A hash table is kept half empty on purpose. The empty half is not waste, it is the entire product.</p>
+
+  <p class="lead">Lesson 8.2 ended on the real decision: not which collision strategy, but how full the table is allowed to get. This lesson is that one number, the cliff it falls off, and the mechanism that stops it. That mechanism is Lesson 3.3, running here with a different trigger.</p>
+
+  <h2><span class="ix">1</span> The Everyday Situation</h2>
+  <div class="sub">The car park that is technically not full.</div>
+  <p>A car park with a hundred spaces and ninety five cars in it is <em class="k">not full</em>. There are five spaces. But finding one means driving up and down the rows, and <strong>the last five percent takes longer than the first ninety did.</strong> At fifty cars you park immediately. At ninety five you circle.</p>
+
+  <div class="viz" data-viz='{"type":"scene","title":"Five spaces free, and nobody can find one","width":820,"height":280,"items":[{"icon":"shelf","x":150,"y":124,"kind":"accent","label":"100 spaces, 50 cars"},{"icon":"person","x":360,"y":126,"kind":"gold","label":"park immediately"},{"icon":"shelf","x":580,"y":124,"kind":"bad","label":"100 spaces, 95 cars"},{"icon":"person","x":760,"y":126,"kind":"bad","label":"circle for ten minutes"}],"arrows":[{"x1":220,"y1":124,"x2":310,"y2":124,"style":"green","label":"first free space"},{"x1":650,"y1":124,"x2":716,"y2":124,"style":"gold","label":"still five free"}],"caption":"Both car parks have free spaces and only one of them works. The cost of finding a space does not track how many cars there are, it tracks how few gaps there are, and that relationship is not gentle. It falls off a cliff near the end."}'></div>
+
+  <h2><span class="ix">2</span> What It Actually Is</h2>
+  <div class="sub">One number: items divided by boxes.</div>
+  <p>The load factor is how full the table is. Four names in eight boxes is <strong>0.5</strong>. It is the only number that predicts a hash table behaviour, and it does not care how big the table is: a hundred items in two hundred boxes and a million in two million behave identically.</p>
+
+  <div class="viz" data-viz='{"type":"arch","title":"One number, and everything that follows from it","maxChars":18,"nodes":[{"id":"l","label":"Load factor: items divided by boxes","col":0,"row":1,"kind":"gold"},{"id":"a","label":"Low: clashes are rare, lookups are one step","col":1,"row":0,"kind":"accent"},{"id":"b","label":"High: clashes are constant, lookups walk","col":1,"row":2,"kind":"bad"},{"id":"c","label":"So watch it, and act before it climbs","col":2,"row":1,"kind":"dark"},{"id":"d","label":"Double the boxes, and recompute every address","col":3,"row":1,"kind":"accent"}],"edges":[{"from":"l","to":"a","label":"under a half","style":"green"},{"from":"l","to":"b","label":"over three quarters"},{"from":"a","to":"c"},{"from":"b","to":"c"},{"from":"c","to":"d","label":"the only lever","style":"green"}],"caption":"Notice what is missing from this diagram: the number of items. A table of a million behaves exactly like a table of a hundred at the same load factor, which is why the answer to a slow hash table is almost never that it holds too much."}'></div>
+
+  <h2><span class="ix">3</span> Watch It Work</h2>
+  <div class="sub">One arrival crosses the line, and every address changes.</div>
+  <p>The table from Lesson 8.1, four names in eight boxes, load factor <strong>0.5</strong>. Now <em class="k">kai</em> arrives: 11 plus 1 plus 9 is 21, which leaves 5. And raj is in box 5.</p>
+
+  <div class="board" data-anim='{"type":"array-scan","title":"Crossing the line, and rehashing everything","speed":1800,"data":["ana","raj","sam","mia","kai"],"capacity":16,"countLabel":" boxes","legend":[["arriving","look"],["stored","found"],["a clash","bad"],["rehashed to a new box","seen"]],"steps":[{"capacity":8,"order":[0,2,null,null,null,1,null,3],"found":[0,2,1,3],"count":8,"badge":"4 of 8: load 0.5","say":"Four names, eight boxes. <b>Load factor 0.5</b>, and every lookup here is one step because clashes are rare at this fullness."},{"capacity":8,"order":[0,2,null,null,null,1,null,3],"found":[0,2,3],"bad":[1],"look":[4],"count":8,"badge":"kai wants box 5","say":"kai adds to 21, which leaves 5. <b>raj is in box 5.</b> A clash, and it is handled, but the load factor is about to become 5 of 8, which is 0.625."},{"capacity":16,"order":[0,2,null,null,null,1,null,3],"found":[0,2,1,3],"look":[4],"count":16,"badge":"double to 16","say":"That crosses the line, so <b>the table doubles.</b> Sixteen boxes now, and the eight new ones are empty. This is Lesson 3.3, exactly, with a different trigger."},{"capacity":16,"order":[0,2,null,null,null,4,null,3,null,null,null,null,null,1,null,null],"seen":[0,2,3,1],"found":[4],"count":16,"badge":"5 of 16: load 0.31","say":"And here is the part that is not in Lesson 3.3: <b>every address had to be recomputed</b>, because the addresses were never stored. raj was 29, which left 5 on eight and leaves 13 on sixteen, so raj moves. <b>The clash is gone.</b>"},{"capacity":16,"order":[0,2,null,null,null,4,null,3,null,null,null,null,null,1,null,null],"found":[0,2,4,3,1],"count":16,"badge":"every lookup: 1 step","say":"Five names, sixteen boxes, load 0.31, and every lookup is one step again. <b>Doubling did not just make room. It re-scattered the keys</b>, and a clash that existed a moment ago simply does not exist any more."}],"caption":"Two things happened at once and only the first is obvious. The table got bigger, and every single key got a new address, because a hash table never wrote its addresses down. That second half is what makes a resize expensive and what makes it work."}'></div>
+
+  <h2><span class="ix">4</span> Under The Hood</h2>
+  <div class="sub">Why the whole table has to be rebuilt.</div>
+
+  <div class="viz" data-viz='{"type":"seq","title":"Why you cannot simply add more boxes","actors":[{"label":"The table","kind":"gold"},{"label":"The rule","kind":"accent"},{"label":"The key: raj","kind":"muted"}],"messages":[{"from":0,"to":1,"label":"I have grown from 8 boxes to 16","style":"gold"},{"from":1,"to":0,"label":"then every remainder I ever gave you was on eight"},{"from":1,"to":2,"label":"you were 29, which left 5 on eight"},{"from":1,"to":2,"label":"you are 29, which leaves 13 on sixteen","style":"green"},{"from":2,"to":0,"label":"so I am in the wrong box, and so is everybody else"}],"caption":"The address depends on how many boxes there are, so changing that number invalidates every address in the table at once. Nothing is corrupted and nothing is lost, but until every key is recomputed and moved, the table cannot find anything, including the keys that did not need to move."}'></div>
+
+  <p><strong>The address depends on the number of boxes</strong>, so growing the table invalidates every address in it simultaneously. That is why a resize is not an adjustment, it is a rebuild.</p>
+
+  <h2><span class="ix">5</span> The Types</h2>
+  <div class="sub">The cliff, in numbers.</div>
+  <p>How fullness turns into work, for the walking strategy from Lesson 8.2. Read the last two rows and you will never argue for a full hash table again.</p>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>How full</th><th>Boxes touched per lookup</th><th>What that feels like</th></tr>
+    <tr><td>25 percent</td><td>about 1.3</td><td>Indistinguishable from one step</td></tr>
+    <tr><td>50 percent</td><td>about 2</td><td>Still fine, and this is where most tables live</td></tr>
+    <tr><td>75 percent</td><td>about 4</td><td>Noticeably slower, and the usual place to grow</td></tr>
+    <tr><td>90 percent</td><td>about 10</td><td>Ten times the work, for ten percent more room</td></tr>
+    <tr><td>99 percent</td><td>about 100</td><td>A hundred boxes touched, on a table that is not full</td></tr>
+  </table>
+  <div class="tbl-cap">Nothing about the rule changed between the first row and the last. The same table, the same keys, the same arithmetic, and a hundredfold difference in work, produced entirely by how much room was left. This is the car park from block 1 with numbers on it.</div></div>
+
+  <h2><span class="ix">6</span> What It Costs, In Plain English</h2>
+  <div class="sub">The expensive step that is cheap on average.</div>
+  <p>Doubling means copying everything, which is genuinely expensive, and it happens rarely. Lesson 3.3 already did this arithmetic for a growing row: <strong>doubling from one to a thousand costs about a thousand copies in total, spread across a thousand insertions</strong>, which is about one copy per insertion.</p>
+
+  <div class="viz" data-viz='{"type":"card","title":"What a resize costs, and how often","eyebrow":"GROWING TO A THOUSAND ITEMS","badge":"amortised","width":560,"rows":[{"k":"The one resize you notice","v":"copies every item, once","tone":"bad","bar":1},{"k":"How many resizes happen on the way","v":"about 10","tone":"good","bar":0.01},{"k":"Total copies across all of them","v":"about 1,000","tone":"good","bar":1},{"k":"Spread across 1,000 insertions","v":"about 1 copy each","tone":"good","bar":0.001},{"k":"And the room you keep empty","v":"about half the table, always","tone":"bad","bar":0.5}],"caption":"Every bar is a rough weight. Rows one and four are the same event described honestly from two distances: any single insertion may be very expensive, and the average across all of them is small. Lesson 3.3 called this O(n) writes, so O(1) each, and it is the same sentence here."}'></div>
+
+  <p>And row five is the real bill, which Lesson 6.8 wrote down as <em class="k">spare memory, permanently</em>. <strong>You keep about half the table empty forever</strong>, not because you failed to fill it but because the emptiness is what you are buying. In the Chapter 2 currency the lookup stays <em class="g">O(1)</em> only while that emptiness is maintained.</p>
+
+  <div class="callout warn">
+    <div class="ch">The same mechanism, a different trigger</div>
+    <p>Lesson 3.3 grows a row <strong>when it is full</strong>, because a full row cannot accept anything. A hash table grows <strong>when it is about half full</strong>, because a half full table still works perfectly and a three quarters full one does not. Same doubling, same amortised arithmetic, and a trigger pulled far earlier, because for this structure being full is not the problem. Being crowded is.</p>
+  </div>
+
+  <h2><span class="ix">7</span> Where It Lives In Real Life</h2>
+  <div class="sub">Five places where the empty half is the product.</div>
+
+  <div class="viz" data-viz='{"type":"kgraph","title":"Keeping room, and what it buys","unit":178,"nodes":[{"id":"c","label":"Deliberately unfilled space","x":2,"y":1,"kind":"dark"},{"id":"h","label":"A hash table kept near half empty so lookups stay one step","x":0,"y":0,"kind":"gold"},{"id":"g","label":"A growing row from Lesson 3.3, half empty right after it doubles","x":0,"y":2,"kind":"accent"},{"id":"d","label":"A disk that slows down when nearly full, for the same reason","x":4,"y":0,"kind":"accent"},{"id":"p","label":"A car park, a restaurant, a motorway at 95 percent capacity","x":4,"y":2,"kind":"box"},{"id":"q","label":"And Chapter 5: a queue that is never allowed to fill","x":2,"y":3,"kind":"gold"}],"edges":[{"from":"c","to":"h","label":"the empty half IS the speed","style":"gold"},{"from":"c","to":"g","label":"a side effect there","style":"green"},{"from":"c","to":"d","label":"free space to place things"},{"from":"c","to":"p","label":"the last few percent"},{"from":"c","to":"q","label":"Lesson 5.4 priced it","style":"gold"}],"caption":"The bottom node is the one worth pausing on. Lesson 5.4 said a queue absorbs a burst and cannot absorb a deficit, and that a line running at full capacity has nowhere to put anything. This is the same fact about a different structure: systems that run at a hundred percent utilisation do not run fast, they stop."}'></div>
+
+  <h2><span class="ix">8</span> How Problems Show Up</h2>
+  <div class="sub">Six sentences, and the question is always how full.</div>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>What somebody actually says</th><th>The test to run</th><th>What it is really telling you</th></tr>
+    <tr><td>"It got slow and we barely added anything"</td><td>Ask what the load factor was before and after</td><td>The last few percent are the expensive ones. Block 5</td></tr>
+    <tr><td>"Every so often one request takes far longer"</td><td>Ask what happens when it grows</td><td>A resize. Rare, expensive, and cheap on average</td></tr>
+    <tr><td>"We sized it exactly to our data to save memory"</td><td>Ask what the load factor is at that size</td><td>A table sized exactly is a table with no room, and no speed</td></tr>
+    <tr><td>"It uses twice the memory of the data"</td><td>Ask what the empty half is for</td><td>It is the product. Lesson 6.8 called it spare memory, permanently</td></tr>
+    <tr><td>"The pause happens when we bulk load"</td><td>Ask how many resizes that load triggers</td><td>Every doubling on the way, one after another</td></tr>
+    <tr><td>"Lookups slowed but nothing else changed"</td><td>Ask whether anything grew that shares the table</td><td>Somebody else filled it. The load factor is shared</td></tr>
+  </table>
+  <div class="tbl-cap">Row three is the most expensive mistake in this chapter and it is always made with good intentions. Sizing a hash table to fit your data exactly removes the only thing that made it fast, and it looks like careful engineering right up until it is measured.</div></div>
+
+  <h2><span class="ix">9</span> Solve It Live</h2>
+  <div class="sub">Somebody saved memory, and the lookups collapsed.</div>
+  <div class="callout">
+    <div class="ch">The problem, as it arrives</div>
+    <p>"A lookup table in our service used to be instant and is now the slowest thing in the request. Last month somebody noticed it was using about twice the memory of the data it held, which looked wasteful, so they sized it to match the record count exactly. Memory did drop. Nothing else was changed, and the record count has not grown."</p>
+  </div>
+
+  <div class="viz" data-viz='{"type":"swim","title":"Memory dropped, and so did everything else","lanes":[{"label":"The team"},{"label":"You"},{"label":"The table"}],"steps":[{"id":"a1","lane":0,"col":0,"kind":"gold","label":"Sized it to fit exactly. Memory dropped, lookups collapsed"},{"id":"b1","lane":1,"col":1,"kind":"box","label":"Ask: what is the load factor now?"},{"id":"c1","lane":2,"col":1,"kind":"bad","label":"Close to 1. Boxes equal to records"},{"id":"b2","lane":1,"col":2,"kind":"accent","label":"At that fullness a lookup touches many boxes, not one"},{"id":"c2","lane":2,"col":2,"kind":"bad","label":"About 100 at 99 percent, against 2 at half"},{"id":"b3","lane":1,"col":3,"kind":"accent","label":"The empty half was not waste. It was the speed"},{"id":"b4","lane":1,"col":4,"kind":"accent","label":"Give the room back, and let it double on its own"}],"edges":[{"from":"a1","to":"b1"},{"from":"b1","to":"c1"},{"from":"c1","to":"b2"},{"from":"b2","to":"c2"},{"from":"c2","to":"b3"},{"from":"b3","to":"b4"}],"caption":"The memory saving was real and so was its cost. A hash table that is exactly the size of its data is a hash table with the one property that made it worth choosing removed, and the change looks like careful engineering in every review."}'></div>
+
+  <p><strong>The empty half was not waste. It was the product.</strong> A table sized exactly to its records has a load factor near one, and at that fullness the walking from Lesson 8.2 stops being occasional and becomes the normal path. Nothing about the rule or the data changed; the only thing removed was room.</p>
+
+  <div class="callout good">
+    <div class="ch">Why this reasoning wins</div>
+    <p>It asked what the memory was for before treating it as waste. <strong>Every structure in this course charges for what it gives you</strong>, and Lesson 6.8 had already written this one down as spare memory, permanently, in the same row that promised one step. The two are the same purchase, and cancelling half of it cancels both.</p>
+  </div>
+
+  <h2><span class="ix">10</span> Your Turn</h2>
+  <div class="callout accent">
+    <div class="ch">Your rep, ten boxes and rising</div>
+    <p>Draw ten boxes numbered 0 to 9 and take a list of twenty words. <strong>Round one:</strong> place words one at a time using the last digit of their letter total, walking to the next free box on a clash, and after every insertion write down how many boxes you had to touch. <strong>Round two:</strong> plot those numbers as the table fills, and find the point where the line stops being flat. It will be earlier than you expect. <strong>Round three:</strong> at that point, draw twenty boxes instead of ten and place all the words again from scratch using the last digit of the total divided by twenty. Count how many clashes survived the move.</p>
+  </div>
+
+  <h2><span class="ix gold">✓</span> Check Yourself</h2>
+
+  <div class="quiz" data-correct="1">
+    <div class="q">A hash table was resized to exactly fit its record count to save memory. Lookups collapsed, though the data did not change. Why?</div>
+    <div class="opt" data-i="0">Resizing corrupted the addresses, and the table needs rebuilding</div>
+    <div class="opt" data-i="1">The empty space was what kept lookups to one step, so removing it turned occasional walking into the normal path</div>
+    <div class="opt" data-i="2">Smaller tables have worse cache behaviour, which slows every lookup</div>
+    <div class="qexp">Load factor is the only number that predicts a hash table's behaviour, and it is items divided by boxes. Near one, a lookup touches about a hundred boxes where at half it touches about two. Lesson 6.8 priced this structure as spare memory permanently in the same row that promised one step, because they are the same purchase: the empty half is not unused capacity, it is the thing being bought.</div>
+  </div>
+
+  <div class="quiz" data-correct="2">
+    <div class="q">Why must a hash table recompute every address when it doubles, rather than simply adding empty boxes at the end?</div>
+    <div class="opt" data-i="0">Because the new boxes would otherwise never be used</div>
+    <div class="opt" data-i="1">Because the items need to be re-sorted into the larger space</div>
+    <div class="opt" data-i="2">Because the address is computed from the number of boxes, so changing that number invalidates every address at once</div>
+    <div class="qexp">Nothing in a hash table records where anything went; reading recomputes the address from the key. That computation includes the table size, so raj at 29 lands in box 5 of eight and box 13 of sixteen. Change the size and every key is suddenly in the wrong place, including the ones that would not have moved. That is why a resize is a rebuild rather than an extension, and it is also why it re-scatters keys and can make an existing clash disappear.</div>
+  </div>
+
+  <div class="callout good">
+    <div class="ch">Next</div>
+    <p>You now have the whole machine: an address computed instead of searched, a strategy for when two keys want one box, and a number that keeps it fast. <strong>Next: what people actually build with it</strong>, which is mostly not storing things at all but asking one question, and it is the question Lesson 6.2 charged 95,000 looks for.</p>
+  </div>
+__NAV__
+</div>`
