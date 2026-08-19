@@ -264,7 +264,7 @@ grid based, which is why nothing overlaps. Two things you must respect:
 
 | Type | Use it for |
 |---|---|
-| `array-scan` | any linear or halving walk over a row. States: `look` `dead` `found` `seen` `range` `bad`. Pointers `lo` `mid` `hi` `i` fan out automatically when they coincide, and `pointerLabels` renames them per board, so a queue can show `front` and `back` rather than teaching the reader the renderer. `big:true` for reel acts, `countLabel`, and a per step `badge`. Set `capacity` to draw spare dashed slots beyond the data, and `step.shift = {from, by}` to slide everything from an index rightwards, which is how an insert or delete is shown |
+| `array-scan` | any linear or halving walk over a row. States: `look` `dead` `found` `seen` `range` `bad`. Pointers `lo` `mid` `hi` `i` fan out automatically when they coincide, and `pointerLabels` renames them per board, so a queue can show `front` and `back` rather than teaching the reader the renderer. `big:true` for reel acts, `countLabel`, and a per step `badge`. Set `capacity` to draw spare dashed slots beyond the data, and `step.shift = {from, by}` to slide everything from an index rightwards, which is how an insert or delete is shown. `step.order` lists the ORIGINAL cell indices in their new left-to-right arrangement, which is the only way to show a sort: a cell's text is baked in at build time and can never change, so values move by moving their boxes. The position labels underneath stay put on purpose, so the reader watches values travel between fixed positions. States still address a cell by its original index, which is what lets you follow one value across a whole sort |
 | `grid` | a 2D array. Cells are addressed as `[row, col]` in every state list, plus `step.row` and `step.col` to light a whole row or column. Set `flatRow: true` and the same cells are drawn again in memory order underneath, so the reader watches row times width plus column being computed rather than being told it |
 | `race` | two or more methods on the same data, with live counters |
 | `tree-walk` | trees, tries, BSTs. Nodes carry `x` and `d` (depth). |
@@ -406,6 +406,7 @@ overlaps" is a build failure instead of an opinion.
 | Everything passes but the lesson is boring | block 3 was written last and rushed | write block 3 first, then the prose around it |
 | A state you set never appears on the board | the renderer dropped a state it never implemented | `check_renderers.mjs` fails it now; every renderer must cover all five |
 | A diagram throws `cannot read fill` | a `kind` outside the seven | `build.py` fails it now and names the diagram |
+| You need a value to change inside a box | it cannot; the text is baked in at build time | move the box instead with `step.order`, or use a second board |
 
 ---
 

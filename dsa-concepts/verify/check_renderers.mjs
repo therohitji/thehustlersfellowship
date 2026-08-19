@@ -104,6 +104,9 @@ const ANIM_FIXTURES = {
             { found: [[1, 3]], seen: [[0, 0]], dead: [[2, 5]], bad: [[2, 0]], badge: '1 times 6 plus 3 is 9' }] },
   'grid:no-flat': { type: 'grid', rows: 4, cols: 4, data: [[1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,16]],
     steps: [{ col: 2 }, { found: [[3, 3]] }] },
+  'array-scan:order': { type: 'array-scan', data: [5, 3, 8, 1],
+    steps: [{ look: [0, 1] }, { order: [1, 0, 2, 3], found: [1] },
+            { order: [3, 1, 0, 2], seen: [3, 1] }, { order: [3, 1, 0, 2] }] },
   'array-scan:shift-capacity': { type: 'array-scan', data: [1, 2, 3, 4], capacity: 8, big: true,
     steps: [{ look: [0], capacity: 8 },
             { shift: { from: 1, by: 1 }, seen: [1, 2, 3], capacity: 8, badge: 'making a gap' },
@@ -113,11 +116,11 @@ const ANIM_FIXTURES = {
 };
 
 function fakeRoot(svg){
-  const stub = () => ({ setAttribute(){}, getAttribute(){ return null; }, textContent: '', classList: { add(){}, remove(){} }, querySelector: stub, querySelectorAll: () => [], get offsetWidth(){ return 1; } });
+  const stub = () => ({ setAttribute(){}, removeAttribute(){}, getAttribute(){ return null; }, textContent: '', classList: { add(){}, remove(){} }, querySelector: stub, querySelectorAll: () => [], get offsetWidth(){ return 1; } });
   const groups = [...svg.matchAll(/<g class="(cell|ptr|ge|tcount|cline|cbadge)"([^>]*)>/g)].map(m => {
     const dataset = {};
     for (const a of m[2].matchAll(/data-([a-z]+)="([^"]*)"/g)) dataset[a[1]] = a[2];
-    return { cls: m[1], dataset, setAttribute(){}, getAttribute(){ return null; }, classList: { add(){}, remove(){} }, querySelector: stub, querySelectorAll: () => [stub()], get offsetWidth(){ return 1; } };
+    return { cls: m[1], dataset, setAttribute(){}, removeAttribute(){}, getAttribute(){ return null; }, classList: { add(){}, remove(){} }, querySelector: stub, querySelectorAll: () => [stub()], get offsetWidth(){ return 1; } };
   });
   const pick = sel => { const k = String(sel).replace('.', '').split(' ')[0]; return groups.filter(g => g.cls === k); };
   return { querySelectorAll: pick, querySelector: sel => pick(sel)[0] || stub() };

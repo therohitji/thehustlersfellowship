@@ -6108,6 +6108,19 @@ ANIM['array-scan'] = function(spec){
       root.querySelectorAll('.cell').forEach(function(g){
         const i = +g.dataset.i;
         paintCell(g, stateOf(step, i));
+        /* A sort moves values between positions, and a cell's text is baked into the svg at
+           build time, so the only honest way to show one is to move the boxes themselves.
+           step.order lists the ORIGINAL cell indices in their new left-to-right arrangement,
+           so order [2,0,1] puts the third box on the left. The position labels underneath are
+           drawn outside the cell group and deliberately stay put, so the reader watches values
+           travel between fixed positions rather than watching the labels chase them.
+           States still address a cell by its ORIGINAL index, which is what lets you follow one
+           value across a whole sort. */
+        if (step.order){
+          const slot = step.order.indexOf(i);
+          g.setAttribute('transform', 'translate(' + (slot > -1 ? (slot - i) * (cellW + gap) : 0) + ',0)');
+          return;
+        }
         /* the shuffle: everything from index shift.from moves right by shift.by places */
         const sh = step.shift;
         g.setAttribute('transform', (sh && i >= sh.from)
