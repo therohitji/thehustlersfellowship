@@ -386,3 +386,127 @@ __NAV__
   </div>
 __NAV__
 </div>`
+,
+
+"8.4": `<div class="wrap">
+  <div class="les-kicker">Chapter 8 · Lesson 8.4</div>
+  <h1 class="les-title">Sets, Maps, Caches and Deduplication</h1>
+  <div class="les-meta">
+    <span class="pill">foundational</span><span class="pill">~13 min</span>
+    <span class="pill gold">no code needed</span><span class="pill">9 visuals</span>
+  </div>
+
+  <p class="motto">Most uses of hashing store nothing. They answer one question: have I seen this before.</p>
+
+  <p class="lead">You have the whole machine now. This lesson is what people actually build with it, and the surprise is how little of it is storage. By the end you can recognise four different products that are the same structure asked four slightly different questions, and price a job that Lesson 7 would have sorted.</p>
+
+  <h2><span class="ix">1</span> The Everyday Situation</h2>
+  <div class="sub">The bouncer with a list.</div>
+  <p>A door with a guest list. Somebody gives a name and the bouncer answers <em class="k">yes</em> or <em class="k">no</em>. <strong>They do not tell you the guest table number, the booking date, or anything else</strong>, and they do not need to hold any of it. The entire product is one bit of information, repeated a thousand times a night.</p>
+
+  <div class="viz" data-viz='{"type":"scene","title":"One question, a thousand times a night","width":820,"height":280,"items":[{"icon":"person","x":130,"y":126,"kind":"gold","label":"a name"},{"icon":"doc","x":360,"y":124,"kind":"accent","label":"the list"},{"icon":"person","x":600,"y":126,"kind":"box","label":"yes or no, and nothing else"}],"arrows":[{"x1":190,"y1":126,"x2":296,"y2":126,"style":"gold","label":"is this on it"},{"x1":420,"y1":126,"x2":536,"y2":126,"style":"green","label":"one look"}],"caption":"The bouncer holds no details about anybody. The list exists to answer one question and refuses all the others, which is exactly what makes it small, fast, and easy to keep. Most hashing in real systems is this and not a filing cabinet."}'></div>
+
+  <h2><span class="ix">2</span> What It Actually Is</h2>
+  <div class="sub">One structure, four questions.</div>
+  <p>A set, a map, a cache and a deduplicator look like four different tools. <strong>They are one table, asked four slightly different things</strong>, and every one of them is the same one-step lookup from Lesson 8.1.</p>
+
+  <div class="viz" data-viz='{"type":"arch","title":"The same table, four questions","maxChars":18,"nodes":[{"id":"t","label":"A box computed from a key","col":0,"row":1,"kind":"dark"},{"id":"s","label":"Set: is this present? Store nothing but the key","col":1,"row":0,"kind":"gold"},{"id":"m","label":"Map: what is stored under this key? Keep a value too","col":1,"row":1,"kind":"accent"},{"id":"c","label":"Cache: have I computed this before? A map with a memory limit","col":1,"row":2,"kind":"accent"},{"id":"d","label":"Dedup: have I seen this? A set used once per item","col":1,"row":3,"kind":"gold"}],"edges":[{"from":"t","to":"s","style":"green"},{"from":"t","to":"m","style":"green"},{"from":"t","to":"c","style":"green"},{"from":"t","to":"d","style":"green"}],"caption":"Nothing in this diagram is a different structure. The only thing that varies is whether you store a value beside the key, and what you do when the table gets full, and both of those are decisions rather than designs. The first and last rows do not store anything at all."}'></div>
+
+  <h2><span class="ix">3</span> Watch It Work</h2>
+  <div class="sub">Nine items, three repeats, and one pass.</div>
+  <p>Deduplication is the one worth watching, because Chapter 7 would have solved it by sorting. Nine order ids arrive, three of them are repeats. <strong>Keep a set, and ask one question of each.</strong></p>
+
+  <div class="board" data-anim='{"type":"array-scan","title":"Removing repeats in one pass, without comparing anything","speed":1600,"big":true,"data":[41,17,41,63,17,88,41,63,25],"countLabel":" comparisons","pointerLabels":{"i":"asking"},"legend":[["being asked","look"],["new: kept","found"],["a repeat: dropped","bad"],["already seen","seen"]],"steps":[{"order":[0,1,2,3,4,5,6,7,8],"look":[0],"ptr":{"i":0},"count":0,"say":"Nine order ids, in the order they arrived. <b>41 first.</b> Compute its box, find it empty, so this is new. Keep it, and remember it."},{"order":[0,1,2,3,4,5,6,7,8],"found":[0],"look":[1],"ptr":{"i":1},"count":0,"say":"17: box empty, so new. Keep it. <b>The counter is still zero</b>, because nothing has been compared with anything."},{"order":[0,1,2,3,4,5,6,7,8],"found":[0,1],"bad":[2],"look":[2],"ptr":{"i":2},"count":0,"say":"41 again. <b>Compute its box, and 41 is already sitting in it.</b> A repeat, dropped, in one step, without looking at any of the others."},{"order":[0,1,2,3,4,5,6,7,8],"found":[0,1,3],"bad":[2,4],"look":[4],"ptr":{"i":4},"count":0,"say":"63 is new, then 17 is a repeat. Each answer took one step and neither depended on how many ids had come before."},{"order":[0,1,2,3,4,5,6,7,8],"found":[0,1,3,5,8],"bad":[2,4,6,7],"count":0,"badge":"9 in, 5 kept, 0 comparisons","say":"<b>Nine ids in, five kept, four dropped, and the comparison counter never moved.</b> One pass, one step each, nothing sorted and nothing compared."}],"caption":"Chapter 7 would have answered this by sorting, so that repeats become neighbours, and Lesson 7.1 priced that at about 20,000,000 comparisons for a million items. This is one pass, and the order the ids arrived in is untouched, which sorting would have destroyed."}'></div>
+
+  <h2><span class="ix">4</span> Under The Hood</h2>
+  <div class="sub">A cache is a map that is allowed to forget.</div>
+
+  <div class="viz" data-viz='{"type":"seq","title":"The same question, asked twice","actors":[{"label":"The caller","kind":"gold"},{"label":"The cache","kind":"accent"},{"label":"The expensive work","kind":"muted"}],"messages":[{"from":0,"to":1,"label":"what is the answer for this input","style":"gold"},{"from":1,"to":0,"label":"never seen it. One step to find that out"},{"from":1,"to":2,"label":"do the expensive thing"},{"from":2,"to":1,"label":"here, after four seconds"},{"from":0,"to":1,"label":"same input again, later","style":"gold"},{"from":1,"to":0,"label":"one step, and here it is","style":"green"}],"caption":"Nothing about the expensive work got faster. It simply did not run the second time. That is the whole mechanism, and the only genuinely hard part of a cache is deciding what to forget when it fills, which is Lesson 5.3 ring and Chapter 17 properly."}'></div>
+
+  <p><strong>A cache does not make anything faster. It makes something not happen.</strong> And the one step that discovers whether it has happened before is this chapter, which is why a cache with a slow lookup is worse than no cache at all.</p>
+
+  <h2><span class="ix">5</span> The Types</h2>
+  <div class="sub">Four products, and what each one refuses.</div>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>The product</th><th>What it stores</th><th>What it refuses to answer</th></tr>
+    <tr><td>A set</td><td>Keys only. No values at all</td><td>How many of these, or what order, or what is nearby</td></tr>
+    <tr><td>A map</td><td>A key and one value beside it</td><td>Which keys have similar values, or everything between two keys</td></tr>
+    <tr><td>A cache</td><td>The same, plus a rule for what to forget</td><td>Anything it has already thrown away, silently</td></tr>
+    <tr><td>Deduplication</td><td>Nothing, once the pass is over</td><td>How many times each repeat appeared, unless you count</td></tr>
+  </table>
+  <div class="tbl-cap">Read the right column. Every one of these refuses order, ranges and neighbours, because all four are the same computed address underneath and that address destroys order by construction. Chapter 6 sorted branch answers those questions and this one never will.</div></div>
+
+  <h2><span class="ix">6</span> What It Costs, In Plain English</h2>
+  <div class="sub">The same job, priced three ways.</div>
+  <p>A million order ids with an unknown number of repeats. Find the distinct ones. <strong>Three chapters of this course each have an answer</strong>, and they are not close.</p>
+
+  <div class="viz" data-viz='{"type":"card","title":"Finding the distinct values among a million","eyebrow":"THREE ANSWERS","badge":"1,000,000 ids","width":560,"rows":[{"k":"Compare everything with everything","v":"about 500,000,000,000","tone":"bad","bar":1},{"k":"Sort first, then repeats are neighbours","v":"about 20,000,000","tone":"bad","bar":0.04},{"k":"A set, one question per id","v":"1,000,000 steps","tone":"good","bar":0.002},{"k":"And what the sort destroyed","v":"the order they arrived in","tone":"bad","bar":0.1},{"k":"And what the set costs","v":"a table of empty boxes","tone":"bad","bar":0.1}],"caption":"Every bar is drawn against a maximum of 500 billion. Row two is Lesson 7.1 exact figure for sorting a million, and it is a genuinely good answer that this chapter beats by twenty times. Rows four and five are the honest columns: sorting rearranges your data and hashing spends memory, and neither is free."}'></div>
+
+  <p>In the Chapter 2 currency, comparing everything is <em class="g">O(n squared)</em>, sorting is <em class="g">O(n log n)</em>, and this is <em class="g">O(n)</em>. <strong>One pass, one step per item</strong>, and the arrival order survives, which the sorting answer destroys.</p>
+
+  <h2><span class="ix">7</span> Where It Lives In Real Life</h2>
+  <div class="sub">Six things you used today, and none of them is a filing cabinet.</div>
+
+  <div class="viz" data-viz='{"type":"kgraph","title":"Have I seen this before","unit":178,"nodes":[{"id":"c","label":"One question, asked in one step","x":2,"y":1,"kind":"dark"},{"id":"e","label":"Is this email already registered. Lesson 6.2 debt","x":0,"y":0,"kind":"gold"},{"id":"m","label":"Have I already processed this message, so I do not do it twice","x":0,"y":2,"kind":"accent"},{"id":"b","label":"Is this word in the dictionary, for a spell checker","x":4,"y":0,"kind":"accent"},{"id":"v","label":"Have I visited this page before, so a crawler does not loop","x":4,"y":2,"kind":"accent"},{"id":"a","label":"Did I compute this answer already, which is a cache","x":2,"y":3,"kind":"gold"}],"edges":[{"from":"c","to":"e","label":"settled in 8.1","style":"gold"},{"from":"c","to":"m","label":"exactly once delivery"},{"from":"c","to":"b","label":"a set of words","style":"green"},{"from":"c","to":"v","label":"or it never terminates"},{"from":"c","to":"a","label":"Chapter 17 builds it","style":"gold"}],"caption":"The crawler node is the one that surprises people. A crawler without a seen-before set does not run slowly, it runs forever, because pages link back to each other and Lesson 4.4 already showed what a loop does to a walk that keeps no memory."}'></div>
+
+  <h2><span class="ix">8</span> How Problems Show Up</h2>
+  <div class="sub">Six sentences, and most are a set that nobody built.</div>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>What somebody actually says</th><th>The test to run</th><th>What it is really telling you</th></tr>
+    <tr><td>"Removing duplicates takes hours"</td><td>Ask whether it sorts, or compares pairs</td><td>A set does it in one pass. Block 6</td></tr>
+    <tr><td>"Customers got the same email twice"</td><td>Ask what stops a message being processed twice</td><td>No seen-before set, so retries deliver again</td></tr>
+    <tr><td>"The crawler never finishes"</td><td>Ask whether it remembers where it has been</td><td>Pages link back. Lesson 4.4 loop, with no memory</td></tr>
+    <tr><td>"The cache made it slower"</td><td>Ask what a miss costs before the work starts</td><td>A cache lookup must be one step or it is pure overhead</td></tr>
+    <tr><td>"We lost the original order after de-duplicating"</td><td>Ask whether it sorted to find repeats</td><td>Sorting rearranges. A set does not touch the order</td></tr>
+    <tr><td>"Memory grew until it fell over"</td><td>Ask what the cache throws away, and when</td><td>A cache with no forgetting rule is an unbounded queue. Lesson 5.4</td></tr>
+  </table>
+  <div class="tbl-cap">Rows two, three and six are the same absence with three different costs: duplicate work, no termination, and a slow memory leak. In each case the missing thing is a set, and a set is the cheapest structure in this entire course to add.</div></div>
+
+  <h2><span class="ix">9</span> Solve It Live</h2>
+  <div class="sub">Every customer charged twice, occasionally.</div>
+  <div class="callout">
+    <div class="ch">The problem, as it arrives</div>
+    <p>"A small number of customers get charged twice. It is rare, we cannot reproduce it, and it always follows a period when our payment provider was slow. Our code sends the charge request, waits, and retries if it times out. The provider says every request they received was distinct and they processed each one exactly once."</p>
+  </div>
+
+  <div class="viz" data-viz='{"type":"swim","title":"Both sides are behaving correctly","lanes":[{"label":"The team"},{"label":"You"},{"label":"The system"}],"steps":[{"id":"a1","lane":0,"col":0,"kind":"gold","label":"Rare double charges, always after provider slowness"},{"id":"b1","lane":1,"col":1,"kind":"box","label":"Ask: what happens when a request times out?"},{"id":"c1","lane":2,"col":1,"kind":"bad","label":"It retries. The first one may still be in flight"},{"id":"b2","lane":1,"col":2,"kind":"accent","label":"So two genuine requests arrive, and both are valid"},{"id":"c2","lane":2,"col":2,"kind":"bad","label":"The provider is right: they are distinct requests"},{"id":"b3","lane":1,"col":3,"kind":"accent","label":"Nothing anywhere asks: have I already done this one?"},{"id":"b4","lane":1,"col":4,"kind":"accent","label":"Send an id with each charge, and keep a set of them"}],"edges":[{"from":"a1","to":"b1"},{"from":"b1","to":"c1"},{"from":"c1","to":"b2"},{"from":"b2","to":"c2"},{"from":"c2","to":"b3"},{"from":"b3","to":"b4"}],"caption":"Neither side has a bug. A timeout means the answer did not arrive, not that the work did not happen, so a retry is a reasonable thing to do and a second charge is a reasonable thing to process. The missing piece is not in either system, it is the question nobody asks."}'></div>
+
+  <p><strong>Both systems are behaving correctly, which is why nobody could find the fault.</strong> A timeout means the answer did not come back, not that the work did not happen. Retrying is right, and processing a distinct request is right. What is missing is a set: send an identifier with each charge, and have the receiver ask one question before doing anything. <em class="k">Have I seen this before?</em></p>
+
+  <div class="callout good">
+    <div class="ch">Why this reasoning wins</div>
+    <p>It stopped hunting for a broken component. <strong>Retries make duplicates inevitable, exactly as Lesson 5.4 said</strong>, where every abandoned request sent again is a new arrival. You cannot prevent the second request and you should not try. You make the second one harmless, and the structure that does that is the cheapest one in this course: one question, one step, and no comparison with anything.</p>
+  </div>
+
+  <h2><span class="ix">10</span> Your Turn</h2>
+  <div class="callout accent">
+    <div class="ch">Your rep, one week of your own repeats</div>
+    <p>For one day, keep a running list of every website you open, writing each address only if it is not already on your page. <strong>First:</strong> notice that you are doing a lookup before every write, and that you are scanning your own list to do it, which is Lesson 6.2. <strong>Second:</strong> after fifty entries, time how long each check takes and watch it grow. <strong>Third:</strong> now group your list into ten columns by the last digit of the address length, and check only the matching column. That is this whole chapter, done by hand, and you will feel the check stop growing.</p>
+  </div>
+
+  <h2><span class="ix gold">✓</span> Check Yourself</h2>
+
+  <div class="quiz" data-correct="2">
+    <div class="q">Customers are occasionally charged twice, always after the payment provider was slow. The provider confirms every request it received was distinct and processed once. Where is the fault?</div>
+    <div class="opt" data-i="0">In the provider, since it should detect duplicate charges itself</div>
+    <div class="opt" data-i="1">In the retry logic, which should never retry a payment</div>
+    <div class="opt" data-i="2">Nowhere in either system. Nothing asks whether this particular charge has been done before, which needs an id and a set</div>
+    <div class="qexp">A timeout means the answer did not arrive, not that the work did not happen, so retrying is correct and processing a distinct request is correct. Lesson 5.4 already established that retries turn one arrival into two. You cannot prevent the second request, so you make it harmless: attach an identifier and ask one question before acting. That question is one step and compares nothing.</div>
+  </div>
+
+  <div class="quiz" data-correct="1">
+    <div class="q">Finding the distinct values among a million ids: sorting first costs about 20,000,000 comparisons. What does a set cost, and what else differs?</div>
+    <div class="opt" data-i="0">About the same, since both must examine every item once</div>
+    <div class="opt" data-i="1">About 1,000,000 steps, and the arrival order survives, which sorting destroys</div>
+    <div class="opt" data-i="2">More, because each lookup must handle collisions</div>
+    <div class="qexp">Sorting is a genuinely good answer here and Lesson 7.1 priced it exactly: about 20,000,000 comparisons for a million items, after which repeats are neighbours. A set asks one question per item, so one pass, and it never compares two items with each other. The second half matters as much as the first: sorting rearranges your data to answer the question, and if the arrival order mattered you have paid twice.</div>
+  </div>
+
+  <div class="callout good">
+    <div class="ch">Next</div>
+    <p>You can now build with this. <strong>The last lesson is hearing it</strong>, because hashing problems almost never arrive as somebody asking for a hash table. They arrive as duplicate emails, a crawler that will not finish, a cache that made things slower, and one particular customer who is always slow.</p>
+  </div>
+__NAV__
+</div>`

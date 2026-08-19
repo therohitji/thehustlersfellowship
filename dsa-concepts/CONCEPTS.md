@@ -266,7 +266,7 @@ Authoring rules for all of this live in [CONSISTENCY.md](CONSISTENCY.md).
 
 > Hashing trades memory and order for the one thing nothing else gives you: an answer without a search.
 
-**Status:** partial, 3 of 6 lessons written
+**Status:** partial, 4 of 6 lessons written
 
 ### Lessons
 
@@ -275,7 +275,7 @@ Authoring rules for all of this live in [CONSISTENCY.md](CONSISTENCY.md).
 | `8.1` | The Instant Answer: Turning a Key Into an Address | live |
 | `8.2` | Collisions: When Two Keys Want the Same Box | live |
 | `8.3` | Load Factor and Resizing: Why It Stays Fast | live |
-| `8.4` | Sets, Maps, Caches and Deduplication | planned |
+| `8.4` | Sets, Maps, Caches and Deduplication | live |
 | `8.5` | How Hashing Problems Show Up, and Where It Runs in Production | planned |
 | `8.6` | The Whiteboard: Keys Falling Into Buckets | planned |
 
