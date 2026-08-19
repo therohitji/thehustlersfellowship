@@ -1098,7 +1098,11 @@ ANIM['array-scan'] = function(spec){
   /* spare capacity beyond the data, drawn as empty dashed slots so a doubling has somewhere
      visible to go. spec.capacity is the total number of slots, data.length of them filled. */
   const cap = Math.max(data.length, spec.capacity || data.length);
-  for (let i = data.length; i < cap; i++){
+  /* Slots are drawn at EVERY position, not just beyond the data, and they sit behind the cells
+     so a filled position looks exactly as it always did. It matters the moment step.order moves
+     a value away from where it started: a hash table needs its empty buckets to be visible in
+     the middle of the row, not only at the right hand end. */
+  for (let i = 0; i < cap; i++){
     const x = i * (cellW + gap);
     s += '<g class="slot" data-i="' + i + '" opacity="0" style="transition:opacity .3s">' +
       '<rect x="' + x + '" y="' + top + '" width="' + cellW + '" height="' + cellH + '" rx="9" fill="none" stroke="' + CLR.line + '" stroke-width="1.4" stroke-dasharray="5 4"/></g>';
@@ -1108,8 +1112,14 @@ ANIM['array-scan'] = function(spec){
     s += '<g class="cell" data-i="' + i + '" opacity="1" style="transition:transform .45s ease-out,opacity .28s">' +
          '<rect x="' + x + '" y="' + top + '" width="' + cellW + '" height="' + cellH + '" rx="9" fill="#ffffff" stroke="' + CLR.lineS + '" stroke-width="1.5"/>' +
          '<text x="' + (x + cellW/2) + '" y="' + (top + cellH/2) + '" text-anchor="middle" dominant-baseline="central" font-family="' + MONO + '" font-size="' + fs + '" font-weight="500" fill="' + CLR.soft + '">' + esc(d) + '</text></g>' +
-         labelAt(x + cellW/2, top + cellH + 12, (spec.labels && spec.labels[i] != null) ? spec.labels[i] : i, 9.5, CLR.mute, 'middle', 600);
+         '';
   });
+  /* the position labels belong to the POSITIONS, so they run the whole width of the table and
+     stay put while values move over them */
+  for (let i = 0; i < cap; i++){
+    s += labelAt(i * (cellW + gap) + cellW/2, top + cellH + 12,
+                 (spec.labels && spec.labels[i] != null) ? spec.labels[i] : i, 9.5, CLR.mute, 'middle', 600);
+  }
   if (ptrH){
     /* the four pointer slots can be renamed per board. A queue wants front and back, a stack
        wants top, and calling them lo and hi in those lessons would be teaching the renderer
