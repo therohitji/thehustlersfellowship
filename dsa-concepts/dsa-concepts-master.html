@@ -49,7 +49,7 @@
   .rail-brand .by{font-size:12.5px;color:rgba(220,236,229,.62);font-weight:500;}
   .rail-progress{padding:15px 22px 17px;font-size:11px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:rgba(220,236,229,.55);border-bottom:1px solid rgba(255,255,255,.09);}
   .pbar{height:5px;border-radius:99px;background:rgba(255,255,255,.13);margin-top:9px;overflow:hidden;}
-  .pbar i{display:block;height:100%;width:44%;background:linear-gradient(90deg,var(--green-500),var(--gold-500));border-radius:99px;}
+  .pbar i{display:block;height:100%;width:46%;background:linear-gradient(90deg,var(--green-500),var(--gold-500));border-radius:99px;}
 
   .chap{border-bottom:1px solid rgba(255,255,255,.06);}
   .chap-head{display:flex;align-items:center;gap:9px;padding:12px 22px;cursor:pointer;font-size:13.5px;font-weight:600;transition:background .14s;}
@@ -381,9 +381,9 @@ const COURSE = [
   { n:"09", title:"Trees: Things That Branch", lessons:[
       {id:"9.1", t:"Branching: Parents, Children, and Why Depth Matters", state:"live"},
       {id:"9.2", t:"Binary Trees and the Three Walks", state:"live"},
-      {id:"9.3", t:"Level Order: Reading a Tree Row by Row", state:"soon"},
-      {id:"9.4", t:"Height, Depth and Balance: The Numbers That Decide Speed", state:"soon"},
-      {id:"9.5", t:"Where Trees Show Up: Folders, Web Pages, Org Charts, File Systems", state:"soon"},
+      {id:"9.3", t:"Level Order: Reading a Tree Row by Row", state:"live"},
+      {id:"9.4", t:"Height, Depth and Balance: The Numbers That Decide Speed", state:"live"},
+      {id:"9.5", t:"Where Trees Show Up: Folders, Web Pages, Org Charts, File Systems", state:"live"},
       {id:"9.6", t:"The Whiteboard: Walking a Tree Three Ways", state:"soon"}
   ]},
   { n:"10", title:"Binary Search Trees and Staying Balanced", locked:true, lessons:[
@@ -7215,6 +7215,392 @@ __NAV__
   <div class="callout good">
     <div class="ch">Next</div>
     <p>All three walks go deep before they go wide: each one dives to the bottom of one side before it looks at the other. <strong>There is a fourth order that refuses to do that</strong>, reading the tree row by row instead, and it answers a question none of these three can.</p>
+  </div>
+__NAV__
+</div>`
+,
+
+"9.3": `<div class="wrap">
+  <div class="les-kicker">Chapter 9 · Lesson 9.3</div>
+  <h1 class="les-title">Level Order: Reading a Tree Row by Row</h1>
+  <div class="les-meta">
+    <span class="pill">foundational</span><span class="pill">~12 min</span>
+    <span class="pill gold">no code needed</span><span class="pill">9 visuals</span>
+  </div>
+
+  <p class="motto">The three walks all dive. This one refuses to, and refusing is what makes it answer nearest first.</p>
+
+  <p class="lead">A tree is what you get when one thing owns many things, and depth is the only number that decides its speed. The three walks in Lesson 9.2 all go deep before they go wide. This one goes wide before it goes deep, and that single change answers a question none of the other three can.</p>
+
+  <h2><span class="ix">1</span> The Everyday Situation</h2>
+  <div class="sub">Looking for the nearest person who can approve it.</div>
+  <p>You need a signature. You ask your manager. If they cannot, you ask <strong>everybody at their level</strong> before you go higher, because somebody one step away is better than somebody three steps away even if the three-step person is more likely to say yes.</p>
+
+  <div class="viz" data-viz='{"type":"scene","title":"Nearest first, not deepest first","width":820,"height":280,"items":[{"icon":"person","x":118,"y":126,"kind":"gold","label":"you, needing a signature"},{"icon":"person","x":330,"y":126,"kind":"accent","label":"everybody one step away"},{"icon":"person","x":545,"y":126,"kind":"muted","label":"then everybody two steps away"},{"icon":"doc","x":740,"y":124,"kind":"box","label":"and you stop the moment one says yes"}],"arrows":[{"x1":186,"y1":126,"x2":266,"y2":126,"style":"green","label":"try all of these first"}],"caption":"Nobody hunts for a signature by picking one person and following their whole chain of contacts to the end before trying anyone else. You sweep outwards a ring at a time, because the first yes you find at distance one is better than any yes at distance three."}'></div>
+
+  <p>Nobody hunts by following one person all the way to the end of their contacts before trying anybody else. <strong>You sweep outwards, a ring at a time</strong>, and the first yes you find is the nearest one.</p>
+
+  <h2><span class="ix">2</span> What It Actually Is</h2>
+  <div class="sub">Finish a level before you start the next one.</div>
+  <p>Every walk in Lesson 9.2 dives: it goes to the bottom of one side before looking at the other. <strong>Level order refuses to dive.</strong> It reads the root, then everything at depth one, then everything at depth two, and never touches depth three while anything at depth two is unread.</p>
+
+  <div class="viz" data-viz='{"type":"arch","title":"Two ways to move through a tree","maxChars":18,"nodes":[{"id":"c","label":"You are at the root. Where next?","col":0,"row":1,"kind":"dark"},{"id":"d","label":"Deeper: follow one side to the bottom","col":1,"row":0,"kind":"accent"},{"id":"w","label":"Wider: finish this level first","col":1,"row":2,"kind":"gold"},{"id":"d2","label":"The three walks in Lesson 9.2","col":2,"row":0,"kind":"accent"},{"id":"w2","label":"Level order, and it finds the nearest first","col":2,"row":2,"kind":"gold"},{"id":"w3","label":"Which is why the first one it finds is the closest one","col":3,"row":2,"kind":"gold"}],"edges":[{"from":"c","to":"d"},{"from":"c","to":"w"},{"from":"d","to":"d2","style":"green"},{"from":"w","to":"w2","style":"green"},{"from":"w2","to":"w3","label":"and so","style":"green"}],"caption":"One decision, made at every single node: deeper or wider. The three walks in 9.2 all answered deeper and differed only in when the parent spoke. This one answers wider, and that is the entire difference between them."}'></div>
+
+  <p>And the consequence in the last node is the whole reason it exists. <strong>If you sweep level by level, the first match you find is the shallowest one</strong>, because you had already finished every level above it.</p>
+
+  <h2><span class="ix">3</span> Watch It Work</h2>
+  <div class="sub">Row by row, and the shallowest answer first.</div>
+  <p>The same seven items. Watch the badge fill row by row, and then watch what happens when two nodes both match what you were looking for.</p>
+
+  <div class="board" data-anim='{"type":"tree-walk","title":"Level order, and why the first match is the nearest","speed":1700,"unit":76,"countLabel":" emitted","legend":[["this level, being read","look"],["already emitted","seen"],["a match","found"],["never reached","dead"]],"nodes":[{"id":"a","label":"50","x":3,"d":0},{"id":"b","label":"25","x":1,"d":1},{"id":"c","label":"75","x":5,"d":1},{"id":"d","label":"12","x":0,"d":2},{"id":"e","label":"37","x":2,"d":2},{"id":"f","label":"62","x":4,"d":2},{"id":"g","label":"88","x":6,"d":2}],"edges":[{"from":"a","to":"b"},{"from":"a","to":"c"},{"from":"b","to":"d"},{"from":"b","to":"e"},{"from":"c","to":"f"},{"from":"c","to":"g"}],"steps":[{"look":["a"],"count":1,"badge":"level 0: 50","say":"Start at the root, exactly as every walk does. <b>The difference is what happens next.</b>"},{"seen":["a"],"look":["b","c"],"count":3,"badge":"50, then 25 75","say":"<b>Both children, before either of their children.</b> A walk from Lesson 9.2 would already be two levels down the left by now. This one has not left depth one."},{"seen":["a","b","c"],"look":["d","e","f","g"],"count":7,"badge":"50 25 75 12 37 62 88","say":"Now the whole of depth two, left to right. <b>Level order, finished:</b> 50 25 75 12 37 62 88. Compare it with 9.2 preorder, 50 25 12 37 75 62 88, and notice that only the root agrees."},{"seen":["a"],"look":["b","c"],"count":3,"badge":"now: find anything over 60","say":"Now the question this walk is for. <b>Find anything over 60.</b> Depth one holds 25 and 75."},{"seen":["a","b"],"found":["c"],"dead":["d","e","f","g"],"count":3,"badge":"found at depth 1","say":"<b>75 matches, at depth one, and the entire bottom row was never reached.</b> 62 and 88 also match, and both are further away, and neither was examined."},{"seen":["a","b"],"found":["c"],"dead":["d","e","f","g"],"count":3,"badge":"nearest, guaranteed","say":"That guarantee is the whole product. <b>Because every level above was finished first, the first match found cannot have a shallower match hiding beneath it.</b> No other walk in this chapter can promise that."}],"caption":"Every walk here visits nodes in a different order and they all cost the same. What level order buys is not speed: it is a guarantee about WHICH match you get, and it is the only walk in this chapter that can make one."}'></div>
+
+  <h2><span class="ix">4</span> Under The Hood</h2>
+  <div class="sub">It needs a structure the other three did not.</div>
+
+  <div class="viz" data-viz='{"type":"seq","title":"Where the next node comes from","actors":[{"label":"The walk","kind":"gold"},{"label":"A waiting line","kind":"accent"},{"label":"The tree","kind":"muted"}],"messages":[{"from":0,"to":1,"label":"who is next","style":"gold"},{"from":1,"to":0,"label":"the one who has been waiting longest","style":"green"},{"from":0,"to":2,"label":"then I read it, and I hand you its children"},{"from":0,"to":1,"label":"join the back of the line"},{"from":1,"to":0,"label":"so they are read after everything already waiting","style":"green"}],"caption":"That is Chapter 5, arriving inside a chapter about trees. Children join the back and the next node comes off the front, which is first in first out, and it is the queue that produces the level by level order. The three walks in Lesson 9.2 use a pile instead, where the newest thing is served first, and that is precisely why they dive."}'></div>
+
+  <p><strong>The walk itself is not clever. The waiting line is.</strong> Children join the back, the next node comes off the front, and Lesson 5.2 already named that: first in, first out. Swap the queue for the pile from Lesson 5.1 and you get a diving walk instead, with no other change at all.</p>
+
+  <h2><span class="ix">5</span> The Types</h2>
+  <div class="sub">Four orders, and the one guarantee each provides.</div>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>The order</th><th>What it guarantees</th><th>What holds the waiting work</th></tr>
+    <tr><td>Preorder</td><td>A parent before anything it owns</td><td>A pile: newest first, so it dives</td></tr>
+    <tr><td>Inorder</td><td>A search tree comes out sorted</td><td>A pile</td></tr>
+    <tr><td>Postorder</td><td>Everything owned finishes before its owner</td><td>A pile</td></tr>
+    <tr><td>Level order</td><td>The first match found is the shallowest one</td><td>A queue: oldest first, so it sweeps</td></tr>
+  </table>
+  <div class="tbl-cap">Read the last column and the chapter divides in two. Three of these are the same machine with a pile in it, differing only in when the parent speaks. The fourth is a genuinely different machine, and the difference is one structure from Chapter 5.</div></div>
+
+  <h2><span class="ix">6</span> What It Costs, In Plain English</h2>
+  <div class="sub">Same time, different memory, and one guarantee.</div>
+  <p>Level order visits every node once, exactly like the other three, so it costs the same. <strong>What differs is how much is waiting at once.</strong> A diving walk holds one path: as deep as the tree. A sweeping walk holds one level: as wide as the tree.</p>
+
+  <div class="viz" data-viz='{"type":"card","title":"A million items, evenly branched","eyebrow":"WHAT IS WAITING AT ONCE","badge":"20 levels","width":560,"rows":[{"k":"Nodes visited, either way","v":"1,000,000","tone":"good","bar":1},{"k":"Waiting at once, a diving walk","v":"about 20, one path","tone":"good","bar":0.00002},{"k":"Waiting at once, level order","v":"about 500,000, the widest row","tone":"bad","bar":0.5},{"k":"Because the bottom row holds","v":"half of everything","tone":"bad","bar":0.5},{"k":"And what that buys","v":"the nearest match, guaranteed","tone":"good","bar":0.1}],"caption":"Every bar is drawn against a maximum of one million. Row three is the honest cost and it surprises people: an evenly branched tree has half of all its nodes in the bottom row, so sweeping level by level means holding half the tree in a queue at the widest moment. Row two is the diving alternative, holding one path of about twenty."}'></div>
+
+  <p>In the Chapter 2 currency both are <em class="g">O(n)</em> in time and they differ in space: about the depth for a diving walk, about the widest level for this one. <strong>That is a real trade and it is the reason both survive</strong>, and Lesson 5.4 already warned what an unbounded queue does when nobody sets a limit.</p>
+
+  <h2><span class="ix">7</span> Where It Lives In Real Life</h2>
+  <div class="sub">Five places where nearest-first was the requirement.</div>
+
+  <div class="viz" data-viz='{"type":"kgraph","title":"Sweeping outwards, where it already runs","unit":178,"nodes":[{"id":"c","label":"Finish this ring before starting the next","x":2,"y":1,"kind":"dark"},{"id":"n","label":"Fewest connections between two people","x":0,"y":0,"kind":"gold"},{"id":"m","label":"The shortest route, when every step costs the same","x":0,"y":2,"kind":"gold"},{"id":"u","label":"Drawing a page: a row of boxes at a time","x":4,"y":0,"kind":"accent"},{"id":"o","label":"An org chart printed level by level","x":4,"y":2,"kind":"accent"},{"id":"g","label":"And Chapter 13, where this becomes the main event","x":2,"y":3,"kind":"gold"}],"edges":[{"from":"c","to":"n","label":"nearest first","style":"gold"},{"from":"c","to":"m","label":"first found is shortest","style":"gold"},{"from":"c","to":"u","label":"a row at a time"},{"from":"c","to":"o","label":"reads the way it looks"},{"from":"c","to":"g","label":"Lesson 13.1 builds it","style":"gold"}],"caption":"The bottom node is where this walk stops being a footnote. Lesson 13.1, Breadth First: Ripples in a Pond, is this exact sweep applied to something that is not a tree, and the guarantee travels with it: the first time you reach somewhere, you reached it by the shortest route."}'></div>
+
+  <h2><span class="ix">8</span> How Problems Show Up</h2>
+  <div class="sub">Six sentences, and the tell is which match came back.</div>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>What somebody actually says</th><th>The test to run</th><th>What it is really telling you</th></tr>
+    <tr><td>"It finds a match, but not the closest one"</td><td>Ask whether it dives or sweeps</td><td>Only a sweep can promise the nearest. Lesson 9.2 walks cannot</td></tr>
+    <tr><td>"Memory spikes on wide trees and not deep ones"</td><td>Ask how many are waiting at the widest level</td><td>A sweep holds a whole row. Half the tree is the bottom row</td></tr>
+    <tr><td>"Memory spikes on deep trees and not wide ones"</td><td>The same question, other way round</td><td>A dive holds one path, and Lesson 5.1 priced that ceiling</td></tr>
+    <tr><td>"The org chart prints in a strange order"</td><td>Ask whether it goes down or across</td><td>A dive prints one branch fully before the next name at the top</td></tr>
+    <tr><td>"The route it suggests is longer than the obvious one"</td><td>Ask what it explored first</td><td>It dived. The first route found is not the shortest one</td></tr>
+    <tr><td>"It never finishes on a very wide tree"</td><td>Ask what bounds the waiting line</td><td>Nothing does. Lesson 5.4 called that the fourth door</td></tr>
+  </table>
+  <div class="tbl-cap">Rows two and three are the same measurement pointing in opposite directions, and together they are the whole choice. One walk is bounded by how deep the tree is and the other by how wide, so the shape of your data decides which one is affordable before either is chosen.</div></div>
+
+  <h2><span class="ix">9</span> Solve It Live</h2>
+  <div class="sub">The correct route that nobody would drive.</div>
+  <div class="callout">
+    <div class="ch">The problem, as it arrives</div>
+    <p>"Our internal tool finds a path between two teams through the reporting structure, for routing approvals. It always finds a valid path and the path is always genuinely connected. But people keep pointing out that a much shorter route obviously exists. It is worse on our deeper divisions and fine on the flat ones. Nobody can find a bug in the path it returns."</p>
+  </div>
+
+  <div class="viz" data-viz='{"type":"swim","title":"Every path is valid, and none is shortest","lanes":[{"label":"The team"},{"label":"You"},{"label":"The tool"}],"steps":[{"id":"a1","lane":0,"col":0,"kind":"gold","label":"Valid paths, obviously not the shortest ones"},{"id":"b1","lane":1,"col":1,"kind":"box","label":"Ask: does it explore deeper or wider first?"},{"id":"c1","lane":2,"col":1,"kind":"bad","label":"Deeper. It follows one branch to the end"},{"id":"b2","lane":1,"col":2,"kind":"accent","label":"Then the first path it finds is just the first one, not the shortest"},{"id":"c2","lane":2,"col":2,"kind":"bad","label":"Worse on deep divisions, fine on flat ones"},{"id":"b3","lane":1,"col":3,"kind":"accent","label":"Which is the signature exactly: depth is what it wastes"},{"id":"b4","lane":1,"col":4,"kind":"accent","label":"Sweep level by level. First found is then shortest"}],"edges":[{"from":"a1","to":"b1"},{"from":"b1","to":"c1"},{"from":"c1","to":"b2"},{"from":"b2","to":"c2"},{"from":"c2","to":"b3"},{"from":"b3","to":"b4"}],"caption":"Nobody could find a bug in the path because there is no bug in the path. Every route it returns is real and connected. The tool was never asked for the shortest one and a diving walk cannot produce it, so it returns the first valid answer it stumbles into."}'></div>
+
+  <p><strong>There is no bug in the path, which is why nobody found one.</strong> A diving walk returns the first valid route it reaches, and the first one it reaches is simply the first, not the shortest. Sweeping level by level changes nothing about correctness and everything about which valid answer comes back, because finishing every level above guarantees nothing shorter was skipped.</p>
+
+  <div class="callout good">
+    <div class="ch">Why this reasoning wins</div>
+    <p>It stopped auditing the answer and asked what the search had promised. <strong>Correct and shortest are different requirements</strong>, and only one walk in this chapter can deliver the second. The tell was in the complaint all along: worse on deep structures and fine on flat ones is exactly what a dive looks like, because on a flat structure there is nowhere deep to get lost.</p>
+  </div>
+
+  <h2><span class="ix">10</span> Your Turn</h2>
+  <div class="callout accent">
+    <div class="ch">Your rep, one org chart</div>
+    <p>Draw any org chart you know, four levels deep. <strong>First:</strong> read it out by following one person all the way down their reports before moving to the next person at the top. <strong>Second:</strong> read it out again by naming everybody at each level before going a level deeper. <strong>Third:</strong> now pick a property, anybody who has worked here over five years, and find one using each method. Note which method found somebody nearer to the top, and note that neither method looked at fewer people to do it.</p>
+  </div>
+
+  <h2><span class="ix gold">✓</span> Check Yourself</h2>
+
+  <div class="quiz" data-correct="1">
+    <div class="q">A tool returns valid but unnecessarily long routes through a reporting structure, and it is worse on deep divisions than flat ones. What is happening?</div>
+    <div class="opt" data-i="0">The path data is incomplete for deep divisions, so shorter links are missing</div>
+    <div class="opt" data-i="1">It explores deeper before wider, so the first valid route it reaches is simply the first one rather than the shortest</div>
+    <div class="opt" data-i="2">It is finding the shortest route but measuring distance incorrectly</div>
+    <div class="qexp">There is no bug in the route, which is why nobody could find one. A diving walk follows one branch to its end before trying alternatives, so it returns the first valid answer it stumbles into. Only a sweep can guarantee the shortest, because finishing every level before starting the next means nothing nearer was skipped. Worse-on-deep and fine-on-flat is the signature: a flat structure has nowhere deep to get lost.</div>
+  </div>
+
+  <div class="quiz" data-correct="2">
+    <div class="q">Level order and the three walks from Lesson 9.2 all visit every node once. Where do they genuinely differ in cost?</div>
+    <div class="opt" data-i="0">Nowhere. They are identical in every respect</div>
+    <div class="opt" data-i="1">Level order is slower because it revisits parents to find their children</div>
+    <div class="opt" data-i="2">In how much is waiting at once: a dive holds one path, about the depth, and a sweep holds one level, which at the bottom of an even tree is half of everything</div>
+    <div class="qexp">Time is identical because every node is visited exactly once either way. The space is not. A diving walk only ever holds the path it is currently on, which is about twenty for a million items. A sweep holds a whole level, and an evenly branched tree keeps half of all its nodes in the bottom row, so the queue reaches about half a million. That is a real trade and it is why both walks survive.</div>
+  </div>
+
+  <div class="callout good">
+    <div class="ch">Next</div>
+    <p>Every lesson so far has said depth decides the speed, and every board has quietly assumed the branching was even. <strong>Next: what happens when it is not</strong>, the two numbers that measure it, and why the same items in the same structure can be ten steps away or a thousand.</p>
+  </div>
+__NAV__
+</div>`
+,
+
+"9.4": `<div class="wrap">
+  <div class="les-kicker">Chapter 9 · Lesson 9.4</div>
+  <h1 class="les-title">Height, Depth and Balance: The Numbers That Decide Speed</h1>
+  <div class="les-meta">
+    <span class="pill">foundational</span><span class="pill">~13 min</span>
+    <span class="pill gold">no code needed</span><span class="pill">10 visuals</span>
+  </div>
+
+  <p class="motto">The gap between a good tree and a perfect one is nothing. The gap between a good tree and none at all is everything.</p>
+
+  <p class="lead">Every lesson so far has said depth decides the speed, and every board has quietly assumed the branching was even. This lesson is what happens when it is not. By the end you can measure a tree with two numbers, say which one your operation actually pays, and know how much imbalance is worth worrying about, which is far less than people expect.</p>
+
+  <h2><span class="ix">1</span> The Everyday Situation</h2>
+  <div class="sub">Two filing systems, same drawers, same papers.</div>
+  <p>Two offices file the same thousand documents. One splits them into ten boxes, then ten folders each, then ten wallets. <strong>Three moves to reach anything.</strong> The other files them in one long chain: every document tucked inside the previous one. Also correct. Also complete. <strong>A thousand moves to reach the last one.</strong></p>
+
+  <div class="viz" data-viz='{"type":"scene","title":"Same documents, same rule, two shapes","width":820,"height":280,"items":[{"icon":"shelf","x":135,"y":124,"kind":"accent","label":"split ten ways, three times"},{"icon":"person","x":345,"y":126,"kind":"gold","label":"three moves to anything"},{"icon":"pile","x":560,"y":128,"kind":"bad","label":"each one inside the last"},{"icon":"person","x":740,"y":126,"kind":"bad","label":"up to a thousand moves"}],"arrows":[{"x1":215,"y1":124,"x2":300,"y2":124,"style":"green","label":"depth 3"},{"x1":625,"y1":126,"x2":690,"y2":126,"style":"gold","label":"depth 1,000"}],"caption":"Both offices followed the rule and both are genuinely trees: one owner each, nothing owned twice. The documents are identical and so is the number of them. The only thing that differs is how the branching was spent, and it is the difference between three moves and a thousand."}'></div>
+
+  <h2><span class="ix">2</span> What It Actually Is</h2>
+  <div class="sub">Two numbers, and only one of them is yours.</div>
+  <p><strong>Depth</strong> belongs to a node: how many owners sit above it. <strong>Height</strong> belongs to the tree: the depth of its deepest node. Lesson 9.1 gave you both words, and here is what to do with them.</p>
+
+  <div class="viz" data-viz='{"type":"arch","title":"Which number does your operation pay","maxChars":18,"nodes":[{"id":"q","label":"What are you doing to the tree?","col":0,"row":1,"kind":"dark"},{"id":"o","label":"Reaching one specific thing","col":1,"row":0,"kind":"accent"},{"id":"w","label":"Reading all of it","col":1,"row":2,"kind":"accent"},{"id":"o2","label":"You pay THAT node depth, not the height","col":2,"row":0,"kind":"gold"},{"id":"w2","label":"You pay one visit per item, and height does not enter","col":2,"row":2,"kind":"gold"},{"id":"h","label":"Height is the worst case: the deepest thing you could be asked for","col":3,"row":1,"kind":"bad"}],"edges":[{"from":"q","to":"o"},{"from":"q","to":"w"},{"from":"o","to":"o2","style":"green"},{"from":"w","to":"w2","style":"green"},{"from":"o2","to":"h","label":"and at worst","style":"green"}],"caption":"Most people quote height and most operations pay depth. Reaching something shallow is cheap in a tall tree, and a full walk from Lesson 9.2 pays one visit per item whatever the shape is. Height is what you promise a stranger, because it is the deepest thing they could ask for."}'></div>
+
+  <p><strong>Balance</strong> is then not a third number. It is a description of how close the height is to the smallest it could be for that many items, and Lesson 9.1 already gave that smallest: ten levels for a thousand, twenty for a million.</p>
+
+  <h2><span class="ix">3</span> Watch It Work</h2>
+  <div class="sub">Seven items, two shapes, and the same walk.</div>
+  <p>Seven items, evenly branched. Reaching the deepest is three touches. Now the same seven with the branching spent badly, and <strong>nothing else changed at all.</strong></p>
+
+  <div class="board" data-anim='{"type":"tree-walk","title":"Seven items, evenly branched: three touches","speed":1700,"unit":74,"countLabel":" touches","legend":[["where you are","look"],["walked","seen"],["reached","found"],["never touched","dead"]],"nodes":[{"id":"a","label":"50","x":3,"d":0},{"id":"b","label":"25","x":1,"d":1},{"id":"c","label":"75","x":5,"d":1},{"id":"d","label":"12","x":0,"d":2},{"id":"e","label":"37","x":2,"d":2},{"id":"f","label":"62","x":4,"d":2},{"id":"g","label":"88","x":6,"d":2}],"edges":[{"from":"a","to":"b"},{"from":"a","to":"c"},{"from":"b","to":"d"},{"from":"b","to":"e"},{"from":"c","to":"f"},{"from":"c","to":"g"}],"steps":[{"seen":["a","c"],"found":["g"],"dead":["b","d","e","f"],"count":3,"badge":"height 2: 3 touches","say":"Evenly branched. <b>Height 2, and the deepest thing is three touches away.</b> Four of the seven were never examined, which is what branching buys."}],"caption":"Four of the seven were never examined. That is what branching buys, and it is only available because every node on the path had a side to reject."}'></div>
+
+  <p>Now the same seven values with the branching never spent. <strong>Not imagined: drawn.</strong> One owner each, nothing owned twice, so it is still a tree by the definition in Lesson 9.1.</p>
+
+  <div class="board" data-anim='{"type":"tree-walk","title":"The same seven, with the branching never spent","speed":1600,"unit":74,"countLabel":" touches","legend":[["where you are","look"],["walked","seen"],["reached","found"]],"nodes":[{"id":"n1","label":"50","x":0,"d":0},{"id":"n2","label":"25","x":1,"d":1},{"id":"n3","label":"75","x":2,"d":2},{"id":"n4","label":"12","x":3,"d":3},{"id":"n5","label":"37","x":4,"d":4},{"id":"n6","label":"62","x":5,"d":5},{"id":"n7","label":"88","x":6,"d":6}],"edges":[{"from":"n1","to":"n2"},{"from":"n2","to":"n3"},{"from":"n3","to":"n4"},{"from":"n4","to":"n5"},{"from":"n5","to":"n6"},{"from":"n6","to":"n7"}],"steps":[{"look":["n1"],"count":1,"badge":"same seven items","say":"The same seven values, and the same rule from Lesson 9.1: one owner each, nothing owned twice. <b>This is still a tree.</b> It simply never branches."},{"seen":["n1","n2"],"look":["n3"],"count":3,"badge":"3 touches, not arrived","say":"Three touches in. On the board above you had already arrived. <b>Here nothing has been ruled out</b>, because a node with one child has no side to reject."},{"seen":["n1","n2","n3","n4","n5"],"look":["n6"],"count":6,"badge":"6 touches, still going","say":"Six touches, and still descending. Every step cost the same as a step on the balanced board and bought nothing at all."},{"seen":["n1","n2","n3","n4","n5","n6"],"found":["n7"],"count":7,"badge":"7 touches vs 3","say":"<b>Seven touches to reach what took three.</b> Same items, same rule, same walk, and Lesson 6.2 is exactly what this became."}],"caption":"This is the picture the sentence above describes, drawn rather than imagined. A node with two children throws away half of what is left when you step past it; a node with one child throws away nothing, so a tree that never branches is a chain wearing a tree diagram and it costs what Chapter 4 said a chain costs."}'></div>
+
+  <h2><span class="ix">4</span> Under The Hood</h2>
+  <div class="sub">What a step is actually buying.</div>
+
+  <div class="viz" data-viz='{"type":"seq","title":"The same step, in two shapes","actors":[{"label":"You, stepping down","kind":"gold"},{"label":"A node with two children","kind":"accent"},{"label":"A node with one child","kind":"bad"}],"messages":[{"from":0,"to":1,"label":"I am going left","style":"gold"},{"from":1,"to":0,"label":"then everything on my right is now impossible","style":"green"},{"from":0,"to":2,"label":"I am going down","style":"gold"},{"from":2,"to":0,"label":"nothing is ruled out. There was nowhere else to go"}],"caption":"This is the whole of balance in one exchange. A step past a node with two children eliminates a subtree; a step past a node with one child eliminates nothing, because there was no alternative to reject. Branching is not what makes a tree pretty, it is what makes a step worth taking."}'></div>
+
+  <p><strong>Branching is not decoration. It is what makes a step worth taking</strong>, and Lesson 6.3 already priced the same idea: halving works because a comparison eliminates a side, and a comparison that eliminates nothing is a scan.</p>
+
+  <h2><span class="ix">5</span> The Types</h2>
+  <div class="sub">Four shapes holding the same thousand items.</div>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>The shape</th><th>Height, for a thousand items</th><th>What it behaves like</th></tr>
+    <tr><td>Perfectly balanced</td><td>10</td><td>The best case, and the number Lesson 9.1 derived</td></tr>
+    <tr><td>Roughly balanced</td><td>10 to 20</td><td>Indistinguishable in practice. This is the target</td></tr>
+    <tr><td>Badly lopsided</td><td>a few hundred</td><td>Noticeably slow, and getting worse as it grows</td></tr>
+    <tr><td>Fully one-sided</td><td>1,000</td><td>A chain. Chapter 4 costs, with a tree diagram on top</td></tr>
+  </table>
+  <div class="tbl-cap">Rows one and two are the point of this table. Perfect balance is worth almost nothing over rough balance, ten against twenty on a thousand items, and chasing it is effort spent on a difference nobody will measure. Row four is worth everything, and that is where all the attention belongs.</div></div>
+
+  <p>And the boundary of this chapter sits right here. <strong>How a tree gets into row four, and what a structure does to climb back out, is Lesson 10.3, When a Search Tree Quietly Becomes a List, and Lesson 10.4.</strong> This chapter measures the shape. Chapter 10 maintains it.</p>
+
+  <h2><span class="ix">6</span> What It Costs, In Plain English</h2>
+  <div class="sub">The gap that matters and the gap that does not.</div>
+  <p>A million items. Perfectly balanced is <strong>twenty levels</strong>, because two multiplied by itself twenty times is 1,048,576. Fully one-sided is <strong>a million levels</strong>. That is fifty thousand times the work, on identical data with an identical rule.</p>
+
+  <div class="viz" data-viz='{"type":"card","title":"A million items, four shapes","eyebrow":"TOUCHES TO REACH THE DEEPEST","badge":"same million","width":560,"rows":[{"k":"Perfectly balanced","v":"20","tone":"good","bar":0.00002},{"k":"Roughly balanced, the realistic target","v":"about 40","tone":"good","bar":0.00004},{"k":"So perfect against good costs you","v":"20 touches, once","tone":"good","bar":0.00002},{"k":"Fully one-sided","v":"1,000,000","tone":"bad","bar":1},{"k":"And good against none costs you","v":"about 50,000 times","tone":"bad","bar":1}],"caption":"Every bar is drawn against a maximum of one million. Rows three and five are the two comparisons worth carrying: chasing perfect balance buys twenty touches, and losing balance entirely costs fifty thousand times. Effort spent on the first is effort not spent on the second."}'></div>
+
+  <p>In the Chapter 2 currency a balanced tree is <em class="g">O(log n)</em> and a one-sided one is <em class="g">O(n)</em>, which is the whole of Lesson 6.2 arriving inside a structure that looks like it should be fast. <strong>The diagram still branches on the page and the data no longer branches at all.</strong></p>
+
+  <h2><span class="ix">7</span> Where It Lives In Real Life</h2>
+  <div class="sub">Five places where the shape drifted.</div>
+
+  <div class="viz" data-viz='{"type":"kgraph","title":"Where trees quietly stop branching","unit":178,"nodes":[{"id":"c","label":"A tree that stopped spending its branching","x":2,"y":1,"kind":"dark"},{"id":"f","label":"A folder mirrored from another system, one level per step","x":0,"y":0,"kind":"gold"},{"id":"p","label":"A page where every wrapper wraps exactly one thing","x":0,"y":2,"kind":"accent"},{"id":"o","label":"An org chart where each manager has one report","x":4,"y":0,"kind":"accent"},{"id":"t","label":"A comment thread that is one long reply chain","x":4,"y":2,"kind":"accent"},{"id":"s","label":"And a search tree fed in order. Lesson 10.3 owns it","x":2,"y":3,"kind":"bad"}],"edges":[{"from":"c","to":"f","label":"deep, and nobody looked","style":"gold"},{"from":"c","to":"p","label":"nesting with no branching"},{"from":"c","to":"o","label":"a chain of one"},{"from":"c","to":"t","label":"a chain of replies"},{"from":"c","to":"s","label":"Chapter 10 fixes it"}],"caption":"Every node here is still a genuine tree by the definition in Lesson 9.1: one owner each, nothing owned twice. Not one of them is broken. They have simply spent no branching, so every step they offer eliminates nothing, and they cost what a chain costs."}'></div>
+
+  <h2><span class="ix">8</span> How Problems Show Up</h2>
+  <div class="sub">Six sentences, and the number nobody measured.</div>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>What somebody actually says</th><th>The test to run</th><th>What it is really telling you</th></tr>
+    <tr><td>"It is slow for one account with less data than average"</td><td>Measure the height, not the count</td><td>Depth, not amount. Lesson 9.1 block 9, exactly</td></tr>
+    <tr><td>"It used to be fast and degraded over months"</td><td>Ask whether items arrive in order</td><td>The shape drifted. Lesson 10.3 owns the search tree case</td></tr>
+    <tr><td>"Rebuilding it from scratch made it fast again"</td><td>Ask what rebuilding changed</td><td>Not the data. The shape. Same items, new height</td></tr>
+    <tr><td>"Some lookups are instant and some are not"</td><td>Compare the depth of those two items</td><td>You pay the depth of the thing you asked for, not the height</td></tr>
+    <tr><td>"We spent a week perfectly balancing it"</td><td>Ask what the height was before and after</td><td>Twenty against forty is nothing. Chase row four, not row one</td></tr>
+    <tr><td>"The page has forty nested wrappers"</td><td>Ask how many of them have two children</td><td>Nesting is not branching. Depth with no elimination</td></tr>
+  </table>
+  <div class="tbl-cap">Row three is the diagnostic worth memorising. If rebuilding a structure from the same data makes it fast again, nothing about the data was ever the problem, and you have measured the shape without meaning to.</div></div>
+
+  <h2><span class="ix">9</span> Solve It Live</h2>
+  <div class="sub">Rebuilt nightly, fast every morning, slow by evening.</div>
+  <div class="callout">
+    <div class="ch">The problem, as it arrives</div>
+    <p>"Our category browser is rebuilt from scratch every night and it is fast every morning. By late afternoon it is noticeably slower, and by the end of the day some pages take seconds. The same rebuild fixes it every night. We have not been able to reproduce it in testing, where we load the same data and it stays fast all day."</p>
+  </div>
+
+  <div class="viz" data-viz='{"type":"swim","title":"The rebuild is the clue, not the fix","lanes":[{"label":"The team"},{"label":"You"},{"label":"The browser"}],"steps":[{"id":"a1","lane":0,"col":0,"kind":"gold","label":"Fast after rebuild, slow by evening, every day"},{"id":"b1","lane":1,"col":1,"kind":"box","label":"Ask: if the data is the same, what did the rebuild change?"},{"id":"c1","lane":2,"col":1,"kind":"accent","label":"Only the shape. Same categories, rebuilt evenly"},{"id":"b2","lane":1,"col":2,"kind":"accent","label":"So the height is climbing during the day"},{"id":"c2","lane":2,"col":2,"kind":"bad","label":"New categories are added all day, in name order"},{"id":"b3","lane":1,"col":3,"kind":"accent","label":"Which is why testing never reproduced it: it loads at once"},{"id":"b4","lane":1,"col":4,"kind":"accent","label":"Keep the shape as it grows. Lesson 10.4"}],"edges":[{"from":"a1","to":"b1"},{"from":"b1","to":"c1"},{"from":"c1","to":"b2"},{"from":"b2","to":"c2"},{"from":"c2","to":"b3"},{"from":"b3","to":"b4"}],"caption":"The rebuild was treated as the workaround and it was the diagnosis. Same data in, same data out, and the only thing it can possibly have changed is the arrangement, which means the arrangement is what degrades and the data never did."}'></div>
+
+  <p><strong>The rebuild is the evidence.</strong> It loads identical data and makes the problem disappear, so nothing about the data can be the cause and the shape is the only thing left. Categories arrive all day in name order, so each one attaches below the last and the height climbs steadily while the item count barely moves. Testing loads everything at once and builds an even tree, which is why it never reproduced.</p>
+
+  <div class="callout good">
+    <div class="ch">Why this reasoning wins</div>
+    <p>It took the workaround seriously as a measurement. <strong>If rebuilding from the same data fixes it, the data was never the problem</strong>, and there is only one other thing a rebuild changes. Keeping the shape as items arrive, rather than rebuilding it nightly, is Lesson 10.4, Staying Balanced, and this chapter has now measured exactly what that lesson is protecting.</p>
+  </div>
+
+  <h2><span class="ix">10</span> Your Turn</h2>
+  <div class="callout accent">
+    <div class="ch">Your rep, fifteen sticky notes</div>
+    <p>Number fifteen sticky notes 1 to 15. <strong>Round one:</strong> build a tree by putting 8 at the top, then 4 and 12 below it, then 2, 6, 10, 14, and finally the odd numbers. Count how many notes you pass through to reach 15. <strong>Round two:</strong> start again and add them in plain order, 1 then 2 then 3, each one hanging below the last. Count again. <strong>Round three:</strong> compare the two counts, and then notice that both walls hold exactly the same fifteen notes and both obey the same rule.</p>
+  </div>
+
+  <h2><span class="ix gold">✓</span> Check Yourself</h2>
+
+  <div class="quiz" data-correct="0">
+    <div class="q">A browser is rebuilt nightly from the same data, is fast every morning and slow by evening, and testing never reproduces it. What is degrading?</div>
+    <div class="opt" data-i="0">The shape. Items are added in order all day so the height climbs, and a rebuild is the only thing that resets it</div>
+    <div class="opt" data-i="1">Memory fragmentation, which a restart clears</div>
+    <div class="opt" data-i="2">The data volume, which grows during the day and is reset at night</div>
+    <div class="qexp">The rebuild is the diagnosis rather than the workaround. It loads identical data and fixes the problem, so the data cannot be the cause and the arrangement is the only thing left. Items arriving in order attach below one another, so the height climbs while the count barely moves. Testing loads everything at once and builds an even tree, which is exactly why it never reproduces.</div>
+  </div>
+
+  <div class="quiz" data-correct="1">
+    <div class="q">A team spends a week making a tree perfectly balanced rather than roughly balanced, on a million items. What did they buy?</div>
+    <div class="opt" data-i="0">A tenfold improvement, since perfect balance halves the height</div>
+    <div class="opt" data-i="1">About twenty touches, because roughly balanced is around forty levels and perfect is twenty, while losing balance entirely would have cost fifty thousand times</div>
+    <div class="opt" data-i="2">Nothing at all, because balance has no effect on the cost of reaching an item</div>
+    <div class="qexp">The gap between good and perfect is twenty touches against forty, which nobody will ever measure. The gap between good and none is twenty against a million. Both matter enormously in one direction and not at all in the other, so effort spent chasing perfection is effort not spent on the failure that actually costs something, which is a tree that stops branching altogether.</div>
+  </div>
+
+  <div class="callout good">
+    <div class="ch">Next</div>
+    <p>Depth is the only number that decides a tree speed, and you can now measure it and say what it will cost. <strong>The last lesson is finding them</strong>, which is easier than it sounds, because you have been using half a dozen of them today without once thinking of them as trees.</p>
+  </div>
+__NAV__
+</div>`
+,
+
+"9.5": `<div class="wrap">
+  <div class="les-kicker">Chapter 9 · Lesson 9.5</div>
+  <h1 class="les-title">Where Trees Show Up: Folders, Web Pages, Org Charts, File Systems</h1>
+  <div class="les-meta">
+    <span class="pill">foundational</span><span class="pill">~12 min</span>
+    <span class="pill gold">no code needed</span><span class="pill">9 visuals</span>
+  </div>
+
+  <p class="motto">You have used six trees today. None of them was called a tree, and every one of them charged you by depth.</p>
+
+  <p class="lead">A tree is what you get when one thing owns many things, and depth is the only number that decides its speed. This lesson is recognising them in the wild, which is easier than it sounds and matters more than it sounds, because the moment ownership stops being exclusive none of this chapter applies at all.</p>
+
+  <h2><span class="ix">1</span> The Everyday Situation</h2>
+  <div class="sub">One morning, six trees.</div>
+  <p>You opened a folder. You loaded a page, which is boxes inside boxes. You read a comment thread with replies to replies. You looked at a menu with submenus. You checked who somebody reports to. <strong>Not one of those was presented to you as a tree</strong>, and every one of them is.</p>
+
+  <div class="viz" data-viz='{"type":"scene","title":"Six trees before lunch","width":820,"height":280,"items":[{"icon":"shelf","x":115,"y":124,"kind":"accent","label":"a folder"},{"icon":"doc","x":300,"y":124,"kind":"accent","label":"a page of nested boxes"},{"icon":"phone","x":480,"y":126,"kind":"accent","label":"a menu with submenus"},{"icon":"person","x":660,"y":126,"kind":"accent","label":"a comment thread"},{"icon":"server","x":780,"y":124,"kind":"gold","label":"one rule under all of it"}],"arrows":[{"x1":700,"y1":126,"x2":744,"y2":126,"style":"gold","label":"one owner each"}],"caption":"Nobody labels these as trees and nobody needs to. What they share is the rule from Lesson 9.1: exclusive ownership. And what they share as a consequence is that every one of them charges by depth, which is why the deeply nested one is always the slow one."}'></div>
+
+  <h2><span class="ix">2</span> What It Actually Is</h2>
+  <div class="sub">One test, run on anything.</div>
+  <p>To know whether you are holding a tree, ask two questions and nothing else. <strong>Does everything have exactly one owner? And can anything end up inside itself?</strong> One yes and one no, and you have a tree, with everything in this chapter available.</p>
+
+  <div class="viz" data-viz='{"type":"flow","title":"Is this a tree, and does the chapter apply","maxChars":18,"nodes":[{"id":"s","label":"Something that branches","col":0,"row":1,"kind":"gold"},{"id":"q1","label":"Does everything have exactly one owner?","col":1,"row":1,"kind":"dark","shape":"diamond"},{"id":"n1","label":"No: two owners. That is a graph, Chapter 12","col":2,"row":0,"kind":"bad"},{"id":"q2","label":"Can anything end up inside itself?","col":2,"row":2,"kind":"dark","shape":"diamond"},{"id":"n2","label":"Yes: it loops. Walking never ends, Lesson 4.4","col":3,"row":1,"kind":"bad"},{"id":"y","label":"No: a tree. Depth decides everything","col":3,"row":3,"kind":"accent"}],"edges":[{"from":"s","to":"q1"},{"from":"q1","to":"n1","label":"no"},{"from":"q1","to":"q2","label":"yes","style":"green"},{"from":"q2","to":"n2","label":"yes"},{"from":"q2","to":"y","label":"no","style":"green"}],"caption":"Both no branches are real destinations rather than failures. Two owners is a graph and Chapter 12 has the tools for it. Something containing itself is a loop, which Lesson 4.4 showed makes a walk with no memory run forever, and Lesson 5.4 opened on exactly that as an outage."}'></div>
+
+  <h2><span class="ix">3</span> Watch It Work</h2>
+  <div class="sub">A page, and the depth nobody was measuring.</div>
+  <p>A web page is boxes inside boxes, and every one of them has exactly one parent box. <strong>So it is a tree, and it charges by depth like every other one.</strong> Watch what a browser has to do to reach the text.</p>
+
+  <div class="board" data-anim='{"type":"tree-walk","title":"A page is a tree, and the text sits at the bottom","speed":1700,"unit":78,"countLabel":" levels down","legend":[["where the browser is","look"],["walked through","seen"],["the thing you wanted to read","found"],["not on this path","dead"]],"nodes":[{"id":"a","label":"page","x":2,"d":0},{"id":"b","label":"main","x":1,"d":1},{"id":"c","label":"side","x":3,"d":1},{"id":"d","label":"wrap","x":0,"d":2},{"id":"e","label":"card","x":2,"d":2},{"id":"f","label":"box","x":4,"d":2},{"id":"g","label":"text","x":2,"d":3}],"edges":[{"from":"a","to":"b"},{"from":"a","to":"c"},{"from":"b","to":"d"},{"from":"b","to":"e"},{"from":"c","to":"f"},{"from":"e","to":"g"}],"steps":[{"look":["a"],"count":0,"badge":"the page itself","say":"The whole page is one box, and it owns everything. <b>That is the root</b>, and it is the only thing here that nothing else contains."},{"seen":["a"],"look":["b"],"dead":["c","f"],"count":1,"badge":"one level in","say":"Inside it, a main area and a sidebar. Stepping into one means <b>everything in the other is now irrelevant</b>, which is the branching from Lesson 9.4 being spent."},{"seen":["a","b","e"],"look":["g"],"dead":["c","f","d"],"count":3,"badge":"3 levels to the text","say":"Down through a wrapper and a card, and the sentence you came to read is <b>three levels below the page</b>. Every layout decision anybody makes moves that number."},{"seen":["a","b","e"],"found":["g"],"dead":["c","f","d"],"count":3,"badge":"now: forty levels","say":"<b>Now make it forty.</b> Nothing about the page looks different to a reader, the same sentence is on screen, and every operation touching that text now walks forty levels instead of three."}],"caption":"Designers do not think of nesting as depth and browsers charge for it exactly as this chapter says they must. A page that reads identically can be three levels deep or forty, and the second one is doing more than ten times the walking for every single thing it touches."}'></div>
+
+  <h2><span class="ix">4</span> Under The Hood</h2>
+  <div class="sub">Why deleting a folder deletes everything in it.</div>
+
+  <div class="viz" data-viz='{"type":"seq","title":"Ownership, and what follows from it","actors":[{"label":"You","kind":"gold"},{"label":"A folder","kind":"accent"},{"label":"Everything it owns","kind":"muted"}],"messages":[{"from":0,"to":1,"label":"delete yourself","style":"gold"},{"from":1,"to":2,"label":"then none of you has an owner any more"},{"from":2,"to":1,"label":"and nothing else can reach us, ever"},{"from":1,"to":0,"label":"so we all go together","style":"green"}],"caption":"This is not a policy anybody chose and it is not a convenience. Exclusive ownership means there is exactly one route to anything, so removing an owner removes the only route to everything beneath it. The behaviour people find alarming is the definition doing its job."}'></div>
+
+  <p><strong>Nobody decided that deleting a folder should delete its contents.</strong> Exclusive ownership means one route to everything, so removing an owner removes the only way to reach anything below it, and the alarming behaviour is the definition working correctly.</p>
+
+  <h2><span class="ix">5</span> The Types</h2>
+  <div class="sub">Six systems, and what depth costs in each.</div>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>The system</th><th>What owns what</th><th>What depth costs there</th></tr>
+    <tr><td>A file system</td><td>A folder owns files and folders</td><td>Every operation walks from the top. Lesson 9.1 block 9</td></tr>
+    <tr><td>A web page</td><td>A box owns the boxes inside it</td><td>Layout and styling walk it constantly, per box</td></tr>
+    <tr><td>A comment thread</td><td>A comment owns its replies</td><td>Deep threads are slow to render and hard to read</td></tr>
+    <tr><td>An org chart</td><td>A manager owns their reports</td><td>Approvals travel the depth. Lesson 9.3 nearest-first</td></tr>
+    <tr><td>A menu</td><td>A menu owns its submenus</td><td>Clicks to reach anything equal its depth exactly</td></tr>
+    <tr><td>A trie</td><td>A prefix owns its continuations</td><td>Cost is what you typed. Lesson 6.5 already built it</td></tr>
+  </table>
+  <div class="tbl-cap">The menu row is the one you can feel without any tools. Every level of submenu is one more click for every user, forever, and it is the only design decision in that list where the depth cost is paid by a person rather than a machine.</div></div>
+
+  <h2><span class="ix">6</span> What It Costs, In Plain English</h2>
+  <div class="sub">The same number, in five different currencies.</div>
+  <p>Depth is one number and it gets charged in whatever the system happens to spend. <strong>The arithmetic never changes and the units do.</strong></p>
+
+  <div class="viz" data-viz='{"type":"card","title":"What one extra level costs","eyebrow":"THE SAME NUMBER, DIFFERENT UNITS","badge":"per level","width":560,"rows":[{"k":"A menu","v":"one more click, for every user","tone":"bad","bar":0.6},{"k":"A page","v":"one more box to walk, per element","tone":"bad","bar":0.4},{"k":"A folder tree","v":"one more step on every operation","tone":"bad","bar":0.4},{"k":"A comment thread","v":"one more indent, and less width to read in","tone":"bad","bar":0.3},{"k":"A balanced tree of a million","v":"twice as much data held","tone":"good","bar":0.1}],"caption":"Every bar is a rough weight. The last row is the one that inverts: when branching is being spent, a level is what lets the tree hold twice as much, and Lesson 9.1 derived it as twenty levels for a million. When branching is not being spent, as in the four rows above, a level buys nothing and costs everybody."}'></div>
+
+  <p>That last row is the difference between the two halves of this chapter. <strong>A level in a branching tree doubles what you can hold. A level in a nesting structure holds nothing extra and costs a step</strong>, which is Lesson 9.4 saying that a node with one child eliminates nothing.</p>
+
+  <h2><span class="ix">7</span> Where It Lives In Real Life</h2>
+  <div class="sub">Five places where the ownership turned out not to be exclusive.</div>
+
+  <div class="viz" data-viz='{"type":"kgraph","title":"Where it stops being a tree","unit":178,"nodes":[{"id":"c","label":"Ownership stops being exclusive","x":2,"y":1,"kind":"dark"},{"id":"s","label":"A shortcut pointing at a folder above itself","x":0,"y":0,"kind":"bad"},{"id":"t","label":"A person reporting to two managers","x":0,"y":2,"kind":"bad"},{"id":"d","label":"A document shared into two projects","x":4,"y":0,"kind":"bad"},{"id":"p","label":"A part used inside two other parts","x":4,"y":2,"kind":"bad"},{"id":"g","label":"All of these are graphs, and Chapter 12 has the tools","x":2,"y":3,"kind":"gold"}],"edges":[{"from":"c","to":"s","label":"and it loops"},{"from":"c","to":"t","label":"two owners"},{"from":"c","to":"d","label":"two owners"},{"from":"c","to":"p","label":"two owners"},{"from":"c","to":"g","label":"the honest answer","style":"gold"}],"caption":"Every node here is a real situation and none of them is a mistake in the world. The mistake is only ever in the model. The moment something has two owners, depth is not defined, a walk can arrive twice, and every guarantee in this chapter quietly stops holding."}'></div>
+
+  <h2><span class="ix">8</span> How Problems Show Up</h2>
+  <div class="sub">Six sentences, and half of them are not trees at all.</div>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>What somebody actually says</th><th>The test to run</th><th>What it is really telling you</th></tr>
+    <tr><td>"The menu takes too many clicks"</td><td>Count the levels, not the items</td><td>Depth charged to a person. Flatten it, or nothing improves</td></tr>
+    <tr><td>"The page is slow and there is barely anything on it"</td><td>Count how deep the content sits</td><td>Nesting with no branching. Depth with no elimination</td></tr>
+    <tr><td>"Deleting that removed far more than expected"</td><td>Ask what it owned</td><td>Correct behaviour. One route in, so one route out</td></tr>
+    <tr><td>"The same file appears in two places"</td><td>Ask which one really owns it</td><td>If both do, it is not a tree. Chapter 12</td></tr>
+    <tr><td>"The sync job runs forever on one account"</td><td>Ask whether anything points upwards</td><td>A loop. Lesson 4.4, and a walk with no memory</td></tr>
+    <tr><td>"Two teams both claim this person"</td><td>Ask whether the org chart allows it</td><td>The world is a graph and the model is a tree</td></tr>
+  </table>
+  <div class="tbl-cap">Rows four, five and six are the same discovery three times: somebody modelled the world as a tree and the world declined. That is not a bug to fix inside this chapter, it is a signal to leave it, and knowing when to leave is worth as much as anything in it.</div></div>
+
+  <h2><span class="ix">9</span> Solve It Live</h2>
+  <div class="sub">The sync that never finishes, for one customer.</div>
+  <div class="callout">
+    <div class="ch">The problem, as it arrives</div>
+    <p>"Our backup sync walks a customer folder tree and uploads what it finds. For one customer it never finishes. It does not crash and it does not error, it just runs until we stop it. Their storage is not large. We have restarted it, given it more memory and more time, and it behaves the same way every run."</p>
+  </div>
+
+  <div class="viz" data-viz='{"type":"swim","title":"It never finishes, and nothing is wrong with the files","lanes":[{"label":"The team"},{"label":"You"},{"label":"The sync"}],"steps":[{"id":"a1","lane":0,"col":0,"kind":"gold","label":"Runs forever for one customer. No crash, no error"},{"id":"b1","lane":1,"col":1,"kind":"box","label":"Ask: is that folder structure actually a tree?"},{"id":"c1","lane":2,"col":1,"kind":"bad","label":"A shortcut points at a folder above itself"},{"id":"b2","lane":1,"col":2,"kind":"accent","label":"So ownership is not exclusive, and it loops"},{"id":"c2","lane":2,"col":2,"kind":"bad","label":"The walk keeps finding new paths to the same folders"},{"id":"b3","lane":1,"col":3,"kind":"accent","label":"And it keeps no memory of where it has been"},{"id":"b4","lane":1,"col":4,"kind":"accent","label":"Keep a set of what you have visited. Lesson 8.4"}],"edges":[{"from":"a1","to":"b1"},{"from":"b1","to":"c1"},{"from":"c1","to":"b2"},{"from":"b2","to":"c2"},{"from":"c2","to":"b3"},{"from":"b3","to":"b4"}],"caption":"No crash and no error is the diagnosis. A walk that runs forever without failing is not stuck on a large amount of work, it is going round, and it will keep going round for as long as anybody lets it because nothing about a loop looks different from the inside."}'></div>
+
+  <p><strong>It never finishes because it is not walking a tree.</strong> A shortcut points at a folder above itself, so ownership stopped being exclusive and the structure loops. Lesson 4.4 showed exactly this: a walk that keeps no memory of where it has been cannot notice it has come round, and Lesson 8.4 showed the fix costs one question per folder.</p>
+
+  <div class="callout good">
+    <div class="ch">Why this reasoning wins</div>
+    <p>It questioned the shape rather than the size. <strong>More memory and more time both assume the work is large and finite</strong>, and this work is neither. The tell was that it never errored: a job hitting a real limit fails, and a job going round in a circle looks perfectly healthy from the inside, forever.</p>
+  </div>
+
+  <h2><span class="ix">10</span> Your Turn</h2>
+  <div class="callout accent">
+    <div class="ch">Your rep, one product you use daily</div>
+    <p>Pick any app with a menu. <strong>First:</strong> count the clicks to reach the setting you change most often. That number is its depth, and somebody chose it. <strong>Second:</strong> look at how many options sit at each level. If a level has one option, it is a level that eliminates nothing and costs a click, which is Lesson 9.4 on a screen. <strong>Third:</strong> find something in that app that belongs to two places at once, a file in two albums or a task in two lists, and ask yourself whether the app treats one as the real owner. The answer will tell you whether they modelled a tree or a graph.</p>
+  </div>
+
+  <h2><span class="ix gold">✓</span> Check Yourself</h2>
+
+  <div class="quiz" data-correct="2">
+    <div class="q">A sync job walks one customer's folders and never finishes, without crashing or erroring, on a small amount of storage. What is happening?</div>
+    <div class="opt" data-i="0">The storage is larger than reported and the job is still working through it</div>
+    <div class="opt" data-i="1">The job has run out of memory silently and is retrying</div>
+    <div class="opt" data-i="2">A shortcut points at a folder above itself, so ownership is not exclusive, the structure loops, and a walk with no memory can never notice</div>
+    <div class="qexp">Never finishing without ever failing is the diagnosis. A job hitting a real limit errors; a job going round a loop looks healthy from the inside forever. Lesson 4.4 showed that a walk keeping no memory of where it has been cannot detect that it has come round, and Lesson 8.4 showed the fix is one question per folder against a set of what has already been visited.</div>
+  </div>
+
+  <div class="quiz" data-correct="1">
+    <div class="q">A page has forty levels of nesting and very little content, and it is slow. Why does the depth matter when the content is small?</div>
+    <div class="opt" data-i="0">Deeper pages use proportionally more memory per element</div>
+    <div class="opt" data-i="1">Layout and styling walk from the top for every element, so each one pays the depth, and nesting with one child per level eliminates nothing on the way</div>
+    <div class="opt" data-i="2">Browsers limit nesting depth and slow down as the limit approaches</div>
+    <div class="qexp">A page is a tree by the definition in Lesson 9.1: every box sits inside exactly one box. So it charges by depth like every other tree in this chapter, and the amount of content never enters the cost. Worse, wrappers that contain one thing each are Lesson 9.4's node with one child: a step that eliminates nothing, so the depth is being paid without any of the branching that normally makes depth worth having.</div>
+  </div>
+
+  <div class="callout good">
+    <div class="ch">Next</div>
+    <p>A tree is what you get when one thing owns many things, and depth is the only number that decides its speed. <strong>The whiteboard now runs the whole chapter end to end:</strong> one shape, four reading orders, the branching being spent and then not spent, and the moment a tree turns out not to be one.</p>
   </div>
 __NAV__
 </div>`
