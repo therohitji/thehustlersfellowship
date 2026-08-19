@@ -40,6 +40,8 @@
   <div class="sub">A definition you can hold in one hand.</div>
   <p>A search takes a collection of things and one question, and returns either a position or an honest <em class="k">not here</em>. That is the whole contract. Everything else is the method you choose in the middle.</p>
 
+  <p>And one of those methods is already paid for. <strong>Chapter 3 sold you a landing you have not spent yet:</strong> a row lets you reach box 500,000 out of a million in one look, without walking to it, and Lesson 3.1 labelled that clause <em class="k">the loan Chapter 6 cashes</em>. This is where it gets cashed. Halving a haystack is only possible because somebody can land in the middle of it.</p>
+
   <div class="viz" data-viz='{
     "type":"arch","title":"The shape of every search, without exception","maxChars":17,
     "nodes":[
@@ -65,31 +67,7 @@
   <div class="sub">The same target, hunted two ways, side by side.</div>
   <p>Below, both rows hold the same twelve numbers. The top row is the messy drawer, so it must be checked one box at a time. The bottom row was sorted first, so it can throw away half the shelf with every look. Press play and watch the counters, not the boxes.</p>
 
-  <div class="board" data-anim='{
-    "type":"race","title":"Messy drawer versus labelled shelf: find 41","speed":1250,
-    "legend":[["checking now","look"],["ruled out","dead"],["found it","found"],["still possible","range"]],
-    "tracks":[
-      {"label":"Messy drawer","data":[31,7,55,19,63,12,41,24,88,5,70,36]},
-      {"label":"Labelled shelf","data":[5,7,12,19,24,31,36,41,55,63,70,88]}
-    ],
-    "steps":[
-      {"say":"Both start now. The drawer opens at the far left. The shelf opens in the <b>middle</b>, because the middle is the only place worth looking when things are in order.",
-       "lanes":[{"look":[0],"count":1},{"look":[5],"range":[0,11],"count":1}]},
-      {"say":"Drawer: 7 is not 41, move along. Shelf: the middle held 31, and 41 is bigger, so the entire left half is gone. <b>Six boxes eliminated by one look.</b>",
-       "lanes":[{"look":[1],"dead":[0],"count":2},{"look":[8],"range":[6,11],"count":2}]},
-      {"say":"Drawer: 55, no. Shelf: the middle of what is left held 55, and 41 is smaller, so the right end is gone too. Two boxes remain.",
-       "lanes":[{"look":[2],"dead":[0,1],"count":3},{"look":[6],"range":[6,7],"count":3}]},
-      {"say":"Drawer: 19, no. Shelf: <b>found 41 in four looks.</b> It is already finished while the drawer is still on its fourth box.",
-       "lanes":[{"look":[3],"dead":[0,1,2],"count":4},{"found":[7],"range":[6,7],"count":4}]},
-      {"say":"The shelf is done and resting. The drawer keeps going, because it has no reason to stop and no way to skip.",
-       "lanes":[{"look":[4],"dead":[0,1,2,3],"count":5},{"found":[7],"range":[6,7],"count":4}]},
-      {"say":"Drawer: 12, no. Still no shortcut available, because nothing about the drawer tells it where 41 might be.",
-       "lanes":[{"look":[5],"dead":[0,1,2,3,4],"count":6},{"found":[7],"range":[6,7],"count":4}]},
-      {"say":"Drawer: <b>found 41 on the seventh look.</b> Seven against four on twelve items. Now imagine twelve million items, and the gap stops being cute.",
-       "lanes":[{"found":[6],"dead":[0,1,2,3,4,5],"count":7},{"found":[7],"range":[6,7],"count":4}]}
-    ],
-    "caption":"Twelve items is a small enough sample that the drawer still looks fine. That is exactly the trap. The gap between these two rows does not add up as data grows, it multiplies."
-  }'></div>
+  <div class="board" data-anim='{"type":"race","title":"Messy drawer versus labelled shelf: find 41","speed":1250,"legend":[["checking now","look"],["ruled out","dead"],["found it","found"],["still possible","range"]],"tracks":[{"label":"Messy drawer","data":[58,13,72,29,6,90,34,17,41,25,80,49]},{"label":"Labelled shelf","data":[6,13,17,25,29,34,41,49,58,72,80,90]}],"steps":[{"lanes":[{"look":[0],"count":1},{"look":[5],"range":[0,11],"count":1}],"say":"Both start now. The drawer opens at the far left. The shelf opens in the <b>middle</b>, because the middle is the only place worth looking when things are in order."},{"lanes":[{"dead":[0],"look":[1],"count":2},{"look":[8],"range":[6,11],"count":2}],"say":"Drawer: 13 is not 41, move along. Shelf: the middle held 34, and <b>34 is smaller than 41, so the entire left half is gone. Six boxes gone in one look.</b>"},{"lanes":[{"dead":[0,1],"look":[2],"count":3},{"look":[6],"range":[6,7],"count":3}],"say":"Drawer: 72, no. Shelf: the middle of what is left held 58, and 41 is smaller, so the right end goes too. Two boxes left, and the middle of two is the first one."},{"lanes":[{"dead":[0,1,2],"look":[3],"count":4},{"found":[6],"range":[6,7],"count":3}],"say":"Drawer: 29, no. Shelf: <b>found 41 in three looks.</b> It is already finished while the drawer is still on its fourth box."},{"lanes":[{"dead":[0,1,2,3],"look":[4],"count":5},{"found":[6],"count":3}],"say":"Drawer: 6, no. Still no shortcut available, because nothing about the drawer tells it where 41 might be."},{"lanes":[{"dead":[0,1,2,3,4],"look":[5],"count":6},{"found":[6],"count":3}],"say":"Drawer: 90, no. Still no shortcut available, because nothing about the drawer tells it where 41 might be."},{"lanes":[{"dead":[0,1,2,3,4,5],"look":[6],"count":7},{"found":[6],"count":3}],"say":"Drawer: 34, no. Still no shortcut available, because nothing about the drawer tells it where 41 might be."},{"lanes":[{"dead":[0,1,2,3,4,5,6],"look":[7],"count":8},{"found":[6],"count":3}],"say":"Drawer: 17, no. Still no shortcut available, because nothing about the drawer tells it where 41 might be."},{"lanes":[{"dead":[0,1,2,3,4,5,6,7],"found":[8],"count":9},{"found":[6],"count":3}],"say":"Drawer: <b>found 41 on the ninth look. Nine against three on twelve items.</b> Now imagine twelve million, and the gap stops being cute."}],"caption":"Twelve items is a small enough sample that the drawer still looks fine, and that is exactly the trap. These are the same twelve numbers you watched race in Lesson 0.3, which promised this chapter would explain why the sorted row was allowed to skip. The gap between the two rows does not add up as data grows, it multiplies."}'></div>
 
   <div class="callout">
     <div class="ch">What actually happened</div>
@@ -127,17 +105,17 @@
     <tr><th>Method</th><th>What it needs from you first</th><th>Looks needed for a million items</th></tr>
     <tr><td><strong>Linear scan</strong></td><td>Nothing at all</td><td>up to 1,000,000</td></tr>
     <tr><td><strong>Binary search</strong></td><td>Sorted, and instant jump to any position</td><td>20</td></tr>
-    <tr><td><strong>Tree search</strong></td><td>Order kept as a shape, maintained on every write</td><td>about 20</td></tr>
-    <tr><td><strong>Hash lookup</strong></td><td>Spare memory, and exact keys only</td><td>1</td></tr>
-    <tr><td><strong>Vector search</strong></td><td>Meaning turned into coordinates, and a tolerance for approximate answers</td><td>a few hundred, not a million</td></tr>
+    <tr><td><strong>Tree search</strong></td><td>Order kept as a shape, maintained on every write. Chapter 9 builds it, and Lesson 10.5 the index version</td><td>about 20</td></tr>
+    <tr><td><strong>Hash lookup</strong></td><td>Spare memory, and exact keys only. Chapter 8 builds it</td><td>1</td></tr>
+    <tr><td><strong>Vector search</strong></td><td>Meaning turned into coordinates, and a tolerance for approximate answers. Lesson 6.6 explains it, Lesson 17.6 builds the index</td><td>a few hundred, not a million</td></tr>
   </table>
   <div class="tbl-cap">Read the middle column, not the right one. The right column is the reward; the middle column is the price, and you always pay it before you collect.</div></div>
 
   <div class="viz" data-viz='{"type":"dtree","title":"Which methods are you even allowed to use","maxChars":19,"gx":50,"nodes":[{"id":"q1","label":"Matching an exact value, or matching meaning?","col":0,"row":2,"kind":"gold","shape":"diamond"},{"id":"hash","label":"Hash lookup. One step. Chapter 8 builds it","col":1,"row":0,"kind":"accent"},{"id":"q2","label":"Is it kept in order?","col":1,"row":2,"kind":"gold","shape":"diamond"},{"id":"vec","label":"Vector search over meaning. Lesson 6.6","col":1,"row":4,"kind":"gold"},{"id":"lin","label":"Linear scan. Nothing was kept, so nothing can be skipped","col":2,"row":1,"kind":"muted"},{"id":"q3","label":"Can you jump straight to any position?","col":2,"row":3,"kind":"gold","shape":"diamond"},{"id":"walk","label":"Walk a tree. Chapter 9, and Lesson 10.5 for an index","col":3,"row":2,"kind":"accent"},{"id":"bin","label":"Binary search, or an index built on it","col":3,"row":4,"kind":"accent"}],"edges":[{"from":"q1","to":"hash","label":"exact, spare memory","style":"green"},{"from":"q1","to":"q2","label":"exact"},{"from":"q1","to":"vec","label":"meaning"},{"from":"q2","to":"lin","label":"no"},{"from":"q2","to":"q3","label":"yes","style":"green"},{"from":"q3","to":"walk","label":"no"},{"from":"q3","to":"bin","label":"yes","style":"green"}],"caption":"Three questions, five destinations, and Lesson 6.8 builds this map again once you have met every branch. You are not picking a favourite algorithm here, you are finding out which ones your data has already ruled out for you. Note where a chain is not: order does not help a chain, because Lesson 4.1 priced reaching a position on one at a walk from the head."}'></div>
 
   <h2><span class="ix">6</span> What It Costs, In Plain English</h2>
-  <div class="sub">Forget the notation for sixty seconds and just count.</div>
-  <p>Put a hundred items in front of a linear scan and it may look a hundred times. Double the data to two hundred and it looks two hundred times. The work grows exactly as fast as the pile does. Now do the same to binary search: a hundred items costs about seven looks, two hundred costs eight. <strong>Doubling the data adds one single look.</strong> That is not a small improvement, it is a different category of thing.</p>
+  <div class="sub">You already have the two meters from Chapter 2. This is the first time the reading depends on somebody else having done work earlier.</div>
+  <p>Put a hundred items in front of a linear scan and it may look a hundred times. Double the data to two hundred and it looks two hundred times. The work grows exactly as fast as the pile does. Now do the same to binary search: a hundred items costs about seven looks, two hundred costs eight. <strong>Doubling the data adds one single look.</strong> That is not a small improvement, it is a different category of thing. You have just felt the two shapes Lesson 2.2 named: the scan is <em class="g">O(n)</em> and the halving is <em class="g">O(log n)</em>, and every method in this chapter is one of those two wearing a different coat.</p>
 
   <div class="viz" data-viz='{
     "type":"curve","title":"How the work grows as the pile grows","width":540,"height":250,
@@ -259,7 +237,7 @@
 
   <div class="callout good">
     <div class="ch">Next</div>
-    <p>You now have the one question. Next we go inside the honest, patient method that needs no order at all, and find out exactly where it stops being acceptable.</p>
+    <p>Search is the price you pay for order you did not keep, and you now have the question that prices it. Next we go inside the honest, patient method that keeps no order at all, and find out exactly where it stops being acceptable.</p>
   </div>
 __NAV__
 </div>`,
