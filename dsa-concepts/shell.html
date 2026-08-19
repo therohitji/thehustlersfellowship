@@ -1117,8 +1117,12 @@ ANIM['array-scan'] = function(spec){
   /* the position labels belong to the POSITIONS, so they run the whole width of the table and
      stay put while values move over them */
   for (let i = 0; i < cap; i++){
-    s += labelAt(i * (cellW + gap) + cellW/2, top + cellH + 12,
-                 (spec.labels && spec.labels[i] != null) ? spec.labels[i] : i, 9.5, CLR.mute, 'middle', 600);
+    /* the label belongs to a POSITION, so it appears and disappears with that position: a
+       number floating under nothing is what a hidden slot looked like before this */
+    s += '<g class="ixl" data-i="' + i + '" opacity="0" style="transition:opacity .3s">' +
+      labelAt(i * (cellW + gap) + cellW/2, top + cellH + 12,
+              (spec.labels && spec.labels[i] != null) ? spec.labels[i] : i, 9.5, CLR.mute, 'middle', 600) +
+      '</g>';
   }
   if (ptrH){
     /* the four pointer slots can be renamed per board. A queue wants front and back, a stack
@@ -1151,8 +1155,13 @@ ANIM['array-scan'] = function(spec){
            States still address a cell by its ORIGINAL index, which is what lets you follow one
            value across a whole sort. */
         if (step.order){
+          /* order is the COMPLETE arrangement, not a partial one. A cell the order does not
+             mention is not on the table in this frame, so it is hidden rather than left sitting
+             at its own array index. Leaving it parked was how five hash boards opened on an
+             "empty" table with four names already drawn in boxes 0 to 3. */
           const slot = step.order.indexOf(i);
-          g.setAttribute('transform', 'translate(' + (slot > -1 ? (slot - i) * (cellW + gap) : 0) + ',0)');
+          if (slot < 0){ g.setAttribute('opacity', '0'); return; }
+          g.setAttribute('transform', 'translate(' + ((slot - i) * (cellW + gap)) + ',0)');
           return;
         }
         /* the shuffle: everything from index shift.from moves right by shift.by places */
@@ -1163,11 +1172,17 @@ ANIM['array-scan'] = function(spec){
       root.querySelectorAll('.slot').forEach(function(g){
         g.setAttribute('opacity', step.capacity && +g.dataset.i < step.capacity ? '1' : '0');
       });
+      root.querySelectorAll('.ixl').forEach(function(g){
+        g.setAttribute('opacity', !step.capacity || +g.dataset.i < step.capacity ? '1' : '0');
+      });
       /* two pointers on the same box would print on top of each other, so they fan out */
       const at = {};
       ['lo','mid','hi','i'].forEach(function(p){
         const v = step.ptr ? step.ptr[p] : null;
-        if (v == null || v < 0 || v >= data.length) return;
+        /* cap, not data.length: on a table with spare capacity the interesting position is
+           very often an EMPTY one (the box a key computed to, the box it settled in), and
+           bounding by data.length silently dropped every pointer past the last value. */
+        if (v == null || v < 0 || v >= cap) return;
         (at[v] = at[v] || []).push(p);
       });
       const nudge = {};
@@ -1177,7 +1192,7 @@ ANIM['array-scan'] = function(spec){
       });
       root.querySelectorAll('.ptr').forEach(function(g){
         const p = g.dataset.p, v = step.ptr ? step.ptr[p] : null;
-        if (v == null || v < 0 || v >= data.length){ g.setAttribute('opacity', '0'); return; }
+        if (v == null || v < 0 || v >= cap){ g.setAttribute('opacity', '0'); return; }
         g.setAttribute('opacity', '1');
         g.setAttribute('transform', 'translate(' + (v * (cellW + gap) + cellW/2 + (nudge[p] || 0)) + ',0)');
       });

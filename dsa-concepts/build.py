@@ -41,6 +41,7 @@ LESSONS_BODY = ",\n\n".join(lesson_blocks)
 
 # ---------- validate every visual payload ----------
 KINDS = {'box', 'accent', 'dark', 'gold', 'warn', 'bad', 'muted'}
+STATES = {'look', 'found', 'seen', 'bad', 'dead', 'range'}
 
 def walk_kinds(o):
     """every 'kind' value anywhere in a payload, at any depth"""
@@ -72,6 +73,7 @@ def check_payloads(blob):
                 n_anim += len(acts)
                 continue
             t = spec.get('type')
+            acts = []
             if t not in types:
                 sys.exit("BUILD FAILED: unknown %s type %r (allowed: %s)" % (kind, t, ", ".join(sorted(types))))
             if kind == 'anim' and not spec.get('steps'):
@@ -80,6 +82,49 @@ def check_payloads(blob):
             # the renderer throws on it, which surfaces far downstream as "cannot read fill".
             # A race step carries one lanes entry per track. Too few silently drops a track's
             # state for that frame; too many is a typo that renders as nothing. Neither errors.
+            # A legend row promises the reader a colour they will see. When no step ever
+            # paints that state the row is a lie the harness could not previously see: it
+            # cost 8.4 an "already seen" colour that never appeared and cost 8.6 Act 5 the
+            # one state the act is named after.
+            for a in ([spec] if kind != 'reel' else acts):
+                leg = a.get('legend')
+                if not leg: continue
+                steps = a.get('steps') or []
+                # a race hides its states one level down, inside per-track lanes
+                frames = [fr for st in steps for fr in ([st] + list(st.get('lanes') or []))]
+                painted = {k for fr in frames for k, v in fr.items() if k in STATES and v}
+                promised = {row[1] for row in leg if isinstance(row, (list, tuple)) and len(row) > 1}
+                if 'range' in painted: painted.add('dead')   # outside a range renders dead
+                unpainted = sorted(promised - painted - {'idle'})
+                if unpainted:
+                    sys.exit("BUILD FAILED: %s %r legend promises %s but no step paints %s"
+                             % (kind, a.get('title', t), ", ".join(repr(u) for u in unpainted),
+                                "it" if len(unpainted) == 1 else "them"))
+            # order is the complete arrangement of what is on the table. A stale index, a
+            # duplicate, or an entry past the end of the data all render as a silently
+            # missing or doubled cell rather than an error.
+            for a in ([spec] if kind != 'reel' else acts):
+                if a.get('type') != 'array-scan': continue
+                n = len(a.get('data') or spec.get('data') or [])
+                for si, st in enumerate(a.get('steps') or []):
+                    o = st.get('order')
+                    if o is None: continue
+                    real = [x for x in o if x is not None]
+                    if any(not isinstance(x, int) or x < 0 or x >= n for x in real):
+                        sys.exit("BUILD FAILED: %s %r step %d order has an index outside 0..%d"
+                                 % (kind, a.get('title', t), si + 1, n - 1))
+                    if len(set(real)) != len(real):
+                        sys.exit("BUILD FAILED: %s %r step %d order lists a cell twice"
+                                 % (kind, a.get('title', t), si + 1))
+                # The board draws max(len(data), spec.capacity) slots ONCE, at build time. A
+                # step asking for more than that renders its overflow outside the frame, which
+                # is how Act 7 drew a name into a sixteenth box on a board eight boxes wide.
+                cap = max(n, a.get('capacity') or n)
+                for si, st in enumerate(a.get('steps') or []):
+                    want = max(st.get('capacity') or 0, len(st.get('order') or []))
+                    if want > cap:
+                        sys.exit("BUILD FAILED: %s %r step %d needs %d slots, board draws %d"
+                                 % (kind, a.get('title', t), si + 1, want, cap))
             if spec.get('type') == 'race':
                 n_tracks = len(spec.get('tracks') or [])
                 for si, st in enumerate(spec.get('steps') or []):
