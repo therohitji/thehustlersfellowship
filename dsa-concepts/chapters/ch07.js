@@ -397,3 +397,133 @@ __NAV__
   </div>
 __NAV__
 </div>`
+,
+
+"7.4": `<div class="wrap">
+  <div class="les-kicker">Chapter 7 · Lesson 7.4</div>
+  <h1 class="les-title">Quick Sort: Pick a Pivot and Partition</h1>
+  <div class="les-meta">
+    <span class="pill">foundational</span><span class="pill">~13 min</span>
+    <span class="pill gold">no code needed</span><span class="pill">9 visuals</span>
+  </div>
+
+  <p class="motto">Everything good and everything catastrophic about this method follows from one decision made before a single comparison happens.</p>
+
+  <p class="lead">Merge sort is predictable, stable, and needs room for a second copy. This one is usually faster, needs almost no extra room, and can collapse to the cost of bubble sort on the most ordinary input there is. By the end you can say exactly which decision causes that, and why the data most likely to break it is the data you are most likely to have.</p>
+
+  <h2><span class="ix">1</span> The Everyday Situation</h2>
+  <div class="sub">Two piles before you sort either of them.</div>
+  <p>A hundred exam papers to put in mark order. Nobody starts by finding the highest mark. <strong>You pick a number, say fifty, and throw every paper into one of two piles</strong>: below fifty, above fifty. Neither pile is sorted. But you now have two problems half the size, and you never have to compare anything in the left pile against anything in the right one again.</p>
+
+  <div class="viz" data-viz='{"type":"scene","title":"One number, two piles, and a problem cut in half","width":820,"height":280,"items":[{"icon":"pile","x":130,"y":128,"kind":"muted","label":"a hundred papers, no order"},{"icon":"person","x":340,"y":126,"kind":"gold","label":"pick a number: fifty"},{"icon":"pile","x":560,"y":128,"kind":"accent","label":"below fifty"},{"icon":"pile","x":730,"y":128,"kind":"accent","label":"above fifty"}],"arrows":[{"x1":200,"y1":128,"x2":286,"y2":128,"style":"gold","label":"one pass"},{"x1":400,"y1":126,"x2":500,"y2":126,"style":"green","label":"nothing is sorted yet"}],"caption":"Neither pile is in order and the job is not finished, but something permanent has happened: no paper on the left will ever be compared with a paper on the right again. That single guarantee is the whole method, and it was bought with one pass and one number."}'></div>
+
+  <p><strong>Neither pile is sorted and something permanent has still happened.</strong> The left and the right will never need to be compared with each other again, ever, and that guarantee cost one pass.</p>
+
+  <h2><span class="ix">2</span> What It Actually Is</h2>
+  <div class="sub">One comparison buys a side, not a place.</div>
+  <p>Lesson 7.3 had one comparison place one item permanently. This is weaker and cheaper: <strong>one comparison puts an item on the correct side of one number.</strong> That is much less information, and it turns out to be enough, because you then do it again inside each side.</p>
+
+  <div class="viz" data-viz='{"type":"arch","title":"What a partition settles, and what it leaves open","maxChars":18,"nodes":[{"id":"p","label":"Pick one value, call it the pivot","col":0,"row":1,"kind":"gold"},{"id":"s","label":"Every item goes left of it or right of it","col":1,"row":1,"kind":"accent"},{"id":"a","label":"Settled forever: which side each item is on","col":2,"row":0,"kind":"accent"},{"id":"b","label":"Settled forever: the pivot is now in its final place","col":2,"row":1,"kind":"accent"},{"id":"c","label":"Not settled at all: the order inside each side","col":2,"row":2,"kind":"gold"},{"id":"d","label":"So do the same thing again, inside each side","col":3,"row":2,"kind":"dark"}],"edges":[{"from":"p","to":"s","label":"one pass"},{"from":"s","to":"a","style":"green"},{"from":"s","to":"b","style":"green"},{"from":"s","to":"c"},{"from":"c","to":"d","label":"repeat","style":"green"}],"caption":"The second node on the right is the one people miss. After a single pass the pivot is not merely on the correct side of things, it is in the exact position it will occupy in the finished row, and it will never move again. Every pass permanently places at least one item and halves what remains."}'></div>
+
+  <h2><span class="ix">3</span> Watch It Work</h2>
+  <div class="sub">One pass, one number, and one value that is finished forever.</div>
+  <p>The same eight numbers from Lesson 7.2. The pivot is <strong>5</strong>. Watch where 5 ends up, and then check it against the finished row.</p>
+
+  <div class="board" data-anim='{"type":"array-scan","title":"One partition around 5","speed":1600,"big":true,"data":[7,2,9,4,1,5,8,3],"countLabel":" comparisons","pointerLabels":{"mid":"pivot"},"legend":[["being compared with the pivot","look"],["the pivot, now in its final place","found"],["smaller: goes left","seen"],["bigger: goes right","range"]],"steps":[{"order":[0,1,2,3,4,5,6,7],"look":[5],"ptr":{"mid":5},"count":0,"say":"Eight numbers, no order. <b>Pick one value and call it the pivot.</b> Here it is the 5, and nothing about choosing it required a comparison."},{"order":[0,1,2,3,4,5,6,7],"look":[0,1],"ptr":{"mid":5},"count":2,"say":"Walk the row and ask one question of each item: <b>are you smaller than 5?</b> 7 is not. 2 is. That is the only question anybody asks in this whole pass."},{"order":[1,3,0,2,4,5,6,7],"seen":[1,3],"look":[4,7],"ptr":{"mid":5},"count":5,"say":"The smaller ones start gathering on the left. Note what has NOT happened: <b>2 and 4 are on the correct side and in no particular order.</b> One comparison bought a side, not a place."},{"order":[1,3,4,7,5,0,2,6],"seen":[1,3,4,7],"found":[5],"range":[5,7],"count":7,"say":"Seven comparisons, and the pass is done. Left of the pivot: 2, 4, 1, 3. Right of it: 7, 9, 8. <b>Neither side is sorted.</b>"},{"order":[1,3,4,7,5,0,2,6],"found":[5],"seen":[1,3,4,7],"range":[5,7],"count":7,"badge":"5 is finished forever","say":"But look where the 5 is. In the finished row, 1 2 3 4 5 7 8 9, the 5 sits at exactly this position. <b>It was placed permanently by one pass, and it will never be examined again.</b>"}],"caption":"Seven comparisons placed one value forever and split the rest into two groups that never need to be compared with each other. Do the same thing inside each group and the whole row is sorted, having never compared a left-hand item with a right-hand one."}'></div>
+
+  <h2><span class="ix">4</span> Under The Hood</h2>
+  <div class="sub">The decision that decides everything.</div>
+  <p>The method has one free choice: <strong>which value to use as the pivot.</strong> That choice is made before any comparison, it costs nothing, and it is the difference between the fastest sort in this chapter and the slowest.</p>
+
+  <div class="viz" data-viz='{"type":"seq","title":"The same method, two pivots, on data that is already sorted","actors":[{"label":"Pivot: the last item","kind":"bad"},{"label":"An already sorted row","kind":"muted"},{"label":"Pivot: the middle item","kind":"accent"}],"messages":[{"from":0,"to":1,"label":"I choose the largest value, because it is at the end"},{"from":1,"to":0,"label":"then everything goes left and nothing goes right"},{"from":0,"to":1,"label":"so I shrink by one item instead of half"},{"from":2,"to":1,"label":"I choose the middle value","style":"green"},{"from":1,"to":2,"label":"then half go left and half go right","style":"green"}],"caption":"On sorted data the last item is always the largest, so partitioning around it produces one pile with everything in it and one empty pile. The problem shrinks by one instead of halving, and a method that should take twenty layers takes a million. Nothing about the code changed."}'></div>
+
+  <p>That is the trap, and it is worse than it looks. <strong>The data most likely to break it is data that is already in order</strong>, which is the most common real input there is: yesterday's export, a file already grouped by date, a list somebody sorted an hour ago.</p>
+
+  <h2><span class="ix">5</span> The Types</h2>
+  <div class="sub">Four pivot choices, and what each is really betting on.</div>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>How the pivot is chosen</th><th>What it bets</th><th>When the bet loses</th></tr>
+    <tr><td>The first or last item</td><td>That the data is in no particular order</td><td>On sorted or reversed data, which is extremely common</td></tr>
+    <tr><td>The middle item</td><td>The same bet, moved</td><td>Rarely in practice, but a crafted input can still defeat it</td></tr>
+    <tr><td>The middle of first, middle and last</td><td>That three samples beat one</td><td>Almost never by accident. This is what most real sorts do</td></tr>
+    <tr><td>A randomly chosen item</td><td>Nothing at all. It refuses to bet</td><td>Never systematically, though any single run can be unlucky</td></tr>
+  </table>
+  <div class="tbl-cap">Only the first row is genuinely dangerous, and it is the one people write when implementing this from memory. The bottom two rows are why the method survives in production despite having a worst case as bad as bubble sort.</div></div>
+
+  <h2><span class="ix">6</span> What It Costs, In Plain English</h2>
+  <div class="sub">The same eight numbers, and a thirty six times difference at scale.</div>
+  <p>On the eight numbers from Lesson 7.2, in random order, taking the last item as pivot: <strong>14 comparisons.</strong> Merge sort needed about 24 on the same data and the simple sorts needed 28. So it earns its name.</p>
+  <p>Now feed the identical method data that is <strong>already sorted</strong>, still taking the last item: <strong>28 comparisons</strong>, which is exactly what bubble sort costs. Change one thing, the pivot, to the middle item: <strong>13.</strong></p>
+
+  <div class="viz" data-viz='{"type":"card","title":"One decision, made before any comparison","eyebrow":"A THOUSAND ITEMS","badge":"same method","width":560,"rows":[{"k":"Good pivots: about 1.39 layers times size","v":"about 13,900","tone":"good","bar":0.028},{"k":"Merge sort, for reference","v":"about 10,000","tone":"good","bar":0.02},{"k":"Bad pivots on sorted data","v":"about 499,500","tone":"bad","bar":1},{"k":"So the gap from one decision is","v":"about 36 times","tone":"bad","bar":1},{"k":"And the extra memory it needs","v":"almost none","tone":"good","bar":0.002}],"caption":"Every bar is drawn against a maximum of 499,500. Row one is slightly worse than merge sort on paper and usually faster in practice, because it moves items less and works inside the row it was given. Row five is the reason it is chosen anyway, and row three is the reason it must be chosen carefully."}'></div>
+
+  <p>In the Chapter 2 currency this is <em class="g">O(n log n)</em> on average and <em class="g">O(n squared)</em> at worst, and it is the only method in this chapter where those two are different. <strong>Merge sort has no bad days and no good ones.</strong> This one has both, and which you get is decided before it starts.</p>
+
+  <h2><span class="ix">7</span> Where It Lives In Real Life</h2>
+  <div class="sub">Five places, and one very old lesson learned the hard way.</div>
+
+  <div class="viz" data-viz='{"type":"kgraph","title":"Partitioning, and the guard that comes with it","unit":178,"nodes":[{"id":"c","label":"Split around a value, then repeat inside each side","x":2,"y":1,"kind":"dark"},{"id":"l","label":"The default sort in many language libraries, with guards","x":0,"y":0,"kind":"accent"},{"id":"k","label":"Finding the tenth largest without sorting anything else","x":0,"y":2,"kind":"gold"},{"id":"d","label":"Splitting work across machines by a range of keys","x":4,"y":0,"kind":"accent"},{"id":"g","label":"And the guard: watch the depth, switch method if it goes wrong","x":4,"y":2,"kind":"bad"},{"id":"s","label":"Stop splitting below about twenty and finish with insertion. Lesson 7.2","x":2,"y":3,"kind":"gold"}],"edges":[{"from":"c","to":"l","label":"with a chosen pivot","style":"green"},{"from":"c","to":"k","label":"only recurse one side","style":"gold"},{"from":"c","to":"d","label":"each machine gets a range"},{"from":"c","to":"g","label":"because the worst case is real"},{"from":"c","to":"s","label":"small pieces","style":"gold"}],"caption":"The gold node on the left is the trick worth stealing. If you only want the tenth largest item you do not need the row sorted: partition, see which side the tenth position falls in, and throw the other side away entirely. Lesson 7.5 has a different answer to the same question."}'></div>
+
+  <p>The bottom node is where this chapter starts converging. <strong>Real sorts stop splitting when a piece gets small</strong> and finish it with insertion sort from Lesson 7.2, because below about twenty items the simple method genuinely wins.</p>
+
+  <h2><span class="ix">8</span> How Problems Show Up</h2>
+  <div class="sub">Six sentences, and most of them are about the shape of the input.</div>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>What somebody actually says</th><th>The test to run</th><th>What it is really telling you</th></tr>
+    <tr><td>"It is fast on live data and hangs on the nightly file"</td><td>Ask whether the nightly file arrives already sorted</td><td>Sorted input plus an end pivot is the worst case, exactly</td></tr>
+    <tr><td>"It got slow after we started pre-sorting the input"</td><td>The same question, with the cause admitted</td><td>Somebody helpfully handed it the one input that defeats it</td></tr>
+    <tr><td>"Usually instant, occasionally takes minutes"</td><td>Capture the input on a slow run</td><td>Pivot luck. A random pivot removes the pattern</td></tr>
+    <tr><td>"It crashed with a depth error on one file"</td><td>Ask how deep the splitting went</td><td>Shrinking by one instead of halving. Lesson 5.1 priced that ceiling</td></tr>
+    <tr><td>"We only need the top ten and it sorts everything"</td><td>Ask whether the other side is ever read</td><td>Partition once, keep one side, discard the rest untouched</td></tr>
+    <tr><td>"Equal rows come back in a different order every time"</td><td>Compare two runs on identical input</td><td>This method is not stable. Lesson 7.6 shows what that breaks</td></tr>
+  </table>
+  <div class="tbl-cap">Rows one and two are the same fault with and without a confession, and they are the most common production failure of this method. Row four is Chapter 5 arriving in a sorting lesson: splitting that shrinks by one instead of halving goes a million levels deep, and that ceiling was fixed before the program ran.</div></div>
+
+  <h2><span class="ix">9</span> Solve It Live</h2>
+  <div class="sub">Somebody helped, and the job stopped finishing.</div>
+  <div class="callout">
+    <div class="ch">The problem, as it arrives</div>
+    <p>"Our import has run fine for three years. Last month the upstream team started sending us the file already sorted by customer id, as a courtesy, because they thought it would help. Since then the import either takes hours or dies with a depth error. We have changed nothing on our side. If we shuffle the file before importing, it is fast again, which makes no sense to anybody."</p>
+  </div>
+
+  <div class="viz" data-viz='{"type":"swim","title":"Shuffling the input makes it faster, which sounds impossible","lanes":[{"label":"The team"},{"label":"You"},{"label":"The import"}],"steps":[{"id":"a1","lane":0,"col":0,"kind":"gold","label":"Sorted input: hours or a crash. Shuffled: fast"},{"id":"b1","lane":1,"col":1,"kind":"box","label":"Ask: how does the sort choose its pivot?"},{"id":"c1","lane":2,"col":1,"kind":"bad","label":"The last item of whatever it is given"},{"id":"b2","lane":1,"col":2,"kind":"accent","label":"On sorted data the last item is always the largest"},{"id":"c2","lane":2,"col":2,"kind":"bad","label":"So one side gets everything and the other gets nothing"},{"id":"b3","lane":1,"col":3,"kind":"accent","label":"It shrinks by one per pass, not by half"},{"id":"b4","lane":1,"col":4,"kind":"accent","label":"Pick the middle of three, or at random. Do not shuffle"}],"edges":[{"from":"a1","to":"b1"},{"from":"b1","to":"c1"},{"from":"c1","to":"b2"},{"from":"b2","to":"c2"},{"from":"c2","to":"b3"},{"from":"b3","to":"b4"}],"caption":"Shuffling works, which is the clue rather than the fix. A method whose performance improves when you destroy the order of its input is a method that is betting on disorder, and the only thing worth changing is the bet."}'></div>
+
+  <p><strong>The upstream team did nothing wrong and the courtesy was real.</strong> On sorted data the last item is always the largest, so partitioning around it puts every remaining item on one side and nothing on the other. The problem shrinks by one per pass instead of halving, which turns twenty layers into a million and produces both symptoms: hours of work, and a depth ceiling from Lesson 5.1 being spent.</p>
+
+  <div class="callout good">
+    <div class="ch">Why this reasoning wins</div>
+    <p>It took the strangest fact seriously instead of dismissing it. <strong>Shuffling the input made it faster</strong>, and nothing that is genuinely doing less work behaves that way. A method that rewards disorder is betting on disorder, so the fix is not to keep feeding it chaos, it is to stop it betting: choose the middle of three samples, or choose at random, and the input can arrive in any order it likes.</p>
+  </div>
+
+  <h2><span class="ix">10</span> Your Turn</h2>
+  <div class="callout accent">
+    <div class="ch">Your rep, twenty cards and one number</div>
+    <p>Deal twenty cards face up. <strong>Round one:</strong> pick the middle card, then move every card lower than it to the left and every higher card to the right, without ordering either group. Count your comparisons. Now check where your chosen card is sitting, and confirm for yourself that it is already in the position it will end up in. <strong>Round two:</strong> do the same inside each group, and again, until everything is sorted. <strong>Round three:</strong> now lay the cards out already sorted, and always pick the last card as your number. Count how many passes it takes before you have made real progress, and you will feel exactly what breaks.</p>
+  </div>
+
+  <h2><span class="ix gold">✓</span> Check Yourself</h2>
+
+  <div class="quiz" data-correct="0">
+    <div class="q">An import became slow or crashed after the upstream team started sending the file already sorted, and shuffling the file makes it fast again. What is happening?</div>
+    <div class="opt" data-i="0">The sort takes the last item as its pivot, which on sorted data is always the largest, so it shrinks by one per pass instead of halving</div>
+    <div class="opt" data-i="1">Sorted data uses more memory to process than unsorted data</div>
+    <div class="opt" data-i="2">The upstream file must be corrupted, since sorted input cannot be slower</div>
+    <div class="qexp">A method that gets faster when you destroy the order of its input is betting on disorder. Partitioning around the largest value puts everything on one side and nothing on the other, so the problem shrinks by one per pass, which produces both the hours and the depth error from Lesson 5.1. Shuffling works, and it is the clue rather than the fix: change the pivot choice instead, and any input order becomes safe.</div>
+  </div>
+
+  <div class="quiz" data-correct="2">
+    <div class="q">After one partition around the value 5, neither side is sorted. What has been settled permanently?</div>
+    <div class="opt" data-i="0">Nothing yet, because no side is in order</div>
+    <div class="opt" data-i="1">Only which items are smaller than 5 and which are larger</div>
+    <div class="opt" data-i="2">Both of those, and also that 5 is now sitting in the exact position it will occupy in the finished row</div>
+    <div class="qexp">This is the property that makes one pass worth paying for. Everything smaller is to the left and everything larger is to the right, so the number of items before the pivot is exactly the number of items that belong before it, which means the pivot is home. It will never be moved or compared again, and neither side will ever need to be compared with the other.</div>
+  </div>
+
+  <div class="callout good">
+    <div class="ch">Next</div>
+    <p>Every method so far has done the same thing: <strong>ask which of two items comes first.</strong> The next lesson has one method that repeatedly grabs the most extreme item instead, and two that do not compare anything at all, and are therefore not bound by any of the limits in this chapter.</p>
+  </div>
+__NAV__
+</div>`
