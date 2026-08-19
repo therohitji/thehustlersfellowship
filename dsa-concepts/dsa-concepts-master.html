@@ -49,7 +49,7 @@
   .rail-brand .by{font-size:12.5px;color:rgba(220,236,229,.62);font-weight:500;}
   .rail-progress{padding:15px 22px 17px;font-size:11px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:rgba(220,236,229,.55);border-bottom:1px solid rgba(255,255,255,.09);}
   .pbar{height:5px;border-radius:99px;background:rgba(255,255,255,.13);margin-top:9px;overflow:hidden;}
-  .pbar i{display:block;height:100%;width:28%;background:linear-gradient(90deg,var(--green-500),var(--gold-500));border-radius:99px;}
+  .pbar i{display:block;height:100%;width:29%;background:linear-gradient(90deg,var(--green-500),var(--gold-500));border-radius:99px;}
 
   .chap{border-bottom:1px solid rgba(255,255,255,.06);}
   .chap-head{display:flex;align-items:center;gap:9px;padding:12px 22px;cursor:pointer;font-size:13.5px;font-weight:600;transition:background .14s;}
@@ -354,7 +354,7 @@ const COURSE = [
       {id:"6.2", t:"Linear Search: Check Every Box", state:"live"},
       {id:"6.3", t:"Binary Search: Halve the Haystack", state:"live"},
       {id:"6.4", t:"The Search Family: Jump, Exponential, Interpolation, Ternary", state:"live"},
-      {id:"6.5", t:"Searching Structured Data: Trees, Tries and Database Indexes", state:"soon"},
+      {id:"6.5", t:"Searching Structured Data: Trees, Tries and Database Indexes", state:"live"},
       {id:"6.6", t:"Searching by Meaning: Vector Search, ANN and RAG", state:"soon"},
       {id:"6.7", t:"How Search Problems Show Up: Reading the Disguise", state:"soon"},
       {id:"6.8", t:"Choose Your Search: The Decision Flowchart and Six Systems Torn Down", state:"soon"},
@@ -4682,6 +4682,142 @@ __NAV__
   <div class="callout good">
     <div class="ch">Next</div>
     <p>Everything so far has assumed a row that somebody keeps in order, and Lesson 6.3 priced that: the shuffle, on every single insert, forever. <strong>Next, somebody refuses to keep paying it</strong>, and keeps the order as a shape instead of a row, which is what a database index actually is and why it survives the writes that would destroy a sorted list.</p>
+  </div>
+__NAV__
+</div>`,
+
+"6.5": `<div class="wrap">
+  <div class="les-kicker">Chapter 6 · Lesson 6.5</div>
+  <h1 class="les-title">Searching Structured Data: Trees, Tries and Database Indexes</h1>
+  <div class="les-meta">
+    <span class="pill">foundational</span><span class="pill">~14 min</span>
+    <span class="pill gold">no code needed</span><span class="pill">10 visuals</span>
+  </div>
+
+  <p class="motto">A sorted row dies on the first insert. A shape survives the writes that killed it.</p>
+
+  <p class="lead">Lesson 6.3 bought order outright and Lesson 6.3 also priced the bill that never stops: the shuffle, on every insert, forever. This lesson is somebody refusing to keep paying it. By the end you can say what a database index actually is, why it answers in three hops rather than twenty, and why nobody indexes every column.</p>
+
+  <h2><span class="ix">1</span> The Everyday Situation</h2>
+  <div class="sub">The library that never closes for re-shelving.</div>
+  <p>Imagine a library where the books sit in one long row in alphabetical order. A new book arrives. To keep the row correct, <strong>every book after it shifts one place right</strong>, all the way down the building. Now imagine it arrives twice an hour.</p>
+
+  <div class="viz" data-viz='{"type":"scene","title":"Two libraries, one new book","width":820,"height":280,"items":[{"icon":"shelf","x":140,"y":124,"kind":"bad","label":"one long row, everything after shifts"},{"icon":"doc","x":404,"y":124,"kind":"gold","label":"one new book"},{"icon":"server","x":660,"y":124,"kind":"accent","label":"signs at each junction, nothing moves"}],"arrows":[{"x1":360,"y1":124,"x2":232,"y2":124,"style":"gold","label":"half the building slides"},{"x1":450,"y1":124,"x2":600,"y2":124,"style":"green","label":"one sign updated"}],"caption":"The second library has no order in its positions at all. The order lives in the signs: everything left of this junction is earlier in the alphabet. A new book changes one junction, and the reader still walks straight to it."}'></div>
+
+  <p>Real libraries do not work the first way, and neither does anything that gets written to. <strong>The order is not in the positions. It is in the arrangement</strong>, and that is the entire idea of this lesson.</p>
+
+  <h2><span class="ix">2</span> What It Actually Is</h2>
+  <div class="sub">The same promise, held by a different thing.</div>
+  <p>Lesson 6.3 held the promise with a row: if the thing is here, it is inside the window, because the row is in order. A shape holds the same promise with a rule at every junction: <strong>everything on the left is smaller than me, everything on the right is bigger.</strong> Walk it and you are halving, exactly as before.</p>
+
+  <div class="viz" data-viz='{"type":"arch","title":"Same halving, two ways to hold the promise","maxChars":18,"nodes":[{"id":"p","label":"If it is here at all, it is inside the window","col":1,"row":1,"kind":"dark"},{"id":"r","label":"Held by a row: the positions are the order","col":0,"row":0,"kind":"gold"},{"id":"s","label":"Held by a shape: the junctions are the order","col":0,"row":2,"kind":"accent"},{"id":"rb","label":"A write moves about half the row","col":2,"row":0,"kind":"bad"},{"id":"sb","label":"A write changes a handful of links","col":2,"row":2,"kind":"accent"}],"edges":[{"from":"r","to":"p","label":"holds"},{"from":"s","to":"p","label":"holds","style":"green"},{"from":"r","to":"rb","label":"bills you"},{"from":"s","to":"sb","label":"bills you","style":"green"}],"caption":"The read is identical on both sides: about twenty looks for a million. Everything that differs is on the right, and it is all about what happens when something arrives. This is the same trade Chapter 4 made between a row and a chain, arriving now as a question about order rather than about storage."}'></div>
+
+  <p>The read price does not move. <strong>The write price is the entire lesson.</strong></p>
+
+  <h2><span class="ix">3</span> Watch It Work</h2>
+  <div class="sub">Find something, then add something, and watch nothing move.</div>
+  <p>Fifteen numbers would fit in this shape and not one of them is in a row. Watch the search first, then watch what an arrival costs.</p>
+
+  <div class="board" data-anim='{"type":"tree-walk","title":"Three looks to find it, three to add one, and nothing slides","speed":1600,"unit":78,"legend":[["looking here now","look"],["the path you walked","seen"],["ruled out without being touched","dead"],["found, or newly attached","found"]],"nodes":[{"id":"50","label":"50","x":3,"d":0},{"id":"25","label":"25","x":1,"d":1},{"id":"75","label":"75","x":5,"d":1},{"id":"12","label":"12","x":0,"d":2},{"id":"37","label":"37","x":2,"d":2},{"id":"62","label":"62","x":4,"d":2},{"id":"88","label":"88","x":6,"d":2},{"id":"33","label":"33","x":1.5,"d":3}],"edges":[{"from":"50","to":"25"},{"from":"50","to":"75"},{"from":"25","to":"12"},{"from":"25","to":"37"},{"from":"75","to":"62"},{"from":"75","to":"88"},{"from":"37","to":"33"}],"steps":[{"look":["50"],"dead":["33"],"say":"Seven numbers, and not one of them is in a row. <b>The order is not in the positions, it is in the arrangement:</b> everything left of a junction is smaller than it. Looking for 37, start at the top."},{"look":["25"],"dead":["75","62","88","33"],"say":"37 is smaller than 50, so go left, and <b>the entire right side is now impossible.</b> Three numbers gone and you never touched one of them."},{"found":["37"],"seen":["50","25"],"dead":["75","62","88","12","33"],"say":"Found in three looks. <b>The same halving as Lesson 6.3</b>, and nothing needed to be in a row for it to work."},{"look":["50"],"dead":["33"],"say":"Now a new number arrives: 33. In a sorted row that was the shuffle from Lesson 3.2, about half the row sliding right. <b>Here it is one more walk.</b>"},{"look":["25"],"dead":["75","62","88","33"],"say":"33 is smaller than 50, so left. Exactly the walk the search just did, because finding where a thing goes is the same act as finding it."},{"look":["37"],"seen":["50","25"],"dead":["75","62","88","12","33"],"say":"33 is bigger than 25 so right, and smaller than 37 so left. <b>And to the left of 37 there is nothing at all.</b>"},{"found":["33"],"seen":["50","25","37"],"dead":["75","62","88","12"],"say":"Attached. <b>Three comparisons, one link written, and not one existing number moved.</b> Compare that with half a row sliding."},{"found":["37","33"],"seen":["50","25"],"dead":["75","62","88","12"],"say":"And the promise survived the write, so the next search for 37 still costs three looks on a shape that just changed. <b>Who paid, and when: whoever inserted, at the moment of inserting.</b>"}],"caption":"Two movements on one shape. The first is Lesson 6.3 with the row taken away. The second is the reason this structure exists, and it is the movement a sorted row cannot perform without moving everything."}'></div>
+
+  <h2><span class="ix">4</span> Under The Hood</h2>
+  <div class="sub">What an arrival actually touches.</div>
+
+  <div class="viz" data-viz='{"type":"seq","title":"The same arrival, sent to a row and to a shape","actors":[{"label":"A new value","kind":"gold"},{"label":"A sorted row","kind":"bad"},{"label":"A shape","kind":"accent"}],"messages":[{"from":0,"to":1,"label":"where do I go","style":"gold"},{"from":1,"to":0,"label":"box 500,000. Everything after it now slides right"},{"from":0,"to":2,"label":"where do I go","style":"gold"},{"from":2,"to":0,"label":"walk twenty junctions and hang yourself off one","style":"green"},{"from":2,"to":0,"label":"nothing else is touched, and nothing else knows","style":"green"}],"caption":"Both answers are correct and both preserve the order. The difference is the second sentence in each reply: one of them rearranges half a million things that had nothing to do with the arrival, and the other writes a single link."}'></div>
+
+  <p><strong>A row keeps its order in the positions, so changing the order means changing positions.</strong> A shape keeps its order in the links, so changing the order means changing links, and there are only ever a handful.</p>
+
+  <h2><span class="ix">5</span> The Types</h2>
+  <div class="sub">Three shapes, three questions they were built for.</div>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>The shape</th><th>The question it makes instant</th><th>The one condition it demands</th></tr>
+    <tr><td>A search tree</td><td>Is this value here, and what is nearest to it</td><td>It must stay roughly balanced, or it quietly turns into a list</td></tr>
+    <tr><td>A database index</td><td>The same, on one column, surviving constant writes</td><td>A second ordered copy that every write to that column must update</td></tr>
+    <tr><td>A prefix tree</td><td>What starts with the letters I have typed</td><td>Beginnings only. It knows nothing about endings or middles</td></tr>
+  </table>
+  <div class="tbl-cap">Row one hands the structure to Chapter 9 and Lesson 10.2, and what happens when balance is lost to Lesson 10.3, When a Search Tree Quietly Becomes a List. Row two hands the real index to Lesson 10.5, B-Trees: How a Database Index Actually Works. Row three hands construction to Lesson 16.4, Tries: The Structure Behind Autocomplete.</div></div>
+
+  <p>Now the third one, because it is the shape you have used most and noticed least. Twelve words are stored here: <em class="k">bat, bell, bird, cab, cake, car, card, care, cell, chat, dog, duck</em>. <strong>Each junction is labelled with how many words are still hanging below it.</strong> Watch that number as you type.</p>
+
+  <div class="board" data-anim='{"type":"tree-walk","title":"Twelve words, and what each keystroke deletes","speed":1600,"unit":74,"legend":[["where your typing has reached","look"],["the letters you typed","seen"],["deleted, and never compared","dead"],["still standing, and therefore the answer","found"],["opened, and it still cannot help","bad"]],"nodes":[{"id":"root","label":"12","x":4,"d":0},{"id":"b","label":"3","x":1,"d":1},{"id":"c","label":"7","x":4,"d":1},{"id":"d","label":"2","x":7,"d":1},{"id":"ca","label":"5","x":2,"d":2},{"id":"ce","label":"1","x":4,"d":2},{"id":"ch","label":"1","x":6,"d":2},{"id":"cab","label":"1","x":0,"d":3},{"id":"cak","label":"1","x":2,"d":3},{"id":"car","label":"3","x":4,"d":3},{"id":"card","label":"1","x":3,"d":4},{"id":"care","label":"1","x":5,"d":4}],"edges":[{"from":"root","to":"b","w":"b"},{"from":"root","to":"c","w":"c"},{"from":"root","to":"d","w":"d"},{"from":"c","to":"ca","w":"a"},{"from":"c","to":"ce","w":"e"},{"from":"c","to":"ch","w":"h"},{"from":"ca","to":"cab","w":"b"},{"from":"ca","to":"cak","w":"k"},{"from":"ca","to":"car","w":"r"},{"from":"car","to":"card","w":"d"},{"from":"car","to":"care","w":"e"}],"steps":[{"look":["root"],"say":"Twelve words, nothing typed yet, and the top junction says so. <b>The letters live on the branches, not in the boxes.</b>"},{"look":["c"],"seen":["root"],"dead":["b","d"],"say":"You type <b>c</b>. Five words are deleted by one keystroke, and not one of them was compared to anything. The junction you are standing on now reads seven."},{"look":["ca"],"seen":["root","c"],"dead":["b","d","ce","ch"],"say":"You type <b>a</b>. Five standing. Cell and chat are gone, and again nothing was examined, they simply are not down this branch."},{"look":["car"],"seen":["root","c","ca"],"dead":["b","d","ce","ch","cab","cak"],"say":"You type <b>r</b>. Three standing, and you have walked three junctions to get here. <b>The cost was the length of what you typed</b>, not the size of the dictionary."},{"found":["car","card","care"],"seen":["root","c","ca"],"dead":["b","d","ce","ch","cab","cak"],"say":"<b>car, card, care.</b> Nobody searched a list. Whatever is left standing IS the answer, which is exactly why autocomplete feels instant rather than fast."},{"look":["root","b","c","d","ca","ce","ch","cab","cak","car","card","care"],"say":"Now ask this shape a different question: <b>which of these words end in the letters ar?</b>"},{"bad":["root","b","c","d","ca","ce","ch","cab","cak","car","card","care"],"say":"The whole shape turns red together. <b>It is built entirely out of beginnings, so it has nothing to say about endings.</b> Every junction has to be opened, and that is slower than reading a plain list would have been."}],"caption":"The last two frames are the most important in this lesson. A shape answers exactly the question its arrangement was built for, and turns into something worse than nothing for the question next to it."}'></div>
+
+  <h2><span class="ix">6</span> What It Costs, In Plain English</h2>
+  <div class="sub">The read stands still and the write falls off a cliff.</div>
+  <p>A million items. Finding one costs <strong>about twenty looks</strong>, which is exactly what Lesson 6.3 charged, so nothing was gained on the read. Now the arrival. Into a sorted row: <strong>about 500,000 boxes slide.</strong> Into a shape: about twenty junctions walked and <strong>one link written.</strong> Divide 500,000 by 20 and the write got roughly <em class="g">twenty five thousand times</em> cheaper while the read did not move at all.</p>
+
+  <div class="viz" data-viz='{"type":"card","title":"Why an index answers in three hops and not twenty","eyebrow":"A MILLION ROWS","badge":"same data, same order","width":560,"rows":[{"k":"Junctions with two branches each","v":"20 levels","tone":"bad","bar":1},{"k":"Junctions holding about a hundred keys each","v":"3 levels","tone":"good","bar":0.15},{"k":"Because two multiplied by itself twenty times","v":"1,048,576","tone":"bad","bar":1},{"k":"Because a hundred, three times over","v":"1,000,000","tone":"good","bar":0.15}],"caption":"Every bar is drawn against a maximum of 20 levels. The data is identical and the order is identical. The only difference is how much work one junction was made to do, and a real index sizes a junction to exactly one read from storage, which is why it holds hundreds of keys rather than two. That is the same exchange rate Lesson 6.4 just taught: fewer, fatter looks."}'></div>
+
+  <p>And the trie counts differently again. Ten million words stored, five letters typed: <strong>five steps.</strong> The size of the dictionary never enters the arithmetic, because the cost is the length of what you typed. In the Chapter 2 currency the tree read is <em class="g">O(log n)</em> and the trie read is <em class="g">O(k)</em>, where k is your typing, which is the only cost in this chapter that does not mention the pile at all.</p>
+
+  <h2><span class="ix">7</span> Where It Lives In Real Life</h2>
+  <div class="sub">Five places, and the bill each one is quietly paying.</div>
+
+  <div class="viz" data-viz='{"type":"kgraph","title":"Order kept as a shape, and who pays for it","unit":178,"nodes":[{"id":"c","label":"Order kept as a shape, so writes stay cheap","x":2,"y":1,"kind":"dark"},{"id":"d","label":"A database index on one column, updated on every write to it","x":0,"y":0,"kind":"accent"},{"id":"a","label":"Autocomplete, where the shape itself is the answer","x":0,"y":2,"kind":"gold"},{"id":"f","label":"Folders inside folders, which is the same walk with names","x":4,"y":0,"kind":"box"},{"id":"s","label":"A phone contact list that stays sorted while you add people","x":4,"y":2,"kind":"box"},{"id":"w","label":"And the bill: every index makes writes slower and takes space","x":2,"y":3,"kind":"bad"}],"edges":[{"from":"c","to":"d","label":"one question, made instant","style":"green"},{"from":"c","to":"a","label":"beginnings only","style":"gold"},{"from":"c","to":"f","label":"a junction is a folder"},{"from":"c","to":"s","label":"insert without re-sorting"},{"from":"c","to":"w","label":"paid on every write"}],"caption":"The red node is the one nobody puts on a slide. An index is a second ordered copy of one column, so every write to that column now writes twice, and the space is real. That is why nobody indexes every column, and why adding one can make the rest of a system slower."}'></div>
+
+  <div class="callout warn">
+    <div class="ch">Two indexes are not one index</div>
+    <p>If you have an index on <em class="k">city</em> and another on <em class="k">signup date</em>, and you ask for people in one city who signed up last week, <strong>each index is a separate order.</strong> A database can use one to narrow the field, and then it must check the other condition on every survivor, one at a time. It can sometimes combine them, and it is still not the same as an order built for the two together. That is why a query with two conditions can be fast and a query with three can fall off a cliff.</p>
+  </div>
+
+  <h2><span class="ix">8</span> How Problems Show Up</h2>
+  <div class="sub">Seven sentences, and most of them are about the write.</div>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>What somebody actually says</th><th>The test to run</th><th>What it is really telling you</th></tr>
+    <tr><td>"Reads got faster and everything else got slower"</td><td>Count how many indexes that table now carries</td><td>Every index is a second copy paid for on every write to it</td></tr>
+    <tr><td>"Searching by email is instant, by phone number it crawls"</td><td>Ask which column the order was built on</td><td>An index answers its own question and no other</td></tr>
+    <tr><td>"It was fast last quarter and nothing changed"</td><td>Ask whether values arrive in increasing order</td><td>A shape fed in order can stop being a shape. Lesson 10.3 owns it</td></tr>
+    <tr><td>"Suggestions are instant, but searching inside words is not"</td><td>Ask whether it is a beginning or a middle</td><td>Beginnings are the shape. Middles are a different structure entirely</td></tr>
+    <tr><td>"One condition is fast, two is fine, three falls apart"</td><td>Ask what order exists for those columns together</td><td>Separate indexes narrow separately, then check the rest one by one</td></tr>
+    <tr><td>"We added an index and the query did not change"</td><td>Compare the column indexed with the column filtered</td><td>The order built does not match the question asked</td></tr>
+    <tr><td>"Bulk imports take hours and single inserts are instant"</td><td>Count the indexes and multiply by the rows</td><td>Every row pays every index. That cost is invisible one row at a time</td></tr>
+  </table>
+  <div class="tbl-cap">Only rows two, four and six are about reading. The rest are the write bill arriving, which is the half of this trade nobody budgets for and the reason an index is a decision rather than a default.</div></div>
+
+  <h2><span class="ix">9</span> Solve It Live</h2>
+  <div class="sub">Twelve indexes, and a nightly import that stopped finishing.</div>
+  <div class="callout">
+    <div class="ch">The problem, as it arrives</div>
+    <p>"Our reporting table has picked up about a dozen indexes over two years, one at a time, each one added to make some slow page fast. Every one of them worked. Last month the nightly import stopped finishing inside its window. It loads the same two million rows it always has, the machine is not busy, and no single query is slow."</p>
+  </div>
+
+  <div class="viz" data-viz='{"type":"swim","title":"Every index worked, and together they stopped the night","lanes":[{"label":"The team"},{"label":"You"},{"label":"The table"}],"steps":[{"id":"a1","lane":0,"col":0,"kind":"gold","label":"Import misses its window, no query is slow"},{"id":"b1","lane":1,"col":1,"kind":"box","label":"Ask: is the problem a read or a write?"},{"id":"c1","lane":2,"col":1,"kind":"bad","label":"An import is writes. Two million of them"},{"id":"b2","lane":1,"col":2,"kind":"accent","label":"Each row writes the row, then updates every index"},{"id":"c2","lane":2,"col":2,"kind":"bad","label":"12 indexes: 2m rows becomes 26m ordered writes"},{"id":"b3","lane":1,"col":3,"kind":"accent","label":"Nobody added twelve. Somebody added one, twelve times"},{"id":"b4","lane":1,"col":4,"kind":"accent","label":"Drop what no query uses, or index after loading"}],"edges":[{"from":"a1","to":"b1"},{"from":"b1","to":"c1"},{"from":"c1","to":"b2"},{"from":"b2","to":"c2"},{"from":"c2","to":"b3"},{"from":"b3","to":"b4"}],"caption":"Nothing here is a bug and no decision along the way was wrong. Each index was added to fix a real slow page and each one worked. The cost is invisible one row at a time and only becomes a wall when two million rows arrive together."}'></div>
+
+  <p><strong>The reads were never the problem. The import is writes.</strong> Every row now writes itself and then updates a dozen separate ordered copies, so two million rows became roughly twenty six million ordered writes. And nobody made that decision: somebody made one reasonable decision twelve times, each time on a page that really was slow, and nobody was ever looking at the total.</p>
+
+  <div class="callout good">
+    <div class="ch">Why this reasoning wins</div>
+    <p>It asked one question before opening anything: <strong>is this a read problem or a write problem?</strong> An import is writes, and the entire cost of an index lands on writes. Once that is said out loud the arithmetic is trivial and the fix is a choice rather than a mystery: remove the orders no query actually uses, or build the orders after the rows have landed instead of during.</p>
+  </div>
+
+  <h2><span class="ix">10</span> Your Turn</h2>
+  <div class="callout accent">
+    <div class="ch">Your rep, sticky notes on a wall</div>
+    <p>Write fifteen names on sticky notes. <strong>Round one:</strong> put them in one alphabetical row on the wall, then add a new name that belongs in the middle, and count how many notes you had to move. <strong>Round two:</strong> start again with one note in the centre, and hang each new name to the left if it is earlier and the right if it is later, one junction at a time. Add the same middle name and count the moves. <strong>Round three:</strong> now ask both walls which names end in the letters <em class="k">an</em>, and notice that neither arrangement helps at all, because neither was built out of endings.</p>
+  </div>
+
+  <h2><span class="ix gold">✓</span> Check Yourself</h2>
+
+  <div class="quiz" data-correct="1">
+    <div class="q">A nightly import of two million rows stops finishing after a table has picked up a dozen indexes. No query is slow. What is happening?</div>
+    <div class="opt" data-i="0">The table has grown too large and needs to be split across machines</div>
+    <div class="opt" data-i="1">An import is writes, and every row must now update a dozen separate ordered copies as well as itself</div>
+    <div class="opt" data-i="2">The indexes have become fragmented and need rebuilding</div>
+    <div class="qexp">Every index is a second ordered copy of a column, and the whole of its cost lands on writes. Twelve indexes turn two million row insertions into roughly twenty six million ordered writes. Nothing is broken and no individual decision was wrong: somebody made one reasonable decision twelve times, and nobody was watching the total, because the cost is invisible one row at a time.</div>
+  </div>
+
+  <div class="quiz" data-correct="2">
+    <div class="q">Autocomplete on ten million words returns suggestions instantly after five letters. Why does the size of the dictionary barely matter?</div>
+    <div class="opt" data-i="0">Because the words are sorted, so it can halve the list five times</div>
+    <div class="opt" data-i="1">Because ten million is small enough to hold in memory and scan quickly</div>
+    <div class="opt" data-i="2">Because it walks one junction per letter typed, so the cost is the length of what you typed rather than the size of the pile</div>
+    <div class="qexp">A prefix tree never compares your text against a list. It follows one branch per character, so five letters is five steps whether the dictionary holds ten thousand words or ten million. Whatever is still hanging below where you stopped is the answer, which is why it feels instant rather than fast. It is also why the same shape is useless for finding words that end in something.</div>
+  </div>
+
+  <div class="callout good">
+    <div class="ch">Next</div>
+    <p>Search is the price you pay for order you did not keep, and every method so far has deleted candidates it could <strong>prove</strong> could not match. Next, a method that deletes what it merely <strong>believes</strong> cannot match, in exchange for finding things that share not one word with what you asked. That trade is what makes searching by meaning possible at all.</p>
   </div>
 __NAV__
 </div>`,
