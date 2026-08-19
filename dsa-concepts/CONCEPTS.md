@@ -298,14 +298,14 @@ Authoring rules for all of this live in [CONSISTENCY.md](CONSISTENCY.md).
 
 > A tree is what you get when one thing owns many things. Depth is the only number that decides its speed.
 
-**Status:** partial, 1 of 6 lessons written
+**Status:** partial, 2 of 6 lessons written
 
 ### Lessons
 
 | id | lesson | status |
 |---|---|---|
 | `9.1` | Branching: Parents, Children, and Why Depth Matters | live |
-| `9.2` | Binary Trees and the Three Walks | planned |
+| `9.2` | Binary Trees and the Three Walks | live |
 | `9.3` | Level Order: Reading a Tree Row by Row | planned |
 | `9.4` | Height, Depth and Balance: The Numbers That Decide Speed | planned |
 | `9.5` | Where Trees Show Up: Folders, Web Pages, Org Charts, File Systems | planned |
