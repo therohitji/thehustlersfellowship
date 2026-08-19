@@ -55,6 +55,12 @@ for (const id of lessons){
   if (!ok){ console.error(`  skip ${id}: reader not ready`); continue; }
   await page.waitForTimeout(800);
 
+  /* The topbar is position:sticky with a translucent background, so on any block taller than
+     the viewport it scrolls over the block's own title and the capture shows a diagram whose
+     heading is half erased. That is correct on the page and useless in a screenshot, because
+     the whole point of these captures is to read the thing. Hide it for the duration. */
+  await page.addStyleTag({ content: '.topbar{display:none !important}' });
+
   const blocks = await page.$$('.viz, .board, .reel');
   const names = await page.$$eval('.viz, .board, .reel', ns => ns.map(n =>
     ((n.querySelector('.viz-kind, .bk, .rk') || {}).textContent || '').trim() + ' | ' +

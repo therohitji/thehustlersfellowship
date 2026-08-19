@@ -49,7 +49,7 @@
   .rail-brand .by{font-size:12.5px;color:rgba(220,236,229,.62);font-weight:500;}
   .rail-progress{padding:15px 22px 17px;font-size:11px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:rgba(220,236,229,.55);border-bottom:1px solid rgba(255,255,255,.09);}
   .pbar{height:5px;border-radius:99px;background:rgba(255,255,255,.13);margin-top:9px;overflow:hidden;}
-  .pbar i{display:block;height:100%;width:22%;background:linear-gradient(90deg,var(--green-500),var(--gold-500));border-radius:99px;}
+  .pbar i{display:block;height:100%;width:23%;background:linear-gradient(90deg,var(--green-500),var(--gold-500));border-radius:99px;}
 
   .chap{border-bottom:1px solid rgba(255,255,255,.06);}
   .chap-head{display:flex;align-items:center;gap:9px;padding:12px 22px;cursor:pointer;font-size:13.5px;font-weight:600;transition:background .14s;}
@@ -344,7 +344,7 @@ const COURSE = [
   ]},
   { n:"05", title:"Stacks and Queues: Who Gets Served First", lessons:[
       {id:"5.1", t:"Stack: Last In, First Out, Like a Pile of Plates", state:"live"},
-      {id:"5.2", t:"Queue: First In, First Out, Like a Ticket Line", state:"soon"},
+      {id:"5.2", t:"Queue: First In, First Out, Like a Ticket Line", state:"live"},
       {id:"5.3", t:"Deque, Circular Queue and the Priority Twist", state:"soon"},
       {id:"5.4", t:"Where Order of Service Decides Everything", state:"soon"},
       {id:"5.5", t:"The Whiteboard: Plates and Ticket Lines", state:"soon"}
@@ -3556,6 +3556,146 @@ __NAV__
   <div class="callout good">
     <div class="ch">Next</div>
     <p>Nothing here showed a piece of work calling itself, and that was deliberate: Lesson 14.2 is where recursion meets this ceiling on purpose. Before that, the same chain and the same two handles, with one word changed. <strong>Add at one end and take from the other, and a promise to the newest becomes a promise to the oldest.</strong></p>
+  </div>
+__NAV__
+</div>`,
+
+"5.2": `<div class="wrap">
+  <div class="les-kicker">Chapter 5 · Lesson 5.2</div>
+  <h1 class="les-title">Queue: First In, First Out, Like a Ticket Line</h1>
+  <div class="les-meta">
+    <span class="pill">foundational</span><span class="pill">~13 min</span>
+    <span class="pill gold">no code needed</span><span class="pill">11 visuals</span>
+  </div>
+
+  <p class="motto">First in first out does not promise you a short wait. It promises only that nobody who arrives after you goes first.</p>
+
+  <p class="lead">Lesson 5.1 handed you a rule nobody chose. This one hands you a rule somebody chose and could un-choose tomorrow, because most systems are not about storing things, they are about deciding who gets served next. By the end you can read any line and say what it promises, what it does not, and which end of it costs money.</p>
+
+  <h2><span class="ix">1</span> The Everyday Situation</h2>
+  <div class="sub">Four people, one desk, and nothing on the floor.</div>
+  <p>You are third of three at a registration desk. One clerk, one desk. A fourth person walks in and stops behind you. Nobody spoke to them and nobody drew a line on the floor. They looked at three backs and stood behind the last one.</p>
+
+  <div class="viz" data-viz='{"type":"scene","title":"Four people, one desk, and nothing on the floor","width":800,"height":280,"items":[{"icon":"person","x":106,"y":128,"kind":"gold","label":"first, being served"},{"icon":"person","x":250,"y":128,"kind":"accent","label":"second"},{"icon":"person","x":394,"y":128,"kind":"accent","label":"third, which is you"},{"icon":"person","x":538,"y":128,"kind":"muted","label":"fourth, just walked in"},{"icon":"shelf","x":700,"y":124,"kind":"dark","label":"one desk, one clerk"}],"arrows":[{"x1":150,"y1":126,"x2":210,"y2":126,"style":"gold","label":"served"},{"x1":582,"y1":150,"x2":582,"y2":150,"style":"green","label":"joined at the back, unprompted"}],"caption":"Nothing physical holds this line together. The desk does not know who arrived when, the chairs do not know, and the floor is unmarked. It holds because the clerk said they would take people in turn, and every person in it is measuring the clerk against that."}'></div>
+
+  <p>Now watch the clerk. <strong>Nothing in that room stops them waving the fourth person forward.</strong> The line is not held together by geometry. It is held together by a promise, and every person standing in it is measuring the clerk against it.</p>
+
+  <h2><span class="ix">2</span> What It Actually Is</h2>
+  <div class="sub">Same chain, one rule, and one extra handle.</div>
+  <p>A queue is a line with one rule: you join at the back and you are served from the front. That is the whole definition. Lesson 5.1 had the same chain with one handle instead of two: a stack lets you touch one end, a queue makes you touch both. <strong>That single extra handle is the entire difference.</strong></p>
+
+  <div class="viz" data-viz='{"type":"arch","title":"Same chain, one rule, and one extra handle","maxChars":17,"nodes":[{"id":"c","label":"The same chain from Chapter 4. Nothing added","col":0,"row":1,"kind":"dark"},{"id":"r","label":"The rule: join at the back, leave from the front","col":1,"row":1,"kind":"gold"},{"id":"h","label":"The head, free since Lesson 4.1","col":2,"row":0,"kind":"accent"},{"id":"t","label":"A tail handle, bought and repaired","col":2,"row":1,"kind":"accent"},{"id":"m","label":"Reach into the middle: refused","col":2,"row":2,"kind":"bad"}],"edges":[{"from":"c","to":"r","label":"one rule bolted on","style":"green"},{"from":"r","to":"h","label":"serve from here","style":"green"},{"from":"r","to":"t","label":"join here","style":"green"},{"from":"r","to":"m","label":"never"}],"caption":"A stack touched one end and needed one handle. A queue touches two ends and needs two, and the second one is the tail Lesson 4.1 said you have to buy and repair on every change. That is the entire price of the rule."}'></div>
+
+  <p>Now the part people get wrong. First in first out does not promise a short wait. It promises exactly one thing: <strong>nobody who arrives after you goes before you.</strong> Which is why the person with a two minute question sits behind the person with a forty minute one, and the promise is being kept perfectly the whole time.</p>
+
+  <h2><span class="ix">3</span> Watch It Work</h2>
+  <div class="sub">Twelve tickets, two markers, and nobody moving up.</div>
+  <p>Twelve tickets, 41 to 52. Two markers: front, where people leave, and back, where they join. Watch only the markers, because <strong>the boxes never move.</strong></p>
+
+  <div class="board" data-anim='{"type":"array-scan","title":"Twelve tickets, two markers, and nobody moving up","speed":1600,"big":true,"data":[41,42,43,44,45,46,47,48,49,50,51,52],"countLabel":" waiting","pointerLabels":{"lo":"front","hi":"back"},"legend":[["waiting","range"],["served and gone","seen"],["not arrived yet","dead"]],"steps":[{"range":[0,2],"ptr":{"lo":0,"hi":2},"count":3,"badge":"three waiting","say":"Three people, tickets 41 to 43. <b>Two markers: front, where you leave, and back, where you join.</b> Lesson 5.1 had one marker, and one extra handle is the whole difference."},{"seen":[0],"range":[1,2],"ptr":{"lo":1,"hi":2},"count":2,"badge":"41 served","say":"41 is served and the front marker moves. Now look at 42 and 43. <b>They did not move.</b> Lesson 3.2 drew a queue that shuffles everybody forward on every service. One write to a marker is the fix."},{"seen":[0],"range":[1,4],"ptr":{"lo":1,"hi":4},"count":4,"badge":"two joined","say":"Two people join at the back, one write each, and not one waiting person was read or moved. Four waiting, and <b>the cost of joining did not depend on that four.</b>"},{"seen":[0,1,2,3],"range":[4,4],"ptr":{"lo":4,"hi":4},"count":1,"badge":"one left","say":"They landed on the same box and stepped apart so you can read both, which is exactly right: <b>the last person in a line is the front of it and the back of it at once.</b>"},{"seen":[0,1,2,3,4,5,6],"range":[7,9],"ptr":{"lo":7,"hi":9},"count":3,"badge":"still three waiting","say":"Three waiting again, the same count as the first frame, but look where the line is standing now. <b>Nothing ever moved left</b>, because moving left is the shuffle this board refuses to pay for."},{"seen":[0,1,2,3,4,5,6,7,8,9],"range":[10,11],"ptr":{"lo":10,"hi":11},"count":2,"badge":"2 left, 10 wasted","say":"Two people in the line and the row is full. Ten boxes on the left are empty and <b>can never be reached again</b>, because both markers only ever move right. The rule is perfect and the row underneath it just ran out."}],"caption":"Nobody moved up. That is the sentence to keep. Serving somebody is one write to the front marker, and not one waiting person is touched, which is the bill Lesson 3.2 promised this chapter would pay."}'></div>
+
+  <h2><span class="ix">4</span> Under The Hood</h2>
+  <div class="sub">One address read, one written, and the whole line is served.</div>
+
+  <div class="viz" data-viz='{"type":"seq","title":"What calling the next person actually asks for","actors":[{"label":"The front handle","kind":"gold"},{"label":"The node it names","kind":"accent"},{"label":"The one who arrived next","kind":"muted"}],"messages":[{"from":0,"to":1,"label":"who came after you","style":"gold"},{"from":1,"to":0,"label":"one address, and nothing else","style":"green"},{"from":0,"to":2,"label":"you are the front now","style":"green"},{"from":0,"to":1,"label":"anything else to do"},{"from":1,"to":0,"label":"no. Nobody was told, nobody moved"}],"caption":"One address read, one address written, and the whole line is served. The person who left is still sitting in memory, perfectly readable, and nothing in the world names them any more. That is Act 5 of the Chapter 4 whiteboard, arriving with a job."}'></div>
+
+  <p>Then the direction, which is not taste. Take from the front and add at the back and every move lands on a handle you already hold. <strong>Reverse it and every removal must reach the node before the last one</strong>, which the Lesson 4.1 handles table already said a tail handle does not fix.</p>
+
+  <div class="board" data-anim='{"type":"graph-walk","title":"Two writes in, one write out, and the direction that is not free","speed":1600,"directed":true,"unit":132,"legend":[["where you are standing","look"],["already walked","seen"],["the write that lands","found"]],"nodes":[{"id":"a","label":"41","x":0,"y":0},{"id":"b","label":"42","x":1,"y":0},{"id":"c","label":"43","x":2,"y":0},{"id":"d","label":"44","x":3,"y":0},{"id":"e","label":"45","x":4,"y":0}],"edges":[{"from":"a","to":"b"},{"from":"b","to":"c"},{"from":"c","to":"d"},{"from":"d","to":"e"}],"steps":[{"edges":["a-b","b-c","c-d"],"tags":{"a":"front","d":"back"},"say":"Four waiting, and every arrow points from an older person to a newer one. <b>You hold two handles and nothing else.</b> 45 is standing there with nothing pointing at it yet."},{"edges":["a-b","b-c","c-d","d-e"],"found":["e"],"tags":{"d":"one write","e":"two"},"say":"45 joins. You are already holding the back handle, so this is the Lesson 4.2 splice with no walk at all: <b>one address written into 44, one written into the handle. Two writes, and nobody waiting was touched.</b>"},{"edges":["b-c","c-d","d-e"],"seen":["a"],"look":["b"],"tags":{"b":"front"},"say":"Serve the front. <b>One write: the handle now names 42.</b> 41 is still in memory and perfectly readable, and nothing in the world names it. Nobody shuffled and nobody was told."},{"edges":["b-c","c-d","d-e"],"look":["b"],"tags":{"e":"from here"},"say":"Now try it the other way round and serve from the back instead. To unhook 45 <b>you need the node before it, and 44 does not know it is before anybody.</b>"},{"edges":["b-c","c-d","d-e"],"seen":["b","c"],"look":["d"],"tags":{"d":"2 hops"},"say":"So you walk from the front. Two hops here to earn one write. <b>On ten thousand waiting it is 9,998 hops, on every single service.</b> Lesson 4.1 table already said a tail handle does not fix this."}],"caption":"The direction is the whole point. Taking from the front and adding at the back is the one arrangement that never asks the chain for anything the chain charges for, and the last two frames are what the reverse costs."}'></div>
+
+  <h2><span class="ix">5</span> The Types</h2>
+  <div class="sub">One promise, and four arrangements that keep it.</div>
+  <p>There is no single thing called a queue. There is a promise, and four arrangements that keep it, each demanding something different.</p>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>The arrangement</th><th>What it promises</th><th>The one condition it demands</th></tr>
+    <tr><td>A chain with a tail handle</td><td>Two writes in, one out, at any length</td><td>You hold both handles and repair the tail on every change</td></tr>
+    <tr><td>A row with a front and a back marker</td><td>The same, with no addresses to keep</td><td>Both markers only move right, so the row ends while nearly empty</td></tr>
+    <tr><td>A row where everybody shuffles forward</td><td>The front is always the first box</td><td>One move per waiting person, on every single service</td></tr>
+    <tr><td>A line where somebody can be called early</td><td>Nothing. This is urgency, not arrival</td><td>The next to serve is no longer at an end, so no handle finds it</td></tr>
+  </table>
+  <div class="tbl-cap">Row two is the cheapest and the one that fails, which is exactly where Lesson 5.3 opens. Row three is Lesson 3.2 bill charged again on every service. Row four is a different rule wearing this one as a costume.</div></div>
+
+  <div class="viz" data-viz='{"type":"dtree","title":"Which queue did somebody actually build","maxChars":17,"nodes":[{"id":"q1","label":"Is the next to serve always the oldest?","col":1,"row":0,"kind":"gold","shape":"diamond"},{"id":"n","label":"No. Not a queue. The next one is not at an end, so no handle can find it. Lesson 5.3","col":0,"row":1,"kind":"bad"},{"id":"q2","label":"Yes. May the line grow without a ceiling?","col":2,"row":1,"kind":"gold","shape":"diamond"},{"id":"c","label":"Yes: a chain with a tail handle. Two writes in, one out, at any length","col":2,"row":2,"kind":"accent"},{"id":"r","label":"No: a fixed row with two markers, and both of them drift right. Lesson 5.3","col":4,"row":2,"kind":"gold"}],"edges":[{"from":"q1","to":"n","label":"no"},{"from":"q1","to":"q2","label":"yes","style":"green"},{"from":"q2","to":"c","label":"no ceiling","style":"green"},{"from":"q2","to":"r","label":"a ceiling"}],"caption":"There is no branch here where somebody jumps the line for free. The left branch abandons the promise and buys a whole new shape to replace it. The right branch keeps the promise and buys a ceiling, and the last frame of the block 3 board is what that ceiling looks like when it arrives."}'></div>
+
+  <h2><span class="ix">6</span> What It Costs, In Plain English</h2>
+  <div class="sub">The same 201 jobs, the same machine, two orders.</div>
+  <p>Count the writes first. Joining at the back is two writes, leaving from the front is one, and <strong>neither depends on how long the line is.</strong></p>
+  <p>Now count the waiting. Two hundred one second jobs queued behind one three hundred second job. The long one finishes at 300 seconds and the short ones land a second apart after it, so the average finish across all 201 is exactly 400 seconds. Put the long job last and the average is about 102.5 seconds.</p>
+
+  <div class="viz" data-viz='{"type":"card","title":"The same 201 jobs, the same machine, two orders","eyebrow":"AVERAGE FINISH","badge":"500 seconds of work","width":560,"rows":[{"k":"Total work, in either order","v":"500 s","bar":1},{"k":"The last job finishes, in either order","v":"500 s","bar":1},{"k":"Long job first: it finishes at","v":"300 s","bar":0.6},{"k":"Long job first: average finish, all 201","v":"400 s","tone":"bad","bar":0.8},{"k":"Long job last: average finish, all 201","v":"about 102.5 s","tone":"good","bar":0.205}],"caption":"Every bar is drawn against a maximum of 500 seconds. Rows one and two are what did not change, and they are the reason nobody notices. Rows four and five are the same work, the same machine and the same clock, reordered, and the gap between them is nearly four times."}'></div>
+
+  <p><strong>Nothing was made faster.</strong> The rule changed. In the Chapter 2 currency, joining and leaving are both <em class="g">O(1)</em>, and the number that moved is not a cost at all, it is an average wait, which no machine you buy will improve.</p>
+
+  <h2><span class="ix">7</span> Where It Lives In Real Life</h2>
+  <div class="sub">Five places, and the one that pays for this chapter.</div>
+
+  <div class="viz" data-viz='{"type":"kgraph","title":"Served in the order they arrived, in five places","unit":176,"nodes":[{"id":"c","label":"Served in the order they arrived","x":2,"y":1,"kind":"dark"},{"id":"i","label":"Your taps waiting while the screen is busy, then all landing at once","x":0,"y":0,"kind":"gold"},{"id":"p","label":"A print spooler holding jobs until the printer is free","x":0,"y":2,"kind":"box"},{"id":"m","label":"A message queue between two services, written at one end and read at the other","x":4,"y":0,"kind":"accent"},{"id":"t","label":"Support tickets answered oldest first","x":4,"y":2,"kind":"box"},{"id":"b","label":"Breadth first search, where the frontier is a queue","x":2,"y":3,"kind":"gold"}],"edges":[{"from":"c","to":"i","label":"nothing lost, everything late","style":"gold"},{"from":"c","to":"p","label":"one printer, many jobs"},{"from":"c","to":"m","label":"arrives faster than served","style":"green"},{"from":"c","to":"t","label":"a promise to customers"},{"from":"c","to":"b","label":"Chapter 13","style":"gold"}],"caption":"The message queue is the one that pays for this whole chapter. It exists because one side produces faster than the other consumes, and the queue does not fix that. It decides who waits, and Lesson 5.4 is what happens when nobody set a limit on the waiting."}'></div>
+
+  <p>You have personally shouted at one of these. An app stops responding, you tap four more times, and then everything happens at once the moment it wakes up. Nothing was lost. Your taps were held in the order they arrived and delivered as soon as the thread was free. <strong>The queue kept its promise exactly, and you did not want it to.</strong></p>
+
+  <div class="callout warn">
+    <div class="ch">The claim to refuse</div>
+    <p>Nobody has ever sped anything up by adding a queue. A queue holds work that has arrived and cannot be served yet, so <strong>the only thing it changes is who waits and for how long.</strong> If somebody says a queue made the system faster, what actually happened is that it stopped work being thrown away, or it let the slow part run at a steady rate instead of being flooded. Both are real wins, and neither is speed.</p>
+  </div>
+
+  <h2><span class="ix">8</span> How Problems Show Up</h2>
+  <div class="sub">Six sentences, and only two of them are about a structure.</div>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>What somebody actually says</th><th>The tell</th><th>What it is really asking</th></tr>
+    <tr><td>"One big export blocks the whole thing for everybody"</td><td>Many small waits from one large item</td><td>The promise being kept. Nothing behind a long job can start</td></tr>
+    <tr><td>"Can we bump this customer to the front?"</td><td>A polite request to break the only rule</td><td>That is urgency, not arrival, and Lesson 5.3 prices it</td></tr>
+    <tr><td>"The screen froze and then all my taps happened at once"</td><td>Nothing lost, everything late, all in order</td><td>An input queue keeping its promise while nobody wanted it to</td></tr>
+    <tr><td>"Serving one person got slower as the line got longer"</td><td>A per-service cost that grows with the number waiting</td><td>Somebody shuffles the row on every service. Lesson 3.2, charged per customer</td></tr>
+    <tr><td>"It runs out of room while the queue is nearly empty"</td><td>A refusal that does not match the amount held</td><td>Two markers walking rightwards along a fixed row. Lesson 5.3</td></tr>
+    <tr><td>"Removing the newest costs as much as the whole list"</td><td>One end free, the other priced by length</td><td>Reaching the node before the last one, which a tail handle never fixes</td></tr>
+  </table>
+  <div class="tbl-cap">Only rows four, five and six are about a structure. The other three are about a rule, and no machine you buy will move them.</div></div>
+
+  <h2><span class="ix">9</span> Solve It Live</h2>
+  <div class="sub">Same finish time, same total work, two hundred angry people.</div>
+  <div class="callout">
+    <div class="ch">The problem, as it arrives</div>
+    <p>"Our nightly batch still finishes at 9:05, exactly like it always has. Nothing was deployed. But since Tuesday, support has been full of people saying their reports are late, and when we check, every report did run and the batch did finish on time. We cannot find anything that got slower, because nothing did."</p>
+  </div>
+
+  <div class="viz" data-viz='{"type":"swim","title":"Same finish time, same total work, two hundred angry people","lanes":[{"label":"The team"},{"label":"You"},{"label":"The batch"}],"steps":[{"id":"a1","lane":0,"col":0,"kind":"gold","label":"Still finishes at 9:05, and support is full"},{"id":"b1","lane":1,"col":1,"kind":"box","label":"Ask: did anything finish later, or in a different order?"},{"id":"c1","lane":2,"col":1,"kind":"accent","label":"Nothing finishes later. The run ends at the same second"},{"id":"b2","lane":1,"col":2,"kind":"accent","label":"So the only thing that moved is the 300 second export"},{"id":"c2","lane":2,"col":2,"kind":"bad","label":"Export first: average report finishes at 400 s"},{"id":"c3","lane":2,"col":3,"kind":"box","label":"Export last: average report finishes at about 102.5 s"},{"id":"b3","lane":1,"col":4,"kind":"accent","label":"Give the export its own line, or stop promising arrival order"}],"edges":[{"from":"a1","to":"b1"},{"from":"b1","to":"c1"},{"from":"c1","to":"b2"},{"from":"b2","to":"c2"},{"from":"c2","to":"c3"},{"from":"c3","to":"b3"}],"caption":"Nearly four times the average wait, and the clock on the wall says the batch is identical. That is what an ordering fault looks like from the outside, and it is why no dashboard in the room went red."}'></div>
+
+  <p><strong>Nothing got slower. The export moved to the front, and two hundred people are standing behind it.</strong> Export first, a report comes back at 400 seconds on average. Export last, about 102.5 seconds. Either way the final job lands at 500 seconds, which is why the batch ends at the same time and every dashboard is unchanged.</p>
+
+  <div class="callout good">
+    <div class="ch">Why this reasoning wins</div>
+    <p>It asked one question: <strong>did anything finish later, or did something finish in a different order?</strong> The complaint rules out the first in its own second sentence. Once the clock is eliminated, the only thing left that can generate two hundred complaints is position in a line, and that is a decision rather than a fault. Give the export its own line, or serve short work first and be honest that you have stopped promising first in first out.</p>
+  </div>
+
+  <h2><span class="ix">10</span> Your Turn</h2>
+  <div class="callout accent">
+    <div class="ch">Your rep, four friends and one desk</div>
+    <p>Four people, one of you serving, one job written on each card: three of one minute and one of ten. <strong>Round one:</strong> serve in arrival order with the ten minute card first, and write down what each person waited. <strong>Round two:</strong> same cards, ten minute one last, and then name the two things that did not change: the total work, and the moment the last person leaves. <strong>Round three:</strong> tell each person only who arrived after them, nothing else, then try to remove the person at the back without touching anybody ahead of them. That last round is the direction, and it is why the rule points the way it does.</p>
+  </div>
+
+  <h2><span class="ix gold">✓</span> Check Yourself</h2>
+
+  <div class="quiz" data-correct="1">
+    <div class="q">A support desk answers tickets strictly oldest first. Somebody with a two minute question waits three hours. Has the queue broken its promise?</div>
+    <div class="opt" data-i="0">Yes. Three hours for a two minute question breaks the rule</div>
+    <div class="opt" data-i="1">No. The promise was only that nobody arriving later goes first, and it says nothing about how long anyone waits</div>
+    <div class="opt" data-i="2">No, because a queue reduces the total work for everybody</div>
+    <div class="qexp">Option two is the belief this lesson exists to kill: a queue never makes anything faster, it decides an order and the total work is untouched. Option zero names a real problem, and it is a problem with the rule rather than a breach of it, which is why the fix is a second line rather than a faster machine.</div>
+  </div>
+
+  <div class="quiz" data-correct="2">
+    <div class="q">Somebody proposes running the queue the other way on a one way chain: join at the front, serve from the back. Ten thousand are waiting. What does one service cost?</div>
+    <div class="opt" data-i="0">The same as before, since both of them are ends</div>
+    <div class="opt" data-i="1">One write, because a tail handle reaches the last node without walking</div>
+    <div class="opt" data-i="2">About 9,998 hops and then one write, because reaching the end was never the problem. Reaching the node before it is</div>
+    <div class="qexp">The Lesson 4.1 handles table said it: a tail handle does not make deleting at the end cheap, because you still have to reach the node before it. Take from the front and add at the back, and the queue never asks the chain for anything it charges for.</div>
+  </div>
+
+  <div class="callout good">
+    <div class="ch">Next</div>
+    <p>The last frame of the block 3 board is a line two people long sitting on a full row, with ten boxes on the left that can never be reached again. <strong>There are exactly three edits you can make to the one rule</strong>, and the first one fixes that wasted row by joining its ends. The third one throws the rule away entirely, because who gets served next is the whole structure, and Lesson 5.3 is where that rule starts bending.</p>
   </div>
 __NAV__
 </div>`,
