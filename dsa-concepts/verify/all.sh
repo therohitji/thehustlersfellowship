@@ -5,19 +5,15 @@
 set -e
 cd "$(dirname "$0")/.."
 
-echo "=== 1. build and harness (8 checks) ==="
+echo "=== 1. build and harness (9 checks) ==="
 bash verify/qa.sh | tail -4
 
 echo
-echo "=== 2. block and reel contract ==="
-python3 verify/check_contract.py
-
-echo
-echo "=== 3. driving it like a reader ==="
+echo "=== 2. driving it like a reader ==="
 node verify/interact.mjs
 
 echo
-echo "=== 4. rendering every visual ==="
+echo "=== 3. rendering every visual ==="
 OUT="${1:-/tmp/dsa-shots}"
 rm -rf "$OUT"
 node verify/screenshots.mjs all "$OUT" | tail -3

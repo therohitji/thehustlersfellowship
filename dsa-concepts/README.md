@@ -159,7 +159,7 @@ Two engine properties worth knowing before you author anything:
 
 ## Quality gates
 
-`bash verify/qa.sh` runs every check in dependency order and stops at the first failure. A skip
+`bash verify/qa.sh` runs nine checks in dependency order and stops at the first failure. A skip
 is not a pass.
 
 | Check | Refuses to let through |
@@ -183,8 +183,8 @@ frame. That is how **"nothing overlaps" is a build failure rather than an opinio
 bash verify/all.sh
 ```
 
-Runs the eight harness checks, the block and reel contract, the reader-interaction pass and
-a full render of every visual, stopping at the first failure. The last two need Playwright.
+Runs the nine harness checks, the reader-interaction pass and a full render of every visual,
+stopping at the first failure. The last two need Playwright.
 
 ### Driving it like a reader
 
