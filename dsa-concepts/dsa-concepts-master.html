@@ -6274,7 +6274,7 @@ __NAV__
   <h1 class="les-title">The Instant Answer: Turning a Key Into an Address</h1>
   <div class="les-meta">
     <span class="pill">foundational</span><span class="pill">~13 min</span>
-    <span class="pill gold">no code needed</span><span class="pill">9 visuals</span>
+    <span class="pill gold">no code needed</span><span class="pill">10 visuals</span>
   </div>
 
   <p class="motto">Every other structure in this course answers where is it by looking. This one computes the answer and never looks at all.</p>
@@ -6321,6 +6321,8 @@ __NAV__
     <tr><td>Nothing else at all</td><td>It does not need to be clever, secret, or reversible</td><td>Nothing. Those are different jobs for different tools</td></tr>
   </table>
   <div class="tbl-cap">The letter-adding rule in block 3 satisfies the first and third rows and is mediocre at the second, which is exactly the honest situation and the reason Lesson 8.2 exists. A rule that spreads keys badly is not broken, it is slow, and the difference between those two is the whole of the next lesson.</div></div>
+
+  <div class="viz" data-viz='{"type":"dtree","title":"Is this rule allowed to be your hash rule","maxChars":20,"gx":50,"nodes":[{"id":"q1","label":"Same key, same box, every single time?","col":0,"row":3,"kind":"gold","shape":"diamond"},{"id":"n1","label":"Unusable. Nothing can ever be found again","col":1,"row":0,"kind":"muted"},{"id":"q2","label":"Does it spread different keys evenly?","col":1,"row":3,"kind":"gold","shape":"diamond"},{"id":"n2","label":"Usable, and Lesson 8.2 is now your problem","col":2,"row":1,"kind":"gold"},{"id":"q3","label":"Cheap on every store and every read?","col":2,"row":4,"kind":"gold","shape":"diamond"},{"id":"n3","label":"The one step stops being one step","col":3,"row":2,"kind":"muted"},{"id":"y3","label":"Use it. Nothing else is required","col":3,"row":5,"kind":"accent"}],"edges":[{"from":"q1","to":"n1","label":"no"},{"from":"q1","to":"q2","label":"yes","style":"green"},{"from":"q2","to":"n2","label":"no"},{"from":"q2","to":"q3","label":"yes","style":"green"},{"from":"q3","to":"n3","label":"no"},{"from":"q3","to":"y3","label":"yes","style":"green"}],"caption":"Only the first question can disqualify a rule outright, and that is the whole point of the table above it. The letter-adding rule in block 3 passes the first and third questions and is mediocre at the second, which is why it reaches the bottom of this tree and why Lesson 8.2 exists at all. Notice what is not asked anywhere: whether the rule is clever, secret or reversible."}'></div>
 
   <h2><span class="ix">6</span> What It Costs, In Plain English</h2>
   <div class="sub">Settling the bill from Lesson 6.2.</div>
@@ -6402,7 +6404,7 @@ __NAV__
   <h1 class="les-title">Collisions: When Two Keys Want the Same Box</h1>
   <div class="les-meta">
     <span class="pill">foundational</span><span class="pill">~13 min</span>
-    <span class="pill gold">no code needed</span><span class="pill">9 visuals</span>
+    <span class="pill gold">no code needed</span><span class="pill">10 visuals</span>
   </div>
 
   <p class="motto">A collision is not bad luck and it is not a flaw in the rule. It is arithmetic, and it arrives far earlier than anybody expects.</p>
@@ -6445,6 +6447,8 @@ __NAV__
     <tr><td>Either one, on a table kept mostly empty</td><td>Almost never has to do anything</td><td>Empty boxes. This is Lesson 8.3</td></tr>
   </table>
   <div class="tbl-cap">The third row is where this chapter is heading and it matters more than the choice between the first two. Both strategies are fine when clashes are rare and both degrade when the table fills, so the number that decides a hash table is not which answer it uses but how much room it is given.</div></div>
+
+  <div class="viz" data-viz='{"type":"dtree","title":"Two keys want one box. Which answer are you allowed to use","maxChars":20,"gx":50,"nodes":[{"id":"q1","label":"Is the table kept mostly empty?","col":0,"row":2,"kind":"gold","shape":"diamond"},{"id":"either","label":"Either answer. Clashes are rare, and Lesson 8.3 is why","col":1,"row":0,"kind":"accent"},{"id":"q2","label":"Can you spend a chain node on every entry?","col":1,"row":3,"kind":"gold","shape":"diamond"},{"id":"walk","label":"Walk to the next free box. It stays inside the table","col":2,"row":2,"kind":"accent"},{"id":"chain","label":"Let the box hold a chain. Chapter 4 memory, per entry","col":2,"row":4,"kind":"accent"},{"id":"cost","label":"A clash now makes OTHER keys slower","col":3,"row":1,"kind":"muted"},{"id":"keep","label":"The clash stays in the box it happened in","col":3,"row":4,"kind":"gold"}],"edges":[{"from":"q1","to":"either","label":"yes","style":"green"},{"from":"q1","to":"q2","label":"no"},{"from":"q2","to":"walk","label":"no"},{"from":"q2","to":"chain","label":"yes","style":"green"},{"from":"walk","to":"cost","label":"and the price"},{"from":"chain","to":"keep","label":"and the prize"}],"caption":"The top branch matters more than the choice underneath it. Both strategies are fine on a table that is kept mostly empty and both degrade as it fills, so the number that decides a hash table is not which of these two answers it uses, it is how much room it was given. That number is the whole of Lesson 8.3."}'></div>
 
   <h2><span class="ix">6</span> What It Costs, In Plain English</h2>
   <div class="sub">How soon is soon.</div>
@@ -6526,7 +6530,7 @@ __NAV__
   <h1 class="les-title">Load Factor and Resizing: Why It Stays Fast</h1>
   <div class="les-meta">
     <span class="pill">foundational</span><span class="pill">~13 min</span>
-    <span class="pill gold">no code needed</span><span class="pill">9 visuals</span>
+    <span class="pill gold">no code needed</span><span class="pill">10 visuals</span>
   </div>
 
   <p class="motto">A hash table is kept half empty on purpose. The empty half is not waste, it is the entire product.</p>
@@ -6571,6 +6575,8 @@ __NAV__
     <tr><td>99 percent</td><td>about 5,000</td><td>Five thousand boxes touched, on a table that is not full</td></tr>
   </table>
   <div class="tbl-cap">Nothing about the rule changed between the first row and the last. The same table, the same keys, the same arithmetic, and a three thousandfold difference in work, produced entirely by how much room was left. This is the car park from block 1 with numbers on it.</div></div>
+
+  <div class="viz" data-viz='{"type":"dtree","title":"Should this table grow right now","maxChars":20,"gx":50,"nodes":[{"id":"q1","label":"Is it about half full?","col":0,"row":2,"kind":"gold","shape":"diamond"},{"id":"no1","label":"Leave it. A half full table still works perfectly","col":1,"row":0,"kind":"accent"},{"id":"q2","label":"Does the rule genuinely mix your keys?","col":1,"row":3,"kind":"gold","shape":"diamond"},{"id":"n2","label":"Growing will not save you. Fix the rule first","col":2,"row":1,"kind":"muted"},{"id":"y2","label":"Double, and recompute every address in it","col":2,"row":4,"kind":"accent"},{"id":"why","label":"No address was ever written down, so all of them move","col":3,"row":4,"kind":"gold"}],"edges":[{"from":"q1","to":"no1","label":"no","style":"green"},{"from":"q1","to":"q2","label":"yes"},{"from":"q2","to":"n2","label":"no"},{"from":"q2","to":"y2","label":"yes","style":"green"},{"from":"y2","to":"why","label":"and this is why it costs"}],"caption":"The middle question is the one people skip. A table that is slow at low fullness does not have a room problem, it has a rule problem, and doubling it just buys twice the memory for the same clumping. The bottom node is the half of a resize that is not in Lesson 3.3: a row that doubles copies its values, and a hash table has to recompute every single address on the way."}'></div>
 
   <h2><span class="ix">6</span> What It Costs, In Plain English</h2>
   <div class="sub">The expensive step that is cheap on average.</div>
@@ -6657,7 +6663,7 @@ __NAV__
   <h1 class="les-title">Sets, Maps, Caches and Deduplication</h1>
   <div class="les-meta">
     <span class="pill">foundational</span><span class="pill">~13 min</span>
-    <span class="pill gold">no code needed</span><span class="pill">9 visuals</span>
+    <span class="pill gold">no code needed</span><span class="pill">10 visuals</span>
   </div>
 
   <p class="motto">Most uses of hashing store nothing. They answer one question: have I seen this before.</p>
@@ -6700,6 +6706,8 @@ __NAV__
     <tr><td>Deduplication</td><td>Nothing, once the pass is over</td><td>How many times each repeat appeared, unless you count</td></tr>
   </table>
   <div class="tbl-cap">Read the right column. Every one of these refuses order, ranges and neighbours, because all four are the same computed address underneath and that address destroys order by construction. Chapter 6 sorted branch answers those questions and this one never will.</div></div>
+
+  <div class="viz" data-viz='{"type":"dtree","title":"Which of these four do you actually need","maxChars":20,"gx":50,"nodes":[{"id":"q1","label":"Do you need a value beside the key?","col":0,"row":2,"kind":"gold","shape":"diamond"},{"id":"q2","label":"Do you need it after this pass ends?","col":1,"row":0,"kind":"gold","shape":"diamond"},{"id":"q3","label":"Can you afford to keep everything, forever?","col":1,"row":4,"kind":"gold","shape":"diamond"},{"id":"dedup","label":"Deduplication. Nothing is kept once the pass is over","col":2,"row":-1,"kind":"accent"},{"id":"set","label":"A set. Keys only, and one question each","col":2,"row":1,"kind":"accent"},{"id":"cache","label":"A cache, plus a rule for what to forget","col":2,"row":3,"kind":"accent"},{"id":"map","label":"A map. One value beside each key","col":2,"row":5,"kind":"accent"},{"id":"no","label":"None of them answer order, ranges or nearest","col":3,"row":2,"kind":"muted"}],"edges":[{"from":"q1","to":"q2","label":"no","style":"green"},{"from":"q1","to":"q3","label":"yes"},{"from":"q2","to":"dedup","label":"no"},{"from":"q2","to":"set","label":"yes","style":"green"},{"from":"q3","to":"cache","label":"no"},{"from":"q3","to":"map","label":"yes","style":"green"},{"from":"set","to":"no","label":"and all four refuse"}],"caption":"Every destination here is the same computed address underneath, which is why the muted node applies to all four of them equally. Choosing between them is a question about what you need to keep, not about how the lookup works, because the lookup is identical in all four. The questions Chapter 6 answers are ruled out before you reach this diagram at all."}'></div>
 
   <h2><span class="ix">6</span> What It Costs, In Plain English</h2>
   <div class="sub">The same job, priced three ways.</div>
@@ -6781,7 +6789,7 @@ __NAV__
   <h1 class="les-title">How Hashing Problems Show Up, and Where It Runs in Production</h1>
   <div class="les-meta">
     <span class="pill">foundational</span><span class="pill">~12 min</span>
-    <span class="pill gold">no code needed</span><span class="pill">9 visuals</span>
+    <span class="pill gold">no code needed</span><span class="pill">10 visuals</span>
   </div>
 
   <p class="motto">Nobody asks for a hash table. They report a duplicate, a crawler that will not stop, or one customer who is always slow.</p>
@@ -6826,6 +6834,8 @@ __NAV__
     <tr><td>A report grouped by status</td><td>Which pile does this belong in</td><td>Nothing. Lesson 7.5 counting, which is this idea without storage</td></tr>
   </table>
   <div class="tbl-cap">The last row is the honest edge of the chapter. Counting sort places an item by what it IS rather than by comparing it, which is the same move as computing an address, and it is why Lesson 7.5 escaped the comparison floor. The two chapters meet here.</div></div>
+
+  <div class="viz" data-viz='{"type":"dtree","title":"Should you put a computed address in front of this","maxChars":20,"gx":50,"nodes":[{"id":"q1","label":"Is the question one exact key?","col":0,"row":2,"kind":"gold","shape":"diamond"},{"id":"n1","label":"Chapter 6. This chapter cannot help at any price","col":1,"row":0,"kind":"muted"},{"id":"q2","label":"Is discovering a miss cheaper than doing the work?","col":1,"row":3,"kind":"gold","shape":"diamond"},{"id":"n2","label":"It will make everything slower. Nobody prices a miss","col":2,"row":1,"kind":"muted"},{"id":"q3","label":"Can you spend memory that grows with what you have seen?","col":2,"row":4,"kind":"gold","shape":"diamond"},{"id":"bound","label":"Bound it and accept forgetting. Lesson 5.3","col":3,"row":3,"kind":"accent"},{"id":"keep","label":"Store it and ask once. One step","col":3,"row":5,"kind":"accent"}],"edges":[{"from":"q1","to":"n1","label":"no"},{"from":"q1","to":"q2","label":"yes","style":"green"},{"from":"q2","to":"n2","label":"no"},{"from":"q2","to":"q3","label":"yes","style":"green"},{"from":"q3","to":"bound","label":"no"},{"from":"q3","to":"keep","label":"yes","style":"green"}],"caption":"The middle question is the one the cache in block 9 failed, and it failed it while reporting a perfectly respectable hit rate. A miss has to be discovered before any work starts, so if discovering it costs a scan, the seventy percent who miss pay the scan and then pay the full price anyway. Both bottom destinations are correct answers; they differ only in what you are willing to spend."}'></div>
 
   <h2><span class="ix">6</span> What It Costs, In Plain English</h2>
   <div class="sub">Three prices, and the one nobody budgets for.</div>
@@ -6970,7 +6980,7 @@ __NAV__
   <h1 class="les-title">Branching: Parents, Children, and Why Depth Matters</h1>
   <div class="les-meta">
     <span class="pill">foundational</span><span class="pill">~13 min</span>
-    <span class="pill gold">no code needed</span><span class="pill">9 visuals</span>
+    <span class="pill gold">no code needed</span><span class="pill">10 visuals</span>
   </div>
 
   <p class="motto">Nobody designs a tree. You get one for free the moment ownership is exclusive, and then depth decides everything.</p>
@@ -7017,6 +7027,8 @@ __NAV__
     <tr><td>Not a tree at all</td><td>Something owned by two owners, or by itself</td><td>Chapter 12, where that becomes a graph</td></tr>
   </table>
   <div class="tbl-cap">The last row is the useful one. The moment something has two owners, or can contain itself, none of this chapter applies: depth stops being defined, walking stops terminating, and Lesson 4.4 already showed what a walk with no memory does when the data loops.</div></div>
+
+  <div class="viz" data-viz='{"type":"dtree","title":"Is a tree even the right shape for this","maxChars":20,"gx":50,"nodes":[{"id":"q1","label":"Can anything have two owners, or contain itself?","col":0,"row":2,"kind":"gold","shape":"diamond"},{"id":"graph","label":"Not a tree. Chapter 12, where it becomes a graph","col":1,"row":0,"kind":"muted"},{"id":"q2","label":"Is the child chosen by the next letter?","col":1,"row":3,"kind":"gold","shape":"diamond"},{"id":"trie","label":"A trie. Lesson 6.5 already built and walked one","col":2,"row":1,"kind":"accent"},{"id":"q3","label":"At most two children each?","col":2,"row":4,"kind":"gold","shape":"diamond"},{"id":"bin","label":"A binary tree. The rest of this chapter","col":3,"row":3,"kind":"accent"},{"id":"gen","label":"A general tree. Folders, org charts, page elements","col":3,"row":5,"kind":"accent"}],"edges":[{"from":"q1","to":"graph","label":"yes"},{"from":"q1","to":"q2","label":"no","style":"green"},{"from":"q2","to":"trie","label":"yes"},{"from":"q2","to":"q3","label":"no","style":"green"},{"from":"q3","to":"bin","label":"yes","style":"green"},{"from":"q3","to":"gen","label":"no"}],"caption":"The first question is the only one that can end the chapter, and it is worth asking out loud before anything else. The moment something has two owners or can contain itself, depth stops being defined and a walk stops being guaranteed to finish, which is exactly the outage Lesson 4.4 opened on. The trie question comes before the counting question on purpose: a trie holds one child per possible next letter, so it would fail a two children test that it was never trying to pass."}'></div>
 
   <h2><span class="ix">6</span> What It Costs, In Plain English</h2>
   <div class="sub">Depth, and the number of items never appearing.</div>
@@ -7098,7 +7110,7 @@ __NAV__
   <h1 class="les-title">Binary Trees and the Three Walks</h1>
   <div class="les-meta">
     <span class="pill">foundational</span><span class="pill">~13 min</span>
-    <span class="pill gold">no code needed</span><span class="pill">9 visuals</span>
+    <span class="pill gold">no code needed</span><span class="pill">10 visuals</span>
   </div>
 
   <p class="motto">The shape is fixed. The order you read it in is a choice, and each choice is the right answer to a different question.</p>
@@ -7146,6 +7158,8 @@ __NAV__
   <div class="tbl-cap">The middle column is a guarantee rather than a description, and that is why the right column follows without argument. A delete that used preorder would try to remove a folder that still had contents, and a total that used preorder would report a parent before its children had been counted.</div></div>
 
   <p>And the inorder row is worth pausing on, because it is a debt being paid. <strong>Lesson 6.5 said order kept as a shape survives writes where a sorted row does not.</strong> Inorder is how you get that order back out, and it costs one walk and no sorting at all.</p>
+
+  <div class="viz" data-viz='{"type":"dtree","title":"Which walk does the job actually need","maxChars":20,"gx":50,"nodes":[{"id":"q1","label":"Do you need a parent before anything it owns?","col":0,"row":2,"kind":"gold","shape":"diamond"},{"id":"pre","label":"Preorder. Listing a folder tree, copying one, printing an outline","col":1,"row":0,"kind":"accent"},{"id":"q2","label":"Must everything a node owns finish before the node does?","col":1,"row":3,"kind":"gold","shape":"diamond"},{"id":"post","label":"Postorder. Deleting a folder, totalling sizes, evaluating a formula","col":2,"row":1,"kind":"accent"},{"id":"q3","label":"Do you need it to come out in order?","col":2,"row":4,"kind":"gold","shape":"diamond"},{"id":"ino","label":"Inorder, on a tree with everything smaller on the left","col":3,"row":3,"kind":"accent"},{"id":"any","label":"Any of them. The job does not care, so pick the cheapest","col":3,"row":5,"kind":"muted"}],"edges":[{"from":"q1","to":"pre","label":"yes","style":"green"},{"from":"q1","to":"q2","label":"no"},{"from":"q2","to":"post","label":"yes","style":"green"},{"from":"q2","to":"q3","label":"no"},{"from":"q3","to":"ino","label":"yes","style":"green"},{"from":"q3","to":"any","label":"no"}],"caption":"Every branch here is a guarantee, not a preference, which is why the destinations follow without argument. A delete that took the preorder branch would try to remove a folder that still had things in it, and a total that took it would report a parent before its children had been counted. The muted node is honest: plenty of jobs genuinely do not care, and those are the ones where any of the three is correct."}'></div>
 
   <h2><span class="ix">6</span> What It Costs, In Plain English</h2>
   <div class="sub">All three cost the same, and that is the point.</div>
@@ -7227,7 +7241,7 @@ __NAV__
   <h1 class="les-title">Level Order: Reading a Tree Row by Row</h1>
   <div class="les-meta">
     <span class="pill">foundational</span><span class="pill">~12 min</span>
-    <span class="pill gold">no code needed</span><span class="pill">9 visuals</span>
+    <span class="pill gold">no code needed</span><span class="pill">10 visuals</span>
   </div>
 
   <p class="motto">The three walks all dive. This one refuses to, and refusing is what makes it answer nearest first.</p>
@@ -7274,6 +7288,8 @@ __NAV__
     <tr><td>Level order</td><td>The first match found is the shallowest one</td><td>A queue: oldest first, so it sweeps</td></tr>
   </table>
   <div class="tbl-cap">Read the last column and the chapter divides in two. Three of these are the same machine with a pile in it, differing only in when the parent speaks. The fourth is a genuinely different machine, and the difference is one structure from Chapter 5.</div></div>
+
+  <div class="viz" data-viz='{"type":"dtree","title":"Dive, or sweep","maxChars":20,"gx":50,"nodes":[{"id":"q1","label":"Do you need the shallowest match first?","col":0,"row":2,"kind":"gold","shape":"diamond"},{"id":"q2","label":"Is the tree very wide?","col":1,"row":0,"kind":"gold","shape":"diamond"},{"id":"dive","label":"Dive. A pile, newest first","col":1,"row":4,"kind":"accent"},{"id":"wide","label":"Sweep anyway, and watch the memory. A level can be half the tree","col":2,"row":-1,"kind":"muted"},{"id":"lvl","label":"Level order. A queue, oldest first","col":2,"row":1,"kind":"accent"},{"id":"which","label":"Which dive you get depends on when the parent speaks, which is Lesson 9.2","col":2,"row":4,"kind":"gold"}],"edges":[{"from":"q1","to":"q2","label":"yes","style":"green"},{"from":"q1","to":"dive","label":"no"},{"from":"q2","to":"wide","label":"yes"},{"from":"q2","to":"lvl","label":"no","style":"green"},{"from":"dive","to":"which","label":"and then"}],"caption":"One structure decides this entire diagram. A pile dives and a queue sweeps, and nothing else about the walk changes, which is the single most reusable fact in the chapter. The warning sits on the sweep branch for a reason: an evenly branched tree keeps about half of everything in its bottom row, so a sweep of a million holds about five hundred thousand waiting while a dive of the same tree holds about twenty."}'></div>
 
   <h2><span class="ix">6</span> What It Costs, In Plain English</h2>
   <div class="sub">Same time, different memory, and one guarantee.</div>
@@ -7355,7 +7371,7 @@ __NAV__
   <h1 class="les-title">Height, Depth and Balance: The Numbers That Decide Speed</h1>
   <div class="les-meta">
     <span class="pill">foundational</span><span class="pill">~13 min</span>
-    <span class="pill gold">no code needed</span><span class="pill">10 visuals</span>
+    <span class="pill gold">no code needed</span><span class="pill">11 visuals</span>
   </div>
 
   <p class="motto">The gap between a good tree and a perfect one is nothing. The gap between a good tree and none at all is everything.</p>
@@ -7406,6 +7422,8 @@ __NAV__
   <div class="tbl-cap">Rows one and two are the point of this table. Perfect balance is worth almost nothing over rough balance, ten against twenty on a thousand items, and chasing it is effort spent on a difference nobody will measure. Row four is worth everything, and that is where all the attention belongs.</div></div>
 
   <p>And the boundary of this chapter sits right here. <strong>How a tree gets into row four, and what a structure does to climb back out, is Lesson 10.3, When a Search Tree Quietly Becomes a List, and Lesson 10.4.</strong> This chapter measures the shape. Chapter 10 maintains it.</p>
+
+  <div class="viz" data-viz='{"type":"dtree","title":"How much balance do you actually need","maxChars":20,"gx":50,"nodes":[{"id":"q1","label":"Is the height climbing as fast as the count?","col":0,"row":2,"kind":"gold","shape":"diamond"},{"id":"ok","label":"Roughly balanced. Stop. This is the target","col":1,"row":0,"kind":"accent"},{"id":"q2","label":"Is the data arriving in order?","col":1,"row":3,"kind":"gold","shape":"diamond"},{"id":"sorted","label":"Lesson 10.3. This is the known way in","col":2,"row":2,"kind":"accent"},{"id":"other","label":"Lesson 10.4. A structure that keeps its own shape","col":2,"row":4,"kind":"accent"},{"id":"perfect","label":"Chasing perfect balance buys twenty against forty","col":3,"row":0,"kind":"muted"}],"edges":[{"from":"q1","to":"ok","label":"no","style":"green"},{"from":"q1","to":"q2","label":"yes"},{"from":"q2","to":"sorted","label":"yes"},{"from":"q2","to":"other","label":"no"},{"from":"ok","to":"perfect","label":"and do not go further"}],"caption":"The muted node is a warning, not a destination. Perfect balance is worth almost nothing over rough balance, twenty touches against forty on a million items, and no user will ever measure the difference. The two lower destinations are worth everything, because that is where a tree quietly stops being a tree and starts being the chain from Chapter 4 with a diagram on top. This chapter measures the shape; Chapter 10 maintains it."}'></div>
 
   <h2><span class="ix">6</span> What It Costs, In Plain English</h2>
   <div class="sub">The gap that matters and the gap that does not.</div>
@@ -7487,7 +7505,7 @@ __NAV__
   <h1 class="les-title">Where Trees Show Up: Folders, Web Pages, Org Charts, File Systems</h1>
   <div class="les-meta">
     <span class="pill">foundational</span><span class="pill">~12 min</span>
-    <span class="pill gold">no code needed</span><span class="pill">9 visuals</span>
+    <span class="pill gold">no code needed</span><span class="pill">10 visuals</span>
   </div>
 
   <p class="motto">You have used six trees today. None of them was called a tree, and every one of them charged you by depth.</p>
@@ -7532,6 +7550,8 @@ __NAV__
     <tr><td>A trie</td><td>A prefix owns its continuations</td><td>Cost is what you typed. Lesson 6.5 already built it</td></tr>
   </table>
   <div class="tbl-cap">The menu row is the one you can feel without any tools. Every level of submenu is one more click for every user, forever, and it is the only design decision in that list where the depth cost is paid by a person rather than a machine.</div></div>
+
+  <div class="viz" data-viz='{"type":"dtree","title":"Is depth costing you, and can you do anything about it","maxChars":20,"gx":50,"nodes":[{"id":"q1","label":"Did somebody choose how deep this nests?","col":0,"row":2,"kind":"gold","shape":"diamond"},{"id":"typed","label":"No. The depth is whatever was typed, and a trie charges exactly that","col":1,"row":0,"kind":"accent"},{"id":"q2","label":"Is a person paying for the depth?","col":1,"row":3,"kind":"gold","shape":"diamond"},{"id":"clicks","label":"Flatten it. Every level is one more click, for every user, forever","col":2,"row":2,"kind":"accent"},{"id":"q3","label":"Can the nesting be flattened at all?","col":2,"row":4,"kind":"gold","shape":"diamond"},{"id":"flat","label":"Flatten it. The saving is paid back on every single operation","col":3,"row":3,"kind":"accent"},{"id":"price","label":"Then price it, and stop treating it as free","col":3,"row":5,"kind":"muted"}],"edges":[{"from":"q1","to":"typed","label":"no"},{"from":"q1","to":"q2","label":"yes","style":"green"},{"from":"q2","to":"clicks","label":"yes","style":"green"},{"from":"q2","to":"q3","label":"no"},{"from":"q3","to":"flat","label":"yes","style":"green"},{"from":"q3","to":"price","label":"no"}],"caption":"The person branch is the one worth taking seriously, because it is the only place in this chapter where the depth cost is paid by a human being rather than a machine. A menu three levels deep costs every user three clicks, every time, and nothing about that improves with a faster computer. The machine branch is still real, and Lesson 9.4 is how you put a number on it."}'></div>
 
   <h2><span class="ix">6</span> What It Costs, In Plain English</h2>
   <div class="sub">The same number, in five different currencies.</div>

@@ -10,7 +10,7 @@
   <h1 class="les-title">The Instant Answer: Turning a Key Into an Address</h1>
   <div class="les-meta">
     <span class="pill">foundational</span><span class="pill">~13 min</span>
-    <span class="pill gold">no code needed</span><span class="pill">9 visuals</span>
+    <span class="pill gold">no code needed</span><span class="pill">10 visuals</span>
   </div>
 
   <p class="motto">Every other structure in this course answers where is it by looking. This one computes the answer and never looks at all.</p>
@@ -57,6 +57,8 @@
     <tr><td>Nothing else at all</td><td>It does not need to be clever, secret, or reversible</td><td>Nothing. Those are different jobs for different tools</td></tr>
   </table>
   <div class="tbl-cap">The letter-adding rule in block 3 satisfies the first and third rows and is mediocre at the second, which is exactly the honest situation and the reason Lesson 8.2 exists. A rule that spreads keys badly is not broken, it is slow, and the difference between those two is the whole of the next lesson.</div></div>
+
+  <div class="viz" data-viz='{"type":"dtree","title":"Is this rule allowed to be your hash rule","maxChars":20,"gx":50,"nodes":[{"id":"q1","label":"Same key, same box, every single time?","col":0,"row":3,"kind":"gold","shape":"diamond"},{"id":"n1","label":"Unusable. Nothing can ever be found again","col":1,"row":0,"kind":"muted"},{"id":"q2","label":"Does it spread different keys evenly?","col":1,"row":3,"kind":"gold","shape":"diamond"},{"id":"n2","label":"Usable, and Lesson 8.2 is now your problem","col":2,"row":1,"kind":"gold"},{"id":"q3","label":"Cheap on every store and every read?","col":2,"row":4,"kind":"gold","shape":"diamond"},{"id":"n3","label":"The one step stops being one step","col":3,"row":2,"kind":"muted"},{"id":"y3","label":"Use it. Nothing else is required","col":3,"row":5,"kind":"accent"}],"edges":[{"from":"q1","to":"n1","label":"no"},{"from":"q1","to":"q2","label":"yes","style":"green"},{"from":"q2","to":"n2","label":"no"},{"from":"q2","to":"q3","label":"yes","style":"green"},{"from":"q3","to":"n3","label":"no"},{"from":"q3","to":"y3","label":"yes","style":"green"}],"caption":"Only the first question can disqualify a rule outright, and that is the whole point of the table above it. The letter-adding rule in block 3 passes the first and third questions and is mediocre at the second, which is why it reaches the bottom of this tree and why Lesson 8.2 exists at all. Notice what is not asked anywhere: whether the rule is clever, secret or reversible."}'></div>
 
   <h2><span class="ix">6</span> What It Costs, In Plain English</h2>
   <div class="sub">Settling the bill from Lesson 6.2.</div>
@@ -138,7 +140,7 @@ __NAV__
   <h1 class="les-title">Collisions: When Two Keys Want the Same Box</h1>
   <div class="les-meta">
     <span class="pill">foundational</span><span class="pill">~13 min</span>
-    <span class="pill gold">no code needed</span><span class="pill">9 visuals</span>
+    <span class="pill gold">no code needed</span><span class="pill">10 visuals</span>
   </div>
 
   <p class="motto">A collision is not bad luck and it is not a flaw in the rule. It is arithmetic, and it arrives far earlier than anybody expects.</p>
@@ -181,6 +183,8 @@ __NAV__
     <tr><td>Either one, on a table kept mostly empty</td><td>Almost never has to do anything</td><td>Empty boxes. This is Lesson 8.3</td></tr>
   </table>
   <div class="tbl-cap">The third row is where this chapter is heading and it matters more than the choice between the first two. Both strategies are fine when clashes are rare and both degrade when the table fills, so the number that decides a hash table is not which answer it uses but how much room it is given.</div></div>
+
+  <div class="viz" data-viz='{"type":"dtree","title":"Two keys want one box. Which answer are you allowed to use","maxChars":20,"gx":50,"nodes":[{"id":"q1","label":"Is the table kept mostly empty?","col":0,"row":2,"kind":"gold","shape":"diamond"},{"id":"either","label":"Either answer. Clashes are rare, and Lesson 8.3 is why","col":1,"row":0,"kind":"accent"},{"id":"q2","label":"Can you spend a chain node on every entry?","col":1,"row":3,"kind":"gold","shape":"diamond"},{"id":"walk","label":"Walk to the next free box. It stays inside the table","col":2,"row":2,"kind":"accent"},{"id":"chain","label":"Let the box hold a chain. Chapter 4 memory, per entry","col":2,"row":4,"kind":"accent"},{"id":"cost","label":"A clash now makes OTHER keys slower","col":3,"row":1,"kind":"muted"},{"id":"keep","label":"The clash stays in the box it happened in","col":3,"row":4,"kind":"gold"}],"edges":[{"from":"q1","to":"either","label":"yes","style":"green"},{"from":"q1","to":"q2","label":"no"},{"from":"q2","to":"walk","label":"no"},{"from":"q2","to":"chain","label":"yes","style":"green"},{"from":"walk","to":"cost","label":"and the price"},{"from":"chain","to":"keep","label":"and the prize"}],"caption":"The top branch matters more than the choice underneath it. Both strategies are fine on a table that is kept mostly empty and both degrade as it fills, so the number that decides a hash table is not which of these two answers it uses, it is how much room it was given. That number is the whole of Lesson 8.3."}'></div>
 
   <h2><span class="ix">6</span> What It Costs, In Plain English</h2>
   <div class="sub">How soon is soon.</div>
@@ -262,7 +266,7 @@ __NAV__
   <h1 class="les-title">Load Factor and Resizing: Why It Stays Fast</h1>
   <div class="les-meta">
     <span class="pill">foundational</span><span class="pill">~13 min</span>
-    <span class="pill gold">no code needed</span><span class="pill">9 visuals</span>
+    <span class="pill gold">no code needed</span><span class="pill">10 visuals</span>
   </div>
 
   <p class="motto">A hash table is kept half empty on purpose. The empty half is not waste, it is the entire product.</p>
@@ -307,6 +311,8 @@ __NAV__
     <tr><td>99 percent</td><td>about 5,000</td><td>Five thousand boxes touched, on a table that is not full</td></tr>
   </table>
   <div class="tbl-cap">Nothing about the rule changed between the first row and the last. The same table, the same keys, the same arithmetic, and a three thousandfold difference in work, produced entirely by how much room was left. This is the car park from block 1 with numbers on it.</div></div>
+
+  <div class="viz" data-viz='{"type":"dtree","title":"Should this table grow right now","maxChars":20,"gx":50,"nodes":[{"id":"q1","label":"Is it about half full?","col":0,"row":2,"kind":"gold","shape":"diamond"},{"id":"no1","label":"Leave it. A half full table still works perfectly","col":1,"row":0,"kind":"accent"},{"id":"q2","label":"Does the rule genuinely mix your keys?","col":1,"row":3,"kind":"gold","shape":"diamond"},{"id":"n2","label":"Growing will not save you. Fix the rule first","col":2,"row":1,"kind":"muted"},{"id":"y2","label":"Double, and recompute every address in it","col":2,"row":4,"kind":"accent"},{"id":"why","label":"No address was ever written down, so all of them move","col":3,"row":4,"kind":"gold"}],"edges":[{"from":"q1","to":"no1","label":"no","style":"green"},{"from":"q1","to":"q2","label":"yes"},{"from":"q2","to":"n2","label":"no"},{"from":"q2","to":"y2","label":"yes","style":"green"},{"from":"y2","to":"why","label":"and this is why it costs"}],"caption":"The middle question is the one people skip. A table that is slow at low fullness does not have a room problem, it has a rule problem, and doubling it just buys twice the memory for the same clumping. The bottom node is the half of a resize that is not in Lesson 3.3: a row that doubles copies its values, and a hash table has to recompute every single address on the way."}'></div>
 
   <h2><span class="ix">6</span> What It Costs, In Plain English</h2>
   <div class="sub">The expensive step that is cheap on average.</div>
@@ -393,7 +399,7 @@ __NAV__
   <h1 class="les-title">Sets, Maps, Caches and Deduplication</h1>
   <div class="les-meta">
     <span class="pill">foundational</span><span class="pill">~13 min</span>
-    <span class="pill gold">no code needed</span><span class="pill">9 visuals</span>
+    <span class="pill gold">no code needed</span><span class="pill">10 visuals</span>
   </div>
 
   <p class="motto">Most uses of hashing store nothing. They answer one question: have I seen this before.</p>
@@ -436,6 +442,8 @@ __NAV__
     <tr><td>Deduplication</td><td>Nothing, once the pass is over</td><td>How many times each repeat appeared, unless you count</td></tr>
   </table>
   <div class="tbl-cap">Read the right column. Every one of these refuses order, ranges and neighbours, because all four are the same computed address underneath and that address destroys order by construction. Chapter 6 sorted branch answers those questions and this one never will.</div></div>
+
+  <div class="viz" data-viz='{"type":"dtree","title":"Which of these four do you actually need","maxChars":20,"gx":50,"nodes":[{"id":"q1","label":"Do you need a value beside the key?","col":0,"row":2,"kind":"gold","shape":"diamond"},{"id":"q2","label":"Do you need it after this pass ends?","col":1,"row":0,"kind":"gold","shape":"diamond"},{"id":"q3","label":"Can you afford to keep everything, forever?","col":1,"row":4,"kind":"gold","shape":"diamond"},{"id":"dedup","label":"Deduplication. Nothing is kept once the pass is over","col":2,"row":-1,"kind":"accent"},{"id":"set","label":"A set. Keys only, and one question each","col":2,"row":1,"kind":"accent"},{"id":"cache","label":"A cache, plus a rule for what to forget","col":2,"row":3,"kind":"accent"},{"id":"map","label":"A map. One value beside each key","col":2,"row":5,"kind":"accent"},{"id":"no","label":"None of them answer order, ranges or nearest","col":3,"row":2,"kind":"muted"}],"edges":[{"from":"q1","to":"q2","label":"no","style":"green"},{"from":"q1","to":"q3","label":"yes"},{"from":"q2","to":"dedup","label":"no"},{"from":"q2","to":"set","label":"yes","style":"green"},{"from":"q3","to":"cache","label":"no"},{"from":"q3","to":"map","label":"yes","style":"green"},{"from":"set","to":"no","label":"and all four refuse"}],"caption":"Every destination here is the same computed address underneath, which is why the muted node applies to all four of them equally. Choosing between them is a question about what you need to keep, not about how the lookup works, because the lookup is identical in all four. The questions Chapter 6 answers are ruled out before you reach this diagram at all."}'></div>
 
   <h2><span class="ix">6</span> What It Costs, In Plain English</h2>
   <div class="sub">The same job, priced three ways.</div>
@@ -517,7 +525,7 @@ __NAV__
   <h1 class="les-title">How Hashing Problems Show Up, and Where It Runs in Production</h1>
   <div class="les-meta">
     <span class="pill">foundational</span><span class="pill">~12 min</span>
-    <span class="pill gold">no code needed</span><span class="pill">9 visuals</span>
+    <span class="pill gold">no code needed</span><span class="pill">10 visuals</span>
   </div>
 
   <p class="motto">Nobody asks for a hash table. They report a duplicate, a crawler that will not stop, or one customer who is always slow.</p>
@@ -562,6 +570,8 @@ __NAV__
     <tr><td>A report grouped by status</td><td>Which pile does this belong in</td><td>Nothing. Lesson 7.5 counting, which is this idea without storage</td></tr>
   </table>
   <div class="tbl-cap">The last row is the honest edge of the chapter. Counting sort places an item by what it IS rather than by comparing it, which is the same move as computing an address, and it is why Lesson 7.5 escaped the comparison floor. The two chapters meet here.</div></div>
+
+  <div class="viz" data-viz='{"type":"dtree","title":"Should you put a computed address in front of this","maxChars":20,"gx":50,"nodes":[{"id":"q1","label":"Is the question one exact key?","col":0,"row":2,"kind":"gold","shape":"diamond"},{"id":"n1","label":"Chapter 6. This chapter cannot help at any price","col":1,"row":0,"kind":"muted"},{"id":"q2","label":"Is discovering a miss cheaper than doing the work?","col":1,"row":3,"kind":"gold","shape":"diamond"},{"id":"n2","label":"It will make everything slower. Nobody prices a miss","col":2,"row":1,"kind":"muted"},{"id":"q3","label":"Can you spend memory that grows with what you have seen?","col":2,"row":4,"kind":"gold","shape":"diamond"},{"id":"bound","label":"Bound it and accept forgetting. Lesson 5.3","col":3,"row":3,"kind":"accent"},{"id":"keep","label":"Store it and ask once. One step","col":3,"row":5,"kind":"accent"}],"edges":[{"from":"q1","to":"n1","label":"no"},{"from":"q1","to":"q2","label":"yes","style":"green"},{"from":"q2","to":"n2","label":"no"},{"from":"q2","to":"q3","label":"yes","style":"green"},{"from":"q3","to":"bound","label":"no"},{"from":"q3","to":"keep","label":"yes","style":"green"}],"caption":"The middle question is the one the cache in block 9 failed, and it failed it while reporting a perfectly respectable hit rate. A miss has to be discovered before any work starts, so if discovering it costs a scan, the seventy percent who miss pay the scan and then pay the full price anyway. Both bottom destinations are correct answers; they differ only in what you are willing to spend."}'></div>
 
   <h2><span class="ix">6</span> What It Costs, In Plain English</h2>
   <div class="sub">Three prices, and the one nobody budgets for.</div>
