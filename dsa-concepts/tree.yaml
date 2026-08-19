@@ -546,7 +546,7 @@ milestones:
         layers: []
       - id: M5.C08
         name: Ch08 Hashing: Finding Without Looking
-        status: partial, 4 of 6 lessons live.
+        status: shipped. 6 lessons live, qa green.
         layers: []
       - id: M5.C09
         name: Ch09 Trees: Things That Branch
