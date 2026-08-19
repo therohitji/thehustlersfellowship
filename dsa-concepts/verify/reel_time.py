@@ -21,6 +21,9 @@ def words(r):
 def pill(r):
     return '~%s min' % (int(r) if r == int(r) else r)
 
+WORDS = {1:'One',2:'Two',3:'Three',4:'Four',5:'Five',6:'Six',7:'Seven',8:'Eight',9:'Nine',
+         10:'Ten',11:'Eleven',12:'Twelve',13:'Thirteen',14:'Fourteen',15:'Fifteen',16:'Sixteen'}
+
 check = '--check' in sys.argv
 stale = []
 for f in sorted(glob.glob('chapters/*.js')):
@@ -30,6 +33,13 @@ for f in sorted(glob.glob('chapters/*.js')):
         r = rounded(duration_min(spec))
         cap = spec.get('caption') or ''
         want = words(r)
+        # the act count is stated in words in the same sentence and drifts the same way
+        n = len(spec['acts'])
+        got_acts = re.search(r'^(\w+) acts', cap)
+        if got_acts and WORDS.get(n) and got_acts.group(1).lower() != WORDS[n].lower():
+            stale.append('%s reel caption says "%s acts", it has %d' % (f, got_acts.group(1), n))
+            new_cap = cap.replace(got_acts.group(0), '%s acts' % WORDS[n], 1)
+            out = out.replace(cap, new_cap); cap = new_cap
         got = re.search(r'about (?:[\w.]+) minutes?', cap)
         if got and got.group(0) != want:
             stale.append('%s reel caption says "%s", runs %s' % (f, got.group(0), want))
