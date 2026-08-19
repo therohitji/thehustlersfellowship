@@ -40,6 +40,17 @@ for f in sorted(glob.glob('chapters/ch*.js')):
 LESSONS_BODY = ",\n\n".join(lesson_blocks)
 
 # ---------- validate every visual payload ----------
+KINDS = {'box', 'accent', 'dark', 'gold', 'warn', 'bad', 'muted'}
+
+def walk_kinds(o):
+    """every 'kind' value anywhere in a payload, at any depth"""
+    if isinstance(o, dict):
+        for k, v in o.items():
+            if k == 'kind' and isinstance(v, str): yield v
+            else: yield from walk_kinds(v)
+    elif isinstance(o, list):
+        for v in o: yield from walk_kinds(v)
+
 def check_payloads(blob):
     n_viz = n_anim = 0
     for attr, types, kind in (('data-viz', VIZ_TYPES, 'viz'), ('data-anim', ANIM_TYPES, 'anim'), ('data-reel', {'reel'}, 'reel')):
@@ -65,6 +76,12 @@ def check_payloads(blob):
                 sys.exit("BUILD FAILED: unknown %s type %r (allowed: %s)" % (kind, t, ", ".join(sorted(types))))
             if kind == 'anim' and not spec.get('steps'):
                 sys.exit("BUILD FAILED: animation %r has no steps" % spec.get('title', t))
+            # A kind outside the palette is not a styling nit: KIND[k] comes back undefined and
+            # the renderer throws on it, which surfaces far downstream as "cannot read fill".
+            bad_kinds = sorted({k for k in walk_kinds(spec) if k not in KINDS})
+            if bad_kinds:
+                sys.exit("BUILD FAILED: %s %r uses unknown kind(s) %s (allowed: %s)"
+                         % (kind, spec.get('title', t), ", ".join(repr(b) for b in bad_kinds), ", ".join(sorted(KINDS))))
             if kind == 'viz': n_viz += 1
             else: n_anim += 1
     return n_viz, n_anim

@@ -273,6 +273,11 @@ grid based, which is why nothing overlaps. Two things you must respect:
 | `curve` | cost lines drawing themselves, with a data-size badge |
 | `reveal` | **any grid diagram, drawn into existence one node at a time.** Wrap a `viz` spec and give each step a `show` list. Use this whenever a diagram is the argument. |
 
+**Node `kind` is a closed vocabulary**: `box`, `accent`, `dark`, `gold`, `warn`, `bad`,
+`muted`. Anything else is not a styling nit, it is a crash: the renderer looks the kind up,
+gets nothing back and throws. `build.py` now refuses the build and names the diagram, the
+offending kind and the allowed set.
+
 **Every cell-painting renderer honours the same five states**, in the same precedence:
 `bad`, then `found`, then `look`, then `seen`, then `dead`. Row renderers add the `range`
 window underneath, which paints anything outside it as `dead`; `found` and `seen` survive a
@@ -400,6 +405,7 @@ overlaps" is a build failure instead of an opinion.
 | A diagram is clipped at an edge | a node authored at coordinate zero | `net` and `scene` auto-fit, `layered` never clips |
 | Everything passes but the lesson is boring | block 3 was written last and rushed | write block 3 first, then the prose around it |
 | A state you set never appears on the board | the renderer dropped a state it never implemented | `check_renderers.mjs` fails it now; every renderer must cover all five |
+| A diagram throws `cannot read fill` | a `kind` outside the seven | `build.py` fails it now and names the diagram |
 
 ---
 
