@@ -49,7 +49,7 @@
   .rail-brand .by{font-size:12.5px;color:rgba(220,236,229,.62);font-weight:500;}
   .rail-progress{padding:15px 22px 17px;font-size:11px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:rgba(220,236,229,.55);border-bottom:1px solid rgba(255,255,255,.09);}
   .pbar{height:5px;border-radius:99px;background:rgba(255,255,255,.13);margin-top:9px;overflow:hidden;}
-  .pbar i{display:block;height:100%;width:38%;background:linear-gradient(90deg,var(--green-500),var(--gold-500));border-radius:99px;}
+  .pbar i{display:block;height:100%;width:39%;background:linear-gradient(90deg,var(--green-500),var(--gold-500));border-radius:99px;}
 
   .chap{border-bottom:1px solid rgba(255,255,255,.06);}
   .chap-head{display:flex;align-items:center;gap:9px;padding:12px 22px;cursor:pointer;font-size:13.5px;font-weight:600;transition:background .14s;}
@@ -372,7 +372,7 @@ const COURSE = [
   ]},
   { n:"08", title:"Hashing: Finding Without Looking", lessons:[
       {id:"8.1", t:"The Instant Answer: Turning a Key Into an Address", state:"live"},
-      {id:"8.2", t:"Collisions: When Two Keys Want the Same Box", state:"soon"},
+      {id:"8.2", t:"Collisions: When Two Keys Want the Same Box", state:"live"},
       {id:"8.3", t:"Load Factor and Resizing: Why It Stays Fast", state:"soon"},
       {id:"8.4", t:"Sets, Maps, Caches and Deduplication", state:"soon"},
       {id:"8.5", t:"How Hashing Problems Show Up, and Where It Runs in Production", state:"soon"},
@@ -6392,6 +6392,130 @@ __NAV__
   <div class="callout good">
     <div class="ch">Next</div>
     <p>Everything above rested on a quiet assumption: that when a name computed to a box, the box was empty. <strong>Add one more name and that stops being true</strong>, and it is not bad luck, not a flaw in the rule, and not something anybody can engineer away. The next lesson is what a table does about it.</p>
+  </div>
+__NAV__
+</div>`
+,
+
+"8.2": `<div class="wrap">
+  <div class="les-kicker">Chapter 8 · Lesson 8.2</div>
+  <h1 class="les-title">Collisions: When Two Keys Want the Same Box</h1>
+  <div class="les-meta">
+    <span class="pill">foundational</span><span class="pill">~13 min</span>
+    <span class="pill gold">no code needed</span><span class="pill">10 visuals</span>
+  </div>
+
+  <p class="motto">A collision is not bad luck and it is not a flaw in the rule. It is arithmetic, and it arrives far earlier than anybody expects.</p>
+
+  <p class="lead">Lesson 8.1 rested on a quiet assumption: that when a name computed to a box, the box was empty. This lesson is what happens when it is not, and the first surprise is how soon that happens. By the end you can say why every hash table is a collision strategy wearing a lookup as a disguise.</p>
+
+  <h2><span class="ix">1</span> The Everyday Situation</h2>
+  <div class="sub">Two people, one shared birthday.</div>
+  <p>Put twenty three people in a room and there is a slightly better than even chance that two of them share a birthday. Most people guess you would need a hundred and fifty. <strong>There are 365 possible days and only twenty three people</strong>, so the room is six percent full, and a clash is already more likely than not.</p>
+
+  <div class="viz" data-viz='{"type":"scene","title":"Twenty three people, 365 days, and a clash more likely than not","width":820,"height":280,"items":[{"icon":"person","x":130,"y":126,"kind":"gold","label":"twenty three people"},{"icon":"shelf","x":390,"y":124,"kind":"accent","label":"365 possible days"},{"icon":"person","x":640,"y":126,"kind":"bad","label":"two of them share one"}],"arrows":[{"x1":200,"y1":126,"x2":320,"y2":126,"style":"green","label":"six percent full"},{"x1":470,"y1":126,"x2":576,"y2":126,"style":"gold","label":"and it is already even odds"}],"caption":"Nobody is unlucky in that room. The reason is that a clash does not need two people to want one particular day, it needs any two people to want any one day, and there are far more pairs of people than there are people. A hash table is that room, and its boxes are the days."}'></div>
+
+  <p>Nobody in that room is unlucky. <strong>A clash does not need two people to want one particular day.</strong> It needs any two to want any one day, and there are far more pairs than people.</p>
+
+  <h2><span class="ix">2</span> What It Actually Is</h2>
+  <div class="sub">Two keys, one box, and no way to prevent it.</div>
+  <p>The rule in Lesson 8.1 takes a key of any kind and produces one of eight boxes. There are more possible names than there are boxes, <strong>so some names must share.</strong> That is not a weakness of the letter-adding rule. It is true of every rule, and it would still be true if the rule were perfect.</p>
+
+  <div class="viz" data-viz='{"type":"arch","title":"Why it cannot be engineered away","maxChars":18,"nodes":[{"id":"k","label":"Endlessly many possible keys","col":0,"row":1,"kind":"gold"},{"id":"b","label":"A fixed number of boxes","col":1,"row":1,"kind":"accent"},{"id":"c","label":"So some keys must share a box","col":2,"row":1,"kind":"bad"},{"id":"g","label":"A better rule spreads them more evenly","col":2,"row":0,"kind":"accent"},{"id":"n","label":"But it never makes sharing impossible","col":3,"row":0,"kind":"bad"},{"id":"a","label":"So every table needs an answer for when it happens","col":3,"row":1,"kind":"dark"}],"edges":[{"from":"k","to":"b","label":"squeezed into"},{"from":"b","to":"c","label":"therefore"},{"from":"c","to":"g","label":"a better rule helps"},{"from":"g","to":"n","label":"but"},{"from":"c","to":"a","label":"so","style":"green"}],"caption":"Read the top right node twice. A good rule reduces how often two keys share a box and can never reduce it to zero, because there are more things you might store than there are places to put them. Every design decision in the rest of this chapter is an answer to the bottom right node."}'></div>
+
+  <h2><span class="ix">3</span> Watch It Work</h2>
+  <div class="sub">One more name, and the assumption breaks.</div>
+  <p>The same table from Lesson 8.1, with the same four names already in it. Now add <strong>leo</strong>: l is 12, e is 5, o is 15, so 32, which divided by eight leaves nothing. <strong>Box 0.</strong> And ana is already there.</p>
+
+  <div class="board" data-anim='{"type":"array-scan","title":"leo computes to box 0, and ana is already in it","speed":1700,"big":true,"data":["ana","raj","sam","mia","leo"],"capacity":8,"countLabel":" boxes touched","pointerLabels":{"i":"probing"},"legend":[["being placed","look"],["stored","found"],["occupied, so keep walking","bad"],["where it settled","seen"]],"steps":[{"capacity":8,"order":[0,2,null,null,null,1,null,3],"found":[0,2,1,3],"count":0,"say":"Lesson 8.1 left the table like this. Four names, four boxes, and four empty ones. <b>Everything so far has assumed the computed box was free.</b>"},{"capacity":8,"order":[0,2,null,null,null,1,null,3],"found":[2,1,3],"bad":[0],"look":[4],"count":1,"say":"<b>leo adds up to 32, which leaves nothing, so box 0.</b> And ana is sitting in it. Nothing has gone wrong: two different names computed to the same address, which is the arithmetic working exactly as described."},{"capacity":8,"order":[0,2,null,null,null,1,null,3],"found":[1,3],"bad":[0,2],"look":[4],"count":2,"say":"One answer is to walk. <b>Box 0 is taken, so try box 1.</b> That holds sam, so it is taken too. The counter is moving now, and in Lesson 8.1 it never did."},{"capacity":8,"order":[0,2,4,null,null,1,null,3],"found":[0,2,1,3],"seen":[4],"count":3,"badge":"3 boxes touched","say":"<b>Box 2 is empty, so leo lives there.</b> Three boxes touched instead of one. And notice what that did to reading: to find leo later you compute 0, find ana, and have to keep walking too."},{"capacity":8,"order":[0,2,4,null,null,1,null,3],"found":[0,1,3],"seen":[2],"bad":[4],"count":3,"badge":"and the cost is now shared","say":"<b>The cost is no longer a property of leo alone.</b> ana was stored first and is still one look, sam is still one, and leo is three, on the same table, with the same rule. The lookup time now depends on what else arrived and when."}],"caption":"The counter is the whole difference from Lesson 8.1. Storing cost nothing there and reading cost one look, always. Here both depend on what is already in the table, which is why the next lesson is about how full it is allowed to get."}'></div>
+
+  <h2><span class="ix">4</span> Under The Hood</h2>
+  <div class="sub">The other answer: let the box hold more than one thing.</div>
+  <p>Walking to the next free box is one strategy. The other is to stop insisting that a box holds one item. <strong>Let it hold a chain</strong>, which is exactly the structure Chapter 4 built, and which its own knowledge graph already listed a hash table under.</p>
+
+  <div class="board" data-anim='{"type":"graph-walk","title":"The other answer: box 0 holds a chain","speed":1600,"directed":true,"unit":124,"legend":[["the box you computed","look"],["walking the chain","seen"],["found it","found"]],"nodes":[{"id":"b0","label":"0","x":0,"y":0},{"id":"b1","label":"1","x":1,"y":0},{"id":"b2","label":"2","x":2,"y":0},{"id":"b5","label":"5","x":3,"y":0},{"id":"ana","label":"ana","x":0,"y":1},{"id":"leo","label":"leo","x":0,"y":2},{"id":"sam","label":"sam","x":1,"y":1},{"id":"raj","label":"raj","x":3,"y":1}],"edges":[{"from":"b0","to":"ana"},{"from":"ana","to":"leo"},{"from":"b1","to":"sam"},{"from":"b5","to":"raj"}],"steps":[{"edges":["b0-ana","ana-leo","b1-sam","b5-raj"],"say":"Same four boxes, and box 0 now holds <b>a chain of two</b> rather than one name. Nothing was moved and nothing walked to a different box."},{"edges":["b0-ana","ana-leo","b1-sam","b5-raj"],"look":["b0"],"say":"Reading leo: compute 32, take the remainder, get box 0. <b>One step to the box, exactly as in Lesson 8.1.</b>"},{"edges":["b0-ana","ana-leo","b1-sam","b5-raj"],"seen":["b0","ana"],"look":["leo"],"say":"Then walk the chain: ana is not leo, so follow to the next one. <b>That walk is Lesson 4.1, and it costs one hop per name in the box.</b>"},{"edges":["b0-ana","ana-leo","b1-sam","b5-raj"],"seen":["b0","ana"],"found":["leo"],"say":"Found. <b>One step plus one hop.</b> And the important part: sam and raj are untouched, so their lookups are still exactly one step. The cost of a collision stayed inside the box it happened in."}],"caption":"This is the difference between the two strategies in one picture. Walking to the next free box spreads the cost of a collision into boxes that had nothing to do with it. Keeping a chain confines the cost to the box where the clash actually happened."}'></div>
+
+  <h2><span class="ix">5</span> The Types</h2>
+  <div class="sub">Two answers, and what each one is willing to pay.</div>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>The strategy</th><th>What it does</th><th>What it costs</th></tr>
+    <tr><td>Walk to the next free box</td><td>Keeps everything inside the table itself</td><td>A collision makes OTHER keys slower, and clashes clump together</td></tr>
+    <tr><td>Let the box hold a chain</td><td>Confines the clash to the box it happened in</td><td>A chain per box, which is Chapter 4 memory cost on every entry</td></tr>
+    <tr><td>Either one, on a table kept mostly empty</td><td>Almost never has to do anything</td><td>Empty boxes. This is Lesson 8.3</td></tr>
+  </table>
+  <div class="tbl-cap">The third row is where this chapter is heading and it matters more than the choice between the first two. Both strategies are fine when clashes are rare and both degrade when the table fills, so the number that decides a hash table is not which answer it uses but how much room it is given.</div></div>
+
+  <h2><span class="ix">6</span> What It Costs, In Plain English</h2>
+  <div class="sub">How soon is soon.</div>
+  <p>The birthday room is the intuition. Here is the arithmetic, and it is worse than most people expect. <strong>In a table of eight boxes, by the fourth key a collision is already more likely than not.</strong></p>
+
+  <div class="viz" data-viz='{"type":"card","title":"The chance that at least two keys share a box","eyebrow":"BEFORE THE TABLE IS ANYWHERE NEAR FULL","badge":"more likely than not","width":560,"rows":[{"k":"8 boxes, 3 keys stored","v":"about 34 percent","tone":"good","bar":0.34},{"k":"8 boxes, 4 keys stored","v":"about 59 percent","tone":"bad","bar":0.59},{"k":"100 boxes, 12 keys stored","v":"about 50 percent","tone":"bad","bar":0.5},{"k":"365 boxes, 23 keys, the birthday room","v":"about 51 percent","tone":"bad","bar":0.51},{"k":"1,000 boxes, 40 keys stored","v":"about 55 percent","tone":"bad","bar":0.55}],"caption":"Every bar is a probability rather than a cost. Read the last row and hold on to it: a thousand boxes holding only forty things is four percent full, and a collision has already happened more likely than not. Collisions are not an edge case, they are the normal condition of every hash table you will ever meet."}'></div>
+
+  <p>Four percent full, and a clash is the expected outcome. <strong>So a hash table is not a lookup with an occasional collision problem.</strong> It is a collision strategy that happens to answer lookups, and Lesson 8.1 showed you the easy half.</p>
+
+  <h2><span class="ix">7</span> Where It Lives In Real Life</h2>
+  <div class="sub">Five places, and one of them was Chapter 4 all along.</div>
+
+  <div class="viz" data-viz='{"type":"kgraph","title":"What a table does when two keys clash","unit":178,"nodes":[{"id":"c","label":"Two keys, one box","x":2,"y":1,"kind":"dark"},{"id":"ch","label":"A chain in the box, which Chapter 4 already built","x":0,"y":0,"kind":"gold"},{"id":"w","label":"Walking to the next free box, staying inside the table","x":0,"y":2,"kind":"accent"},{"id":"s","label":"Keeping the table mostly empty so it rarely matters","x":4,"y":0,"kind":"accent"},{"id":"r","label":"Growing the table when it fills. Lesson 8.3","x":4,"y":2,"kind":"accent"},{"id":"b","label":"And a rule that spreads keys badly, which makes all of it worse","x":2,"y":3,"kind":"bad"}],"edges":[{"from":"c","to":"ch","label":"confine the cost","style":"gold"},{"from":"c","to":"w","label":"spread the cost","style":"green"},{"from":"c","to":"s","label":"avoid the cost","style":"green"},{"from":"c","to":"r","label":"and keep avoiding it"},{"from":"c","to":"b","label":"multiply the cost"}],"caption":"Chapter 4 kgraph already placed a hash table on its node about chains, and this is why: the classic answer to a clash is a chain hanging off the box. The chapter that looked like it was about linked lists was quietly building half of this one."}'></div>
+
+  <h2><span class="ix">8</span> How Problems Show Up</h2>
+  <div class="sub">Six sentences, and the tell is that only some lookups are slow.</div>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>What somebody actually says</th><th>The test to run</th><th>What it is really telling you</th></tr>
+    <tr><td>"Most lookups are instant, a few are noticeably slower"</td><td>Ask what else computes to that box</td><td>A clash. The slow ones are sharing with something</td></tr>
+    <tr><td>"It got slower and we did not add many records"</td><td>Ask how full the table is</td><td>Clashes rise steeply as a table fills. Lesson 8.3</td></tr>
+    <tr><td>"Our keys all start with the same prefix"</td><td>Ask whether the rule looks at the whole key</td><td>A rule that ignores what differs spreads badly and clashes constantly</td></tr>
+    <tr><td>"One customer is slow and the rest are fine"</td><td>Look at that customer keys specifically</td><td>Their keys are clumping into a few boxes</td></tr>
+    <tr><td>"Adding one item made an unrelated lookup slower"</td><td>Ask which collision strategy is in use</td><td>Walking to the next free box spreads cost onto innocent keys</td></tr>
+    <tr><td>"Memory is higher than the data plus the table"</td><td>Ask whether boxes hold chains</td><td>A chain per box is Chapter 4 cost, paid per entry</td></tr>
+  </table>
+  <div class="tbl-cap">Row five is the one that catches people, because it violates the intuition a hash table sells. Under the walking strategy, storing one new key can genuinely make a completely different key slower to find, and nothing about that key changed.</div></div>
+
+  <h2><span class="ix">9</span> Solve It Live</h2>
+  <div class="sub">Ninety nine percent instant, and one percent unusable.</div>
+  <div class="callout">
+    <div class="ch">The problem, as it arrives</div>
+    <p>"Our session lookups are instant for almost everybody. But a small group of users, always the same ones, get a noticeably slow page. We have checked their accounts and there is nothing special about them. The session keys are built from the customer id followed by a fixed region code and a version number, and the slow users are all from one region."</p>
+  </div>
+
+  <div class="viz" data-viz='{"type":"swim","title":"Nothing is wrong with those users","lanes":[{"label":"The team"},{"label":"You"},{"label":"The table"}],"steps":[{"id":"a1","lane":0,"col":0,"kind":"gold","label":"A small group is always slow. Nothing special about them"},{"id":"b1","lane":1,"col":1,"kind":"box","label":"Ask: what do their keys have in common?"},{"id":"c1","lane":2,"col":1,"kind":"bad","label":"Same region code, same version, in the same place"},{"id":"b2","lane":1,"col":2,"kind":"accent","label":"So most of the key is identical across all of them"},{"id":"c2","lane":2,"col":2,"kind":"bad","label":"The rule is dominated by the part that never varies"},{"id":"b3","lane":1,"col":3,"kind":"accent","label":"So that whole region lands in a handful of boxes"},{"id":"b4","lane":1,"col":4,"kind":"accent","label":"Use the part that differs, or a rule that mixes the whole key"}],"edges":[{"from":"a1","to":"b1"},{"from":"b1","to":"c1"},{"from":"c1","to":"b2"},{"from":"b2","to":"c2"},{"from":"c2","to":"b3"},{"from":"b3","to":"b4"}],"caption":"The users are not the pattern. Their keys are. A rule that is dominated by a part of the key that never varies will send everything sharing that part to the same few boxes, and those boxes then behave like the scan from Lesson 6.2 while the rest of the table stays instant."}'></div>
+
+  <p><strong>There is nothing special about those users, and that is the diagnosis rather than a dead end.</strong> What they share is a key shape: most of their key is identical, so a rule that leans on the identical part produces nearly the same address for all of them. They pile into a few boxes, and inside a box you are back to walking, which is Lesson 6.2 running inside one bucket while the rest of the table stays instant.</p>
+
+  <div class="callout good">
+    <div class="ch">Why this reasoning wins</div>
+    <p>It stopped investigating the users and started reading the keys. <strong>A hash table treats a key as a thing to be mixed, not as a thing to be understood</strong>, so any structure in your keys that the rule fails to mix becomes structure in your boxes. The fix is not more memory and not a different collision strategy: it is to make sure the part of the key that actually differs is the part doing the work.</p>
+  </div>
+
+  <h2><span class="ix">10</span> Your Turn</h2>
+  <div class="callout accent">
+    <div class="ch">Your rep, ten boxes and a room of names</div>
+    <p>Draw ten boxes numbered 0 to 9. <strong>Round one:</strong> take the first names of ten people you know, add the letter positions, and place each in the box matching the last digit. Count how many clashes you got, and compare it against your guess before you started. <strong>Round two:</strong> for every clash, decide on the spot whether to hang the second name under the first or walk it to the next free box, and note which one made a different name harder to find. <strong>Round three:</strong> now use only the FIRST letter of each name as your rule, and watch the whole thing collapse into a few boxes. That third round is block 9, and it is the most common way this goes wrong in real systems.</p>
+  </div>
+
+  <h2><span class="ix gold">✓</span> Check Yourself</h2>
+
+  <div class="quiz" data-correct="2">
+    <div class="q">A table of 1,000 boxes holds only 40 keys, which is four percent full. What is the chance that at least two keys share a box?</div>
+    <div class="opt" data-i="0">Almost zero, since the table is nearly empty</div>
+    <div class="opt" data-i="1">About four percent, matching how full it is</div>
+    <div class="opt" data-i="2">More than half, because a clash needs any two keys to want any one box, and there are far more pairs than keys</div>
+    <div class="qexp">This is the birthday room with a thousand days. Forty keys make 780 pairs, and each pair is a chance to clash, which is why the answer tracks pairs rather than fullness. Collisions are not an edge case that appears when a table fills up, they are the normal condition of a table from very early on, which is why every hash table is a collision strategy first and a lookup second.</div>
+  </div>
+
+  <div class="quiz" data-correct="0">
+    <div class="q">Session keys are built as customer id, then a fixed region code, then a version number. Users from one region are consistently slow. What is happening?</div>
+    <div class="opt" data-i="0">Most of those keys are identical, so a rule leaning on the unchanging part sends them all to a few boxes</div>
+    <div class="opt" data-i="1">That region has more users than the others, so its data is larger</div>
+    <div class="opt" data-i="2">The table needs a different collision strategy for those keys</div>
+    <div class="qexp">A hash table mixes a key rather than understanding it, so any structure in the keys that the rule fails to mix becomes structure in the boxes. Everything sharing the region code computes to nearly the same address, piles into a handful of boxes, and inside a box you are walking again, which is Lesson 6.2 running inside one bucket. The fix is to make the part that actually differs do the work, not to add memory or change strategy.</div>
+  </div>
+
+  <div class="callout good">
+    <div class="ch">Next</div>
+    <p>Both strategies work well when clashes are rare and both degrade as clashes get common, so neither of them is the real decision. <strong>The real decision is one number: how full the table is allowed to get</strong>, and the mechanism that enforces it is something Lesson 3.3 already built, running here with a different trigger.</p>
   </div>
 __NAV__
 </div>`
