@@ -405,6 +405,8 @@ overlaps" is a build failure instead of an opinion.
 | A diagram is clipped at an edge | a node authored at coordinate zero | `net` and `scene` auto-fit, `layered` never clips |
 | Everything passes but the lesson is boring | block 3 was written last and rushed | write block 3 first, then the prose around it |
 | A state you set never appears on the board | the renderer dropped a state it never implemented | `check_renderers.mjs` fails it now; every renderer must cover all five |
+| The meta pill visual count is wrong | nothing checked it, and it is the number a reader trusts | `check_lesson.py` fails it now; it was wrong in six shipped lessons |
+| The through line is missing from a lead or closing | the checklist said it and nothing enforced it | `check_lesson.py` fails it now; twenty five shipped lessons were missing it |
 | A diagram throws `cannot read fill` | a `kind` outside the seven | `build.py` fails it now and names the diagram |
 | You need a value to change inside a box | it cannot; the text is baked in at build time | move the box instead with `step.order`, or use a second board |
 

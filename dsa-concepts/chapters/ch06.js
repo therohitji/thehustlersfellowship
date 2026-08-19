@@ -9,7 +9,7 @@
   <h1 class="les-title">What Searching Really Is, and the One Question That Decides Everything</h1>
   <div class="les-meta">
     <span class="pill">foundational</span><span class="pill">~11 min</span>
-    <span class="pill gold">no code needed</span><span class="pill">11 visuals</span>
+    <span class="pill gold">no code needed</span><span class="pill">12 visuals</span>
   </div>
 
   <p class="motto">Searching is not a skill you learn. It is a bill you pay for the order you did not keep.</p>

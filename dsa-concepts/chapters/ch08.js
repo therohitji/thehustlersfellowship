@@ -251,7 +251,7 @@ __NAV__
 
   <div class="callout good">
     <div class="ch">Next</div>
-    <p>Both strategies work well when clashes are rare and both degrade as clashes get common, so neither of them is the real decision. <strong>The real decision is one number: how full the table is allowed to get</strong>, which is the memory half of the trade this chapter is built on. The mechanism that enforces it is something Lesson 3.3 already built, running here with a different trigger.</p>
+    <p>Both strategies work well when clashes are rare and both degrade as clashes get common, so neither of them is the real decision. <strong>The real decision is one number: how full the table is allowed to get</strong>, which is the memory half of the trade this chapter is built on. The mechanism that enforces it is something Lesson 3.3 already built, running here with a different trigger. Memory and order, traded for an answer without a search, and this is the first instalment.</p>
   </div>
 __NAV__
 </div>`

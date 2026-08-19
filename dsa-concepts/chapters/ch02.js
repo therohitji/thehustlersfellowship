@@ -167,7 +167,7 @@ __NAV__
   <h1 class="les-title">The Seven Shapes of Growth You Will Ever Meet</h1>
   <div class="les-meta">
     <span class="pill">foundational</span><span class="pill">~13 min</span>
-    <span class="pill gold">no code needed</span><span class="pill">10 visuals</span>
+    <span class="pill gold">no code needed</span><span class="pill">9 visuals</span>
   </div>
 
   <p class="motto">Nobody in this field is juggling a hundred growth shapes. There are seven, and on most days there are five.</p>
@@ -313,7 +313,7 @@ __NAV__
   <h1 class="les-title">Best, Average and Worst: Which One Actually Bites You</h1>
   <div class="les-meta">
     <span class="pill">foundational</span><span class="pill">~12 min</span>
-    <span class="pill gold">no code needed</span><span class="pill">10 visuals</span>
+    <span class="pill gold">no code needed</span><span class="pill">9 visuals</span>
   </div>
 
   <p class="motto">The worst case is not bad luck. It has a cause, and the cause is almost always your own success.</p>
@@ -445,7 +445,7 @@ __NAV__
 
   <div class="callout good">
     <div class="ch">Next</div>
-    <p>You have been reading one meter this whole chapter. There are two, and the second one behaves nothing like the first.</p>
+    <p>You have been reading one meter this whole chapter. There are two, and the second one behaves nothing like the first. Speed is not a feeling, it is a count, and you have just counted it.</p>
   </div>
 __NAV__
 </div>`,
@@ -460,7 +460,7 @@ __NAV__
 
   <p class="motto">Time slows down. Space slows down too, and then one day it simply refuses.</p>
 
-  <p class="lead">You have been reading one meter for three lessons. There are two, and the second behaves nothing like the first. Point the same two questions at memory and you get the same seven shapes, with one difference that changes how you plan: time degrades and keeps serving you, while space gets quietly dearer and then stops. By the end of this lesson you will be able to price a trade in both currencies at once, and spot the one slowdown that no step counter in this chapter can see.</p>
+  <p class="lead">You have been reading one meter for three lessons. There are two, and the second behaves nothing like the first. Point the same two questions at memory and you get the same seven shapes, with one difference that changes how you plan: time degrades and keeps serving you, while space gets quietly dearer and then stops. By the end of this lesson you will be able to price a trade in both currencies at once, and spot the one slowdown that no step counter in this chapter can see. Speed is not a feeling, it is a count, and this is the second thing worth counting.</p>
 
   <h2><span class="ix">1</span> The Everyday Situation</h2>
   <div class="sub">Your phone, and the two thresholds nobody separates.</div>

@@ -10,7 +10,7 @@
   <h1 class="les-title">Why Sort At All: The Question Searching Asked</h1>
   <div class="les-meta">
     <span class="pill">foundational</span><span class="pill">~13 min</span>
-    <span class="pill gold">no code needed</span><span class="pill">10 visuals</span>
+    <span class="pill gold">no code needed</span><span class="pill">9 visuals</span>
   </div>
 
   <p class="motto">Sorting is never the goal. It is the invoice six chapters have been quoting.</p>
@@ -145,7 +145,7 @@ __NAV__
 
   <p class="motto">There are not three simple sorts. There is one question, and three different answers about what a comparison is allowed to buy.</p>
 
-  <p class="lead">Lesson 7.1 said every event in a sort is a comparison or a move. These three methods spend those two currencies in completely different proportions, and one of them is still inside the sort your programming language ships today. By the end you can say which one your data wants before you know anything about the algorithms.</p>
+  <p class="lead">Lesson 7.1 said every event in a sort is a comparison or a move. These three methods spend those two currencies in completely different proportions, and one of them is still inside the sort your programming language ships today. By the end you can say which one your data wants before you know anything about the algorithms. Sorting is never the goal, so what matters here is which of these buys the cheapest investment.</p>
 
   <h2><span class="ix">1</span> The Everyday Situation</h2>
   <div class="sub">Your hands already picked one.</div>
@@ -279,7 +279,7 @@ __NAV__
 
   <p class="motto">Merge sort never sorts anything. It only ever merges two things that are already sorted, and it arranges for that to always be true.</p>
 
-  <p class="lead">The three simple sorts all share one limit: double the data and they get four times slower. This lesson breaks that, and the number it produces is the one Chapter 6 has been quoting since Lesson 6.3. By the end you will have derived where about 10,000 comparisons and about 20,000,000 comparisons actually came from.</p>
+  <p class="lead">The three simple sorts all share one limit: double the data and they get four times slower. This lesson breaks that, and the number it produces is the one Chapter 6 has been quoting since Lesson 6.3. By the end you will have derived where about 10,000 comparisons and about 20,000,000 comparisons actually came from. Sorting is never the goal, and this is where its price finally gets itemised.</p>
 
   <h2><span class="ix">1</span> The Everyday Situation</h2>
   <div class="sub">Two sorted piles, and the easiest job in this chapter.</div>
@@ -409,7 +409,7 @@ __NAV__
 
   <p class="motto">Everything good and everything catastrophic about this method follows from one decision made before a single comparison happens.</p>
 
-  <p class="lead">Merge sort is predictable, stable, and needs room for a second copy. This one is usually faster, needs almost no extra room, and can collapse to the cost of bubble sort on the most ordinary input there is. By the end you can say exactly which decision causes that, and why the data most likely to break it is the data you are most likely to have.</p>
+  <p class="lead">Merge sort is predictable, stable, and needs room for a second copy. This one is usually faster, needs almost no extra room, and can collapse to the cost of bubble sort on the most ordinary input there is. By the end you can say exactly which decision causes that, and why the data most likely to break it is the data you are most likely to have. Sorting is never the goal, and this method makes the investment cheaper in exchange for a risk.</p>
 
   <h2><span class="ix">1</span> The Everyday Situation</h2>
   <div class="sub">Two piles before you sort either of them.</div>
@@ -539,7 +539,7 @@ __NAV__
 
   <p class="motto">Every sort so far asked which of two things comes first. There is a proven floor on what that question can buy, and the only way under it is to stop asking it.</p>
 
-  <p class="lead">Lessons 7.2, 7.3 and 7.4 all did the same thing: compare two items. This lesson has one method that compares differently and two that do not compare at all, which is why they are not bound by the limit everything else in this chapter obeys. By the end you can say what that limit is, and the exact condition that lets you escape it.</p>
+  <p class="lead">Lessons 7.2, 7.3 and 7.4 all did the same thing: compare two items. This lesson has one method that compares differently and two that do not compare at all, which is why they are not bound by the limit everything else in this chapter obeys. By the end you can say what that limit is, and the exact condition that lets you escape it. Sorting is never the goal, and two of these three refuse to pay the usual price for it at all.</p>
 
   <h2><span class="ix">1</span> The Everyday Situation</h2>
   <div class="sub">Nobody sorts a class by comparing pupils.</div>
@@ -668,7 +668,7 @@ __NAV__
 
   <p class="motto">Two sorts can both be correct, produce different answers, and only one of them keeps the promise your product made.</p>
 
-  <p class="lead">You now have every sorting idea in the chapter. This lesson is about the two properties nobody asks for until something breaks, and about why the sort your programming language actually ships is none of the methods you have met but a mixture of three of them. By the end you can say what your sort must promise before you care how fast it is.</p>
+  <p class="lead">You now have every sorting idea in the chapter. This lesson is about the two properties nobody asks for until something breaks, and about why the sort your programming language actually ships is none of the methods you have met but a mixture of three of them. By the end you can say what your sort must promise before you care how fast it is. Sorting is never the goal, and neither is speed: these two properties decide whether a sort is usable before anybody times it.</p>
 
   <h2><span class="ix">1</span> The Everyday Situation</h2>
   <div class="sub">You have already relied on this and never noticed.</div>
@@ -797,7 +797,7 @@ __NAV__
 
   <p class="motto">Nobody has ever asked which sorting algorithm to use. They ask for a report, and the sort is a decision somebody made on their behalf years ago.</p>
 
-  <p class="lead">You have every method, both properties, and the reason real systems mix them. This is the part nobody teaches: sorting problems arrive as reports, exports, dashboards and complaints, and almost none of them are asking for a sorted list at all. By the end you can hear one and say what order it actually needs, who is paying for it, and whether it needs sorting in the first place.</p>
+  <p class="lead">You have every method, both properties, and the reason real systems mix them. This is the part nobody teaches: sorting problems arrive as reports, exports, dashboards and complaints, and almost none of them are asking for a sorted list at all. By the end you can hear one and say what order it actually needs, who is paying for it, and whether it needs sorting in the first place. Sorting is never the goal, so the first question is always what the order is an investment in.</p>
 
   <h2><span class="ix">1</span> The Everyday Situation</h2>
   <div class="sub">Three requests, and not one of them wants a sorted list.</div>
