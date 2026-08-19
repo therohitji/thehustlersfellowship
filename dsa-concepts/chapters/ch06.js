@@ -246,6 +246,136 @@
 __NAV__
 </div>`,
 
+"6.2": `<div class="wrap">
+  <div class="les-kicker">Chapter 6 · Lesson 6.2</div>
+  <h1 class="les-title">Linear Search: Check Every Box</h1>
+  <div class="les-meta">
+    <span class="pill">foundational</span><span class="pill">~12 min</span>
+    <span class="pill gold">no code needed</span><span class="pill">9 visuals</span>
+  </div>
+
+  <p class="motto">The patient method is not the beginner method. It is the only one that is always legal.</p>
+
+  <p class="lead">Search is the price you pay for order you did not keep, and this is the lesson where nobody kept any. Linear search maintains nothing, so it guarantees nothing fast. By the end you can say exactly what that buys you, and why the answer <em class="k">no</em> is the expensive one nobody counts.</p>
+
+  <h2><span class="ix">1</span> The Everyday Situation</h2>
+  <div class="sub">Two hundred business cards, and nobody alphabetises them on the train home.</div>
+  <p>You come back from a two-day conference with a bag of business cards. Every one of them cost you exactly one movement to store: somebody handed it to you and you dropped it in. Now you want the woman who ran the pricing session, and you have no idea what her card looks like.</p>
+
+  <div class="viz" data-viz='{"type":"scene","title":"Two hundred cards, and the order nobody paid for","width":800,"height":280,"items":[{"icon":"person","x":110,"y":126,"kind":"gold","label":"you, back from the conference"},{"icon":"pile","x":330,"y":128,"kind":"muted","label":"two hundred cards, in arrival order"},{"icon":"shelf","x":600,"y":124,"kind":"box","label":"the sorted version that does not exist"}],"arrows":[{"x1":168,"y1":126,"x2":268,"y2":126,"style":"gold","label":"lift every card"},{"x1":404,"y1":126,"x2":540,"y2":126,"style":"green","label":"nobody does this on a train"}],"caption":"Storing a card cost one movement and finding one will cost two hundred. That is not a mistake anybody made. It is the correct trade for a pile you will search twice and then throw away."}'></div>
+
+  <p>You will lift every card. And you are right to: <strong>nobody in the history of conferences has alphabetised two hundred cards on the train home.</strong> Storing was free, and you have not yet decided whether finding will happen often enough to be worth paying for.</p>
+
+  <h2><span class="ix">2</span> What It Actually Is</h2>
+  <div class="sub">The method that demands nothing, and therefore promises nothing.</div>
+  <p>Linear search opens the first box, then the next, and stops when it finds what it wants or runs out of boxes. That is the whole method. What matters is not how simple it is. It is <strong>what it refuses to require.</strong></p>
+
+  <div class="viz" data-viz='{"type":"arch","title":"The four demands it does not make","maxChars":18,"nodes":[{"id":"c","label":"Open the next box, until there is not one","col":0,"row":1,"kind":"dark"},{"id":"o","label":"Sorted first: not required","col":1,"row":0,"kind":"accent"},{"id":"j","label":"Instant jumps: not required","col":1,"row":1,"kind":"accent"},{"id":"s","label":"A second copy kept in order: not required","col":1,"row":2,"kind":"accent"},{"id":"m","label":"Anything maintained on every write: not required","col":1,"row":3,"kind":"accent"},{"id":"r","label":"So it is legal on data that is still changing underneath you","col":2,"row":2,"kind":"gold"}],"edges":[{"from":"c","to":"o","label":"no"},{"from":"c","to":"j","label":"no"},{"from":"c","to":"s","label":"no"},{"from":"c","to":"m","label":"no"},{"from":"o","to":"r","label":"which means","style":"green"},{"from":"m","to":"r","label":"which means","style":"green"}],"caption":"Every other method in this chapter appears later because it demands one of these four. This one demands none of them, which is why it is the only method that is always available and the only one that cannot be made wrong by a write you did not know about."}'></div>
+
+  <p>Chapter 3 gave a row the ability to land on any position in one look. Linear search <strong>does not use it.</strong> It would work exactly as well on a chain, which is the only method in this chapter you can say that about.</p>
+
+  <h2><span class="ix">3</span> Watch It Work</h2>
+  <div class="sub">The same row, two questions, and only one of them is cheap.</div>
+  <p>These are the same twelve numbers from the Lesson 0.3 race and from the chapter whiteboard. Watch the first run find something. Then watch the second run answer a question nobody counts the cost of.</p>
+
+  <div class="board" data-anim='{"type":"array-scan","title":"Nine looks to find it, twelve to prove it is not there","speed":1500,"big":true,"data":[58,13,72,29,6,90,34,17,41,25,80,49],"countLabel":" looks","pointerLabels":{"i":"here"},"legend":[["checking now","look"],["ruled out","dead"],["found it","found"],["opened, and the answer is still no","bad"]],"steps":[{"look":[0],"ptr":{"i":0},"count":1,"badge":"looking for 41","say":"58 is not 41. And <b>58 tells you nothing about where 41 might be</b>, so this look bought exactly one box and nothing else."},{"look":[1],"dead":[0],"ptr":{"i":1},"count":2,"say":"13, no. The box behind you is now ruled out, and that is the entire return on the look you just spent."},{"look":[2],"dead":[0,1],"ptr":{"i":2},"count":3,"say":"72, no. There is no rule to apply here, only the next box, and you can now call every remaining frame out loud before it happens."},{"look":[4],"dead":[0,1,2,3],"ptr":{"i":4},"count":5,"say":"29 and 6, both no. Nothing is speeding up and nothing is going to."},{"look":[6],"dead":[0,1,2,3,4,5],"ptr":{"i":6},"count":7,"say":"Halfway. <b>Every faded box on the left cost a full look and returned nothing.</b>"},{"look":[7],"dead":[0,1,2,3,4,5,6],"ptr":{"i":7},"count":8,"say":"17, no. Eight looks spent on a row of twelve."},{"found":[8],"dead":[0,1,2,3,4,5,6,7],"ptr":{"i":8},"count":9,"badge":"9 looks","say":"Found on the ninth. <b>Had 41 been the last card it would have been twelve</b>, and nothing about the method would have changed."},{"look":[0],"ptr":{"i":0},"count":1,"badge":"now: is 77 in here","say":"Now the question the whiteboard never asks, and the one your software asks constantly: <b>is this thing here at all?</b>"},{"look":[11],"dead":[0,1,2,3,4,5,6,7,8,9,10],"ptr":{"i":11},"count":12,"say":"Eleven boxes opened and every one said no. One box left, and it is the only thing standing between you and an answer."},{"bad":[0,1,2,3,4,5,6,7,8,9,10,11],"count":12,"badge":"12 looks, answer: no","say":"The whole row goes red at once, because <b>the only way to answer no is to open every box</b>, and you only know it after the twelfth. There was never a point at which it could have stopped early."}],"caption":"Two runs, one method. Finding took nine looks and got lucky. Proving absence took twelve and always will, because absence is the one answer that cannot be reached early."}'></div>
+
+  <h2><span class="ix">4</span> Under The Hood</h2>
+  <div class="sub">What one failed look actually returns.</div>
+
+  <div class="viz" data-viz='{"type":"seq","title":"What a box can tell you, and what it cannot","actors":[{"label":"The search","kind":"gold"},{"label":"Box 3","kind":"accent"},{"label":"Every other box","kind":"muted"}],"messages":[{"from":0,"to":1,"label":"are you 41","style":"gold"},{"from":1,"to":0,"label":"no, I am 29","style":"green"},{"from":0,"to":1,"label":"then where is 41"},{"from":1,"to":0,"label":"I have no idea. I only know myself"},{"from":0,"to":2,"label":"did that tell you anything about you"},{"from":2,"to":0,"label":"nothing at all"}],"caption":"This is the whole reason the method cannot be improved. A box in an unordered row knows its own value and nothing about its neighbours, so one look eliminates one box. Order is what makes a box able to speak for the boxes behind it, and nobody bought any here."}'></div>
+
+  <p><strong>One look eliminates one box.</strong> That sentence is the method, the cost and the limit all at once. Everything else in this chapter is somebody paying, in advance, to make a single look speak for more than one box.</p>
+
+  <h2><span class="ix">5</span> The Types</h2>
+  <div class="sub">Four scans, and the one thing each of them changes.</div>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>The variant</th><th>What it changes</th><th>What it does not change</th></tr>
+    <tr><td>Stop at the first match</td><td>Finding is early on average, about half the row</td><td>Absence still costs the whole row</td></tr>
+    <tr><td>Collect every match</td><td>Nothing. It must reach the end either way</td><td>Full price on every single call</td></tr>
+    <tr><td>Move the found item to the front</td><td>Repeat requests get cheap, and it costs one move</td><td>The first request, and any request for something rare</td></tr>
+    <tr><td>Scan a chain instead of a row</td><td>Nothing at all about the number of looks</td><td>Still one look per box, which is why Lesson 4.1 called the head the only free position</td></tr>
+  </table>
+  <div class="tbl-cap">Not one of these makes the method faster in the way people mean. Three of them move cost around and one of them changes nothing. The only real fix is to stop maintaining nothing, and that is the next four lessons.</div></div>
+
+  <h2><span class="ix">6</span> What It Costs, In Plain English</h2>
+  <div class="sub">The read and the write are not the same size, and the gap is the whole argument.</div>
+  <p>Count the two directions separately, because this is the one method where they are wildly different. On the twelve above: nine looks to find, twelve to prove absence, and <strong>one single move to add a card to the pile.</strong> Now scale it.</p>
+
+  <div class="viz" data-viz='{"type":"card","title":"A million rows, both directions","eyebrow":"WITH NO ORDER KEPT","badge":"1,000,000 rows","width":560,"rows":[{"k":"Add one row","v":"1 move","tone":"good","bar":0.000001},{"k":"Find something that is there, on average","v":"about 500,000 looks","tone":"bad","bar":0.5},{"k":"Prove something is not there","v":"1,000,000 looks","tone":"bad","bar":1},{"k":"One read, priced in writes","v":"about 500,000 writes","tone":"bad","bar":0.5}],"caption":"Every bar is drawn against a maximum of one million. The last row is the whole argument of the next four lessons: at a million rows a single read costs about half a million times what a single write costs, and that ratio is the reason anybody ever pays to keep order."}'></div>
+
+  <p>Now the half nobody counts. A signup form checks whether an email address is already registered, against a list of 100,000. <strong>Nine times in ten the address is new</strong>, which is a no, which reads all 100,000. One time in ten it exists, and that averages 50,000. So the real cost per check is 0.1 times 50,000 plus 0.9 times 100,000, which is <strong>95,000 looks</strong>. Not the 50,000 everybody assumes. <em class="g">Ninety five percent of the worst case</em>, because the common answer is the expensive one. In the Chapter 2 currency, all of this is <em class="g">O(n)</em>, which Lesson 2.2 named as the shape that grows exactly as fast as the pile.</p>
+
+  <h2><span class="ix">7</span> Where It Lives In Real Life</h2>
+  <div class="sub">Five places, and not one of them is a mistake.</div>
+
+  <div class="viz" data-viz='{"type":"kgraph","title":"Where opening every box is the right answer","unit":178,"nodes":[{"id":"c","label":"Open every box, in order, until you stop","x":2,"y":1,"kind":"dark"},{"id":"f","label":"Ctrl and F on a page you are already looking at","x":0,"y":0,"kind":"accent"},{"id":"s","label":"A shortlist of fifty, after something else narrowed it","x":0,"y":2,"kind":"gold"},{"id":"l","label":"A log file being read once and never again","x":4,"y":0,"kind":"box"},{"id":"n","label":"Data still being written while you read it","x":4,"y":2,"kind":"box"},{"id":"t","label":"Anything under about a hundred items","x":2,"y":3,"kind":"box"}],"edges":[{"from":"c","to":"f","label":"the pile is one screen","style":"green"},{"from":"c","to":"s","label":"Lesson 6.6 ends here","style":"gold"},{"from":"c","to":"l","label":"read once, order never pays"},{"from":"c","to":"n","label":"an index would be stale"},{"from":"c","to":"t","label":"the order costs more than the scans"}],"caption":"The gold node is the one to remember. The most modern search system in this chapter finishes by doing exactly this, over a shortlist of about fifty, because once something else has done the eliminating a scan is the cheapest and most exact thing left."}'></div>
+
+  <p>The last node is the honest one. <strong>Order only pays off when you will search many times before the data changes.</strong> A log file read once, or a table being written to constantly, is a place where an index is either wasted or permanently out of date, and a scan is the correct engineering decision rather than the lazy one.</p>
+
+  <h2><span class="ix">8</span> How Problems Show Up</h2>
+  <div class="sub">Seven sentences, and one test that separates them.</div>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>What somebody actually says</th><th>The test to run</th><th>What it is really telling you</th></tr>
+    <tr><td>"It was fine last year and it is slow now"</td><td>Ask what the row count was then, and now</td><td>Nothing changed except the pile. Something reads all of it</td></tr>
+    <tr><td>"It is fast when the thing exists and slow when it does not"</td><td>Time a hit and a miss side by side</td><td>A scan. Only absence has to reach the end</td></tr>
+    <tr><td>"Ten times the data made it ten times slower"</td><td>Say the next wait out loud before measuring it</td><td>The wait tracks the pile exactly, which is a scan and nothing else</td></tr>
+    <tr><td>"Ten times the data changed nothing"</td><td>The same test, and the answer is the tell</td><td>Order is already being kept. This was never the problem</td></tr>
+    <tr><td>"Checking a duplicate on signup got slow"</td><td>Ask how often the answer is no</td><td>The common answer is the expensive one, and it reads everything</td></tr>
+    <tr><td>"It is only slow for the customers with lots of records"</td><td>Compare a small account with a large one</td><td>The cost tracks one customer pile, so the scan is inside their data</td></tr>
+    <tr><td>"We added an index and nothing improved"</td><td>Ask which column the question actually filters on</td><td>An index is an order built for one question. This is a different question</td></tr>
+  </table>
+  <div class="tbl-cap">The middle column is a test you can run without reading any code. Imagine ten times the data and say the new wait out loud. If it grows in step with the pile, something is opening every box.</div></div>
+
+  <h2><span class="ix">9</span> Solve It Live</h2>
+  <div class="sub">Two hundred milliseconds, and nobody can find the slow part.</div>
+  <div class="callout">
+    <div class="ch">The problem, as it arrives</div>
+    <p>"Our signup form takes about two seconds to tell somebody their email is already taken, and about two seconds to tell them it is fine. We profiled it. No single query is slow. The database is not busy. We have 100,000 users and it was instant when we had 5,000, but nothing in that code has been touched in two years."</p>
+  </div>
+
+  <div class="viz" data-viz='{"type":"swim","title":"Nothing is slow, and it takes two seconds","lanes":[{"label":"The team"},{"label":"You"},{"label":"The form"}],"steps":[{"id":"a1","lane":0,"col":0,"kind":"gold","label":"Two seconds either way, no single slow query"},{"id":"b1","lane":1,"col":1,"kind":"box","label":"Ask: is it slower when the answer is no?"},{"id":"c1","lane":2,"col":1,"kind":"bad","label":"No. Both answers cost the same"},{"id":"b2","lane":1,"col":2,"kind":"accent","label":"Then it reads everything either way"},{"id":"c2","lane":2,"col":2,"kind":"bad","label":"5,000 users was 0.1s. 100,000 is 2s"},{"id":"b3","lane":1,"col":3,"kind":"accent","label":"Twenty times the users, twenty times the wait"},{"id":"b4","lane":1,"col":4,"kind":"accent","label":"So keep an order on the address. Chapter 8"}],"edges":[{"from":"a1","to":"b1"},{"from":"b1","to":"c1"},{"from":"c1","to":"b2"},{"from":"b2","to":"c2"},{"from":"c2","to":"b3"},{"from":"b3","to":"b4"}],"caption":"The clue is the one everybody skips past: both answers cost the same. A scan that stops early would be visibly faster on a hit, so equal timings mean nothing is stopping early and the whole list is being read whatever the answer is."}'></div>
+
+  <p><strong>Nothing is slow. Everything is being read.</strong> Twenty times the users gave twenty times the wait, which is the signature of a scan and of nothing else. And the tell that nobody looked at is that a hit and a miss cost the same: a scan that stops early should be visibly quicker when the address exists.</p>
+
+  <div class="callout good">
+    <div class="ch">Why this reasoning wins</div>
+    <p>It asked one question before touching anything: <strong>does a yes cost less than a no?</strong> That single comparison separates a scan that stops early from something reading the whole list regardless, and it needs no profiler and no code. The fix is to stop maintaining nothing on that column, and Chapter 8 is where the cheapest version of that order gets built.</p>
+  </div>
+
+  <h2><span class="ix">10</span> Your Turn</h2>
+  <div class="callout accent">
+    <div class="ch">Your rep, one deck of cards</div>
+    <p>Shuffle a deck and deal twenty cards face down in a row. <strong>Round one:</strong> find the seven of hearts, turning one card at a time, and write down how many you turned. <strong>Round two:</strong> put them all back face down and find the seven of hearts again, and notice that the second search costs the same as the first, because you kept nothing from it. <strong>Round three:</strong> find a card that is not in the twenty. Count the turns. That number is the one your software pays most often, and it is the reason the next lesson exists.</p>
+  </div>
+
+  <h2><span class="ix gold">✓</span> Check Yourself</h2>
+
+  <div class="quiz" data-correct="2">
+    <div class="q">A duplicate check runs against 100,000 records. Nine times in ten the record is new. What does one check cost on average?</div>
+    <div class="opt" data-i="0">About 50,000 looks, since on average you find it halfway</div>
+    <div class="opt" data-i="1">About 10,000 looks, since only one in ten actually searches</div>
+    <div class="opt" data-i="2">About 95,000 looks, because the common answer is the one that reads everything</div>
+    <div class="qexp">A miss has to open every box before it can say no, so nine calls in ten cost the full 100,000. Only the one call in ten that hits averages 50,000. That is 0.9 times 100,000 plus 0.1 times 50,000, which is 95,000, or ninety five percent of the worst case. The halfway intuition is right about hits and completely wrong about the workload, because the workload is mostly misses.</div>
+  </div>
+
+  <div class="quiz" data-correct="1">
+    <div class="q">Why does linear search work identically on a linked chain and on a row, when nothing else in this chapter does?</div>
+    <div class="opt" data-i="0">Because a chain is stored in order, and order is what search needs</div>
+    <div class="opt" data-i="1">Because it only ever asks for the next thing, and next is the one move a chain gives away free</div>
+    <div class="opt" data-i="2">Because rows and chains cost the same to read, which Chapter 4 established</div>
+    <div class="qexp">Every other method here needs to land on an arbitrary position, and Lesson 4.1 priced that on a chain as a walk from the head. A scan never lands anywhere. It only ever moves to the next thing, which is exactly what a chain hands you for free, so it is the one method whose cost is unchanged by the structure underneath it.</div>
+  </div>
+
+  <div class="callout good">
+    <div class="ch">Next</div>
+    <p>Search is the price you pay for order you did not keep, and this lesson is the full invoice with nothing prepaid. <strong>Next, somebody pays.</strong> The same twelve numbers, put in order first, and a single look that eliminates six boxes instead of one.</p>
+  </div>
+__NAV__
+</div>`,
+
 "6.9": `<div class="wrap">
   <div class="les-kicker">Chapter 6 · Lesson 6.9</div>
   <h1 class="les-title">The Whiteboard: All of Searching in One Run</h1>

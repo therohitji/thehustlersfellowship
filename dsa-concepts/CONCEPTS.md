@@ -190,14 +190,14 @@ Authoring rules for all of this live in [CONSISTENCY.md](CONSISTENCY.md).
 
 > Search is the price you pay for order you did not keep. Every search method is one trade: how much structure you maintain up front, against how fast you find later. Decide the structure first and the algorithm picks itself.
 
-**Status:** partial, 2 of 9 lessons written
+**Status:** partial, 3 of 9 lessons written
 
 ### Lessons
 
 | id | lesson | status |
 |---|---|---|
 | `6.1` | What Searching Really Is, and the One Question That Decides Everything | live |
-| `6.2` | Linear Search: Check Every Box | planned |
+| `6.2` | Linear Search: Check Every Box | live |
 | `6.3` | Binary Search: Halve the Haystack | planned |
 | `6.4` | The Search Family: Jump, Exponential, Interpolation, Ternary | planned |
 | `6.5` | Searching Structured Data: Trees, Tries and Database Indexes | planned |
