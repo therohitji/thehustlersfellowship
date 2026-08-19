@@ -408,6 +408,7 @@ overlaps" is a build failure instead of an opinion.
 | The meta pill visual count is wrong | nothing checked it, and it is the number a reader trusts | `check_lesson.py` fails it now; it was wrong in six shipped lessons |
 | The through line is missing from a lead or closing | the checklist said it and nothing enforced it | `check_lesson.py` fails it now; twenty five shipped lessons were missing it |
 | A diagram throws `cannot read fill` | a `kind` outside the seven | `build.py` fails it now and names the diagram |
+| A board is 2px wider than the column | the usable widths are 634 board, 638 diagram, 1126 reel | `box-sizing:border-box` is global, so borders and inner padding both come off |
 | You need a value to change inside a box | it cannot; the text is baked in at build time | move the box instead with `step.order`, or use a second board |
 
 ---
