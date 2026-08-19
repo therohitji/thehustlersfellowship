@@ -388,7 +388,10 @@ diagram and animation payload, and refuses to build on bad JSON or an unknown ty
 | `check_layout.mjs` | any diagram rendering `NaN`, `undefined` or `Infinity`; any two grid nodes overlapping; any animation step that throws |
 | `check_lesson.py` | wrong block count, missing animation, too few visuals, too few quizzes, over the word ceiling, a whiteboard lesson with under six acts |
 | `reel_time.py` | a reel caption or lesson pill claiming a runtime the acts do not add up to. Duration is `sum(steps x speed)`, rounded to the nearest half minute, and the script rewrites both |
+| `check_contract.py` | a block carrying the wrong kind of visual, a signal table outside 6 to 8 rows, a quiz whose `data-correct` points outside its options, a reel outside its act, step or part budget, a Part 3 act naming no Part 2 act, front matter over its own budget |
 | `qa.sh` | runs all eight in order and stops at the first failure |
+| `interact.mjs` | a lesson that will not load, a quiz that does not mark right and wrong or reveal its explanation, an animation whose frame will not advance, a reel act tab that does not switch, a planned lesson with no honest placeholder. Needs Playwright, so it sits outside `qa.sh` |
+| `all.sh` | the harness, the contract, the interaction pass and a full render of every visual, in one command |
 
 `check_layout.mjs` renders every diagram in Node against a fake DOM. That is how "nothing
 overlaps" is a build failure instead of an opinion.
@@ -415,7 +418,10 @@ overlaps" is a build failure instead of an opinion.
 | A legend row promises a colour the reader never sees | nothing tied the legend to the steps | `build.py` fails it now. Twelve boards across six chapters were promising a colour that never appeared |
 | A board draws a name outside its own frame | a step asked for more `capacity` than the spec ever drew slots for | `build.py` fails it now; the board sizes itself once, at build time |
 | The counter reads "1 looks" | the count was concatenated with a fixed plural | `countText` singularises the counting word |
-| A reel claims 1.5 minutes and runs 54 seconds | the caption and the pill were both written by hand | `reel_time.py` derives both. It found ten stale claims |
+| A reel claims 1.5 minutes and runs 54 seconds | the caption and the pill were both written by hand | `reel_time.py` derives the runtime AND the act count stated in the caption |
+| An act number in the closing table points at the wrong act | inserting one act moves every act number after it, and those numbers are quoted in tabs, step text, tables and quizzes | after any insert, resolve every `Act N` reference against the new act list. ch00 had four stale, ch08 had six |
+| An act title disagrees with its own tab | reel tabs are numbered by POSITION in `shell.html`, so a lettered or hand-numbered title will not match | renumber titles to their position after every insert |
+| A new reel step reads as filler | it restates the picture instead of advancing the argument | falling a step under budget beats padding. Four proposed steps were rejected for this and two reels deliberately ship at 69 |
 | A board asks the reader to imagine a shape it is not drawing | the picture and the caption drifted apart during editing | put the claim in the card or the paragraph, where no picture argues with it |
 
 ---
