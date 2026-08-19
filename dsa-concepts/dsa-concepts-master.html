@@ -49,7 +49,7 @@
   .rail-brand .by{font-size:12.5px;color:rgba(220,236,229,.62);font-weight:500;}
   .rail-progress{padding:15px 22px 17px;font-size:11px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:rgba(220,236,229,.55);border-bottom:1px solid rgba(255,255,255,.09);}
   .pbar{height:5px;border-radius:99px;background:rgba(255,255,255,.13);margin-top:9px;overflow:hidden;}
-  .pbar i{display:block;height:100%;width:29%;background:linear-gradient(90deg,var(--green-500),var(--gold-500));border-radius:99px;}
+  .pbar i{display:block;height:100%;width:30%;background:linear-gradient(90deg,var(--green-500),var(--gold-500));border-radius:99px;}
 
   .chap{border-bottom:1px solid rgba(255,255,255,.06);}
   .chap-head{display:flex;align-items:center;gap:9px;padding:12px 22px;cursor:pointer;font-size:13.5px;font-weight:600;transition:background .14s;}
@@ -355,7 +355,7 @@ const COURSE = [
       {id:"6.3", t:"Binary Search: Halve the Haystack", state:"live"},
       {id:"6.4", t:"The Search Family: Jump, Exponential, Interpolation, Ternary", state:"live"},
       {id:"6.5", t:"Searching Structured Data: Trees, Tries and Database Indexes", state:"live"},
-      {id:"6.6", t:"Searching by Meaning: Vector Search, ANN and RAG", state:"soon"},
+      {id:"6.6", t:"Searching by Meaning: Vector Search, ANN and RAG", state:"live"},
       {id:"6.7", t:"How Search Problems Show Up: Reading the Disguise", state:"soon"},
       {id:"6.8", t:"Choose Your Search: The Decision Flowchart and Six Systems Torn Down", state:"soon"},
       {id:"6.9", t:"The Whiteboard: All of Searching in One Run", state:"live"}
@@ -4818,6 +4818,136 @@ __NAV__
   <div class="callout good">
     <div class="ch">Next</div>
     <p>Search is the price you pay for order you did not keep, and every method so far has deleted candidates it could <strong>prove</strong> could not match. Next, a method that deletes what it merely <strong>believes</strong> cannot match, in exchange for finding things that share not one word with what you asked. That trade is what makes searching by meaning possible at all.</p>
+  </div>
+__NAV__
+</div>`,
+
+"6.6": `<div class="wrap">
+  <div class="les-kicker">Chapter 6 · Lesson 6.6</div>
+  <h1 class="les-title">Searching by Meaning: Vector Search, ANN and RAG</h1>
+  <div class="les-meta">
+    <span class="pill">foundational</span><span class="pill">~15 min</span>
+    <span class="pill gold">no code needed</span><span class="pill">10 visuals</span>
+  </div>
+
+  <p class="motto">Everything else deletes what it has proved cannot match. This one deletes what it believes.</p>
+
+  <p class="lead">Search is the price you pay for order you did not keep, and this is the lesson where the order is made of meaning. Retrieval is not one search, it is three in a row with three different exactness requirements. By the end you can say which kind belongs at which stage, and why almost every failure is one stage using the wrong one.</p>
+
+  <h2><span class="ix">1</span> The Everyday Situation</h2>
+  <div class="sub">A confident, well written answer about somebody else.</div>
+  <p>You ask an assistant when your contract renews. It answers in a clear paragraph, cites a document, and gives a date. <strong>The date belongs to a different client.</strong> Nothing errored. Nothing was slow. The sentence is well written and the citation is real, and it is the wrong contract.</p>
+
+  <div class="viz" data-viz='{"type":"scene","title":"Nothing failed, and the answer is about the wrong company","width":820,"height":280,"items":[{"icon":"person","x":110,"y":126,"kind":"gold","label":"when does my contract renew"},{"icon":"doc","x":330,"y":124,"kind":"bad","label":"three paragraphs, two from another client"},{"icon":"server","x":560,"y":124,"kind":"muted","label":"the model, reading only those three"},{"icon":"phone","x":740,"y":126,"kind":"bad","label":"a fluent, cited, wrong answer"}],"arrows":[{"x1":168,"y1":126,"x2":252,"y2":126,"style":"gold","label":"turned into a point"},{"x1":410,"y1":124,"x2":492,"y2":124,"style":"green","label":"nearest three"}],"caption":"The model did nothing wrong. It answered beautifully from exactly what it was handed, and it was handed the wrong three paragraphs by a search that ran before a single word was generated. That search is this lesson."}'></div>
+
+  <p>The model is not the interesting part of that story. <strong>A search ran before a single word was generated</strong>, chose three paragraphs, and everything downstream was faithful to them.</p>
+
+  <h2><span class="ix">2</span> What It Actually Is</h2>
+  <div class="sub">The downgrade from proof to belief.</div>
+  <p>Every method so far in this chapter deleted candidates it could <strong>prove</strong> could not match. Binary search proved it with order. A trie proved it with spelling. This one is different, and the difference is the whole subject: <strong>it deletes candidates it has good reason to believe cannot match.</strong></p>
+
+  <div class="viz" data-viz='{"type":"arch","title":"Two ways to delete a haystack","maxChars":18,"nodes":[{"id":"c","label":"Delete most of the pile without opening it","col":1,"row":1,"kind":"dark"},{"id":"p","label":"By proof: the order guarantees it cannot be there","col":0,"row":0,"kind":"accent"},{"id":"b","label":"By belief: it is far away, so it is probably not the answer","col":0,"row":2,"kind":"gold"},{"id":"pr","label":"Always correct, and needs an exact thing to compare","col":2,"row":0,"kind":"accent"},{"id":"br","label":"Usually correct, and can match things sharing no words at all","col":2,"row":2,"kind":"gold"}],"edges":[{"from":"p","to":"c","label":"6.2 to 6.5"},{"from":"b","to":"c","label":"this lesson","style":"green"},{"from":"p","to":"pr","label":"buys"},{"from":"b","to":"br","label":"buys","style":"green"}],"caption":"Nobody gives up certainty for fun. You give it up because meaning has no exact form to compare against: two sentences can mean the same thing with no word in common, and no amount of order over spelling will ever put them next to each other."}'></div>
+
+  <p>Each piece of text becomes a point in a space with many directions, placed so that <strong>position is meaning and distance is similarity.</strong> That placement is paid for once, when the document arrives, exactly like every other order in this chapter.</p>
+
+  <h2><span class="ix">3</span> Watch It Work</h2>
+  <div class="sub">One experiment, run twice, and only the order of operations changes.</div>
+  <p>Ten paragraphs out of a contracts folder. Same index, same question, both times. Watch what happens when meaning is asked to decide something that had a right answer.</p>
+
+  <div class="board" data-anim='{"type":"vector","title":"The same search, wrong then right","speed":1700,"width":640,"height":360,"unit":1,"legend":[["being measured","seen"],["sent to the model","found"],["never opened","dead"],["the expensive mistake","bad"]],"query":{"x":320,"y":180,"label":"when does my contract renew"},"points":[{"x":250,"y":120,"label":"renewal date, your file"},{"x":392,"y":238,"label":"auto-renew, other client"},{"x":210,"y":252,"label":"notice period, your file"},{"x":398,"y":118,"label":"renewal date, other client"},{"x":470,"y":296,"label":"termination, your file"},{"x":140,"y":318,"label":"payment terms, your file"},{"x":556,"y":196,"label":"invoice download"},{"x":84,"y":64,"label":"reset your password"},{"x":580,"y":84,"label":"office address"},{"x":596,"y":300,"label":"holiday schedule"}],"steps":[{"radius":0,"say":"Ten paragraphs out of your contracts folder, each turned into a point and placed <b>by meaning rather than spelling</b>. Your question becomes a point by exactly the same rule."},{"radius":0,"seen":[0,1,2,3,4,5,6,7,8,9],"say":"The exact way to answer is to measure the distance from your question to every single point. Ten is nothing. <b>A real folder is a million paragraphs, and this frame is Lesson 6.2 wearing a lab coat.</b>"},{"radius":0,"say":"So do not measure everything. Start at the question and grow outwards, <b>opening only what you touch.</b>"},{"radius":100,"seen":[0,1,3],"dead":[4,5,6,7,8,9],"say":"Three neighbours, and <b>not one of them contains the word renew twice over</b>. One says auto-renew, one says renewal date. That is the entire case for doing this at all: spelling would never have put these together."},{"radius":100,"found":[0],"bad":[1,3],"dead":[4,5,6,7,8,9],"say":"And two of those three <b>belong to a different client.</b> They go to the model beside yours, and what comes back is fluent, well written, correctly cited and about the wrong company. Nothing errored."},{"radius":0,"dead":[1,3],"say":"Run it again, with one thing added <b>before the circle exists</b>: an exact filter on whose file this is. Not a score. Not a preference. A filter, so everything belonging to anybody else leaves the board before meaning is ever consulted."},{"radius":140,"dead":[1,3],"seen":[0,2],"say":"Now grow the circle through what is left. Two of your own paragraphs: the renewal date and the notice period. <b>Same index, same question, same embedding.</b>"},{"radius":140,"dead":[1,3,5,6,7,8,9],"found":[0,2],"bad":[4],"say":"Stop at two, and here is the bill, in red. <b>Termination clause was the next thing out there</b> and the search stopped one widening short of it. Nothing failed. You bought that loss the moment you set a budget."},{"radius":200,"dead":[1,3,5,6,7,8,9],"found":[0,2,4],"say":"Pay for more hops and it comes back. <b>That is the dial, and you set it.</b> Turn it all the way to certain and you are back at frame two, measuring every point in the folder."}],"caption":"Two runs, one index, one question. The first was wrong and nothing about it errored. The only thing that changed in the second was the order of operations: filter exactly first, then let meaning decide among what is left."}'></div>
+
+  <h2><span class="ix">4</span> Under The Hood</h2>
+  <div class="sub">Where the search sits, and when it runs.</div>
+
+  <div class="viz" data-viz='{"type":"seq","title":"One question, and the numbers shrinking down the page","actors":[{"label":"You","kind":"gold"},{"label":"The app","kind":"accent"},{"label":"The index","kind":"muted"},{"label":"The model","kind":"box"}],"messages":[{"from":0,"to":1,"label":"when does my contract renew","style":"gold"},{"from":1,"to":2,"label":"turn this into a point, then filter to this workspace"},{"from":2,"to":1,"label":"about 2,000 visited, nearest 50 back","style":"green"},{"from":1,"to":1,"label":"score those 50 properly, keep 5"},{"from":1,"to":3,"label":"here are 5 paragraphs, answer only from these","style":"green"},{"from":3,"to":0,"label":"an answer, and a source","style":"green"}],"caption":"Read the numbers down the middle: a million stored, about two thousand visited, fifty returned, five read. Every stage exists to make the next one affordable, and the model never sees the pile at all. It sees five paragraphs somebody else chose."}'></div>
+
+  <p>That is retrieval augmented generation, with nothing mysterious in it. <strong>The model is handed a shortlist and told to answer only from it</strong>, which is why a retrieval mistake and a model mistake look identical from outside and are fixed in completely different places.</p>
+
+  <h2><span class="ix">5</span> The Types</h2>
+  <div class="sub">Three stages, three different exactness requirements.</div>
+  <p>This is the answer to the question this chapter exists for: <em class="k">which search, where, and when.</em> Not one of these three is optional and not one of them can do another one job.</p>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>Stage</th><th>What kind of search</th><th>What goes wrong if you use the other kind</th></tr>
+    <tr><td>Filter</td><td>Exact. Whose file, which version, which permission</td><td>Meaning decides a question that had a right answer, and leaks another client</td></tr>
+    <tr><td>Retrieve</td><td>Approximate, over meaning, with a budget you choose</td><td>Exact would mean measuring every point in the folder, on every question</td></tr>
+    <tr><td>Rerank</td><td>Exact and expensive, over the shortlist only</td><td>Doing it to the whole folder is unaffordable, and skipping it ships rough ordering</td></tr>
+  </table>
+  <div class="tbl-cap">A hard constraint is a filter and never a preference. The moment you let meaning decide something with a right answer, you have chosen to be confidently wrong sometimes, and the rerank at the end is a plain linear scan over fifty, which Lesson 6.2 defended and which is affordable only because everything before it deleted the haystack.</div></div>
+
+  <div class="viz" data-viz='{"type":"dtree","title":"Which kind of search does this condition need","maxChars":18,"nodes":[{"id":"q","label":"Does this condition have a right answer?","col":0,"row":1,"kind":"gold","shape":"diamond"},{"id":"f","label":"Yes: an invoice number, an owner, a date, a permission","col":1,"row":0,"kind":"accent"},{"id":"m","label":"No: relevance, similarity, about the same topic","col":1,"row":2,"kind":"gold"},{"id":"fe","label":"Exact filter, applied BEFORE meaning is consulted","col":2,"row":0,"kind":"accent"},{"id":"me","label":"Approximate retrieval, then rerank what comes back","col":2,"row":2,"kind":"gold"}],"edges":[{"from":"q","to":"f","label":"yes","style":"green"},{"from":"q","to":"m","label":"no"},{"from":"f","to":"fe","label":"so","style":"green"},{"from":"m","to":"me","label":"so"}],"caption":"One question decides every condition in a retrieval system, and it is not about difficulty or importance. It is whether being wrong is a matter of taste or a matter of fact. Ownership and permission are facts, so they never go near the meaning stage."}'></div>
+
+  <h2><span class="ix">6</span> What It Costs, In Plain English</h2>
+  <div class="sub">One library, and every division you can check.</div>
+  <p>A million paragraphs, each stored as a list of numbers. Take <strong>768 numbers</strong> as the illustration, because the arithmetic is clean; real systems run from a few hundred to a few thousand. Measuring one distance means touching all 768.</p>
+
+  <div class="viz" data-viz='{"type":"card","title":"The funnel, on one question","eyebrow":"A MILLION PARAGRAPHS","badge":"768 numbers each","width":560,"rows":[{"k":"Exact: measure every point","v":"768,000,000 multiplications","tone":"bad","bar":1},{"k":"Approximate: visit about 2,000","v":"1,536,000","tone":"good","bar":0.002},{"k":"So the work fell by","v":"500 times","tone":"good","bar":0.002},{"k":"Returned to the app","v":"50","tone":"good","bar":0.00005},{"k":"Read by the model","v":"5","tone":"good","bar":0.000005}],"caption":"Every bar is drawn against a maximum of 768,000,000, and every figure here is illustrative. One million times 768 is 768,000,000. Two thousand times 768 is 1,536,000. Divide and you get exactly 500, which is the halving from Lesson 6.3 bought back in a space where nothing can be sorted."}'></div>
+
+  <p>And the thing you paid with. That 500 times is not free: <strong>the two thousand it visited are not guaranteed to contain the nearest paragraph.</strong> Usually they do. Sometimes they do not, and when they do not nothing tells you, because a slightly worse neighbour looks exactly like a correct one. In the Chapter 2 currency the exact version is <em class="g">O(n)</em>, and the approximate version buys back something close to <em class="g">O(log n)</em> by giving up the guarantee that every method before this one held.</p>
+
+  <h2><span class="ix">7</span> Where It Lives In Real Life</h2>
+  <div class="sub">Five places, and the same three stages inside each.</div>
+
+  <div class="viz" data-viz='{"type":"kgraph","title":"Filter exactly, retrieve approximately, rerank the shortlist","unit":178,"nodes":[{"id":"c","label":"Three searches in a row, with three different requirements","x":2,"y":1,"kind":"dark"},{"id":"a","label":"An assistant answering from your own documents","x":0,"y":0,"kind":"gold"},{"id":"s","label":"Shop search, where jumper finds sweater","x":0,"y":2,"kind":"accent"},{"id":"p","label":"Photos found by describing what is in them","x":4,"y":0,"kind":"box"},{"id":"d","label":"Duplicate support tickets that share no wording","x":4,"y":2,"kind":"box"},{"id":"h","label":"And the hybrid case: exact words plus meaning, then one reranker","x":2,"y":3,"kind":"accent"}],"edges":[{"from":"c","to":"a","label":"the filter is who you are","style":"gold"},{"from":"c","to":"s","label":"the filter is in stock","style":"green"},{"from":"c","to":"p","label":"the filter is your library"},{"from":"c","to":"d","label":"the filter is this product"},{"from":"c","to":"h","label":"when exact words still matter","style":"green"}],"caption":"Every node has an exact filter in it, and in every one of them the filter is the thing a user would be furious about if meaning got it wrong. The bottom node is the honest case: when a corpus contains part numbers, error codes or names, meaning alone will miss them, so you run both and let one reranker decide."}'></div>
+
+  <h2><span class="ix">8</span> How Problems Show Up</h2>
+  <div class="sub">Seven sentences, and none of them says vector.</div>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>What somebody actually says</th><th>The test to run</th><th>What it is really telling you</th></tr>
+    <tr><td>"It answered about a different customer"</td><td>Ask whether ownership is a filter or a score</td><td>A hard constraint was left to meaning. It has no right answer to protect</td></tr>
+    <tr><td>"It is confidently wrong, and the citation is real"</td><td>Read the paragraphs it was given, not the answer</td><td>Retrieval chose badly. The model was faithful to the wrong input</td></tr>
+    <tr><td>"It cannot find things by part number any more"</td><td>Ask whether exact words are still searched at all</td><td>Meaning alone. Codes and names need the exact half back</td></tr>
+    <tr><td>"It misses the obvious document about one in twenty times"</td><td>Ask what the search budget is set to</td><td>The dial. More hops costs more and misses less. It is a choice</td></tr>
+    <tr><td>"Answers got worse after we added more documents"</td><td>Compare the shortlist before and after</td><td>The same budget over a larger space visits a smaller fraction</td></tr>
+    <tr><td>"It is fast for everybody except our biggest client"</td><td>Ask when the filter is applied, before or after</td><td>Filtering after retrieval means most of what was retrieved gets thrown away</td></tr>
+    <tr><td>"The top result is right but the order looks random"</td><td>Ask whether anything reranks the shortlist</td><td>Nothing scored the fifty properly. That stage is missing</td></tr>
+  </table>
+  <div class="tbl-cap">Six of these seven are a stage problem rather than a model problem, and every one of them is fixed somewhere the model cannot see. That is why blaming the model is the most expensive wrong turn in this whole chapter.</div></div>
+
+  <h2><span class="ix">9</span> Solve It Live</h2>
+  <div class="sub">The assistant that leaked another client, once.</div>
+  <div class="callout">
+    <div class="ch">The problem, as it arrives</div>
+    <p>"Our assistant answers questions from customer contracts. Last week it told one client their renewal date, and the date came from a different client contract, correctly cited. It has never done it again and we cannot reproduce it. Ownership is definitely in the system: every chunk is stored with a client id, and the id is part of the text that gets embedded."</p>
+  </div>
+
+  <div class="viz" data-viz='{"type":"swim","title":"The id was in the text, which is not the same as being a filter","lanes":[{"label":"The team"},{"label":"You"},{"label":"The system"}],"steps":[{"id":"a1","lane":0,"col":0,"kind":"gold","label":"Leaked once, cited correctly, cannot reproduce"},{"id":"b1","lane":1,"col":1,"kind":"box","label":"Ask: is ownership a filter, or part of the meaning?"},{"id":"c1","lane":2,"col":1,"kind":"bad","label":"It is in the embedded text. So it is a score"},{"id":"b2","lane":1,"col":2,"kind":"accent","label":"Then it can be outweighed by a closer paragraph"},{"id":"c2","lane":2,"col":2,"kind":"bad","label":"Another client renewal clause was nearer"},{"id":"b3","lane":1,"col":3,"kind":"accent","label":"That is why it is rare and unreproducible"},{"id":"b4","lane":1,"col":4,"kind":"accent","label":"Make the id a filter applied before the search"}],"edges":[{"from":"a1","to":"b1"},{"from":"b1","to":"c1"},{"from":"c1","to":"b2"},{"from":"b2","to":"c2"},{"from":"c2","to":"b3"},{"from":"b3","to":"b4"}],"caption":"Putting the client id into the embedded text feels like enforcing ownership and is the opposite of it. It turns a fact into one ingredient of a similarity score, so it holds for most questions and quietly loses whenever some other paragraph happens to be nearer."}'></div>
+
+  <p><strong>The id was in the text, and text is meaning, and meaning is a preference.</strong> A paragraph belonging to another client can be nearer to the question than anything in yours, and when it is, the id contributes a little distance and loses. That is why it is rare, why it is unreproducible, and why every test passed.</p>
+
+  <div class="callout good">
+    <div class="ch">Why this reasoning wins</div>
+    <p>It asked the one question this lesson teaches: <strong>is this condition a filter or a preference?</strong> Ownership has a right answer, so it can never be allowed to compete on distance. Moving it out of the embedded text and into a filter applied before the circle ever grows does not make the system better at meaning. It makes an entire category of failure impossible instead of rare, which is the only acceptable outcome for a fact.</p>
+  </div>
+
+  <h2><span class="ix">10</span> Your Turn</h2>
+  <div class="callout accent">
+    <div class="ch">Your rep, twenty sentences on paper</div>
+    <p>Write twenty short sentences on separate slips, from two different topics, and include four that mean the same thing in completely different words. <strong>Round one:</strong> ask somebody to find everything about one topic using only exact word matching, and note what they miss. <strong>Round two:</strong> let them group by meaning instead, and note what they wrongly include. <strong>Round three:</strong> now add a rule that half the slips belong to somebody else and must never be returned, and ask them to apply it <em class="k">after</em> grouping by meaning. Watch how often something slips through, and then apply it first and watch that failure become impossible rather than rare.</p>
+  </div>
+
+  <h2><span class="ix gold">✓</span> Check Yourself</h2>
+
+  <div class="quiz" data-correct="0">
+    <div class="q">An assistant occasionally answers using another client's document. The client id is stored inside the text that gets embedded. What is wrong?</div>
+    <div class="opt" data-i="0">Ownership is being treated as a preference, so a nearer paragraph can outweigh it</div>
+    <div class="opt" data-i="1">The embedding model is not accurate enough and should be replaced</div>
+    <div class="opt" data-i="2">The search budget is too low, so it is missing the correct document</div>
+    <div class="qexp">Anything inside the embedded text becomes one ingredient of a distance, and a distance can be outweighed. Ownership has a right answer, so it is a filter and never a score. Applied before the search it makes the failure impossible; applied as part of meaning it makes the failure rare, unreproducible and certain to happen eventually, which is exactly the symptom described.</div>
+  </div>
+
+  <div class="quiz" data-correct="1">
+    <div class="q">An approximate index visits about 2,000 of a million paragraphs and does 500 times less work than measuring everything. What did that buy, and what did it cost?</div>
+    <div class="opt" data-i="0">It bought speed and cost nothing, since the nearest paragraph is always inside the 2,000</div>
+    <div class="opt" data-i="1">It bought the right never to open most of the pile, and cost the guarantee that the true nearest is among what it visited</div>
+    <div class="opt" data-i="2">It bought accuracy, because visiting fewer points reduces noise in the results</div>
+    <div class="qexp">Every method before this one deleted candidates it had proved could not match. This one deletes what it has good reason to believe cannot match, and belief is occasionally wrong. Nothing reports it when that happens, because a slightly worse neighbour looks exactly like a correct one. The budget is a dial you set, and turning it all the way to certain means measuring everything again.</div>
+  </div>
+
+  <div class="callout good">
+    <div class="ch">Next</div>
+    <p>Every lesson so far has had a collection in it: a row, a shape, a folder of paragraphs. <strong>The hardest search problems have no collection at all</strong>, and nobody who brings you one will use the word search. Next: reading the disguise.</p>
   </div>
 __NAV__
 </div>`,
