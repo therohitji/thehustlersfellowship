@@ -8705,14 +8705,39 @@ ANIM['race'] = function(spec){
 ANIM['tree-walk'] = function(spec){
   const nodes = spec.nodes || [];
   const r = 24, levelH = 82, unit = spec.unit || 62;
-  const xs = nodes.map(function(n){ return n.x * unit; });
-  const w = Math.max.apply(null, xs) + r*2, h = Math.max.apply(null, nodes.map(function(n){ return n.d; })) * levelH + r*2 + 8;
+  let _mx = 0, _md = 0;
+  [null].concat(spec.steps || []).forEach(function(st){
+    const Q = {}; nodes.forEach(function(n){ Q[n.id] = { x:n.x, d:n.d }; });
+    if (st && st.pos) Object.keys(st.pos).forEach(function(id){ if (Q[id]) Q[id] = st.pos[id]; });
+    Object.keys(Q).forEach(function(id){ _mx = Math.max(_mx, Q[id].x); _md = Math.max(_md, Q[id].d); });
+  });
+  /* the badge plate is a fixed 240 wide, so a narrow tree (a three node rotation, say) had
+     its own badge clipped off the right edge. The frame takes the wider of the two. */
+  const hasBadge = (spec.steps || []).some(function(st){ return st.badge; });
+  const w = Math.max(_mx * unit + r*2, hasBadge ? 240 : 0), h = _md * levelH + r*2 + 8;
+  /* A search tree is the first structure whose SHAPE is the subject: an insert adds a node,
+     a delete removes one, and a rotation moves three and rewires two edges. A step may carry
+     `pos` ({id:{x,d}}) to move nodes, `show` to say which nodes exist in that frame, and
+     `edges` to say which links are live. The frame is sized over the union of the base layout
+     and every override, so nothing leaves the board mid animation. */
+  const tsteps = spec.steps || [];
+  const tbase = {}; nodes.forEach(function(n){ tbase[n.id] = { x:n.x, d:n.d }; });
+  function posAt(step){
+    const out = {};
+    nodes.forEach(function(n){ out[n.id] = { x:tbase[n.id].x, d:tbase[n.id].d }; });
+    if (step && step.pos) Object.keys(step.pos).forEach(function(id){
+      if (out[id]) out[id] = { x:step.pos[id].x, d:step.pos[id].d };
+    });
+    return out;
+  }
+  const XY = function(q){ return { cx:q.x*unit + r, cy:q.d*levelH + r + 4 }; };
   const pos = {}; nodes.forEach(function(n){ pos[n.id] = { cx:n.x*unit + r, cy:n.d*levelH + r + 4 }; });
   let s = '';
   (spec.edges || []).forEach(function(e){
     const a = pos[e.from], b = pos[e.to];
     if (!a || !b) return;
-    s += '<line x1="' + a.cx + '" y1="' + (a.cy + r) + '" x2="' + b.cx + '" y2="' + (b.cy - r) + '" stroke="' + CLR.line + '" stroke-width="1.6"/>';
+    s += '<line class="tedge" data-e="' + e.from + '-' + e.to + '" data-from="' + e.from + '" data-to="' + e.to + '"' +
+         ' x1="' + a.cx + '" y1="' + (a.cy + r) + '" x2="' + b.cx + '" y2="' + (b.cy - r) + '" stroke="' + CLR.line + '" stroke-width="1.6" style="transition:opacity .3s"/>';
     /* a trie is unreadable without the character on the branch, so e.w rides the edge. It sits
        on the OUTSIDE of the branch rather than on the line, because a tree edge is close to
        vertical and a label centred on it would be struck through by its own edge. */
@@ -8725,7 +8750,7 @@ ANIM['tree-walk'] = function(spec){
   });
   nodes.forEach(function(n){
     const p = pos[n.id];
-    s += '<g class="cell" data-i="' + n.id + '" opacity="1">' +
+    s += '<g class="cell" data-i="' + n.id + '" opacity="1" style="transition:transform .45s ease-out,opacity .3s">' +
          '<rect x="' + (p.cx - r) + '" y="' + (p.cy - r) + '" width="' + (r*2) + '" height="' + (r*2) + '" rx="' + r + '" fill="#ffffff" stroke="' + CLR.lineS + '" stroke-width="1.6"/>' +
          '<text x="' + p.cx + '" y="' + p.cy + '" text-anchor="middle" dominant-baseline="central" font-family="' + MONO + '" font-size="13" fill="' + CLR.soft + '">' + esc(n.label) + '</text></g>';
   });
@@ -8742,6 +8767,22 @@ ANIM['tree-walk'] = function(spec){
       root.querySelectorAll('.cell').forEach(function(g){
         const id = g.dataset.i;
         paintCell(g, stateOfId(step, id));
+      });
+      const P = posAt(step);
+      root.querySelectorAll('.cell').forEach(function(g){
+        const id = g.dataset.i;
+        if (step.show && step.show.indexOf(id) < 0) g.setAttribute('opacity', '0');
+        const t = XY(P[id]), b0 = pos[id];
+        g.setAttribute('transform', 'translate(' + (t.cx - b0.cx) + ',' + (t.cy - b0.cy) + ')');
+      });
+      root.querySelectorAll('.tedge').forEach(function(l){
+        const f = l.dataset.from, t2 = l.dataset.to;
+        const gone = (step.show && (step.show.indexOf(f) < 0 || step.show.indexOf(t2) < 0)) ||
+                     (step.edges && step.edges.indexOf(l.dataset.e) < 0);
+        l.setAttribute('opacity', gone ? '0' : '1');
+        const a = XY(P[f]), b2 = XY(P[t2]);
+        l.setAttribute('x1', a.cx); l.setAttribute('y1', a.cy + r);
+        l.setAttribute('x2', b2.cx); l.setAttribute('y2', b2.cy - r);
       });
       const c = root.querySelector('.counter text');
       if (c) c.textContent = step.count != null ? countText(step.count, spec.countLabel || ' visited') : '';
