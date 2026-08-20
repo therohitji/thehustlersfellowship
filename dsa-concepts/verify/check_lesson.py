@@ -17,7 +17,9 @@ want = sys.argv[1] if len(sys.argv) > 1 and not sys.argv[1].startswith('-') else
 lessons = {}
 for f in sorted(glob.glob('chapters/ch*.js')):
     src = open(f, encoding='utf-8').read()
-    for m in re.finditer(r'"(\d+\.\d+)":\s*`(.*?)`(?=\s*,?\s*"\d+\.\d+"\s*:|\s*$)', src, re.S):
+    # the lookahead used to demand another lesson key or the end of the file, so a trailing
+    # comma after the LAST lesson silently dropped it and the harness still went green.
+    for m in re.finditer(r'"(\d+\.\d+)":\s*`(.*?)`(?=\s*,?\s*(?:"\d+\.\d+"\s*:|$))', src, re.S):
         lessons[m.group(1)] = (f, m.group(2))
 
 if want and want not in lessons:

@@ -327,18 +327,18 @@ Authoring rules for all of this live in [CONSISTENCY.md](CONSISTENCY.md).
 
 > A binary search tree is binary search made permanent. It only keeps that promise while it stays balanced.
 
-**Status:** planned
+**Status:** live
 
 ### Lessons
 
 | id | lesson | status |
 |---|---|---|
-| `10.1` | The Binary Search Tree: Order You Can Walk | planned |
-| `10.2` | Insert, Search, Delete, and the Three Delete Cases | planned |
-| `10.3` | When a Search Tree Quietly Becomes a List | planned |
-| `10.4` | Staying Balanced: AVL and Red-Black, Without the Maths | planned |
-| `10.5` | B-Trees: How a Database Index Actually Works | planned |
-| `10.6` | The Whiteboard: A Search Tree Growing and Rebalancing | planned |
+| `10.1` | The Binary Search Tree: Order You Can Walk | live |
+| `10.2` | Insert, Search, Delete, and the Three Delete Cases | live |
+| `10.3` | When a Search Tree Quietly Becomes a List | live |
+| `10.4` | Staying Balanced: AVL and Red-Black, Without the Maths | live |
+| `10.5` | B-Trees: How a Database Index Actually Works | live |
+| `10.6` | The Whiteboard: A Search Tree Growing and Rebalancing | live |
 
 ### Concepts taught here
 
