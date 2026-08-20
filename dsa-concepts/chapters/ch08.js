@@ -654,7 +654,7 @@ __NAV__
   <h1 class="les-title">The Whiteboard: Keys Falling Into Buckets</h1>
   <div class="les-meta">
     <span class="pill">whiteboard</span><span class="pill">~2 min</span>
-    <span class="pill gold">watch, do not read</span><span class="pill">10 acts</span>
+    <span class="pill gold">watch, do not read</span><span class="pill">13 acts</span>
   </div>
 
   <p class="motto">Hashing trades memory and order for the one thing nothing else gives you: an answer without a search.</p>
