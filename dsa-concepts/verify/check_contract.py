@@ -56,11 +56,18 @@ for f in sorted(glob.glob('chapters/*.js')):
             if not 70 <= total <= 100:
                 fails.append('%s reel: %d steps, rule is 70 to 100' % (lid, total))
             # every Part 3 act names the Part 2 act it repeats
-            for a in parts['Part 3']:
+            pos = {a['title']: i for i, a in enumerate(acts, 1)}
+            early = {i for i, a in enumerate(acts, 1) if a.get('part', '')[:6] in ('Part 1', 'Part 2')}
+            # Chapter 00 is front matter and its reel maps the whole course rather than one
+            # chapter, so its Part 3 is "the three questions every problem asks" instead of
+            # the same mechanisms inside real products. Nothing there repeats a Part 2 act.
+            for a in (parts['Part 3'] if not lid.startswith('0.') else []):
                 text = (a.get('tab', '') + ' ' + a['title'] + ' ' +
                         ' '.join(s.get('say', '') for s in a.get('steps') or []))
-                if not re.search(r'\bAct \d', text):
-                    fails.append('%s reel: Part 3 act %r names no Part 2 act' % (lid, a['title'][:44]))
+                # its own number comes free from its title, so it does not count
+                refs = {int(x) for x in re.findall(r'\bActs? (\d+)', text)} - {pos.get(a['title'])}
+                if not (refs & early):
+                    fails.append('%s reel: Part 3 act %r names no Part 1 or Part 2 act' % (lid, a['title'][:44]))
             continue
         if lid.startswith('0.'):
             # Chapter 00 is front matter: free form, still visual. The ten block contract
