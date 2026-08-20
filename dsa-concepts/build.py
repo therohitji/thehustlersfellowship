@@ -71,10 +71,11 @@ def check_payloads(blob):
                     if not a.get('steps'):
                         sys.exit("BUILD FAILED: reel act %r has no steps" % a.get('title', '?'))
                 n_anim += len(acts)
-                continue
-            t = spec.get('type')
-            acts = []
-            if t not in types:
+                t = 'reel'
+            else:
+                t = spec.get('type')
+                acts = []
+            if kind != 'reel' and t not in types:
                 sys.exit("BUILD FAILED: unknown %s type %r (allowed: %s)" % (kind, t, ", ".join(sorted(types))))
             if kind == 'anim' and not spec.get('steps'):
                 sys.exit("BUILD FAILED: animation %r has no steps" % spec.get('title', t))
@@ -94,7 +95,21 @@ def check_payloads(blob):
                 frames = [fr for st in steps for fr in ([st] + list(st.get('lanes') or []))]
                 painted = {k for fr in frames for k, v in fr.items() if k in STATES and v}
                 promised = {row[1] for row in leg if isinstance(row, (list, tuple)) and len(row) > 1}
-                if 'range' in painted: painted.add('dead')   # outside a range renders dead
+                authored = set(painted)                     # states some step actually lists
+                # a range board renders everything outside the window dead without listing an
+                # index, so that dead is implied. It satisfies a legend row promising dead,
+                # but it must never oblige the author to add one.
+                if 'range' in painted: painted = painted | {'dead'}
+                # ...and the reverse: a colour on the board with no row explaining it. The
+                # guard only ran one way, so a step could paint red in an act whose legend
+                # never mentions red and nothing complained.
+                undeclared = sorted(authored - promised - {'range'})
+                if undeclared:
+                    sys.exit("BUILD FAILED: %s %r paints %s but the legend explains neither"
+                             % (kind, a.get('title', t), ", ".join(repr(u) for u in undeclared))
+                             if len(undeclared) > 1 else
+                             "BUILD FAILED: %s %r paints %r and the legend does not explain it"
+                             % (kind, a.get('title', t), undeclared[0]))
                 unpainted = sorted(promised - painted - {'idle'})
                 if unpainted:
                     sys.exit("BUILD FAILED: %s %r legend promises %s but no step paints %s"
