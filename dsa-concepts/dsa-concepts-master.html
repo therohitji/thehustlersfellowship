@@ -7902,8 +7902,16 @@ function frame(inner, w, h){
   return svgOpen(w + PAD*2, h + PAD*2) + '<g transform="translate(' + PAD + ',' + PAD + ')">' + inner + '</g></svg>';
 }
 /* like frame, but the canvas grows to swallow anything that spilled outside the authored box */
-function frameFit(inner, boxes, w, h){
+/* `boxes` are the things actually drawn. By default the declared w/h is a FLOOR and the
+   frame never shrinks below it, which is right for renderers that pass only a badge here and
+   keep the rest of the board in `inner`. Pass fitToBoxes when `boxes` covers everything drawn
+   and the frame hugs the content instead: a scene whose items land in 106px stops reserving
+   the 280px its author declared and leaving three fifths of the panel empty. */
+function frameFit(inner, boxes, w, h, fitToBoxes){
   let minX = 0, minY = 0, maxX = w, maxY = h;
+  if (fitToBoxes && boxes.length){
+    minX = minY = Infinity; maxX = maxY = -Infinity;
+  }
   boxes.forEach(function(b){
     minX = Math.min(minX, b.x); minY = Math.min(minY, b.y);
     maxX = Math.max(maxX, b.x + b.w); maxY = Math.max(maxY, b.y + b.h);
@@ -8393,7 +8401,7 @@ function renderScene(spec){
   arrows.forEach(function(a){
     taken.push({ x:Math.min(a.x1,a.x2), y:Math.min(a.y1,a.y2), w:Math.abs(a.x2-a.x1), h:Math.abs(a.y2-a.y1) });
   });
-  return frameFit(lines + body + caps + labels, taken, w, h);
+  return frameFit(lines + body + caps + labels, taken, w, h, true);
 }
 
 /* ============================ VIZ REGISTRY ============================ */
