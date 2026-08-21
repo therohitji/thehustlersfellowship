@@ -558,7 +558,7 @@ milestones:
         layers: []
       - id: M5.C11
         name: Ch11 Heaps and Priority Queues: Who Is Most Urgent
-        status: not started, 5 lessons planned.
+        status: shipped. 5 lessons live, qa green.
         layers: []
       - id: M5.C12
         name: Ch12 Graphs: Things Connected to Things

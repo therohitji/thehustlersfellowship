@@ -356,17 +356,17 @@ Authoring rules for all of this live in [CONSISTENCY.md](CONSISTENCY.md).
 
 > When arrival order is the wrong order, you need urgency order. A heap keeps only the front of that queue honest, and that is exactly enough.
 
-**Status:** planned
+**Status:** live
 
 ### Lessons
 
 | id | lesson | status |
 |---|---|---|
-| `11.1` | The Emergency Room: Most Urgent First | planned |
-| `11.2` | The Heap: A Tree Hiding Inside an Array | planned |
-| `11.3` | Push, Pop and Heapify | planned |
-| `11.4` | Top-K, Schedulers, and the Median of a Stream | planned |
-| `11.5` | The Whiteboard: The Heap Bubbling Up and Down | planned |
+| `11.1` | The Emergency Room: Most Urgent First | live |
+| `11.2` | The Heap: A Tree Hiding Inside an Array | live |
+| `11.3` | Push, Pop and Heapify | live |
+| `11.4` | Top-K, Schedulers, and the Median of a Stream | live |
+| `11.5` | The Whiteboard: The Heap Bubbling Up and Down | live |
 
 ### Concepts taught here
 

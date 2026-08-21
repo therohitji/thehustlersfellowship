@@ -222,6 +222,11 @@ for (const m of body.matchAll(/(?:ANIM|VIZ)\['([a-z-]+)'\]\s*=\s*function[\s\S]*
    it renders, and the frame quietly means nothing. Derived from the engine rather than an
    allowlist, so it stays true as renderers gain options. */
 const readKeys = new Set([...src.slice(0, cut).matchAll(/step\.([a-zA-Z]+)/g)].map(m => m[1]));
+/* One key is deliberately write-only at render time: a heap board marks a frame `settled` to
+   ASSERT that it holds a valid heap, and build.py simulates the arrangement against the rule
+   the board declares and fails if it does not. The engine has nothing to draw for it, which is
+   the point: it is a claim the author makes and the build checks, not an instruction. */
+readKeys.add('settled');
 const unknown = new Map();
 for (const f of readdirSync(path.join(root, 'chapters')).filter(f => /^ch\d+\.js$/.test(f))){
   const txt = readFileSync(path.join(root, 'chapters', f), 'utf8');

@@ -21,7 +21,7 @@ os.chdir(HERE)
 
 VIZ_TYPES = {'flow','dtree','state','uflow','ia','arch','component','seq','swim','journey',
              'net','kgraph','erd','wire','card','curve','scene'}
-ANIM_TYPES = {'array-scan','race','tree-walk','graph-walk','vector','reveal','curve','grid'}
+ANIM_TYPES = {'array-scan','race','tree-walk','graph-walk','vector','reveal','curve','grid','heap'}
 
 cfg = json.load(open('course_map.json', encoding='utf-8'))
 chapters = cfg['chapters']
