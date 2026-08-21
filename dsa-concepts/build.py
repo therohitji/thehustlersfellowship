@@ -140,6 +140,48 @@ def check_payloads(blob):
                     if want > cap:
                         sys.exit("BUILD FAILED: %s %r step %d needs %d slots, board draws %d"
                                  % (kind, a.get('title', t), si + 1, want, cap))
+            # A heap board is the one place where a WRONG PICTURE is also a wrong claim.
+            # step.at is the complete arrangement (at[slot] = the original index of the value
+            # now there), so a duplicate or a missing entry silently vanishes a value from
+            # both the tree and the row. And because a heap board asserts heap order by
+            # DRAWING it, the arrangement is simulated against the rule the board declares:
+            # spec.order 'min' or 'max'. A board that ends claiming a heap it does not hold
+            # is the same class of defect as a caption stating an arithmetic it does not do.
+            for a in ([spec] if kind != 'reel' else acts):
+                if a.get('type') != 'heap': continue
+                vals = a.get('data') or []
+                n = len(vals)
+                for si, st in enumerate(a.get('steps') or []):
+                    at = st.get('at')
+                    if at is None: continue
+                    if any(not isinstance(x, int) or x < 0 or x >= n for x in at):
+                        sys.exit("BUILD FAILED: heap %r step %d at has an index outside 0..%d"
+                                 % (a.get('title', t), si + 1, n - 1))
+                    if len(set(at)) != len(at):
+                        sys.exit("BUILD FAILED: heap %r step %d at lists a value twice"
+                                 % (a.get('title', t), si + 1))
+                    live = st.get('n', len(at))
+                    if live > len(at):
+                        sys.exit("BUILD FAILED: heap %r step %d shows %d slots but arranges %d"
+                                 % (a.get('title', t), si + 1, live, len(at)))
+                rule = a.get('order')
+                if rule in ('min', 'max'):
+                    def num(v):
+                        try: return float(str(v).strip())
+                        except ValueError: return None
+                    for si, st in enumerate(a.get('steps') or []):
+                        if not st.get('settled'): continue
+                        at = st.get('at') or list(range(n))
+                        live = st.get('n', len(at))
+                        seq = [num(vals[at[s]]) for s in range(min(live, len(at)))]
+                        if any(x is None for x in seq): continue
+                        for c in range(1, len(seq)):
+                            par = seq[(c - 1) // 2]
+                            bad = par > seq[c] if rule == 'min' else par < seq[c]
+                            if bad:
+                                sys.exit("BUILD FAILED: heap %r step %d is marked settled but slot "
+                                         "%d holds %g against its parent %g, which breaks the %s rule"
+                                         % (a.get('title', t), si + 1, c, seq[c], par, rule))
             if spec.get('type') == 'race':
                 n_tracks = len(spec.get('tracks') or [])
                 for si, st in enumerate(spec.get('steps') or []):
