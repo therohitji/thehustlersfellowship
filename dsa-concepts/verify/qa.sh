@@ -10,7 +10,11 @@ echo "3/9 js syntax";    bash   verify/check_js.sh
 echo "4/9 renderers";    node   verify/check_renderers.mjs
 echo "5/9 layout";       node   verify/check_layout.mjs
 echo "6/9 lessons";      python3 verify/check_lesson.py
-echo "7/9 contract";     python3 verify/check_contract.py
-echo "8/9 reel time";    python3 verify/reel_time.py --check
-echo "9/9 docs";         python3 verify/sync_docs.py --check
+echo "7/10 contract";    python3 verify/check_contract.py
+# Chapter 12 promises its reader it only takes photographs of graphs, never films of
+# somebody crossing one, because the crossing is Chapter 13. Scoped to ch12: every other
+# chapter walks its chains legitimately.
+echo "8/10 no-walk";     python3 verify/check_nowalk.py chapters/ch12.js
+echo "9/10 reel time";   python3 verify/reel_time.py --check
+echo "10/10 docs";       python3 verify/sync_docs.py --check
 echo "QA GREEN"

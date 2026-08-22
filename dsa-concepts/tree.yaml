@@ -562,7 +562,7 @@ milestones:
         layers: []
       - id: M5.C12
         name: Ch12 Graphs: Things Connected to Things
-        status: not started, 6 lessons planned.
+        status: shipped. 6 lessons live, qa green.
         layers: []
       - id: M5.C13
         name: Ch13 Getting Around a Graph: Traversal and Shortest Path

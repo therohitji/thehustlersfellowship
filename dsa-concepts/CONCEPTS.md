@@ -385,18 +385,18 @@ Authoring rules for all of this live in [CONSISTENCY.md](CONSISTENCY.md).
 
 > The moment relationships matter more than order, you are holding a graph. Naming it correctly is most of the solution.
 
-**Status:** planned
+**Status:** live
 
 ### Lessons
 
 | id | lesson | status |
 |---|---|---|
-| `12.1` | Things Connected to Things | planned |
-| `12.2` | Directed, Weighted, Cyclic: The Four Words That Change Everything | planned |
-| `12.3` | Storing a Graph: Matrix Versus List | planned |
-| `12.4` | Degrees, Paths, Components, and Why They Matter | planned |
-| `12.5` | Where Graphs Show Up: Maps, Social, Payments, Dependencies | planned |
-| `12.6` | The Whiteboard: A Graph, Drawn Into Existence | planned |
+| `12.1` | Things Connected to Things | live |
+| `12.2` | Directed, Weighted, Cyclic: The Four Words That Change Everything | live |
+| `12.3` | Storing a Graph: Matrix Versus List | live |
+| `12.4` | Degrees, Paths, Components, and Why They Matter | live |
+| `12.5` | Where Graphs Show Up: Maps, Social, Payments, Dependencies | live |
+| `12.6` | The Whiteboard: A Graph, Drawn Into Existence | live |
 
 ### Concepts taught here
 
