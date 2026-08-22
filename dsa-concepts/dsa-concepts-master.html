@@ -10307,7 +10307,14 @@ ANIM['heap'] = function(spec){
 /* ---- graph-walk ---- */
 ANIM['graph-walk'] = function(spec){
   const nodes = spec.nodes || [], unit = spec.unit || 108, r = 26;
-  const pos = {}; nodes.forEach(function(n){ pos[n.id] = { cx:n.x*unit + r, cy:n.y*unit + r }; });
+  /* The counter prints at the top right, which is empty air on a row, a tree and a heap but
+     is a legal place for a NODE on a graph: the first board written with a counter put
+     "9 wires" straight through the circle at max_x, y 0. So a board that counts reserves a
+     strip above itself and everything moves down into the room below it. Opt in, so the
+     twenty three boards that never counted are laid out exactly as before. */
+  const hasCount = (spec.steps || []).some(function(st){ return st.count != null; });
+  const topPad = hasCount ? 26 : 0;
+  const pos = {}; nodes.forEach(function(n){ pos[n.id] = { cx:n.x*unit + r, cy:n.y*unit + r + topPad }; });
   const w = Math.max.apply(null, nodes.map(function(n){ return pos[n.id].cx + r; }));
   const h = Math.max.apply(null, nodes.map(function(n){ return pos[n.id].cy + r; })) + 30;
   let s = '';
@@ -10338,8 +10345,18 @@ ANIM['graph-walk'] = function(spec){
       '<rect x="' + (p.cx - 30) + '" y="' + (p.cy + r + 6) + '" width="60" height="20" rx="6" fill="#ffffff" stroke="' + CLR.gold + '" stroke-width="1.3"/>' +
       '<text x="' + p.cx + '" y="' + (p.cy + r + 16) + '" text-anchor="middle" dominant-baseline="central" font-family="' + FONT + '" font-size="10.5" font-weight="700" fill="' + CLR.gold6 + '"></text></g>';
   });
+  /* Every other animation renderer can state a fact on the board and count something, and
+     this one could not, so a graph board had to put its headline in the caption or in a tag.
+     A chapter about graphs needs to be able to say "9 wires, and 30 were possible" on the
+     picture itself. Opt in, exactly like everywhere else: no shipped board carries either,
+     so nothing changes for the twenty three that already exist. */
+  s += '<g class="counter">' + labelAt(w, 10, '', 12, CLR.gold6, 'end', 700) + '</g>';
+  s += '<g class="abadge" opacity="0" style="transition:opacity .3s">' +
+       '<rect x="0" y="' + (h + 4) + '" width="240" height="24" rx="8" fill="#ffffff" stroke="' + CLR.lineS + '"/>' +
+       '<text x="120" y="' + (h + 16) + '" text-anchor="middle" dominant-baseline="central" font-family="' +
+       FONT + '" font-size="11.5" font-weight="700" fill="' + CLR.g700 + '"></text></g>';
   return {
-    svg: frame(s, w, h),
+    svg: frame(s, w, h + 34),
     apply: function(root, step){
       root.querySelectorAll('.cell').forEach(function(g){
         const id = g.dataset.i;
@@ -10358,6 +10375,13 @@ ANIM['graph-walk'] = function(spec){
         g.setAttribute('opacity', t ? '1' : '0');
         const tx = g.querySelector('text'); if (tx) tx.textContent = t || '';
       });
+      const c = root.querySelector('.counter text');
+      if (c) c.textContent = step.count != null ? countText(step.count, spec.countLabel || ' wires') : '';
+      const ab = root.querySelector('.abadge');
+      if (ab){
+        ab.setAttribute('opacity', step.badge ? '1' : '0');
+        const t = ab.querySelector('text'); if (t) t.textContent = step.badge || '';
+      }
     }
   };
 };
