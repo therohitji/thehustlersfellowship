@@ -1533,6 +1533,20 @@ ANIM['graph-walk'] = function(spec){
      twenty three boards that never counted are laid out exactly as before. */
   const hasCount = (spec.steps || []).some(function(st){ return st.count != null; });
   const topPad = hasCount ? 26 : 0;
+  /* Chapter 13's subject is the ORDER a walk visits in, and the thing that decides that order
+     is a container: a queue makes it breadth first, a stack makes it depth first, a heap makes
+     it Dijkstra. Same code, same graph, different box. Written into a badge the container is a
+     SENTENCE, and the one thing that chapter has to show is a PICTURE, so a graph board can
+     carry its container as a strip underneath with the end that comes out next marked. That
+     mark is the entire difference between the three algorithms.
+       spec.frontier       "queue" (next out on the left) or "stack" (next out on the right)
+       spec.frontierLabel  the words over the strip, default "waiting to be visited"
+       step.frontier       the node ids in the container, in order, front first
+     Opt in: a board without it is laid out exactly as it was. */
+  const fkind = spec.frontier, fcw = 62, fgap = 7;
+  let fmax = 0;
+  (spec.steps || []).forEach(function(st){ if (st.frontier) fmax = Math.max(fmax, st.frontier.length); });
+  const fh = (fkind && fmax) ? 74 : 0;
   const pos = {}; nodes.forEach(function(n){ pos[n.id] = { cx:n.x*unit + r, cy:n.y*unit + r + topPad }; });
   const w = Math.max.apply(null, nodes.map(function(n){ return pos[n.id].cx + r; }));
   const h = Math.max.apply(null, nodes.map(function(n){ return pos[n.id].cy + r; })) + 30;
@@ -1580,13 +1594,26 @@ ANIM['graph-walk'] = function(spec){
      A chapter about graphs needs to be able to say "9 wires, and 30 were possible" on the
      picture itself. Opt in, exactly like everywhere else: no shipped board carries either,
      so nothing changes for the twenty three that already exist. */
+  if (fh){
+    const fy = h + 18;
+    s += labelAt(0, fy - 8, spec.frontierLabel || 'waiting to be visited', 10.5, CLR.mute, 'start', 700);
+    for (let i = 0; i < fmax; i++){
+      s += '<g class="fslot" data-i="' + i + '" opacity="0" style="transition:opacity .3s">' +
+        '<rect x="' + (i * (fcw + fgap)) + '" y="' + fy + '" width="' + fcw + '" height="26" rx="7" fill="#ffffff" stroke="' + CLR.lineS + '" stroke-width="1.4"/>' +
+        '<text x="' + (i * (fcw + fgap) + fcw/2) + '" y="' + (fy + 13) + '" text-anchor="middle" dominant-baseline="central" font-family="' +
+        FONT + '" font-size="10.5" font-weight="600" fill="' + CLR.soft + '"></text></g>';
+    }
+    s += '<g class="fnext" opacity="0" style="transition:opacity .25s,transform .3s">' +
+      '<path d="M0,' + (fy + 30) + ' l-5,9 h10 Z" fill="' + CLR.gold6 + '"/>' +
+      labelAt(0, fy + 48, 'next out', 9.5, CLR.gold6, 'middle', 700) + '</g>';
+  }
   s += '<g class="counter">' + labelAt(w, 10, '', 12, CLR.gold6, 'end', 700) + '</g>';
   s += '<g class="abadge" opacity="0" style="transition:opacity .3s">' +
-       '<rect x="0" y="' + (h + 4) + '" width="' + badgeW(spec, 240) + '" height="24" rx="8" fill="#ffffff" stroke="' + CLR.lineS + '"/>' +
-       '<text x="' + (badgeW(spec, 240)/2) + '" y="' + (h + 16) + '" text-anchor="middle" dominant-baseline="central" font-family="' +
+       '<rect x="0" y="' + (h + fh + 4) + '" width="' + badgeW(spec, 240) + '" height="24" rx="8" fill="#ffffff" stroke="' + CLR.lineS + '"/>' +
+       '<text x="' + (badgeW(spec, 240)/2) + '" y="' + (h + fh + 16) + '" text-anchor="middle" dominant-baseline="central" font-family="' +
        FONT + '" font-size="11.5" font-weight="700" fill="' + CLR.g700 + '"></text></g>';
   return {
-    svg: frame(s, w, h + 34),
+    svg: frame(s, Math.max(w, fh ? fmax * (fcw + fgap) - fgap : 0), h + fh + 34),
     apply: function(root, step){
       root.querySelectorAll('.cell').forEach(function(g){
         const id = g.dataset.i;
@@ -1610,6 +1637,22 @@ ANIM['graph-walk'] = function(spec){
         g.setAttribute('opacity', t ? '1' : '0');
         const tx = g.querySelector('text'); if (tx) tx.textContent = t || '';
       });
+      if (fh){
+        const fr = step.frontier || [];
+        const names = {}; nodes.forEach(function(n){ names[n.id] = n.label; });
+        root.querySelectorAll('.fslot').forEach(function(g){
+          const k = +g.dataset.i, id = fr[k];
+          g.setAttribute('opacity', id ? '1' : '0');
+          const t = g.querySelector('text'); if (t) t.textContent = id ? (names[id] || id) : '';
+        });
+        const nx = root.querySelector('.fnext');
+        if (nx){
+          nx.setAttribute('opacity', fr.length ? '1' : '0');
+          /* a queue serves the end it has waited on longest, a stack the one it just added */
+          const slot = fkind === 'stack' ? fr.length - 1 : 0;
+          nx.setAttribute('transform', 'translate(' + (slot * (fcw + fgap) + fcw/2) + ',0)');
+        }
+      }
       const c = root.querySelector('.counter text');
       if (c) c.textContent = step.count != null ? countText(step.count, spec.countLabel || ' wires') : '';
       const ab = root.querySelector('.abadge');
