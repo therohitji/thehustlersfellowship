@@ -13,7 +13,10 @@ echo "=== 2. driving it like a reader ==="
 node verify/interact.mjs
 
 echo
-echo "=== 3. rendering every visual ==="
+echo "=== 3. measuring every badge against its plate ==="
+node verify/check_badges.mjs
+
+echo "=== 4. rendering every visual ==="
 OUT="${1:-/tmp/dsa-shots}"
 rm -rf "$OUT"
 node verify/screenshots.mjs all "$OUT" | tail -3

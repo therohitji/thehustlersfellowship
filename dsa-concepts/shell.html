@@ -1101,6 +1101,17 @@ function paintCell(g, st){
   if (st === 'look' || st === 'found'){ void g.offsetWidth; g.classList.add(st); }
 }
 
+/* Every badge plate used to be a fixed width while its text was set at runtime, so a caption
+   one clause too long ran out of its own box. Measured in a real browser, one shipped badge
+   was already 236px of text inside 240px of plate. The plate now sizes itself to the widest
+   badge the board will ever show, with a floor so a two word badge does not look mean. */
+function badgeW(spec, floor){
+  const w = (spec.steps || []).reduce(function(m, st){
+    return st.badge ? Math.max(m, Math.ceil(String(st.badge).length * charW(11.5)) + 28) : m;
+  }, 0);
+  return Math.max(floor || 196, w);
+}
+
 const ANIM = {};
 
 /* ---- array-scan: the workhorse for every linear and halving search ---- */
@@ -1160,8 +1171,8 @@ ANIM['array-scan'] = function(spec){
   }
   s += '<g class="counter">' + labelAt(w, 10, '', 12, CLR.gold6, 'end', 700) + '</g>';
   s += '<g class="abadge" opacity="0" style="transition:opacity .3s">' +
-       '<rect x="0" y="' + (top + cellH + idxH + ptrH - 4) + '" width="196" height="24" rx="8" fill="#ffffff" stroke="' + CLR.lineS + '"/>' +
-       '<text x="98" y="' + (top + cellH + idxH + ptrH + 8) + '" text-anchor="middle" dominant-baseline="central" font-family="' + FONT + '" font-size="11.5" font-weight="700" fill="' + CLR.g700 + '"></text></g>';
+       '<rect x="0" y="' + (top + cellH + idxH + ptrH - 4) + '" width="' + badgeW(spec, 196) + '" height="24" rx="8" fill="#ffffff" stroke="' + CLR.lineS + '"/>' +
+       '<text x="' + (badgeW(spec, 196)/2) + '" y="' + (top + cellH + idxH + ptrH + 8) + '" text-anchor="middle" dominant-baseline="central" font-family="' + FONT + '" font-size="11.5" font-weight="700" fill="' + CLR.g700 + '"></text></g>';
   return {
     svg: frame(s, w, h),
     apply: function(root, step){
@@ -1347,8 +1358,8 @@ ANIM['tree-walk'] = function(spec){
      counter carries how many have been emitted, which is the whole subject of a walk. */
   s += '<g class="counter">' + labelAt(w, 10, '', 12, CLR.gold6, 'end', 700) + '</g>';
   s += '<g class="abadge" opacity="0" style="transition:opacity .3s">' +
-       '<rect x="0" y="' + (h + 4) + '" width="240" height="24" rx="8" fill="#ffffff" stroke="' + CLR.lineS + '"/>' +
-       '<text x="120" y="' + (h + 16) + '" text-anchor="middle" dominant-baseline="central" font-family="' + FONT + '" font-size="11.5" font-weight="700" fill="' + CLR.g700 + '"></text></g>';
+       '<rect x="0" y="' + (h + 4) + '" width="' + badgeW(spec, 240) + '" height="24" rx="8" fill="#ffffff" stroke="' + CLR.lineS + '"/>' +
+       '<text x="' + (badgeW(spec, 240)/2) + '" y="' + (h + 16) + '" text-anchor="middle" dominant-baseline="central" font-family="' + FONT + '" font-size="11.5" font-weight="700" fill="' + CLR.g700 + '"></text></g>';
   return {
     svg: frame(s, w, h + 34),
     apply: function(root, step){
@@ -1471,8 +1482,8 @@ ANIM['heap'] = function(spec){
   }
   s += '<g class="counter">' + labelAt(w, 10, '', 12, CLR.gold6, 'end', 700) + '</g>';
   s += '<g class="abadge" opacity="0" style="transition:opacity .3s">' +
-       '<rect x="0" y="' + (h + 4) + '" width="240" height="24" rx="8" fill="#ffffff" stroke="' + CLR.lineS + '"/>' +
-       '<text x="120" y="' + (h + 16) + '" text-anchor="middle" dominant-baseline="central" font-family="' +
+       '<rect x="0" y="' + (h + 4) + '" width="' + badgeW(spec, 240) + '" height="24" rx="8" fill="#ffffff" stroke="' + CLR.lineS + '"/>' +
+       '<text x="' + (badgeW(spec, 240)/2) + '" y="' + (h + 16) + '" text-anchor="middle" dominant-baseline="central" font-family="' +
        FONT + '" font-size="11.5" font-weight="700" fill="' + CLR.g700 + '"></text></g>';
   return {
     svg: frame(s, w, h + 34),
@@ -1537,7 +1548,18 @@ ANIM['graph-walk'] = function(spec){
     s += '<line class="ge" data-e="' + e.from + '-' + e.to + '" x1="' + (a.cx + dx/d*r) + '" y1="' + (a.cy + dy/d*r) +
          '" x2="' + (b.cx - dx/d*(r + gap)) + '" y2="' + (b.cy - dy/d*(r + gap)) + '" stroke="' + CLR.line + '" stroke-width="1.8" ' +
          (dir ? 'marker-end="url(#ah)" ' : '') + 'style="transition:stroke .3s"/>';
-    if (e.w != null) s += labelAt((a.cx+b.cx)/2, (a.cy+b.cy)/2 - 9, e.w, 10.5, CLR.mute, 'middle', 700);
+    /* The weight used to be a bare text node with no class, which meant two things went
+       wrong and neither was visible in the payload. It could not be faded with its own edge,
+       so a wire dimmed to 0.12 by step.edges kept a full strength number floating over it;
+       and it had no plate, so on a VERTICAL edge the wire ran straight through the digits.
+       It now rides in a group keyed to the same edge id, over a small white plate. */
+    if (e.w != null){
+      const mx = (a.cx+b.cx)/2, my = (a.cy+b.cy)/2 - 9;
+      const wpx = Math.ceil(String(e.w).length * charW(10.5)) + 10;
+      s += '<g class="gw" data-e="' + e.from + '-' + e.to + '" style="transition:opacity .3s">' +
+           '<rect x="' + (mx - wpx/2) + '" y="' + (my - 8) + '" width="' + wpx + '" height="16" rx="4" fill="#ffffff" opacity="0.92"/>' +
+           labelAt(mx, my, e.w, 10.5, CLR.mute, 'middle', 700) + '</g>';
+    }
   });
   nodes.forEach(function(n){
     const p = pos[n.id];
@@ -1560,8 +1582,8 @@ ANIM['graph-walk'] = function(spec){
      so nothing changes for the twenty three that already exist. */
   s += '<g class="counter">' + labelAt(w, 10, '', 12, CLR.gold6, 'end', 700) + '</g>';
   s += '<g class="abadge" opacity="0" style="transition:opacity .3s">' +
-       '<rect x="0" y="' + (h + 4) + '" width="240" height="24" rx="8" fill="#ffffff" stroke="' + CLR.lineS + '"/>' +
-       '<text x="120" y="' + (h + 16) + '" text-anchor="middle" dominant-baseline="central" font-family="' +
+       '<rect x="0" y="' + (h + 4) + '" width="' + badgeW(spec, 240) + '" height="24" rx="8" fill="#ffffff" stroke="' + CLR.lineS + '"/>' +
+       '<text x="' + (badgeW(spec, 240)/2) + '" y="' + (h + 16) + '" text-anchor="middle" dominant-baseline="central" font-family="' +
        FONT + '" font-size="11.5" font-weight="700" fill="' + CLR.g700 + '"></text></g>';
   return {
     svg: frame(s, w, h + 34),
@@ -1576,6 +1598,11 @@ ANIM['graph-walk'] = function(spec){
         /* an edge that is not live is not merely pale, it does not exist yet, which is what
            makes a rewire legible: the old arrow goes and the new one appears */
         l.setAttribute('opacity', (step.edges && !live) ? '0.12' : '1');
+      });
+      /* a weight belongs to its wire, so it dims with it */
+      root.querySelectorAll('.gw').forEach(function(g){
+        const live = (step.edges || []).indexOf(g.dataset.e) > -1;
+        g.setAttribute('opacity', (step.edges && !live) ? '0.12' : '1');
       });
       const tags = step.tags || {};
       root.querySelectorAll('.mark').forEach(function(g){
