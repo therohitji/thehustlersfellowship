@@ -15,6 +15,10 @@ echo "7/10 contract";    python3 verify/check_contract.py
 # somebody crossing one, because the crossing is Chapter 13. Scoped to ch12: every other
 # chapter walks its chains legitimately.
 echo "8/10 no-walk";     python3 verify/check_nowalk.py chapters/ch12.js
-echo "9/10 reel time";   python3 verify/reel_time.py --check
-echo "10/10 docs";       python3 verify/sync_docs.py --check
+# Chapter 13 draws walks, and a walk can be drawn plausibly and wrongly: the circles light in
+# a sensible order, the container fills and empties, and none of it is what the algorithm does.
+# This runs the algorithm from the board own data and compares.
+echo "9/11 walks";       python3 verify/check_walk.py chapters/ch13.js
+echo "10/11 reel time";  python3 verify/reel_time.py --check
+echo "11/11 docs";       python3 verify/sync_docs.py --check
 echo "QA GREEN"
