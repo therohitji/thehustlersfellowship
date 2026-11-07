@@ -1,3 +1,46 @@
+<!-- presentation:start -->
+<p align="center"><img src="https://raw.githubusercontent.com/therohitji/therohitji/main/repos/thehustlersfellowship.svg" width="100%" alt="Hustlers Fellowship. Build-first AI courses. Every lesson ends with something you ship. 36,905 Lines of code, 53 Files, 98 Commits, 4 Languages."></p>
+
+**Live:** https://hustlersfellowship.com
+
+## What it is
+
+The site and source of hustlersfellowship.com.
+
+## Why it exists
+
+Interviews reward proof you can ship. Almost nobody teaches that way.
+
+## How it works
+
+```mermaid
+flowchart LR
+  n0["What"]
+  n1["Why"]
+  n2["How"]
+  n3["Teardowns"]
+  n4["Reps"]
+  n5["Artifact"]
+  n0 --> n1 --> n2 --> n3 --> n4 --> n5
+```
+
+## What's inside
+
+| Part | What |
+|---|---|
+| **Reach** | 500+ people read and studied it |
+| **Validation** | 20+ professionals reviewed it |
+| **Courses** | Build Live Products and AI Product Management |
+
+**Stack:** HTML, JavaScript
+
+---
+
+Built by [Rohit Swerashi](https://github.com/therohitji), Founder & CEO of [GeniOS](https://thegenios.com).
+<!-- presentation:end -->
+
+## Full documentation
+
 # The Hustlers Fellowship
 
 Build-first AI courses by **Rohit Swerashi**, founder of GeniOS. Live at **[hustlersfellowship.com](https://hustlersfellowship.com)**.
